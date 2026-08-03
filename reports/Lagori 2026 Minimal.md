@@ -1,0 +1,239 @@
+# Concert report — Lagori 2026 Minimal.concert
+
+Patches at top level: 11
+
+## Setlist / patch tree
+- **BRAHMA Gm**
+  - settings: `{'hasTempo': True, 'tempo': 118.0, 'hasProgramChange': True}`
+  - strip `Grand Organ`: Vintage B3
+  - strip `Clav`: Pianoteq 8
+- **Upright**
+  - settings: `{'hasTempo': True, 'tempo': 115.0}`
+  - strip `Piano`: Pianoteq 8
+- **Maari Kannu**
+  - settings: `{'hasTempo': True, 'tempo': 160.0}`
+  - **Maari Kannu**
+    - settings: `{'tempo': 106.0}`
+    - strip `Grand Organ`: Vintage B3
+    - strip `Clav`: Pianoteq 8
+    - strip `Horn Section`: Studio Horns, Sampler
+    - strip `Horn Section`: Studio Horns, Sampler
+- **Dhuen**
+  - settings: `{'hasTempo': True, 'tempo': 104.0}`
+  - **EP + Organ**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Organ`: Vintage B3
+  - **Piano + Pads**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Pads`: Alchemy
+  - **Piano + Orchestra**
+    - settings: `{'tempo': 117.92919921875}`
+    - strip `ORCH`: —
+    - strip `Strings`: Sampler
+    - strip `Full Strings`: Sampler
+    - strip `Cellos`: Sampler
+    - strip `Violas Staccato`: Sampler
+    - strip `Grand Organ`: Vintage B3
+    - strip `Synth`: —
+    - strip `Piano` (muted): Pianoteq 8
+- **Udaan**
+  - settings: `{'tempo': 120.0}`
+  - strip `Strings`: Sampler
+  - strip `Timpani+`: Sampler
+  - strip `Piano` (muted): Pianoteq 8
+  - strip `Synth`: Alchemy
+  - strip `Synth`: Alchemy
+  - strip `ORCH`: —
+- **Nadhiya**
+  - settings: `{'tempo': 120.0}`
+  - **Nadhiya**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Banjo`: Sampler
+    - strip `Strings`: —
+  - **Heavy Organ + Synth**
+    - settings: `{'tempo': 120.0}`
+    - strip `Organ`: Vintage B3
+    - strip `Heavy Synth`: Alchemy
+- **Boom**
+  - settings: `{'tempo': 120.0}`
+  - strip `Piano`: Pianoteq 8
+- **Nusrat**
+  - settings: `{'tempo': 120.0}`
+  - **Mast Kalandar**
+    - settings: `{'tempo': 120.0}`
+    - strip `Strings`: Sampler
+    - strip `Full Strings`: Sampler
+    - strip `Cellos`: Sampler
+    - strip `Violas Staccato`: Sampler
+    - strip `Piano`: Pianoteq 8
+    - strip `Synth`: Alchemy
+    - strip `Synth`: Alchemy
+    - strip `ORCH`: —
+  - **Nusrat**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Drum`: Pianoteq 8
+  - **EP Loud**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Clav`: Pianoteq 8
+  - **Organ**
+    - settings: `{'tempo': 120.0}`
+    - strip `Grand Organ`: Vintage B3
+  - **Strings**
+    - settings: `{'tempo': 120.0}`
+    - strip `Strings`: Sampler
+    - strip `Full Strings`: Sampler
+    - strip `Cellos`: Sampler
+    - strip `Violas Staccato`: Sampler
+    - strip `Piano`: Pianoteq 8
+    - strip `Synth`: Alchemy
+    - strip `Synth`: Alchemy
+    - strip `ORCH`: —
+- **60 90**
+  - settings: `{'tempo': 120.0}`
+  - **60 90**
+    - settings: `{'hasTempo': True, 'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+  - **BRAHMA Gm**
+    - settings: `{'hasTempo': True, 'tempo': 118.0}`
+    - strip `Inst 39`: Vintage B3
+    - strip `Clav`: Pianoteq 8
+- **Lagori**
+  - settings: `{'tempo': 120.0}`
+  - **Piano + Pads**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Pads`: Alchemy
+    - strip `Pads`: Alchemy
+- **Darbari**
+  - settings: `{'hasTempo': True, 'tempo': 106.0}`
+  - **Thangamay**
+    - settings: `{'tempo': 120.0}`
+    - strip `Grand Organ`: Vintage B3
+  - **Param Sundari**
+    - settings: `{'tempo': 120.0}`
+    - strip `Riff Clav`: Pianoteq 8
+    - strip `Horns`: Sampler
+    - strip `Piano`: Pianoteq 8
+    - strip `Inst 111`: Alchemy
+  - **Lead**
+    - settings: `{'tempo': 120.0}`
+    - strip `Inst 105`: —
+  - **Aasma**
+    - settings: `{'tempo': 120.0, 'hasProgramChange': True}`
+    - strip `Synth`: Alchemy
+    - strip `Strings`: Sampler
+    - strip `Full Strings`: Sampler
+    - strip `Cellos`: Sampler
+    - strip `Violas Staccato`: Sampler
+    - strip `Synth`: Alchemy
+    - strip `ORCH`: —
+    - strip `Piano` (muted): Pianoteq 8
+  - **Piano + Pads + EP - Kesariya**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Pads`: Alchemy
+    - strip `Plucks`: Alchemy
+  - **Shape of You C#**
+    - settings: `{'hasTempo': True, 'tempo': 96.0}`
+    - strip `Synth 1`: Alchemy
+    - strip `Synth`: Alchemy
+  - **Humma Humma G -> A**
+    - settings: `{'hasTempo': True, 'tempo': 110.0, 'hasProgramChange': True}`
+    - strip `Horn`: Sampler
+    - strip `Horns High`: Sampler
+    - strip `Organ`: Vintage B3
+  - **Crazy Kiya Re**
+    - settings: `{'tempo': 120.0, 'hasProgramChange': True}`
+    - strip `Strings`: —
+    - strip `Strings`: —
+    - strip `Sitar`: Sampler
+    - strip `Flute`: Sampler
+    - strip `Flute`: Sampler
+  - **Vaathi**
+    - settings: `{'tempo': 120.0}`
+    - strip `Synth`: Alchemy
+    - strip `Shenai`: Sampler
+    - strip `Horn`: Sampler
+    - strip `Horns High`: Sampler
+  - **Jhumka**
+    - settings: `{'hasTempo': True, 'tempo': 95.0}`
+    - strip `Harmonium`: —
+    - strip `Harmonium` (muted): Sampler
+    - strip `Synth`: Alchemy
+    - strip `Trumpet`: —
+    - strip `Shenai`: —
+    - strip `Sub Bass`: Alchemy
+    - strip `Horn`: Alchemy
+    - strip `Vox Lead`: Alchemy
+  - **Aankh Marey**
+    - settings: `{'tempo': 120.0}`
+    - strip `Lead`: Alchemy
+    - strip `Shenai`: Sampler
+    - strip `Plucks`: Alchemy
+    - strip `Synth`: Alchemy
+  - **Tu Meri**
+    - settings: `{'tempo': 120.0}`
+    - strip `Synth`: Alchemy
+    - strip `Brassy`: Alchemy
+    - strip `Strings`: —
+    - strip `Strings`: —
+    - strip `ORCH`: —
+  - **Upright**
+    - settings: `{'hasTempo': True, 'tempo': 115.0}`
+    - strip `Piano`: Pianoteq 8
+  - **Levitating**
+    - settings: `{'tempo': 120.0}`
+    - strip `Voices`: Alchemy
+    - strip `Synth`: Alchemy
+    - strip `Brassy`: Alchemy
+    - strip `Strings`: —
+    - strip `Strings`: —
+    - strip `ORCH`: —
+  - **BRAHMA Gm**
+    - settings: `{'hasTempo': True, 'tempo': 118.0}`
+    - strip `Grand Organ`: Vintage B3
+    - strip `Clav`: Pianoteq 8
+  - **Darbari**
+    - settings: `{'hasTempo': True, 'tempo': 106.0}`
+    - strip `Grand Organ`: Vintage B3
+    - strip `Edm`: Alchemy
+  - **Piano + Choir**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Mixed Choir`: Sampler
+  - **EP + Organ**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Organ`: Vintage B3
+  - **Piano + Pads**
+    - settings: `{'tempo': 120.0}`
+    - strip `Piano`: Pianoteq 8
+    - strip `Pads`: Alchemy
+  - **Highway Star**
+    - settings: `{'tempo': 120.0}`
+    - strip `Inst 109`: Pedalboard, Vintage B3
+    - strip `Inst 109`: Pedalboard, Vintage B3
+  - **Uptown Funk Dm**
+    - settings: `{'hasTempo': True, 'tempo': 112.0}`
+    - strip `Classic Electric Piano`: Pianoteq 8
+    - strip `Synth`: Alchemy
+    - strip `Bass`: Alchemy
+    - strip `Horn`: Sampler
+    - strip `Horns High`: Sampler
+
+## Instruments that CANNOT load in REAPER (Logic-only)
+| Logic instrument | Used in | Suggested substitute |
+|---|---|---|
+| Alchemy | Aankh Marey, Aasma, Darbari, Heavy Organ + Synth, Jhumka, Levitating, Mast Kalandar, Param Sundari, Piano + Pads, Piano + Pads + EP - Kesariya, Shape of You C#, Strings, Tu Meri, Udaan, Uptown Funk Dm, Vaathi | Omnisphere (closest sound-design depth) or ANA 2 |
+| Pedalboard | Highway Star | REAPER FX chain equivalents |
+| Sampler | Aankh Marey, Aasma, Crazy Kiya Re, Humma Humma G -> A, Jhumka, Maari Kannu, Mast Kalandar, Nadhiya, Param Sundari, Piano + Choir, Piano + Orchestra, Strings, Udaan, Uptown Funk Dm, Vaathi | UVI Workstation / Kontakt (re-sample or find equivalent) |
+| Studio Horns | Maari Kannu | Kontakt Session Horns / UVI brass |
+| Vintage B3 | BRAHMA Gm, Darbari, EP + Organ, Heavy Organ + Synth, Highway Star, Humma Humma G -> A, Maari Kannu, Organ, Piano + Orchestra, Thangamay | Arturia B-3 V / IK Hammond B-3X |
+
+## Third-party plugins (load in REAPER as-is)
+- **Pianoteq 8** — 60 90, Aasma, BRAHMA Gm, Boom, EP + Organ, EP Loud, Maari Kannu, Mast Kalandar, Nadhiya, Nusrat, Param Sundari, Piano + Choir, Piano + Orchestra, Piano + Pads, Piano + Pads + EP - Kesariya, Strings, Udaan, Upright, Uptown Funk Dm

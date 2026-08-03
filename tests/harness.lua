@@ -8,7 +8,9 @@
 --]]
 
 local r = reaper
-local BASE = "/Users/nphmacmini/Documents/REAPER Media/"
+-- BASE is wherever this repo sits: harness.lua lives in <BASE>/tests/, so the
+-- suite runs from any clone on any machine with no path edits.
+local BASE = (debug.getinfo(1, "S").source:sub(2)):match("(.*/)"):gsub("tests/$", "")
 local OUT  = BASE .. "_nph_results.txt"
 
 local lines, pass, fail = {}, 0, 0

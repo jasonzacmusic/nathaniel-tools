@@ -1,0 +1,5156 @@
+{
+  "concert": "Lagori 2026 Minimal.concert",
+  "path": "/Users/jasonzac/Music/MainStage/Lagori 2026 Minimal.concert",
+  "setlist": [
+    {
+      "name": "BRAHMA Gm",
+      "channels": [
+        {
+          "name": "Grand Organ",
+          "file": "Grand Organ.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": 11
+            }
+          ],
+          "strip": {
+            "logic_only": {
+              "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+            },
+            "third_party": [],
+            "other_strings": [
+              " Inst 1",
+              " MNU_fkqux",
+              "BDXNSObject",
+              "GAME",
+              "GAMETSPP",
+              "Grand Organ",
+              "HIJYUUIDBytes",
+              "IdentityIndexLookup_",
+              "MABaseplateParameterMapping_",
+              "MAKeyboardLayer",
+              "UCuA",
+              "VUCuA"
+            ],
+            "size": 7734
+          }
+        },
+        {
+          "name": "Clav",
+          "file": "Clav.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": 64
+            },
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": -1
+            }
+          ],
+          "strip": {
+            "logic_only": {},
+            "third_party": [
+              "Pianoteq 8"
+            ],
+            "other_strings": [
+              " Inst 2",
+              "2UCuA",
+              "ACXNSObject",
+              "Channel EQ",
+              "Clavinet D6 Envelope-Wah",
+              "GAME",
+              "GAMETSPP",
+              "MAKeyboardLayer",
+              "TClav",
+              "TUUID",
+              "UCuA",
+              "WsKeyboardLayer"
+            ],
+            "size": 562898
+          }
+        }
+      ],
+      "sub_patches": [],
+      "settings": {
+        "hasTempo": true,
+        "tempo": 118.0,
+        "hasProgramChange": true
+      }
+    },
+    {
+      "name": "Upright",
+      "channels": [
+        {
+          "name": "Piano",
+          "file": "Piano.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": 11
+            }
+          ],
+          "strip": {
+            "logic_only": {},
+            "third_party": [
+              "Pianoteq 8"
+            ],
+            "other_strings": [
+              " Inst 3",
+              "9OCuA",
+              "ACXNSObject",
+              "Channel EQ",
+              "DTWJ",
+              "GAME",
+              "GAMETSPP",
+              "IdentityIndexLookup_",
+              "JKLM",
+              "MABaseplateParameterMapping_",
+              "MAKeyboardLayer",
+              "U4 Honky Tonk"
+            ],
+            "size": 571517
+          }
+        }
+      ],
+      "sub_patches": [],
+      "settings": {
+        "hasTempo": true,
+        "tempo": 115.0
+      }
+    },
+    {
+      "name": "Maari Kannu",
+      "channels": [],
+      "sub_patches": [
+        {
+          "name": "Maari Kannu",
+          "channels": [
+            {
+              "name": "Grand Organ",
+              "file": "Grand Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 1",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "Grand Organ",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "VUCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 4744
+              }
+            },
+            {
+              "name": "Clav",
+              "file": "Clav.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 64
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 2",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "Clavinet D6 Envelope-Wah",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TClav",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_"
+                ],
+                "size": 562898
+              }
+            },
+            {
+              "name": "Horn Section",
+              "file": "Horn Section.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Studio Horns": "Kontakt Session Horns / UVI brass",
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 4",
+                  " MNU_fkqux",
+                  "#NxQ",
+                  "'UCuA",
+                  "07 Pop Horns",
+                  "1MAS",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "HIJYUUIDBytes",
+                  "Horn Section.exs"
+                ],
+                "size": 9806
+              }
+            },
+            {
+              "name": "Horn Section",
+              "file": "1__#$!@%!#__Horn Section.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Studio Horns": "Kontakt Session Horns / UVI brass",
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 5",
+                  "07 Pop Horns",
+                  "1MAS",
+                  "ABXYWNSArray",
+                  "Big Room.pst",
+                  "CEXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "Horn Section.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASHorn Section.exs"
+                ],
+                "size": 7037
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 106.0
+          }
+        }
+      ],
+      "settings": {
+        "hasTempo": true,
+        "tempo": 160.0
+      }
+    },
+    {
+      "name": "Dhuen",
+      "channels": [],
+      "sub_patches": [
+        {
+          "name": "EP + Organ",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 6",
+                  "4ZjUCuA",
+                  "ACXNSObject",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MKI Groovy Chorus",
+                  "MNOP",
+                  "TUVWX6ZfAA6A",
+                  "TUVWX6ZklA6A",
+                  "TUVWX6ZllA6A",
+                  "UCuA"
+                ],
+                "size": 565185
+              }
+            },
+            {
+              "name": "Organ",
+              "file": "Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 64
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 7",
+                  ")UOCuA",
+                  ")eeT",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "Reggae Organ.pst",
+                  "TUUID",
+                  "UCuA",
+                  "UOrgan",
+                  "WsKeyboardLayer"
+                ],
+                "size": 4627
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Piano + Pads",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 8",
+                  "0UCuA",
+                  "ACXNSObject",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MNOP",
+                  "Steinway B Wide",
+                  "TUVWX6ZfAA6A",
+                  "TUVWX6ZklA6A",
+                  "TUVWX6ZllA6A",
+                  "UCuA"
+                ],
+                "size": 583473
+              }
+            },
+            {
+              "name": "Pads",
+              "file": "Pads.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 9",
+                  ")egF",
+                  "ACXNSObject",
+                  "Analog Poly Ensemble.acp",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TPads",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer"
+                ],
+                "size": 37454
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Piano + Orchestra",
+          "channels": [
+            {
+              "name": "ORCH",
+              "file": "ORCH.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Aux 2",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "QRST",
+                  "UCuA",
+                  "Vertical Fader 3",
+                  "WsMutableController",
+                  "WsPluginIdentity",
+                  "isSendMuteMapping_",
+                  "kDiscreteStepsKey_",
+                  "kHasSavedValueKey_"
+                ],
+                "size": 3051
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 10",
+                  ".UCuA",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Channel EQ",
+                  "EXS Strings 2.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASEXS Strings 2.exs"
+                ],
+                "size": 6664
+              }
+            },
+            {
+              "name": "Full Strings",
+              "file": "Full Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 11",
+                  ")UCuA",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "Full Strings.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASFull Strings.exs"
+                ],
+                "size": 6666
+              }
+            },
+            {
+              "name": "Cellos",
+              "file": "Cellos.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 12",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Cello Section.cst",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASCellos.exs",
+                  "TUUID"
+                ],
+                "size": 6664
+              }
+            },
+            {
+              "name": "Violas Staccato",
+              "file": "Violas Staccato.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 13",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASViolas Staccato.exs",
+                  "TUUID",
+                  "UCuA"
+                ],
+                "size": 6671
+              }
+            },
+            {
+              "name": "Grand Organ",
+              "file": "Grand Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 14",
+                  "BDXNSObject",
+                  "Channel EQ",
+                  "DUCuA",
+                  "GAME",
+                  "GAMETSPP",
+                  "Grand Organ",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_"
+                ],
+                "size": 5100
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 15",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "Synth Strings.pst",
+                  "TUUID",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 3078
+              }
+            },
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": true,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 56",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "UPiano",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 596545
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 117.92919921875
+          }
+        }
+      ],
+      "settings": {
+        "hasTempo": true,
+        "tempo": 104.0
+      }
+    },
+    {
+      "name": "Udaan",
+      "channels": [
+        {
+          "name": "Strings",
+          "file": "Strings.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": 11
+            },
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "filter": true,
+              "in": -1
+            }
+          ],
+          "strip": {
+            "logic_only": {
+              "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+            },
+            "third_party": [],
+            "other_strings": [
+              " Inst 16",
+              "10 Strings",
+              "1MAS",
+              "BDXNSObject",
+              "Channel EQ",
+              "EXS Strings 2.exs",
+              "GAME",
+              "GAMETSPP",
+              "HIJKLMNOP",
+              "IdentityIndexLookup_",
+              "MABaseplateParameterMapping_",
+              "MAKeyboardLayer"
+            ],
+            "size": 8210
+          }
+        },
+        {
+          "name": "Timpani+",
+          "file": "Timpani+.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            }
+          ],
+          "strip": {
+            "logic_only": {
+              "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+            },
+            "third_party": [],
+            "other_strings": [
+              " Inst 17",
+              "1MAS",
+              "ACXNSObject",
+              "CUCuA",
+              "Channel EQ",
+              "GAME",
+              "GAMETSPP",
+              "MAKeyboardLayer",
+              "MELC",
+              "MELCPMAS1MASTimpani+.exs",
+              "TUUID",
+              "Tape Delay"
+            ],
+            "size": 24466
+          }
+        },
+        {
+          "name": "Piano",
+          "file": "Piano.cst",
+          "muted": true,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": 11
+            }
+          ],
+          "strip": {
+            "logic_only": {},
+            "third_party": [
+              "Pianoteq 8"
+            ],
+            "other_strings": [
+              " Inst 56",
+              ")ekCX",
+              "/UCuA",
+              "ACXNSObject",
+              "Channel EQ",
+              "GAME",
+              "GAMETSPP",
+              "MAKeyboardLayer",
+              "TUUID",
+              "UCuA",
+              "UPiano",
+              "WsKeyboardLayer"
+            ],
+            "size": 596545
+          }
+        },
+        {
+          "name": "Synth",
+          "file": "Synth.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": 11
+            }
+          ],
+          "strip": {
+            "logic_only": {
+              "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+            },
+            "third_party": [],
+            "other_strings": [
+              " Inst 18",
+              ")UCuA",
+              "ACXNSObject",
+              "GAME",
+              "MAKeyboardLayer",
+              "TUUID",
+              "UCuA",
+              "USynth",
+              "WsKeyboardLayer",
+              "WsKeyboardLayer_",
+              "YUUIDBytes",
+              "multitimbralEnabled_"
+            ],
+            "size": 37554
+          }
+        },
+        {
+          "name": "Synth",
+          "file": "1__#$!@%!#__Synth.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": 11
+            }
+          ],
+          "strip": {
+            "logic_only": {
+              "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+            },
+            "third_party": [],
+            "other_strings": [
+              " Inst 19",
+              ")ekK",
+              "Analog Stack Synth.acp",
+              "BDXNSObject",
+              "GAME",
+              "MAKeyboardLayer",
+              "TUUID",
+              "UCuA",
+              "USynth",
+              "WsKeyboardLayer",
+              "WsKeyboardLayer_",
+              "YUUIDBytes"
+            ],
+            "size": 33958
+          }
+        },
+        {
+          "name": "ORCH",
+          "file": "ORCH.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": 11
+            }
+          ],
+          "strip": {
+            "logic_only": {},
+            "third_party": [],
+            "other_strings": [
+              " Aux 3",
+              ")ekP",
+              "IUCuA",
+              "TUUID",
+              "UCuA",
+              "YUUIDBytes"
+            ],
+            "size": 1505
+          }
+        }
+      ],
+      "sub_patches": [],
+      "settings": {
+        "tempo": 120.0
+      }
+    },
+    {
+      "name": "Nadhiya",
+      "channels": [],
+      "sub_patches": [
+        {
+          "name": "Nadhiya",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 20",
+                  " MNU_fkqux",
+                  "ACXNSObject",
+                  "HIJYUUIDBytes",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "Petrof Mistral Venue",
+                  "UCuA",
+                  "UPiano",
+                  "Vertical Fader 3",
+                  "Vertical Fader 4"
+                ],
+                "size": 575051
+              }
+            },
+            {
+              "name": "Banjo",
+              "file": "Banjo.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 21",
+                  "1MAS",
+                  "ACXNSObject",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MAS",
+                  "TUUID",
+                  "UBanjo",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 6191
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 22",
+                  "ACXNSObject",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "WStrings",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "mjcOCuA",
+                  "multitimbralEnabled_",
+                  "overrideParentsKeyZoneTnameXhighNoteWlowNote_"
+                ],
+                "size": 2757
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Heavy Organ + Synth",
+          "channels": [
+            {
+              "name": "Organ",
+              "file": "Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 23",
+                  "ACXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "HIJcklmty",
+                  "IdentityIndexLookup_",
+                  "KLMNOPQRS",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "Power Chord Organ.pst",
+                  "TUVW",
+                  "UCuA"
+                ],
+                "size": 6639
+              }
+            },
+            {
+              "name": "Heavy Synth",
+              "file": "Heavy Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 24",
+                  "ACXNSObject",
+                  "Analog Stack Synth.acp",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "QOCuA",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_"
+                ],
+                "size": 34541
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        }
+      ],
+      "settings": {
+        "tempo": 120.0
+      }
+    },
+    {
+      "name": "Boom",
+      "channels": [
+        {
+          "name": "Piano",
+          "file": "Piano.cst",
+          "muted": false,
+          "transforms": [
+            {
+              "filter": true,
+              "in": -7
+            },
+            {
+              "in": 11
+            }
+          ],
+          "strip": {
+            "logic_only": {},
+            "third_party": [
+              "Pianoteq 8"
+            ],
+            "other_strings": [
+              " Inst 25",
+              "8UCuA",
+              "ACXNSObject",
+              "Ant. Petrof Venue",
+              "Channel EQ",
+              "GAME",
+              "GAMETSPP",
+              "IdentityIndexLookup_",
+              "JKLM",
+              "MABaseplateParameterMapping_",
+              "MAKeyboardLayer",
+              "UCuA"
+            ],
+            "size": 574886
+          }
+        }
+      ],
+      "sub_patches": [],
+      "settings": {
+        "tempo": 120.0
+      }
+    },
+    {
+      "name": "Nusrat",
+      "channels": [],
+      "sub_patches": [
+        {
+          "name": "Mast Kalandar",
+          "channels": [
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 26",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Channel EQ",
+                  "EXS Strings 2.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "LxUCuA",
+                  "MABaseplateParameterMapping_"
+                ],
+                "size": 8210
+              }
+            },
+            {
+              "name": "Full Strings",
+              "file": "Full Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 27",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "EwSk",
+                  "Full Strings.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASFull Strings.exs"
+                ],
+                "size": 6666
+              }
+            },
+            {
+              "name": "Cellos",
+              "file": "Cellos.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 28",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Cello Section.cst",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASCellos.exs",
+                  "TUUID"
+                ],
+                "size": 6664
+              }
+            },
+            {
+              "name": "Violas Staccato",
+              "file": "Violas Staccato.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 29",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASViolas Staccato.exs",
+                  "TUUID",
+                  "UCuA"
+                ],
+                "size": 6671
+              }
+            },
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 30",
+                  "5UCuA",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "NOCuA",
+                  "Steinway B Recording 2",
+                  "TUUID",
+                  "UCuA",
+                  "UPiano"
+                ],
+                "size": 571826
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 31",
+                  "ACXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "Titanic Anthem.acp",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "multitimbralEnabled_"
+                ],
+                "size": 37554
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "1__#$!@%!#__Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 32",
+                  "2OCuA",
+                  "Analog Stack Synth.acp",
+                  "BDXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 33958
+              }
+            },
+            {
+              "name": "ORCH",
+              "file": "ORCH.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Aux 4",
+                  "TUUID",
+                  "UCuA",
+                  "YUUIDBytes"
+                ],
+                "size": 1505
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Nusrat",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 33",
+                  "BDXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "IdentityIndexLookup_",
+                  "JKLM",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MKI Leslie",
+                  "UCuA",
+                  "UPiano"
+                ],
+                "size": 565431
+              }
+            },
+            {
+              "name": "Drum",
+              "file": "Drum.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 34",
+                  " pOCuA",
+                  ")etJ4",
+                  "1UCuA",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "Steel Drum - natural",
+                  "TDrum"
+                ],
+                "size": 563848
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "EP Loud",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 35",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "IdentityIndexLookup_",
+                  "JKLM",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MKI Leslie",
+                  "UCuA",
+                  "UPiano"
+                ],
+                "size": 565427
+              }
+            },
+            {
+              "name": "Clav",
+              "file": "Clav.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 36",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "Clavinet D6 Envelope-Wah",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TClav",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_"
+                ],
+                "size": 563009
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Organ",
+          "channels": [
+            {
+              "name": "Grand Organ",
+              "file": "Grand Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 37",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "Grand Organ",
+                  "IdentityIndexLookup_",
+                  "JKLM",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_"
+                ],
+                "size": 6573
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Strings",
+          "channels": [
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 26",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Channel EQ",
+                  "EXS Strings 2.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASEXS Strings 2.exs",
+                  "String Ensemble Legato.cst"
+                ],
+                "size": 6664
+              }
+            },
+            {
+              "name": "Full Strings",
+              "file": "Full Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 27",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "EwSk",
+                  "Full Strings.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASFull Strings.exs"
+                ],
+                "size": 6666
+              }
+            },
+            {
+              "name": "Cellos",
+              "file": "Cellos.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 28",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Cello Section.cst",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASCellos.exs",
+                  "TUUID"
+                ],
+                "size": 6664
+              }
+            },
+            {
+              "name": "Violas Staccato",
+              "file": "Violas Staccato.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 29",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASViolas Staccato.exs",
+                  "N.UCuA",
+                  "TUUID"
+                ],
+                "size": 6671
+              }
+            },
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 30",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "NOCuA",
+                  "Steinway B Recording 2",
+                  "TUUID",
+                  "UCuA",
+                  "UPiano",
+                  "WsKeyboardLayer"
+                ],
+                "size": 571826
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 31",
+                  "ACXNSObject",
+                  "GAME",
+                  "GUCuA",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "Titanic Anthem.acp",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 37554
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "1__#$!@%!#__Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 32",
+                  "2OCuA",
+                  "Analog Stack Synth.acp",
+                  "BDXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 33958
+              }
+            },
+            {
+              "name": "ORCH",
+              "file": "ORCH.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Aux 4",
+                  "4UCuA",
+                  "TUUID",
+                  "UCuA",
+                  "YUUIDBytes"
+                ],
+                "size": 1505
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        }
+      ],
+      "settings": {
+        "tempo": 120.0
+      }
+    },
+    {
+      "name": "60 90",
+      "channels": [],
+      "sub_patches": [
+        {
+          "name": "60 90",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 38",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "IdentityIndexLookup_",
+                  "JKLM",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MKI Punchy Chorus",
+                  "UCuA",
+                  "UPiano"
+                ],
+                "size": 565431
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "BRAHMA Gm",
+          "channels": [
+            {
+              "name": "Inst 39",
+              "file": "Inst 39.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 39",
+                  " MNU_fkqux",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "Grand Organ",
+                  "Grand Organ.pst",
+                  "HIJYUUIDBytes",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "UCuA"
+                ],
+                "size": 7744
+              }
+            },
+            {
+              "name": "Clav",
+              "file": "Clav.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 64
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 40",
+                  " UCuA",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "Clavinet D6 Envelope-Wah",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TClav",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer"
+                ],
+                "size": 562898
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 118.0
+          }
+        }
+      ],
+      "settings": {
+        "tempo": 120.0
+      }
+    },
+    {
+      "name": "Lagori",
+      "channels": [],
+      "sub_patches": [
+        {
+          "name": "Piano + Pads",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 41",
+                  "ACXNSObject",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MNOP",
+                  "TUVWX6ZfAA6A",
+                  "TUVWX6ZklA6A",
+                  "TUVWX6ZllA6A",
+                  "UCuA",
+                  "UPiano",
+                  "Vertical Fader 4"
+                ],
+                "size": 614632
+              }
+            },
+            {
+              "name": "Pads",
+              "file": "Pads.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 42",
+                  "ACXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TPads",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "multitimbralEnabled_",
+                  "overrideParentsKeyZoneTnameXhighNoteWlowNote_"
+                ],
+                "size": 36790
+              }
+            },
+            {
+              "name": "Pads",
+              "file": "1__#$!@%!#__Pads.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 43",
+                  "'8UCuA",
+                  "ACXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TPads",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "multitimbralEnabled_"
+                ],
+                "size": 116098
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        }
+      ],
+      "settings": {
+        "tempo": 120.0
+      }
+    },
+    {
+      "name": "Darbari",
+      "channels": [],
+      "sub_patches": [
+        {
+          "name": "Thangamay",
+          "channels": [
+            {
+              "name": "Grand Organ",
+              "file": "Grand Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 44",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "Grand Organ",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MNOP",
+                  "TUVWX6ZfAA6A",
+                  "TUVWX6ZklA6A",
+                  "TUVWX6ZllA6A"
+                ],
+                "size": 6924
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Param Sundari",
+          "channels": [
+            {
+              "name": "Riff Clav",
+              "file": "Riff Clav.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 45",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Clavinet D6 Envelope-Wah",
+                  "IdentityIndexLookup_",
+                  "MAKeyboardLayer",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YRiff Clav",
+                  "abcde-ghhh-hVisStepQxQyScpxWisCurveScpy",
+                  "multitimbralEnabled_"
+                ],
+                "size": 562555
+              }
+            },
+            {
+              "name": "Horns",
+              "file": "Horns.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 46",
+                  "1MAS",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "Live Pop Horns",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASPop Horn Section.exs",
+                  "Pop Horn Section.exs"
+                ],
+                "size": 24327
+              }
+            },
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 47",
+                  "ABXYWNSArray",
+                  "Ant. Petrof Venue",
+                  "CEXNSObject",
+                  "MAKeyboardLayer",
+                  "QUCuA",
+                  "TUUID",
+                  "UCuA",
+                  "UPiano",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 572494
+              }
+            },
+            {
+              "name": "Inst 111",
+              "file": "Inst 111.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 48",
+                  "BDXNSObject",
+                  "GAME",
+                  "Luminous Sweep Pad",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "XInst 111",
+                  "YUUIDBytes",
+                  "mlUCuA"
+                ],
+                "size": 197250
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Lead",
+          "channels": [
+            {
+              "name": "Inst 105",
+              "file": "Inst 105.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 49",
+                  "4OCuA",
+                  "ACXNSObject",
+                  "IdentityIndexLookup_",
+                  "KUCuA",
+                  "MAKeyboardLayer",
+                  "SOLO",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "XInst 105",
+                  "multitimbralEnabled_"
+                ],
+                "size": 47610
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Aasma",
+          "channels": [
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 50",
+                  "'MDHOCuA",
+                  "ACXNSObject",
+                  "GAME",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "QRST",
+                  "UCuA",
+                  "USynth",
+                  "Vertical Fader 3"
+                ],
+                "size": 39101
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 51",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Channel EQ",
+                  "EXS Strings 2.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASEXS Strings 2.exs",
+                  "SOCuA"
+                ],
+                "size": 6664
+              }
+            },
+            {
+              "name": "Full Strings",
+              "file": "Full Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 52",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "Full Strings.exs",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASFull Strings.exs",
+                  "String Ensemble.cst"
+                ],
+                "size": 6666
+              }
+            },
+            {
+              "name": "Cellos",
+              "file": "Cellos.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 53",
+                  "10 Strings",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Cello Section.cst",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASCellos.exs",
+                  "TUUID"
+                ],
+                "size": 6664
+              }
+            },
+            {
+              "name": "Violas Staccato",
+              "file": "Violas Staccato.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 54",
+                  "'UCuA",
+                  "10 Strings",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "IXUCuA",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASViolas Staccato.exs"
+                ],
+                "size": 6671
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "1__#$!@%!#__Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 55",
+                  "Analog Stack Synth.acp",
+                  "BDXNSObject",
+                  "GAME",
+                  "HUCuA",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 33958
+              }
+            },
+            {
+              "name": "ORCH",
+              "file": "ORCH.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Aux 5",
+                  "TUUID",
+                  "UCuA",
+                  "WUCuA",
+                  "YUUIDBytes",
+                  "n2UCuA"
+                ],
+                "size": 1505
+              }
+            },
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": true,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 56",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "UPiano",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 596545
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0,
+            "hasProgramChange": true
+          }
+        },
+        {
+          "name": "Piano + Pads + EP - Kesariya",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 57",
+                  "ACXNSObject",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "Petrof Mistral Venue",
+                  "QRST",
+                  "QUCuA",
+                  "UCuA",
+                  "UPiano",
+                  "Vertical Fader 3"
+                ],
+                "size": 573517
+              }
+            },
+            {
+              "name": "Pads",
+              "file": "Pads.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 58",
+                  "BDXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TPads",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "multitimbralEnabled_",
+                  "overrideParentsKeyZoneTnameXhighNoteWlowNote_"
+                ],
+                "size": 115790
+              }
+            },
+            {
+              "name": "Plucks",
+              "file": "Plucks.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 59",
+                  "BDXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "VPlucks",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "hUUCuA",
+                  "multitimbralEnabled_"
+                ],
+                "size": 44980
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Shape of You C#",
+          "channels": [
+            {
+              "name": "Synth 1",
+              "file": "Synth 1.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 60",
+                  "ABXYWNSArray",
+                  "Bluetooth nanoKONTROL Studio",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "IdentityIndexLookup_",
+                  "JKLMNOPQR",
+                  "MAKeyboardLayer",
+                  "MAPlugInParameterMapping_",
+                  "STUVW"
+                ],
+                "size": 41193
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 61",
+                  "ABXYWNSArray",
+                  "Analog Stack Synth.acp",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer"
+                ],
+                "size": 34723
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 96.0
+          }
+        },
+        {
+          "name": "Humma Humma G -> A",
+          "channels": [
+            {
+              "name": "Horn",
+              "file": "Horn.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 62",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "HIJKLMNOP",
+                  "Horn Section.exs",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MELC"
+                ],
+                "size": 8347
+              }
+            },
+            {
+              "name": "Horns High",
+              "file": "Horns High.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 63",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Big Room.pst",
+                  "GAME",
+                  "GAMETSPP",
+                  "Horn Section.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASHorn Section.exs",
+                  "PtVerb",
+                  "TUUID"
+                ],
+                "size": 7031
+              }
+            },
+            {
+              "name": "Organ",
+              "file": "Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " 2.2Gama gri generi",
+                  " 2.2Perfil gen",
+                  " Inst 64",
+                  "&elGR",
+                  ".arEG",
+                  "0 2.2Profil g",
+                  "0 Gray",
+                  "5UCuA",
+                  "8itIT",
+                  "A)AjA",
+                  "B0BrB",
+                  "GAME"
+                ],
+                "size": 9283
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 110.0,
+            "hasProgramChange": true
+          }
+        },
+        {
+          "name": "Crazy Kiya Re",
+          "channels": [
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 64
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 65",
+                  "1MAS",
+                  "BDXNSObject",
+                  "EDAF ",
+                  "GAMEMELC",
+                  "GAMETSPP8",
+                  "IdentityIndexLookup_",
+                  "IqCGPMD",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELC1MAS",
+                  "MELCPMAS1MASString Ensemble.exs"
+                ],
+                "size": 27005
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "1__#$!@%!#__Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 64
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 66",
+                  "1MAS",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "EDAF ",
+                  "GAMEMELC",
+                  "GAMETSPP8",
+                  "IqCGPMD",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELC1MAS",
+                  "MELCPMAS1MASString Ensemble.exs"
+                ],
+                "size": 26896
+              }
+            },
+            {
+              "name": "Sitar",
+              "file": "Sitar.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 67",
+                  "1MAS",
+                  "BCYZWNSArray",
+                  "DFXNSObject",
+                  "Indian Sitar.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASIndian Sitar.exs",
+                  "TUUID",
+                  "UCuA",
+                  "USitar",
+                  "WsKeyboardLayer"
+                ],
+                "size": 6210
+              }
+            },
+            {
+              "name": "Flute",
+              "file": "Flute.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 68",
+                  " UCuA",
+                  "1MAS",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "Indian Bansuri Flute.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASIndian Bansuri Flute.exs"
+                ],
+                "size": 6786
+              }
+            },
+            {
+              "name": "Flute",
+              "file": "1__#$!@%!#__Flute.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 69",
+                  "1MAS",
+                  "2tqUCuA",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "Indian Bansuri Flute.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASIndian Bansuri Flute.exs"
+                ],
+                "size": 7130
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0,
+            "hasProgramChange": true
+          }
+        },
+        {
+          "name": "Vaathi",
+          "channels": [
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 70",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "GAME",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "QRST",
+                  "UCuA",
+                  "USynth",
+                  "Vertical Fader 3"
+                ],
+                "size": 57609
+              }
+            },
+            {
+              "name": "Shenai",
+              "file": "Shenai.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 71",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Indian Shehnai Oboe+.exs",
+                  "KOCuA",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASIndian Shehnai Oboe+.exs",
+                  "TUUID",
+                  "UCuA",
+                  "VShenai",
+                  "WsKeyboardLayer"
+                ],
+                "size": 6196
+              }
+            },
+            {
+              "name": "Horn",
+              "file": "Horn.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 62",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "Horn Section.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASHorn Section.exs",
+                  "THorn",
+                  "TUUID"
+                ],
+                "size": 6793
+              }
+            },
+            {
+              "name": "Horns High",
+              "file": "Horns High.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 63",
+                  "1MAS",
+                  "BDXNSObject",
+                  "Big Room.pst",
+                  "GAME",
+                  "GAMETSPP",
+                  "Horn Section.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASHorn Section.exs",
+                  "PtVerb",
+                  "TUUID"
+                ],
+                "size": 7031
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Jhumka",
+          "channels": [
+            {
+              "name": "Harmonium",
+              "file": "Harmonium.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 72",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "IdentityIndexLookup_",
+                  "MAKeyboardLayer",
+                  "Polka Accordion",
+                  "SOLO",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YHarmonium",
+                  "abcde-ghhh-hVisStepQxQyScpxWisCurveScpy"
+                ],
+                "size": 47807
+              }
+            },
+            {
+              "name": "Harmonium",
+              "file": "1__#$!@%!#__Harmonium.cst",
+              "muted": true,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 73",
+                  "1MAS",
+                  "BCYZWNSArray",
+                  "Channel EQ",
+                  "DFXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASPolka Accordion.exs",
+                  "Polka Accordion",
+                  "Polka Accordion.exs"
+                ],
+                "size": 24590
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 74",
+                  "1WVUCuA",
+                  "Analog Stack Synth.acp",
+                  "BCYZWNSArray",
+                  "Channel EQ",
+                  "DFXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "Polka Accordion",
+                  "TUUID",
+                  "Tape Delay"
+                ],
+                "size": 59658
+              }
+            },
+            {
+              "name": "Trumpet",
+              "file": "Trumpet.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 75",
+                  "3OCuA",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "Polka Accordion",
+                  "SOLO",
+                  "TUUID",
+                  "UCuA"
+                ],
+                "size": 60231
+              }
+            },
+            {
+              "name": "Shenai",
+              "file": "Shenai.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 76",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "Polka Accordion",
+                  "SOLO",
+                  "TUUID",
+                  "Tape Delay",
+                  "UCuA"
+                ],
+                "size": 61210
+              }
+            },
+            {
+              "name": "Sub Bass",
+              "file": "Sub Bass.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 77",
+                  "BDXNSObject",
+                  "Bass And Lead.acp",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "XSub Bass",
+                  "YUUIDBytes",
+                  "eUCuA"
+                ],
+                "size": 34454
+              }
+            },
+            {
+              "name": "Horn",
+              "file": "Horn.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 78",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "GAME",
+                  "HUCuA",
+                  "MAKeyboardLayer",
+                  "THorn",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 57222
+              }
+            },
+            {
+              "name": "Vox Lead",
+              "file": "Vox Lead.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 79",
+                  "BCYZWNSArray",
+                  "DFXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "XVox Lead",
+                  "YUUIDBytes",
+                  "bcdef-hiii-iVisStepQxQyScpxWisCurveScpy"
+                ],
+                "size": 45594
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 95.0
+          }
+        },
+        {
+          "name": "Aankh Marey",
+          "channels": [
+            {
+              "name": "Lead",
+              "file": "Lead.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 80",
+                  "BCYZWNSArray",
+                  "DFXNSObject",
+                  "GAME",
+                  "IdentityIndexLookup_",
+                  "MAKeyboardLayer",
+                  "TLead",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "bcdef-hiii-iVisStepQxQyScpxWisCurveScpy",
+                  "multitimbralEnabled_"
+                ],
+                "size": 35094
+              }
+            },
+            {
+              "name": "Shenai",
+              "file": "Shenai.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 81",
+                  "1MAS",
+                  "BCYZWNSArray",
+                  "Channel EQ",
+                  "DFXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "Indian Shehnai Oboe",
+                  "Indian Shehnai Oboe+.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASIndian Shehnai Oboe+.exs"
+                ],
+                "size": 23583
+              }
+            },
+            {
+              "name": "Plucks",
+              "file": "Plucks.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 82",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "OUCuA",
+                  "TUUID",
+                  "UCuA",
+                  "VPlucks",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 39060
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 83",
+                  ".LUCuA",
+                  "Analog Stack Synth.acp",
+                  "BDXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 33959
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Tu Meri",
+          "channels": [
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 84",
+                  "ACXNSObject",
+                  "Airy Synth Lead.acp",
+                  "GAME",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "QRST",
+                  "UCuA",
+                  "USynth",
+                  "Vertical Fader 3"
+                ],
+                "size": 37917
+              }
+            },
+            {
+              "name": "Brassy",
+              "file": "Brassy.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 85",
+                  "#UCuA",
+                  "/yUCuA",
+                  "ACXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "Out Of Touch.acp",
+                  "TUUID",
+                  "UCuA",
+                  "VBrassy",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_"
+                ],
+                "size": 33700
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 86",
+                  "1MAS",
+                  "ACXNSObject",
+                  "EDAF ",
+                  "GAMEMELC",
+                  "GAMETSPP8",
+                  "IqCGPMD",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELC1MAS",
+                  "MELCPMAS1MASString Ensemble.exs",
+                  "MELCTSPPrWnI"
+                ],
+                "size": 26888
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "1__#$!@%!#__Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 87",
+                  "1MAS",
+                  "ACXNSObject",
+                  "EDAF ",
+                  "GAME",
+                  "GAMEMELC",
+                  "GAMETSPP8",
+                  "IqCGPMD",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELC1MAS",
+                  "MELCPMAS1MASString Ensemble.exs"
+                ],
+                "size": 27232
+              }
+            },
+            {
+              "name": "ORCH",
+              "file": "ORCH.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Aux 6",
+                  "TUUID",
+                  "UCuA",
+                  "YUUIDBytes"
+                ],
+                "size": 1393
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Upright",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 88",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "IdentityIndexLookup_",
+                  "JKLM",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "U4 Honky Tonk",
+                  "UCuA",
+                  "UPiano"
+                ],
+                "size": 571523
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 115.0
+          }
+        },
+        {
+          "name": "Levitating",
+          "channels": [
+            {
+              "name": "Voices",
+              "file": "Voices.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 89",
+                  "+ZOCuA",
+                  "-'o(UCuA",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "GAME",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "QRST",
+                  "UCuA"
+                ],
+                "size": 39236
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 90",
+                  "ABXYWNSArray",
+                  "Analog Stack Synth.acp",
+                  "CEXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TUUID",
+                  "UCuA",
+                  "USynth",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 33962
+              }
+            },
+            {
+              "name": "Brassy",
+              "file": "Brassy.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 91",
+                  "BDXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "Out Of Touch.acp",
+                  "TUUID",
+                  "UCuA",
+                  "VBrassy",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "hUCuA"
+                ],
+                "size": 33704
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 92",
+                  "1MAS",
+                  "BDXNSObject",
+                  "EDAF ",
+                  "GAMEMELC",
+                  "GAMETSPP8",
+                  "IqCGPMD",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELC1MAS",
+                  "MELCPMAS1MASString Ensemble.exs",
+                  "MELCTSPPrWnI"
+                ],
+                "size": 26780
+              }
+            },
+            {
+              "name": "Strings",
+              "file": "1__#$!@%!#__Strings.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Inst 93",
+                  "1MAS",
+                  "BDXNSObject",
+                  "EDAF ",
+                  "GAME",
+                  "GAMEMELC",
+                  "GAMETSPP8",
+                  "IqCGPMD",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELC1MAS",
+                  "MELCPMAS1MASString Ensemble.exs"
+                ],
+                "size": 27124
+              }
+            },
+            {
+              "name": "ORCH",
+              "file": "ORCH.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [],
+                "other_strings": [
+                  " Aux 7",
+                  "LOCuA",
+                  "TUUID",
+                  "UCuA",
+                  "YUUIDBytes",
+                  "ooUCuA"
+                ],
+                "size": 1505
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "BRAHMA Gm",
+          "channels": [
+            {
+              "name": "Grand Organ",
+              "file": "Grand Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 94",
+                  " MNU_fkqux",
+                  "'UCuA",
+                  "2UCuA",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "Grand Organ",
+                  "HIJYUUIDBytes",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer"
+                ],
+                "size": 7741
+              }
+            },
+            {
+              "name": "Clav",
+              "file": "Clav.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 64
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 95",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "Clavinet D6 Envelope-Wah",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "TClav",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_"
+                ],
+                "size": 562898
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 118.0
+          }
+        },
+        {
+          "name": "Darbari",
+          "channels": [
+            {
+              "name": "Grand Organ",
+              "file": "Grand Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 96",
+                  " MNU_fkqux",
+                  "BDXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "Grand Organ",
+                  "HIJYUUIDBytes",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "RUCuA"
+                ],
+                "size": 8191
+              }
+            },
+            {
+              "name": "Edm",
+              "file": "Edm.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": 64
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 97",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "SEdm",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 56461
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 106.0
+          }
+        },
+        {
+          "name": "Piano + Choir",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 98",
+                  " MNU_fkqux",
+                  "ACXNSObject",
+                  "C. Bechstein DG Recording 2",
+                  "HIJYUUIDBytes",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "UCuA",
+                  "UPiano",
+                  "VOCuA",
+                  "Vertical Fader 3"
+                ],
+                "size": 581477
+              }
+            },
+            {
+              "name": "Mixed Choir",
+              "file": "Mixed Choir.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 99",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASMixed Choir.exs",
+                  "Mixed Choir",
+                  "Mixed Choir.exs",
+                  "TUUID"
+                ],
+                "size": 23577
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "EP + Organ",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 100",
+                  "ACXNSObject",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "MKI Groovy Chorus",
+                  "MNOP",
+                  "TUVWX6ZfAA6A",
+                  "TUVWX6ZklA6A",
+                  "TUVWX6ZllA6A",
+                  "UCuA",
+                  "UPiano"
+                ],
+                "size": 565191
+              }
+            },
+            {
+              "name": "Organ",
+              "file": "Organ.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 64
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 101",
+                  "BDXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "Reggae Organ.pst",
+                  "TUUID",
+                  "UCuA",
+                  "UOrgan",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes"
+                ],
+                "size": 4627
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Piano + Pads",
+          "channels": [
+            {
+              "name": "Piano",
+              "file": "Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 102",
+                  "/UCuA",
+                  "ACXNSObject",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_",
+                  "MAKeyboardLayer",
+                  "Petrof Mistral Venue",
+                  "QRST",
+                  "UCuA",
+                  "UPiano",
+                  "Vertical Fader 3"
+                ],
+                "size": 573517
+              }
+            },
+            {
+              "name": "Pads",
+              "file": "Pads.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 103",
+                  "BDXNSObject",
+                  "GAME",
+                  "MAKeyboardLayer",
+                  "TPads",
+                  "TUUID",
+                  "UCuA",
+                  "UpUCuA",
+                  "WsKeyboardLayer",
+                  "WsKeyboardLayer_",
+                  "YUUIDBytes",
+                  "f#UCuA"
+                ],
+                "size": 115790
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Highway Star",
+          "channels": [
+            {
+              "name": "Inst 109",
+              "file": "Inst 109.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Pedalboard": "REAPER FX chain equivalents",
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 104",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAME#",
+                  "GAMETSPP",
+                  "Grand Organ.pst",
+                  "Graphic EQ",
+                  "HOCuA",
+                  "IdentityIndexLookup_",
+                  "MAKeyboardLayer",
+                  "ORPL"
+                ],
+                "size": 14882
+              }
+            },
+            {
+              "name": "Inst 109",
+              "file": "1__#$!@%!#__Inst 109.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 0
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Pedalboard": "REAPER FX chain equivalents",
+                  "Vintage B3": "Arturia B-3 V / IK Hammond B-3X"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 105",
+                  "/TUCuA",
+                  "01OCuA",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "ChromaGlow",
+                  "GAME",
+                  "GAMETSPP",
+                  "GAMETSPPA",
+                  "MAKeyboardLayer",
+                  "Mid Energy.pst",
+                  "Proto Organ.pst"
+                ],
+                "size": 13809
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "tempo": 120.0
+          }
+        },
+        {
+          "name": "Uptown Funk Dm",
+          "channels": [
+            {
+              "name": "Classic Electric Piano",
+              "file": "Classic Electric Piano.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": 64
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {},
+                "third_party": [
+                  "Pianoteq 8"
+                ],
+                "other_strings": [
+                  " Inst 106",
+                  "0+UCuA",
+                  "01 Electric Pianos",
+                  "ABXYWNSArray",
+                  "CEXNSObject",
+                  "Classic Electric Piano",
+                  "Clavinet D6 Envelope-Wah",
+                  "ContainsBasedOnMappingTUUID_",
+                  "Electric Piano 44",
+                  "HIJKLMNOP",
+                  "IdentityIndexLookup_",
+                  "MABaseplateParameterMapping_"
+                ],
+                "size": 564536
+              }
+            },
+            {
+              "name": "Synth",
+              "file": "Synth.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 107",
+                  "6UCuA",
+                  "70s Synth Strings.acp",
+                  "BCYZWNSArray",
+                  "DFXNSObject",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "MaUCuA",
+                  "QeOCuA",
+                  "TUUID",
+                  "UCuA"
+                ],
+                "size": 36271
+              }
+            },
+            {
+              "name": "Bass",
+              "file": "Bass.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "in": 11
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Alchemy": "Omnisphere (closest sound-design depth) or ANA 2"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 108",
+                  "4UCuA",
+                  "CEXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "MAKeyboardLayer",
+                  "P'OCuA",
+                  "TBass",
+                  "TUUID",
+                  "UCuA",
+                  "WsKeyboardLayer"
+                ],
+                "size": 37013
+              }
+            },
+            {
+              "name": "Horn",
+              "file": "Horn.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 62",
+                  "-UCuA",
+                  "1MAS",
+                  "ACXNSObject",
+                  "Channel EQ",
+                  "GAME",
+                  "GAMETSPP",
+                  "Horn Section.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASHorn Section.exs",
+                  "THorn"
+                ],
+                "size": 6793
+              }
+            },
+            {
+              "name": "Horns High",
+              "file": "Horns High.cst",
+              "muted": false,
+              "transforms": [
+                {
+                  "in": 11
+                },
+                {
+                  "filter": true,
+                  "in": -7
+                },
+                {
+                  "filter": true,
+                  "in": -1
+                }
+              ],
+              "strip": {
+                "logic_only": {
+                  "Sampler": "UVI Workstation / Kontakt (re-sample or find equivalent)"
+                },
+                "third_party": [],
+                "other_strings": [
+                  " Inst 63",
+                  "1MAS",
+                  "5VjUCuA",
+                  "BDXNSObject",
+                  "Big Room.pst",
+                  "GAME",
+                  "GAMETSPP",
+                  "Horn Section.exs",
+                  "MAKeyboardLayer",
+                  "MELC",
+                  "MELCPMAS1MASHorn Section.exs",
+                  "PtVerb"
+                ],
+                "size": 7031
+              }
+            }
+          ],
+          "sub_patches": [],
+          "settings": {
+            "hasTempo": true,
+            "tempo": 112.0
+          }
+        }
+      ],
+      "settings": {
+        "hasTempo": true,
+        "tempo": 106.0
+      }
+    }
+  ],
+  "concert_channels": [
+    {
+      "name": "Reverb",
+      "file": "Reverb.cst",
+      "muted": false,
+      "transforms": [
+        {
+          "filter": true,
+          "in": -7
+        },
+        {
+          "in": 11
+        }
+      ],
+      "strip": {
+        "logic_only": {},
+        "third_party": [],
+        "other_strings": [
+          " Aux 1",
+          "+OCuA",
+          "TUUID",
+          "UCuA",
+          "ValhallaRoo",
+          "YUUIDBytes",
+          "niDoxfuamuuR"
+        ],
+        "size": 3577
+      }
+    },
+    {
+      "name": "Output 1-2",
+      "file": "Output 1-2.cst",
+      "muted": false,
+      "transforms": [
+        {
+          "filter": true,
+          "in": -7
+        }
+      ],
+      "strip": {
+        "logic_only": {},
+        "third_party": [],
+        "other_strings": [
+          " Output 1-2",
+          "3LUCuA",
+          "TUUID",
+          "UCuA",
+          "YUUIDBytes"
+        ],
+        "size": 1393
+      }
+    },
+    {
+      "name": "Output 3-4",
+      "file": "Output 3-4.cst",
+      "muted": false,
+      "transforms": [
+        {
+          "filter": true,
+          "in": -7
+        }
+      ],
+      "strip": {
+        "logic_only": {},
+        "third_party": [],
+        "other_strings": [
+          " Output 3-4",
+          "OUCuA",
+          "TUUID",
+          "UCuA",
+          "YUUIDBytes"
+        ],
+        "size": 1393
+      }
+    },
+    {
+      "name": "Output 3",
+      "file": "Output 3.cst",
+      "muted": false,
+      "transforms": [
+        {
+          "filter": true,
+          "in": -7
+        }
+      ],
+      "strip": {
+        "logic_only": {},
+        "third_party": [],
+        "other_strings": [
+          "TUUID",
+          "UCuA",
+          "YUUIDBytes"
+        ],
+        "size": 1393
+      }
+    },
+    {
+      "name": "Output 5-6",
+      "file": "Output 5-6.cst",
+      "muted": false,
+      "transforms": [
+        {
+          "filter": true,
+          "in": -7
+        }
+      ],
+      "strip": {
+        "logic_only": {},
+        "third_party": [],
+        "other_strings": [
+          " Output 5-6",
+          "TUUID",
+          "UCuA",
+          "YUUIDBytes"
+        ],
+        "size": 1393
+      }
+    },
+    {
+      "name": "Master",
+      "file": "Master.cst",
+      "muted": false,
+      "transforms": [
+        {
+          "filter": true,
+          "in": -7
+        }
+      ],
+      "strip": {
+        "logic_only": {},
+        "third_party": [],
+        "other_strings": [
+          " Master",
+          ".IEC 61966-2.1 Default RGB colour space - sRGB",
+          "9rUCuA",
+          "A)AjA",
+          "B0BrB",
+          "CRT curv",
+          "ContainsBasedOnMappingTUUID_",
+          "Copyright (c) 1998 Hewlett-Packard Company",
+          "EWNSArray",
+          "HIJKLM",
+          "HLino",
+          "IEC sRGB"
+        ],
+        "size": 8739
+      }
+    },
+    {
+      "name": "Metronome",
+      "file": "Metronome.cst",
+      "muted": false,
+      "transforms": [
+        {
+          "filter": true,
+          "in": -7
+        },
+        {
+          "in": 11
+        }
+      ],
+      "strip": {
+        "logic_only": {},
+        "third_party": [],
+        "other_strings": [
+          " Inst 109",
+          "BDXNSObject",
+          "GAME",
+          "GAMETSPP",
+          "MAKeyboardLayer",
+          "TUUID",
+          "UCuA",
+          "WsKeyboardLayer",
+          "WsKeyboardLayer_",
+          "YMetronome",
+          "YUUIDBytes",
+          "multitimbralEnabled_"
+        ],
+        "size": 3019
+      }
+    }
+  ]
+}

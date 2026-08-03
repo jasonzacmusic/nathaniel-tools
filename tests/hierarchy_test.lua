@@ -3,7 +3,9 @@ reaper = { CountTracks=function() return 0 end, GetTrack=function() return nil e
            GetMediaTrackInfo_Value=function() return 0 end, SetMediaTrackInfo_Value=function() end,
            GetSetMediaTrackInfo_String=function() return true,"" end,
            ReorderSelectedTracks=function() end, TrackList_AdjustWindows=function() end }
-package.path = "/Users/nphmacmini/Documents/REAPER Media/NPH/lib/?.lua;" .. package.path
+-- Resolve the library relative to this file, so the suite runs from any clone.
+local here = (debug.getinfo(1, "S").source:sub(2)):match("(.*/)") or "./"
+package.path = here .. "../NPH/lib/?.lua;" .. package.path
 local H = require("nph_hierarchy")
 
 local pass, fail = 0, 0
