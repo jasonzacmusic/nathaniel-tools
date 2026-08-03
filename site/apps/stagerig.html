@@ -40,9 +40,10 @@
       cutting the note off.
     </p>
     <div class="appmeta">
-      <span class="status dev"><span class="d"></span>In development</span>
-      <span>Architecture locked · app not built</span>
-      <span>Violet · performance</span>
+      <span class="status dev"><span class="d"></span>In development · 0.1.0</span>
+      <span>apps/StageRig.lua</span>
+      <span>Requires ReaImGui</span>
+      <span>Note path in JSFX</span>
     </div>
   </div>
 
@@ -51,10 +52,13 @@
     <div class="note">
       <b>What this page is not claiming</b>
       <p>
-        <strong>StageRig is in development. It has not played a gig.</strong> It is not a
-        MainStage replacement and will not be described as one here until a working
-        keyboardist has played real paid shows on it and stopped carrying a backup rig.
-        Everything before that is a demo, including this page.
+        <strong>StageRig is in development. It has not played a gig.</strong> Version 0.1.0
+        exists, installs, and switches patches on a bench. That is not the same thing.
+      </p>
+      <p>
+        It is not a MainStage replacement and will not be described as one here until a
+        working keyboardist has played real paid shows on it and stopped carrying a backup
+        rig. Everything before that is a demo, including this page.
       </p>
     </div>
 
@@ -109,13 +113,46 @@
 
     <h2>What is already built</h2>
     <p>
-      The first real deliverable exists: a decoder that reads a MainStage
-      <code>.concert</code> bundle and prints the entire rig — setlist, every patch, every
-      channel strip, every instrument, and whether each sound can load in REAPER at all.
+      Version 0.1.0 is a working chain from a MainStage file to a REAPER project you can
+      play, in five pieces:
     </p>
+    <ul class="speclist">
+      <li><b>Concert decoder</b><span>Reads a MainStage <code>.concert</code> bundle and prints the whole rig — setlist, every patch, every channel strip, every instrument. <code>tools/concert_report.py</code></span></li>
+      <li><b>Rig spec</b><span>Concert plus an editable substitution map, out to a rig description. Every mapping was probed against REAPER rather than assumed. <code>tools/stagerig_spec.py</code></span></li>
+      <li><b>Note tracker JSFX</b><span>Per-channel held-note tracking, the input gate, and the note-off + CC64 flush. This is the piece that makes a mid-phrase switch survivable. <code>NPH/jsfx/nph_note_tracker.jsfx</code></span></li>
+      <li><b>Builder</b><span>Builds the patch folders, instruments and the ExtState setlist into an empty project. It refuses to run into a project that already has tracks. <code>NPH_StageRig Build.lua</code></span></li>
+      <li><b>Stage view</b><span>The switch state machine and the performance display, plus soft and hard panic. <code>apps/StageRig.lua</code></span></li>
+    </ul>
     <p>
-      Run against a real, current concert with 57 patches, the verdict was better than
-      expected:
+      Eighteen checks pass against it inside REAPER. That is a bench result, not a stage
+      result, and the two are not interchangeable.
+    </p>
+
+    <h3>Three things the build measured rather than assumed</h3>
+    <ul>
+      <li>
+        <strong><code>ImGui_Col_TabActive</code> and <code>ImGui_ChildFlags_Border</code>
+        are gone in Dear ImGui 1.92.1.</strong> All three windowed apps in the suite would
+        have crashed on first open. There is now a small bridge library that absorbs the
+        constant renames.
+      </li>
+      <li>
+        <strong>Several plugins scan but will not instantiate.</strong> Analog Lab V,
+        Vital, Syntronik and Axxess are all present on this Mac and none of them can be
+        loaded by REAPER here — so there is <em>no</em> B3 substitute available, contrary
+        to what the plan assumed. The organ parts are carried by Omnisphere and labelled in
+        the rig as stand-ins.
+      </li>
+      <li>
+        <strong><code>Main_SaveProjectEx</code> does not clear the dirty flag.</strong> A
+        script that closes its own tab therefore pops a modal and blocks. The builder
+        leaves the tab open instead.
+      </li>
+    </ul>
+
+    <h3>What ports, and what does not</h3>
+    <p>
+      Run against a real, current concert with 57 patches:
     </p>
     <div class="tablewrap">
       <table>
@@ -124,18 +161,18 @@
         </thead>
         <tbody>
           <tr><td>Pianoteq 8 — every piano, EP and clav</td><td class="mono">19</td><td><span class="ok">Loads as-is. Same plugin, same presets, zero loss.</span></td></tr>
-          <tr><td>Vintage B3 (Logic)</td><td class="mono">10</td><td>Substitute: Arturia B-3 V, already owned.</td></tr>
-          <tr><td>Alchemy pads, synths, leads (Logic)</td><td class="mono">16</td><td>Omnisphere or ANA 2, or resample — the concert bundle carries its own samples folder.</td></tr>
+          <tr><td>Vintage B3 (Logic)</td><td class="mono">10</td><td><span class="pend">No B3 could be instantiated on this machine.</span> Carried by Omnisphere and labelled a stand-in.</td></tr>
+          <tr><td>Alchemy pads, synths, leads (Logic)</td><td class="mono">16</td><td>Omnisphere, or resample — the concert bundle carries its own samples folder.</td></tr>
           <tr><td>Logic Sampler — strings, horns, sitar, choir</td><td class="mono">15</td><td>Kontakt or UVI equivalents, or resample the exact articulations.</td></tr>
         </tbody>
       </table>
     </div>
     <p>
-      Roughly 40% of that rig ports losslessly, about a third has substitutes already
-      owned, and the remainder is honest resampling work. Every substitution is written
-      into an explicit, editable mapping table and reported per patch. Nothing is guessed
-      silently, and a patch whose sound could not be mapped arrives as a clearly named
-      empty track rather than as something that sounds nearly right.
+      Roughly 40% of that rig ports losslessly and the rest is substitution and honest
+      resampling work. Every substitution lives in an explicit, editable mapping file and
+      is reported per patch. Nothing is guessed silently, and a patch whose sound could not
+      be mapped arrives as a clearly named empty track rather than as something that sounds
+      nearly right.
     </p>
 
     <h2>Honest weaknesses</h2>
@@ -159,6 +196,11 @@
         That is a licensing fact, not an engineering gap. Substitution is explicit and
         per-patch, and stated in the report.
       </li>
+      <li>
+        <strong>The substitutes are worse than the plan assumed.</strong> The B3 was
+        supposed to be covered by an organ plugin already owned. None of them load. Ten
+        patches are currently carried by something that is honestly not the same sound.
+      </li>
     </ul>
 
     <h2>What &ldquo;done&rdquo; means</h2>
@@ -175,24 +217,29 @@
     </p>
 
     <h2>Install</h2>
+    <p class="dek">In REAPER: <strong>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</strong></p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
     <p class="dek">
-      Nothing to install. The concert decoder lives in the repository as a Python tool if
-      you want to read your own <code>.concert</code> files today:
+      Two entries appear in the action list: <code>Script: NPH StageRig Build</code>, which
+      builds a rig into an empty project, and <code>Script: NPH StageRig</code>, the stage
+      view. The concert decoder is a Python tool in the repository —
+      <code>tools/concert_report.py</code> — and reads your <code>.concert</code> files
+      without REAPER involved at all.
     </p>
-    <pre><code>tools/concert_report.py</code></pre>
     <p class="dek">
-      <a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a> —
-      the repository goes public with the free core.
+      Install it, look at it, tell me what breaks. Do not take it to a gig yet.
     </p>
 
     <h2>Changelog</h2>
     <ul class="changelog">
       <li>
-        <div class="v">Unreleased <span>In development</span></div>
+        <div class="v">0.1.0 <span>First version</span></div>
         <ul>
-          <li>Concert decoder built and run against a real 57-patch concert. Viability confirmed.</li>
-          <li>Architecture locked: one project per concert, patches as folders, setlist in ExtState, single deferred state machine, JSFX note path.</li>
-          <li>Version-zero scope set at five patches. Loop Deck designed as a second tab in the same window.</li>
+          <li>Switch state machine — unmute B, gate A, ring, flush, mute A — with soft and hard panic.</li>
+          <li>Note tracker JSFX: per-channel held-note bitmap, input gate, note-off and CC64 flush at audio rate.</li>
+          <li>Builder script: concert to patch folders, instruments and an ExtState setlist. Refuses to run into a project that already has tracks.</li>
+          <li>Substitution map probed against REAPER rather than assumed — and it found that the planned organ substitutes do not load.</li>
+          <li>18 checks passing in REAPER. No gig yet.</li>
         </ul>
       </li>
     </ul>

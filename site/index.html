@@ -43,7 +43,7 @@
         <p class="eyebrow" data-accent="green"><span class="tick"></span>ReaScript · ReaImGui · MIT</p>
         <h1>The REAPER tools I built because my own sessions were slow.</h1>
         <p class="lede">
-          A twelve-key speed layer and a set of dockable apps for organising tracks,
+          A twelve-script speed layer and a set of dockable apps for organising tracks,
           repairing folders, printing stems and exporting MIDI. Every one of them
           replaced a custom action of mine that was quietly doing the wrong thing —
           centring pans, disarming the session, dropping markers on the wrong grid.
@@ -94,10 +94,11 @@
       <h2>The apps</h2>
     </div>
     <p class="seclede">
-      Five dockable apps, a twelve-script speed layer, and two still being built.
-      Colour is the language across the whole suite: green is structure, amber is
-      delivery, violet is performance, teal is look. The status on each row is what
-      is true today, not what is planned.
+      Five apps you can rely on today, a twelve-script speed layer, one app that
+      exists but has not yet earned the claim on its own page, and one still on the
+      drawing board. Colour is the language across the whole suite: green is
+      structure, amber is delivery, violet is performance, teal is look. The status
+      on each row is what is true today, not what is planned.
     </p>
 
     <div class="applist">
@@ -171,7 +172,7 @@
           <div class="nm"><span>StageRig</span> <span class="role">violet · performance</span></div>
           <p>MainStage is macOS-only, AU-only and visibly neglected. REAPER's live-rig options are a script from 2012 and a lot of good intentions.</p>
         </div>
-        <span class="status dev"><span class="d"></span>In development</span>
+        <span class="status dev"><span class="d"></span>In development · 0.1.0</span>
       </a>
 
     </div>
@@ -254,21 +255,22 @@
       </div>
     </div>
 
-    <!-- HONEST-STATUS BLOCK. Delete this note the day the ReaPack index goes live
-         and the GitHub repository is public. Nothing else on the site needs changing. -->
-    <div class="note" data-accent="amber">
+    <!-- HONEST-STATUS BLOCK. Update the second paragraph once the suite is listed at
+         reapack.com/repos and the flagship scripts are through ReaTeam review. -->
+    <div class="note" data-accent="green">
       <b>Where this actually stands</b>
       <p>
-        The scripts are finished and tested. The ReaPack index is not published yet —
-        packaging is the last job before the repository opens, and the URL above will
-        not resolve until it does.
+        The repository is public and the index resolves. Paste the line above and
+        ReaPack will find the whole suite — the twelve speed-layer scripts, the
+        windowed apps, and the JSFX that StageRig's note handling runs on.
       </p>
       <p>
-        In the meantime the install is manual: copy <code>NPH/</code> and
-        <code>apps/</code> anywhere REAPER can see them, then
-        <b>Actions &rarr; Show action list &rarr; New action &rarr; Load ReaScript</b>
-        for each one. Or run <code>tests/harness.lua</code> once — it registers the
-        whole suite and verifies the install for you.
+        What is <em>not</em> done: the suite is not yet listed at
+        <code>reapack.com/repos</code> and the flagship scripts have not been through
+        ReaTeam review, so for now you have to import the URL by hand rather than
+        finding it in ReaPack's default browser. The parts of the suite that are
+        reviewed but not yet exercised end to end are listed in
+        <a href="/why">the ledger</a>.
       </p>
     </div>
   </div>

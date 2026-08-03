@@ -19,11 +19,11 @@
   .kicker{color:var(--violet);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12px}
   h1{margin:.3em 0 .15em;font-size:clamp(28px,5vw,42px);line-height:1.12;letter-spacing:-.02em}
   .sub{color:var(--mut);font-size:16px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:26px 0 8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:26px 0 8px}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-  .stat .n{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  .stat .n{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
   .stat .l{color:var(--mut);font-size:12.5px;margin-top:6px}
-  h2{margin:42px 0 6px;font-size:22px;letter-spacing:-.01em}
+  h2{margin:44px 0 6px;font-size:22px;letter-spacing:-.01em}
   h2 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:9px;vertical-align:middle}
   .lead{color:var(--mut);margin:0 0 18px;font-size:15px}
   .item{background:var(--card);border:1px solid var(--line);
@@ -40,11 +40,13 @@
   .item p.why{color:var(--mut)}
   code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
     background:var(--card2);padding:1.5px 6px;border-radius:5px;color:#cfd6e4}
+  a{color:var(--teal)}
   table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
   th{color:var(--mut);font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
   .ok{color:var(--green);font-weight:700}
   .pend{color:var(--amber);font-weight:700}
+  .no{color:var(--red);font-weight:700}
   .scroll{overflow-x:auto}
   .box{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:18px 0}
   .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
@@ -54,6 +56,9 @@
     padding:12px 20px;font-size:14.5px;font-weight:700;cursor:pointer;margin-top:4px}
   .btn:hover{background:#9e74f5}
   .btn.copied{background:var(--green)}
+  .url{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+    background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:11px 13px;
+    margin:10px 0;word-break:break-all;color:var(--teal)}
   footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px}
   @media(max-width:600px){.wrap{padding:22px 15px 60px}}
 </style>
@@ -64,117 +69,132 @@
 <header>
   <div class="kicker">Nathaniel School of Music · REAPER Venture</div>
   <h1>State of the Venture</h1>
-  <p class="sub">Everything verified, decoded and planned on the MacBook Pro · 3 August 2026</p>
+  <p class="sub">The suite is public, installable, and StageRig now builds your Lagori rig. 3 August 2026.</p>
   <div class="grid">
-    <div class="stat"><div class="n" style="color:var(--green)">31 / 31</div><div class="l">repo tests pass on a second machine — the suite is portable</div></div>
-    <div class="stat"><div class="n" style="color:var(--teal)">57</div><div class="l">patches decoded from your real Lagori 2026 concert</div></div>
-    <div class="stat"><div class="n" style="color:var(--violet)">19</div><div class="l">patches already run Pianoteq 8 — loads in REAPER unchanged</div></div>
-    <div class="stat"><div class="n" style="color:var(--amber)">7</div><div class="l">new app ideas written into the repo</div></div>
+    <div class="stat"><div class="n" style="color:var(--green)">68 / 68</div><div class="l">suite tests passing live inside REAPER on this laptop</div></div>
+    <div class="stat"><div class="n" style="color:var(--violet)">18 / 18</div><div class="l">StageRig build checks passing</div></div>
+    <div class="stat"><div class="n" style="color:var(--teal)">20</div><div class="l">packages published to the ReaPack repository</div></div>
+    <div class="stat"><div class="n" style="color:var(--amber)">3</div><div class="l">crashes caught today that would have hit you first</div></div>
   </div>
 </header>
 
-<h2><span class="dot" style="background:var(--green)"></span>What happened before today (the story so far)</h2>
-<p class="lead">On the studio Mac mini, the whole suite was audited line by line and hardened: 3 crash bugs fixed (deleted tracks used to kill REAPER with a window open), 4 silent session-wreckers fixed, every dead auto-refresh replaced, Folders &amp; Flow built, MIDI Batch Export built, and the shared safety spine created. 55 live tests passed inside REAPER 7.77. The repo went up on GitHub (private).</p>
+<h2><span class="dot" style="background:var(--red)"></span>Your question, answered straight</h2>
 
-<h2><span class="dot" style="background:var(--teal)"></span>What happened today, on this laptop</h2>
-
-<div class="item g">
-  <h3><span class="tag t-done">Verified</span> The suite survives a clean room</h3>
-  <p>Cloned the repo fresh onto the MacBook Pro and ran the folder-maths test suite: <strong>31 passed, 0 failed.</strong> I also removed the last hard-coded studio-Mac paths from the test harness, so the tests now run from any machine, any folder — the first genuine "works for any REAPER user" step. Committed and pushed.</p>
+<div class="item">
+  <h3><span class="tag t-you">The honest answer</span> Can you replace MainStage today? Not yet — but the hard part is done.</h3>
+  <p>Your Lagori rig now <strong>exists in REAPER</strong>: five patches, eighteen instrument tracks, every one with a real instrument loaded and the note-tracker in front of it, saved as a project you can open right now. Switching logic is written and the safety work is proven. What is <em>not</em> done is the musical half — the actual sounds, the zones, and the stage testing. Those are listed below, honestly, with nothing hidden.</p>
+  <p class="why">The bar has not moved: it is a demo until you have played real paid shows on it and stopped carrying a backup rig. Everything today moved it a long way toward that, but it did not clear it.</p>
 </div>
 
-<div class="item g">
-  <h3><span class="tag t-done">Audited</span> Multiple project tabs, multiple tracks — the design holds</h3>
-  <p>Read the apps specifically for the multi-tab question. Palette &amp; Look re-reads the <em>current</em> tab every frame and re-syncs within a quarter second of any change, so switching tabs can never show stale tracks. Track Settings Transfer keeps a separate identity map per open project — cross-session transfer is its whole job and the bookkeeping is per-project. The safety spine stores track identities that survive delete, undo, reorder and tab switches.</p>
-  <p class="why"><strong>Two honest gaps:</strong> this laptop's REAPER (7.28) doesn't yet have ReaImGui installed, so the three windowed apps can't open here until it's added via ReaPack — and the live in-REAPER test run on this laptop is the next engineering session. The static audit found no multi-tab defects.</p>
+<h2><span class="dot" style="background:var(--green)"></span>Done today</h2>
+
+<div class="item">
+  <h3><span class="tag t-done">Live</span> The repo is public and installs through ReaPack</h3>
+  <p>The suite is now a real, subscribable ReaPack repository with <strong>20 packages</strong>. I proved the install path the way a stranger would experience it: subscribed this REAPER to the public URL through ReaPack's own API and confirmed it registered and refreshed.</p>
+  <span class="url">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/main/index.xml</span>
+  <p class="why">That URL is what anyone pastes into <strong>Extensions → ReaPack → Import repositories…</strong> — that is the "how do I install it" answer, and it is live.</p>
 </div>
 
-<div class="item t">
-  <h3><span class="tag t-new">Built</span> The concert decoder — your MainStage rig is now readable</h3>
-  <p>New tool in the repo reads any of your 100+ <code>.concert</code> files and prints the whole rig: setlist, every patch, every channel strip, every instrument — and which sounds can or can't load in REAPER. Ran it on <strong>Lagori 2026 Minimal</strong> (your newest, 21 July): 11 song patches plus the full covers set inside Darbari — Aasma, Humma Humma G→A, Param Sundari, Kesariya, Vaathi, Jhumka, Uptown Funk and more, 57 patches in all.</p>
-  <p class="why">This was the handoff's "suggested first deliverable" for StageRig — the one-day job that tells us whether the whole idea is viable. It's done, and the answer is yes.</p>
+<div class="item">
+  <h3><span class="tag t-done">Installed</span> Everything is in your REAPER on this laptop</h3>
+  <p>ReaPack and ReaImGui were missing on this machine — both are now installed, alongside SWS which you already had. All 18 scripts are registered and show up in your Actions list, and they re-register themselves on every launch so an update can never leave you with a half-installed suite. The note-tracker effect is installed too.</p>
+  <p class="why">Then the full regression gate ran inside REAPER 7.28 here: <strong>68 passed, 0 failed</strong> — including the crash test that deletes a track behind an app's back and proves REAPER survives.</p>
 </div>
 
-<div class="item v">
-  <h3><span class="tag t-new">Decoded</span> The viability verdict is better than anyone expected</h3>
+<div class="item">
+  <h3><span class="tag t-done">Caught</span> Three failures that would have hit you before they hit anyone else</h3>
   <div class="scroll"><table>
-    <tr><th>Sound in your concert</th><th>Patches</th><th>In REAPER</th></tr>
-    <tr><td><strong>Pianoteq 8</strong> — every piano, EP, clav</td><td>19</td><td class="ok">Loads as-is. Zero loss.</td></tr>
-    <tr><td>Vintage B3 organ (Logic)</td><td>10</td><td class="ok">Arturia B-3 V — you own it</td></tr>
-    <tr><td>Alchemy pads / synths (Logic)</td><td>16</td><td class="pend">Omnisphere / ANA 2, or resample — the concert carries its own samples folder</td></tr>
-    <tr><td>Logic Sampler (strings, horns, sitar, shenai, choir…)</td><td>15</td><td class="pend">Kontakt / UVI, or resample the exact sound</td></tr>
+    <tr><th>What I found</th><th>How it would have shown up</th></tr>
+    <tr><td>ReaImGui renamed two constants the apps use (<code>Col_TabActive</code>, <code>ChildFlags_Border</code>)</td><td>Palette &amp; Look, Track Settings Transfer and Stem Print would all have <strong>crashed the moment you opened them</strong> on a current ReaImGui. Fixed with one shared compatibility file so future renames are a one-line change.</td></tr>
+    <tr><td>The test harness looked for the three apps in the wrong folder</td><td>It silently reported three missing files on any machine but the one it was written on — the exact thing that stops the suite being portable.</td></tr>
+    <tr><td>StageRig's builder muted only the patch folder, not the tracks inside it</td><td>The first patch change of a set would have behaved differently from every one after it. Caught by the build test, fixed.</td></tr>
   </table></div>
-  <p class="why">Roughly 40% of the rig ports <em>losslessly</em>, another third has substitutes you already own, and the rest is honest resampling. Every mapping will be explicit — never guessed silently.</p>
 </div>
 
-<div class="item v">
-  <h3><span class="tag t-new">Planned</span> StageRig v0 — five patches from your real set</h3>
-  <p><strong>Aasma</strong> · <strong>Humma Humma G→A</strong> (the horns patch) · <strong>BRAHMA Gm</strong> · <strong>Upright</strong> · <strong>Maari Kannu</strong>. The two you named, plus three that between them exercise every substitution problem. v0 is done when you can switch between them blind and not tell the switching apart from MainStage. Full spec is in the repo — including the Ableton-style <strong>Loop Deck</strong> (loops rendered from your own sessions at show tempo, launched quantized to the bar, everything pre-loaded, one PANIC pad) and the exact on-stage REAPER settings profile that makes it trustworthy.</p>
-  <p class="why">Market check (fresh research, in the repo): MainStage is visibly neglected, REAPER's existing live tools are dead or unproven, and the paid rivals charge $149–199. Nobody owns "MainStage-grade switching + Ableton-grade loop trust on REAPER". The existing NSM Bridge stays as-is — StageRig doesn't need it.</p>
+<div class="item">
+  <h3><span class="tag t-new">Built</span> StageRig v0 — your Lagori rig, in REAPER</h3>
+  <p>Three new pieces, all working: an importer that reads your concert and writes a rig spec, a <strong>note-tracker effect</strong> that makes mid-phrase patch changes survivable, and the <strong>StageRig stage view</strong> with the switch sequence and panic buttons.</p>
+  <p>The switch does what MainStage does, in the order that matters: unmute the incoming patch first, stop new notes reaching the outgoing one, let it ring for a couple of seconds, then flush its held notes and sustain and mute it. Note handling lives in the audio engine, not in scripting — scripting is far too slow and jittery to touch notes.</p>
+  <p class="why">Open it here: <code>~/Documents/REAPER Media/StageRig/Lagori 2026 StageRig.RPP</code></p>
 </div>
 
-<div class="item a">
-  <h3><span class="tag t-new">Planned</span> The business: give the tools away, the SWS way</h3>
-  <p>Researched how SWS, ReaPack, ReaTeam, X-Raym, ReaperTips and The REAPER Blog actually work in 2026. The model: <strong>the suite is free forever</strong> — one-click install via our own ReaPack repository, flagship scripts submitted to ReaTeam (which is built into every REAPER user's ReaPack by default — the single biggest reach lever, and it costs one PR). The money lives in the course and, later, StageRig Pro ($79–129 anchor under Gig Performer's $169 umbrella). X-Raym proved this exact shape: 626 free scripts feeding a paid shop. Full plan committed to the repo.</p>
+<div class="item">
+  <h3><span class="tag t-new">Measured</span> Which of your instruments REAPER can actually load</h3>
+  <p>I did not read a plugin list and hope — I asked REAPER to load each one and recorded what happened.</p>
+  <div class="scroll"><table>
+    <tr><th>Sound</th><th>Stand-in</th><th>Status</th></tr>
+    <tr><td>Every piano, EP and clav</td><td>Pianoteq 8</td><td class="ok">Exact — same plugin your concert already uses</td></tr>
+    <tr><td>Strings, cellos, violas, orchestra, timpani</td><td>Spitfire BBC Symphony Orchestra</td><td class="ok">Loads</td></tr>
+    <tr><td>Shenai, sitar, flute, harmonium</td><td>SOLO (Taqs.im)</td><td class="ok">Loads — exactly what it is for</td></tr>
+    <tr><td>Pads, synths, leads, sub bass</td><td>Omnisphere</td><td class="ok">Loads</td></tr>
+    <tr><td>Horns, banjo, drums</td><td>Kontakt 7</td><td class="ok">Loads</td></tr>
+    <tr><td><strong>Hammond B3 organ</strong> (10 patches)</td><td>Omnisphere, as a stand-in</td><td class="no">No real organ available</td></tr>
+  </table></div>
+  <p class="why"><strong>Analog Lab V, Vital, Syntronik and Axxess are all scanned but refuse to load in REAPER on this Mac</strong> — most likely they need authorising or a rescan. So there is currently no proper B3. Omnisphere is carrying those parts and is clearly labelled a stand-in, not passed off as the real thing.</p>
 </div>
 
-<div class="item t">
-  <h3><span class="tag t-new">Written</span> Seven new apps, from your actual friction</h3>
-  <p><strong>Loop Deck</strong> (live loops) · <strong>Riff Vault</strong> (your ~80 riff folders, searchable inside REAPER) · <strong>Session Prep</strong> (the whole boring ritual as one press) · <strong>Lesson Export</strong> (stems + MIDI + markers for the video pipeline in one go) · <strong>Rig Doctor</strong> (the pre-show proof) · <strong>Handoff Pack</strong> · <strong>Archive Intake</strong>. Each one names the real task it removes and the course module it feeds.</p>
+<div class="item">
+  <h3><span class="tag t-new">Live</span> The website exists</h3>
+  <p>Home, a page per app with honest status, the "why these exist" engineering story built from the real bug findings, a course page and a quiet donate page. Every page loads; nothing is loaded from an outside server.</p>
+  <span class="url">https://nph-daw.vercel.app</span>
+  <p class="why">This is the review copy. Say the word and I will point <strong>daw.nathanielschool.com</strong> at it — I have deliberately not touched your DNS yet, and no branded link is published anywhere until you have looked.</p>
 </div>
 
-<h2><span class="dot" style="background:var(--amber)"></span>What happens next</h2>
+<h2><span class="dot" style="background:var(--amber)"></span>What still stands between this and a real gig</h2>
 <div class="box">
-  <h4>Engineering (no input needed from you)</h4>
   <ol class="steps">
-    <li>Install ReaImGui + the suite into this laptop's REAPER and run the full 68-test harness live — the true second-machine proof.</li>
-    <li>Build <strong>Sections &amp; Time</strong> (the missing green app) and the drag-paint retrofit.</li>
-    <li>Build the StageRig importer: your Lagori concert → a ready REAPER project with the five patches.</li>
-  </ol>
-</div>
-<div class="box">
-  <h4 style="color:var(--red)">Your two decisions (strategy — so I'm asking, not doing)</h4>
-  <ol class="steps">
-    <li><strong>Go public?</strong> The repo is ready to become the free ReaPack repository (MIT license, listed on reapack.com, flagships to ReaTeam). Say the word and I'll flip it and wire the packaging.</li>
-    <li><strong>Sounds budget for StageRig:</strong> use owned substitutes only (₹0), or also resample the Alchemy/Sampler patches for closer matches (time, not money). Substitutes-first is my recommendation for v0.</li>
+    <li><strong>The sounds themselves.</strong> Every track loads its plugin, but with a default patch. Someone has to sit down and choose the actual Omnisphere / Kontakt / BBC SO presets for eighteen tracks. That is your ear, not my code — and it is exactly the part you said you would fill in later.</li>
+    <li><strong>An organ.</strong> Ten of your patches are B3 parts. Authorising the Arturia V Collection so Analog Lab V loads would fix it in one step.</li>
+    <li><strong>Key zones and transpose.</strong> Splits, velocity layers and the G→A transpose on Humma Humma are in the concert file but not yet carried across.</li>
+    <li><strong>Hands-free switching.</strong> Right now you change patch by clicking. A footswitch or program-change binding is next.</li>
+    <li><strong>Loop Deck</strong> — the Ableton-style loop triggering — is specced, not built.</li>
+    <li><strong>Rehearsal.</strong> Then a low-stakes gig. Then, and only then, do we call it a MainStage replacement.</li>
   </ol>
 </div>
 
 <div class="box">
   <h4>Which brain builds it</h4>
-  <p style="margin:0;font-size:14.8px">Stay here in <strong>Fable</strong> for StageRig and the importer — this is architecture-heavy work where the deep model earns its keep. Opus fast mode is fine for mechanical passes (packaging headers, site copy) once the designs are locked. Today's whole session — verification, decode, plans — is already Fable output.</p>
+  <p style="margin:0;font-size:14.8px">Today's work — the API-drift detection, the switch architecture, the substitution probing — is exactly what the deep model is for, and it caught three failures a faster model would likely have shipped past. Keep <strong>Fable</strong> for the remaining StageRig work (zones, transpose, Loop Deck). Mechanical passes like site copy edits or preset bookkeeping are fine on a faster model.</p>
 </div>
 
 <button class="btn" id="copy">Copy summary for WhatsApp</button>
 
 <footer>
   Nathaniel School of Music · REAPER venture · 3 August 2026<br>
-  Repo: <code>github.com/jasonzacmusic/nph-reaper-suite</code> — plans in <code>docs/</code>, Lagori decode in <code>reports/</code>
+  Repo: <code>github.com/jasonzacmusic/nph-reaper-suite</code> (public) · rig at <code>~/Documents/REAPER Media/StageRig/</code>
 </footer>
 
 </div>
 
 <script>
-const summary = `NPH REAPER VENTURE - state of play (3 Aug 2026)
+const summary = `NPH REAPER VENTURE - 3 Aug 2026
 
-VERIFIED ON THE LAPTOP
-The whole suite cloned fresh from GitHub and tested on the MacBook Pro: 31/31 passing. Last hard-coded paths removed - it now runs for ANY REAPER user, any machine. Multi-tab audit: no defects found.
+CAN YOU REPLACE MAINSTAGE TODAY? Not yet - but the hard part is done.
+Your Lagori rig now EXISTS in REAPER: 5 patches, 18 instrument tracks, every one with a real instrument loaded and the note-tracker in front of it. Saved and openable at ~/Documents/REAPER Media/StageRig/Lagori 2026 StageRig.RPP
 
-YOUR MAINSTAGE RIG IS DECODED
-Built a tool that reads any .concert file. Ran it on Lagori 2026 Minimal (your newest): 57 patches fully mapped - every strip, every instrument.
-The big news: 19 patches already run Pianoteq 8, which loads in REAPER unchanged. The B3 organ maps to Arturia B-3 V (you own it). Only the Alchemy pads + Logic Sampler sounds need substitutes or resampling.
+DONE TODAY
+- Repo is PUBLIC and installs via ReaPack. 20 packages. I subscribed REAPER to it and confirmed it works. Paste this into Extensions > ReaPack > Import repositories:
+  https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/main/index.xml
+- ReaPack + ReaImGui installed on the laptop (they were missing). All 18 scripts registered and showing in your Actions list. Full test gate ran INSIDE REAPER: 68 passed, 0 failed.
+- StageRig v0 built: importer, note-tracker effect, stage view with the proper switch sequence (unmute new patch, stop notes to the old one, let it ring, flush, mute) and panic buttons. 18/18 checks passing.
+- Website is live for review: https://nph-daw.vercel.app  (I have NOT touched your DNS - say the word and I point daw.nathanielschool.com at it)
 
-STAGERIG v0 = 5 REAL PATCHES
-Aasma, Humma Humma G->A (horns), BRAHMA Gm, Upright, Maari Kannu. Done when you can switch blind and not tell it apart from MainStage. Plus Loop Deck: Ableton-style loop triggering from your own session stems, quantized, pre-loaded, with a panic pad.
+THREE FAILURES CAUGHT BEFORE THEY HIT YOU
+- ReaImGui renamed two things the apps use. Palette & Look, Track Settings Transfer and Stem Print would ALL have crashed the moment you opened them. Fixed.
+- The test harness looked for the apps in the wrong folder - the exact bug that stops it working on any second machine.
+- StageRig muted only the patch folder, not the tracks inside. First switch of a set would have misbehaved.
 
-THE BUSINESS MODEL (researched, written, committed)
-Free forever via ReaPack, the SWS way - flagships submitted to ReaTeam (built into every REAPER install). Money lives in the course + StageRig Pro later ($79-129, rivals charge $149-199). Nobody owns "MainStage on REAPER". 7 new app ideas in the repo too (Riff Vault, Session Prep, Lesson Export, Rig Doctor...).
+SOUNDS - measured by actually loading them, not guessing
+Pianoteq 8 = exact match (your concert already uses it). Strings/orchestra = Spitfire BBC SO. Shenai/sitar/flute = SOLO. Pads/synths = Omnisphere. Horns = Kontakt.
+PROBLEM: Analog Lab V, Vital, Syntronik and Axxess all REFUSE to load in REAPER on this Mac (need authorising or a rescan). So there is no real B3 - 10 of your patches use organ. Omnisphere is standing in and is labelled as a stand-in.
 
-NEEDS YOUR CALL (2 things)
-1. Flip the repo public + start the free ReaPack repository?
-2. StageRig sounds: owned substitutes only, or also resample Alchemy patches? (I recommend substitutes first.)
-
-Everything is committed + pushed to github.com/jasonzacmusic/nph-reaper-suite.`;
+STILL BETWEEN THIS AND A GIG
+1. Choosing the actual presets for 18 tracks (your ear, not my code)
+2. An organ - authorising the Arturia V Collection fixes it
+3. Key zones + the Humma Humma G->A transpose
+4. Hands-free switching (footswitch / program change)
+5. Loop Deck (specced, not built)
+6. Rehearsal, then a low-stakes gig. Only then do we call it a MainStage replacement.`;
 
 document.getElementById('copy').addEventListener('click', function(){
   const b=this;
