@@ -608,6 +608,25 @@ def warn_missing_libraries(packages: list[Package]) -> None:
     library file. When a second script in a category needs a shared library,
     the library has to become its own package.
     """
+    # Which package owns each shared library. Exactly one may, and a dependent
+    # package must then name it so the user knows what else to install.
+    owner: dict[str, str] = {}
+    for pkg in packages:
+        for p in pkg.provides:
+            stem = os.path.splitext(os.path.basename(p.src_rel))[0]
+            # Only Lua modules under NPH/lib/. The nph_ prefix alone would also
+            # sweep in the note-tracker JSFX, which is its own package and not a
+            # library anything requires.
+            if os.path.exists(os.path.join(ROOT, "NPH", "lib", stem + ".lua")):
+                if stem in owner:
+                    sys.stderr.write(
+                        f"ERROR: '{stem}' is provided by both {owner[stem]} and "
+                        f"{pkg.rel}. ReaPack gives one package exclusive ownership "
+                        f"of a path, so this index would install broken.\n"
+                    )
+                owner[stem] = pkg.rel
+
+    problems = 0
     for pkg in packages:
         with open(os.path.join(ROOT, pkg.rel), "r", encoding="utf-8", errors="replace") as fh:
             body = fh.read()
@@ -621,10 +640,23 @@ def warn_missing_libraries(packages: list[Package]) -> None:
             continue
         shipped = {os.path.splitext(os.path.basename(p.src_rel))[0] for p in pkg.provides}
         for lib in sorted(needed - shipped):
-            sys.stderr.write(
-                f"warning: {pkg.rel} requires '{lib}' but does not @provides it - "
-                f"installing this package alone will fail at run time\n"
-            )
+            if lib not in owner:
+                problems += 1
+                sys.stderr.write(
+                    f"ERROR: {pkg.rel} requires '{lib}' and NO package in this "
+                    f"index provides it - installing the suite would fail at run time\n"
+                )
+            elif "Shared Libraries" not in body:
+                problems += 1
+                sys.stderr.write(
+                    f"warning: {pkg.rel} requires '{lib}' (owned by {owner[lib]}) "
+                    f"but its @about never tells the user to install that package\n"
+                )
+    if problems == 0 and owner:
+        sys.stderr.write(
+            "shared libraries: %s owned by %s; every dependent package names it\n"
+            % (", ".join(sorted(owner)), sorted(set(owner.values()))[0])
+        )
 
 
 # ---------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 -- @description NPH Marker at Bar
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://daw.nathanielschool.com
--- @donation https://daw.nathanielschool.com/donate
+-- @link https://github.com/jasonzacmusic/nph-reaper-suite
+-- @donation https://github.com/jasonzacmusic/nph-reaper-suite
 -- @about Insert a marker on the nearest true bar line, not the arrange grid.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),

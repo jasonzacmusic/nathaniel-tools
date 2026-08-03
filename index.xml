@@ -3,8 +3,8 @@
   <category name="NPH">
     <reapack name="NPH_Duplicate Track.lua" type="script" desc="NPH Duplicate Track">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -21,8 +21,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_FX Float Toggle.lua" type="script" desc="NPH FX Float Toggle">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -39,8 +39,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_FX Open Close All.lua" type="script" desc="NPH FX Open/Close All">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -57,8 +57,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Flush Paste.lua" type="script" desc="NPH Flush Paste">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -75,13 +75,13 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Folders and Flow.lua" type="script" desc="NPH Folders &amp; Flow">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Fix, build, dissolve, move and isolate track folders. Repairs broken folder nesting.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Fix, build, dissolve, move and isolate track folders. Repairs broken folder nesting. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
 }
 ]]></description>
       </metadata>
@@ -89,14 +89,12 @@ signature-based change detection, shared safety library.]]></changelog>
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
         <source main="main" hash="122083e62084d1cba6923a27b9920ba1149960e74ec6b33b78c5425cbb0c72d0b0cc">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Folders%20and%20Flow.lua</source>
-        <source file="lib/nph_safe.lua" hash="122033eaa507289ae5273c439f1b1f71a822f35e4b8040d09d49d91d7596f59f685c">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/17f1e583e7edb1ad589c13be6e05f9b326628fba/NPH/lib/nph_safe.lua</source>
-        <source file="lib/nph_hierarchy.lua" hash="1220a7d629b645b40f4c1f6b53c20f46ed7e937fcdf69c6dfd53b5557fc76a9f8533">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/17f1e583e7edb1ad589c13be6e05f9b326628fba/NPH/lib/nph_hierarchy.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_MIDI Batch Export.lua" type="script" desc="NPH MIDI Batch Export">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -113,8 +111,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_MIDI Render.lua" type="script" desc="NPH MIDI Render">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -131,8 +129,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Marker at Bar.lua" type="script" desc="NPH Marker at Bar">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -149,8 +147,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Record Arm Toggle.lua" type="script" desc="NPH Record Arm Toggle">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -167,8 +165,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Region Next.lua" type="script" desc="NPH Region Next">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -185,8 +183,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Region Prev.lua" type="script" desc="NPH Region Previous">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -203,8 +201,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Solo Focus.lua" type="script" desc="NPH Solo Focus">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -221,13 +219,13 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_StageRig Build.lua" type="script" desc="NPH StageRig Build">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Builds a live concert project from a rig spec generated out of a MainStage .concert file. Creates one folder per patch, one track per channel strip, inserts the substitute instrument where one is known, and puts the note tracker in front of every instrument so patch switching can be clean.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All. Builds a live concert project from a rig spec generated out of a MainStage .concert file. Creates one folder per patch, one track per channel strip, inserts the substitute instrument where one is known, and puts the note tracker in front of every instrument so patch switching can be clean.\par}
 }
 ]]></description>
       </metadata>
@@ -238,8 +236,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Tempo at Bar.lua" type="script" desc="NPH Tempo at Bar">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -256,8 +254,8 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="NPH_Unsolo Unselect.lua" type="script" desc="NPH Unsolo &amp; Unselect">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -276,8 +274,8 @@ signature-based change detection, shared safety library.]]></changelog>
   <category name="NPH/jsfx">
     <reapack name="nph_note_tracker.jsfx" type="effect" desc="NPH Note Tracker &amp; Input Gate">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -295,13 +293,13 @@ signature-based change detection, shared safety library.]]></changelog>
   <category name="apps">
     <reapack name="Palette and Look.lua" type="script" desc="NPH Palette &amp; Look">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Colour and name tracks from meaning, with rules, palettes and a live watcher.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Colour and name tracks from meaning, with rules, palettes and a live watcher. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
 }
 ]]></description>
       </metadata>
@@ -313,13 +311,13 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="StageRig.lua" type="script" desc="NPH StageRig">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Live patch switching for REAPER. Reads a setlist built by StageRig Build, shows a stage view with CURRENT and NEXT, and switches patches without cutting off what is still ringing.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All. Live patch switching for REAPER. Reads a setlist built by StageRig Build, shows a stage view with CURRENT and NEXT, and switches patches without cutting off what is still ringing.\par}
 }
 ]]></description>
       </metadata>
@@ -330,13 +328,13 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="Stem Print and Handoff.lua" type="script" desc="NPH Stem Print &amp; Handoff">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print stems in several modes and restore the session exactly afterwards.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print stems in several modes and restore the session exactly afterwards. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
 }
 ]]></description>
       </metadata>
@@ -348,13 +346,13 @@ signature-based change detection, shared safety library.]]></changelog>
     </reapack>
     <reapack name="Track Settings Transfer.lua" type="script" desc="NPH Track Settings Transfer">
       <metadata>
-        <link>https://daw.nathanielschool.com</link>
-        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Pro-Tools style Import Session Data across project tabs, both directions.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Pro-Tools style Import Session Data across project tabs, both directions. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
 }
 ]]></description>
       </metadata>

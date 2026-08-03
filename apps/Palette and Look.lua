@@ -1,9 +1,12 @@
 -- @description NPH Palette & Look
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://daw.nathanielschool.com
--- @donation https://daw.nathanielschool.com/donate
+-- @link https://github.com/jasonzacmusic/nph-reaper-suite
+-- @donation https://github.com/jasonzacmusic/nph-reaper-suite
 -- @about Colour and name tracks from meaning, with rules, palettes and a live watcher.
+--   Requires the "NPH Shared Libraries" package from this same repository.
+--   ReaPack has no automatic dependencies, so install that one too - or just
+--   right-click the repository in ReaPack and choose Install All.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.

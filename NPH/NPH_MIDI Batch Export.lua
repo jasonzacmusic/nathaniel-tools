@@ -1,8 +1,8 @@
 -- @description NPH MIDI Batch Export
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://daw.nathanielschool.com
--- @donation https://daw.nathanielschool.com/donate
+-- @link https://github.com/jasonzacmusic/nph-reaper-suite
+-- @donation https://github.com/jasonzacmusic/nph-reaper-suite
 -- @about Export many MIDI items/regions as separate .mid files with pattern-based sequential names.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),

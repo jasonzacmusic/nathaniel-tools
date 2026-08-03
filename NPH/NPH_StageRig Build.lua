@@ -1,9 +1,12 @@
 -- @description NPH StageRig Build
 -- @version 0.1.0
 -- @author Jason Zac
--- @link https://daw.nathanielschool.com
--- @donation https://daw.nathanielschool.com/donate
+-- @link https://github.com/jasonzacmusic/nph-reaper-suite
+-- @donation https://github.com/jasonzacmusic/nph-reaper-suite
 -- @about
+--   Requires the "NPH Shared Libraries" package from this same repository.
+--   ReaPack has no automatic dependencies, so install that one too - or just
+--   right-click the repository in ReaPack and choose Install All.
 --   Builds a live concert project from a rig spec generated out of a MainStage
 --   .concert file. Creates one folder per patch, one track per channel strip,
 --   inserts the substitute instrument where one is known, and puts the note

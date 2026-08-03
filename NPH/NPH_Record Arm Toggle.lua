@@ -1,8 +1,8 @@
 -- @description NPH Record Arm Toggle
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://daw.nathanielschool.com
--- @donation https://daw.nathanielschool.com/donate
+-- @link https://github.com/jasonzacmusic/nph-reaper-suite
+-- @donation https://github.com/jasonzacmusic/nph-reaper-suite
 -- @about Exclusive record-arm on the selected tracks. Press again to disarm everything. Never touches pan.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),

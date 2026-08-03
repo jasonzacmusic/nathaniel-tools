@@ -1,12 +1,12 @@
 -- @description NPH Folders & Flow
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://daw.nathanielschool.com
--- @donation https://daw.nathanielschool.com/donate
+-- @link https://github.com/jasonzacmusic/nph-reaper-suite
+-- @donation https://github.com/jasonzacmusic/nph-reaper-suite
 -- @about Fix, build, dissolve, move and isolate track folders. Repairs broken folder nesting.
--- @provides
---   [nomain] lib/nph_safe.lua
---   [nomain] lib/nph_hierarchy.lua
+--   Requires the "NPH Shared Libraries" package from this same repository.
+--   ReaPack has no automatic dependencies, so install that one too - or just
+--   right-click the repository in ReaPack and choose Install All.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.

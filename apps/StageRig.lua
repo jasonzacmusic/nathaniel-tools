@@ -1,9 +1,12 @@
 -- @description NPH StageRig
 -- @version 0.1.0
 -- @author Jason Zac
--- @link https://daw.nathanielschool.com
--- @donation https://daw.nathanielschool.com/donate
+-- @link https://github.com/jasonzacmusic/nph-reaper-suite
+-- @donation https://github.com/jasonzacmusic/nph-reaper-suite
 -- @about
+--   Requires the "NPH Shared Libraries" package from this same repository.
+--   ReaPack has no automatic dependencies, so install that one too - or just
+--   right-click the repository in ReaPack and choose Install All.
 --   Live patch switching for REAPER. Reads a setlist built by StageRig Build,
 --   shows a stage view with CURRENT and NEXT, and switches patches without
 --   cutting off what is still ringing.
