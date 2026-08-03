@@ -219,6 +219,23 @@ signature-based change detection, shared safety library.]]></changelog>
         <source main="main" hash="12200e91926d70fcd4c4d927b568b89e553679a7dbd5565f59e2feaee0e9b765a869">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Solo%20Focus.lua</source>
       </version>
     </reapack>
+    <reapack name="NPH_StageRig Build.lua" type="script" desc="NPH StageRig Build">
+      <metadata>
+        <link>https://daw.nathanielschool.com</link>
+        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Builds a live concert project from a rig spec generated out of a MainStage .concert file. Creates one folder per patch, one track per channel strip, inserts the substitute instrument where one is known, and puts the note tracker in front of every instrument so patch switching can be clean.\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+        <changelog><![CDATA[0.1.0 - first version. Five-patch Lagori rig.]]></changelog>
+        <source main="main" hash="12208903b7595a1545627804ff5e1e8aaf954a421e1275e9dfb12485248b7c57cb59">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/NPH/NPH_StageRig%20Build.lua</source>
+      </version>
+    </reapack>
     <reapack name="NPH_Tempo at Bar.lua" type="script" desc="NPH Tempo at Bar">
       <metadata>
         <link>https://daw.nathanielschool.com</link>
@@ -256,6 +273,25 @@ signature-based change detection, shared safety library.]]></changelog>
       </version>
     </reapack>
   </category>
+  <category name="NPH/jsfx">
+    <reapack name="nph_note_tracker.jsfx" type="effect" desc="NPH Note Tracker &amp; Input Gate">
+      <metadata>
+        <link>https://daw.nathanielschool.com</link>
+        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Held-note tracking, an input gate and a note-off/CC64 flush, for clean live patch switching. Used by StageRig, but useful on its own anywhere a MIDI stream needs to be stopped without leaving notes hanging.\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+        <changelog><![CDATA[0.1.0 - first version.]]></changelog>
+        <source main="main" hash="1220549e7b3669e7d06e24e252a32c895f96d0fcedfb9e3f12a94eb7bc1592c2689e">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/NPH/jsfx/nph_note_tracker.jsfx</source>
+      </version>
+    </reapack>
+  </category>
   <category name="apps">
     <reapack name="Palette and Look.lua" type="script" desc="NPH Palette &amp; Look">
       <metadata>
@@ -269,10 +305,27 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220be48ae427ab8bacbd448950fc154be825da42900806718c03ecf2b1a2a31cb72">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/apps/Palette%20and%20Look.lua</source>
+        <source main="main" hash="12202b0a1dafcbc1a6047fb1d43b4fa51eb7f603fa883214c252236f59d1bb45011d">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/Palette%20and%20Look.lua</source>
+      </version>
+    </reapack>
+    <reapack name="StageRig.lua" type="script" desc="NPH StageRig">
+      <metadata>
+        <link>https://daw.nathanielschool.com</link>
+        <link rel="donation">https://daw.nathanielschool.com/donate</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Live patch switching for REAPER. Reads a setlist built by StageRig Build, shows a stage view with CURRENT and NEXT, and switches patches without cutting off what is still ringing.\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+        <changelog><![CDATA[0.1.0 - first version. Switching, panic, stage view.]]></changelog>
+        <source main="main" hash="1220be46d3104984166330d79643bd891285b01403b3460f729d1d5726fa90012d1d">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/StageRig.lua</source>
       </version>
     </reapack>
     <reapack name="Stem Print and Handoff.lua" type="script" desc="NPH Stem Print &amp; Handoff">
@@ -287,10 +340,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220bc865fca04782882555afe43b711cbde34f8cec92e29ff9b6d557882018cff19">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/apps/Stem%20Print%20and%20Handoff.lua</source>
+        <source main="main" hash="122063c51cbe730eb2a920f1be214aa95ab48e8f006b25b1eb0e762caf54478a2b37">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/Stem%20Print%20and%20Handoff.lua</source>
       </version>
     </reapack>
     <reapack name="Track Settings Transfer.lua" type="script" desc="NPH Track Settings Transfer">
@@ -305,10 +358,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12208ba2b593cb88089ea353c0a5cdf7495f2f9f6b9eb3a32fa34d3f193971d82c41">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/apps/Track%20Settings%20Transfer.lua</source>
+        <source main="main" hash="1220d78904807dd3ff51f84031ca551b89ac0f80bb0ee5c61ca937fda4646038e391">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/Track%20Settings%20Transfer.lua</source>
       </version>
     </reapack>
   </category>

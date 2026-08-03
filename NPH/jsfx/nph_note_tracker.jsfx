@@ -1,3 +1,15 @@
+// @description NPH Note Tracker & Input Gate
+// @version 0.1.0
+// @author Jason Zac
+// @link https://daw.nathanielschool.com
+// @donation https://daw.nathanielschool.com/donate
+// @about
+//   Held-note tracking, an input gate and a note-off/CC64 flush, for clean live
+//   patch switching. Used by StageRig, but useful on its own anywhere a MIDI
+//   stream needs to be stopped without leaving notes hanging.
+// @changelog
+//   0.1.0 - first version.
+
 desc:NPH Note Tracker & Input Gate
 author: Jason Zac / Nathaniel School of Music
 about:
