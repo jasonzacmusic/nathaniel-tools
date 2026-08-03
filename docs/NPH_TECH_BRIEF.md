@@ -429,6 +429,52 @@ NPH_AUDIT_REPORT.html             NEW  the findings report for Jason
 _harvest_scripts.lua              REWRITTEN as an install+verify harness
 ```
 
+
+### 3 Aug 2026 (later) — Folders & Flow shipped, repo published
+
+**Folders & Flow (App #4, green) is built, registered and verified.** It is the first app
+built on the shared spine from the start.
+
+The design decision that matters: it **never edits `I_FOLDERDEPTH` directly.** It converts
+depths to nesting LEVELS, edits there, then regenerates every depth from the levels. The
+output is well-formed by construction, so the "unclosed folder swallows the rest of the
+session" bug is not reachable from this app. Maths lives in `NPH/lib/nph_hierarchy.lua`,
+covered by 31 pure-Lua checks that run without REAPER (`tests/hierarchy_test.lua`).
+
+Features: repair folder maths · make folder from ticked · indent / outdent · remove from
+folder · dissolve (children promote, nothing deleted) · move a whole subtree up/down ·
+isolate a folder · auto-group adjacent tracks by shared first word · contiguous drag-paint
+selection. `_SWS_UNFOLDER` and `_SWS_MOVETRACKUP/DOWN` are absent on this install, so none
+of it leans on SWS.
+
+**A real bug the harness caught:** `makeFolder` originally incremented child levels
+relatively. On tracks that were ALREADY nested, sanitize then clamped inconsistently and the
+new folder silently swallowed everything after it. Fixed by shifting children so the
+shallowest sits one below the parent (preserving their relative nesting) and explicitly
+popping anything after the range back out to the parent's level. Regression test added.
+
+**Harness now: 68 passed, 0 failed.**
+
+**Published:** `https://github.com/jasonzacmusic/nph-reaper-suite` (PRIVATE).
+Every script carries ReaPack metadata headers (`@description @version @author @link
+@donation @about @provides @changelog`). Verified by cloning back from GitHub and re-running
+the pure-logic suite from the clone: 31/31.
+
+**`docs/FABLE_HANDOFF.md`** is the brief for the second machine. It includes the decoded
+MainStage `.concert` format and the honest blocker for the StageRig challenge:
+
+> The patches use Logic/MainStage built-in instruments (`Splendid Grand`, Vintage EP/B3).
+> Those are Logic-only AUs and REAPER cannot load them. A faithful sonic recreation is NOT
+> achievable. Importing the STRUCTURE — setlist order, patch names, zones, CC maps, routing
+> — and mapping each Logic instrument onto something Jason already owns (Pianoteq, Keyscape,
+> Omnisphere, Arturia V) is achievable and is worth more.
+
+Current concert: `/Users/nphmacmini/Music/MainStage/NSM Tribute Night.concert`, 8 numbered
+patches. Format is fully readable: `base.plistZ` = zlib + NSKeyedArchiver, `data.plist` =
+binary plist, each `.patch` is itself a folder holding a `.cst` channel strip.
+
+---
+
 ### VERIFIED LIVE — 55 passed, 0 failed (3 Aug 2026, REAPER 7.77)
 
 Two further defects were found *during* live testing, both of which had been shipped
