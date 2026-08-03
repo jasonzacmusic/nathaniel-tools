@@ -54,8 +54,12 @@ local SCRIPTS = {
   "NPH/NPH_Marker at Bar.lua", "NPH/NPH_Tempo at Bar.lua", "NPH/NPH_MIDI Render.lua",
   "NPH/NPH_Flush Paste.lua", "NPH/NPH_Duplicate Track.lua", "NPH/NPH_Unsolo Unselect.lua",
   "NPH/NPH_MIDI Batch Export.lua", "NPH/NPH_Folders and Flow.lua",
-  "Palette and Look.lua", "Track Settings Transfer.lua",
-  "Stem Print and Handoff.lua",
+  -- The three windowed apps live in apps/ in the repo. An earlier copy of this
+  -- harness looked for them at the root, which is where they happened to sit on
+  -- the machine it was written on - so on any other install it reported three
+  -- missing files and nobody would have known the layout was the cause.
+  "apps/Palette and Look.lua", "apps/Track Settings Transfer.lua",
+  "apps/Stem Print and Handoff.lua",
 }
 local reg = {}
 for _, rel in ipairs(SCRIPTS) do
