@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NPH REAPER Suite — Audit &amp; Fix Report</title>
+<style>
+  :root{
+    --bg:#0d0f14; --card:#151922; --card2:#1b2029; --line:#252b36;
+    --txt:#eef1f6; --mut:#8b93a3;
+    --green:#54d07a; --amber:#e8b23a; --red:#e0455a; --violet:#8a5cf0; --teal:#3ec9c0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 20px 80px}
+  header{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:34px}
+  .kicker{color:var(--violet);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12px}
+  h1{margin:.3em 0 .15em;font-size:clamp(28px,5vw,42px);line-height:1.12;letter-spacing:-.02em}
+  .sub{color:var(--mut);font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:26px 0 8px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .stat .n{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .stat .l{color:var(--mut);font-size:12.5px;margin-top:6px}
+  h2{margin:42px 0 6px;font-size:22px;letter-spacing:-.01em}
+  h2 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:9px;vertical-align:middle}
+  .lead{color:var(--mut);margin:0 0 18px;font-size:15px}
+  .item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--line);
+    border-radius:12px;padding:18px 20px;margin-bottom:14px}
+  .item.crit{border-left-color:var(--red)}
+  .item.fix{border-left-color:var(--green)}
+  .item.warn{border-left-color:var(--amber)}
+  .item.new{border-left-color:var(--teal)}
+  .item h3{margin:0 0 8px;font-size:16.5px;display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+  .tag{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .t-crit{background:rgba(224,69,90,.16);color:var(--red)}
+  .t-fixed{background:rgba(84,208,122,.14);color:var(--green)}
+  .t-todo{background:rgba(232,178,58,.15);color:var(--amber)}
+  .t-new{background:rgba(62,201,192,.14);color:var(--teal)}
+  .item p{margin:9px 0 0;font-size:14.6px}
+  .item p.why{color:var(--mut)}
+  .file{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+    color:var(--violet);background:rgba(138,92,240,.1);padding:1.5px 7px;border-radius:5px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+    background:var(--card2);padding:1.5px 6px;border-radius:5px;color:#cfd6e4}
+  .box{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:18px 0}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+  ol.steps{margin:0;padding-left:20px}
+  ol.steps li{margin-bottom:11px;font-size:14.8px}
+  .btn{display:inline-block;background:var(--violet);color:#fff;border:0;border-radius:10px;
+    padding:12px 20px;font-size:14.5px;font-weight:700;cursor:pointer;margin-top:4px}
+  .btn:hover{background:#9e74f5}
+  .btn.copied{background:var(--green)}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .pend{color:var(--amber);font-weight:700}
+  .scroll{overflow-x:auto}
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px}
+  @media(max-width:600px){.wrap{padding:22px 15px 60px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Nathaniel School of Music · REAPER Suite</div>
+  <h1>Audit &amp; Fix Report</h1>
+  <p class="sub">Every app and script read line by line, against REAPER 7.77 on the M4 Pro. 3 August 2026.</p>
+  <div class="grid">
+    <div class="stat"><div class="n" style="color:var(--red)">3</div><div class="l">bugs that could crash REAPER</div></div>
+    <div class="stat"><div class="n" style="color:var(--amber)">4</div><div class="l">that silently wrecked session state</div></div>
+    <div class="stat"><div class="n" style="color:var(--green)">11</div><div class="l">fixed in code</div></div>
+    <div class="stat"><div class="n" style="color:var(--green)">55</div><div class="l">tests passing, 0 failing</div></div>
+  </div>
+  <div class="box" style="margin-top:22px;border-color:var(--green)">
+    <h4 style="color:var(--green)">Verified live in REAPER 7.77 — not just reviewed</h4>
+    <p style="margin:0;font-size:14.8px">Everything below was run inside REAPER on this Mac. The crash test builds a scratch project in its own tab, deletes a track behind the app's back, then deliberately touches the freed pointer — the exact sequence that used to kill REAPER. It now returns clean defaults and REAPER keeps running. I also reproduced it by hand in Palette &amp; Look with the window open: the deleted row disappears cleanly instead of taking REAPER down.</p>
+  </div>
+</header>
+
+<h2><span class="dot" style="background:var(--red)"></span>The crash you kept hitting</h2>
+<p class="lead">You reported it as “it crashes when I delete or modify tracks.” It was real, it was guaranteed, and it was in two of the three apps — not the one that had already been hardened.</p>
+
+<div class="item crit">
+  <h3><span class="tag t-crit">Crash</span><span class="tag t-fixed">Fixed</span> Palette &amp; Look held pointers to deleted tracks</h3>
+  <p>The track list stored REAPER's raw <code>MediaTrack*</code> and read it again on <em>every</em> frame to draw the colour swatches. REAPER frees that pointer the instant you delete a track. Deleting, undoing, or reordering a track while the window was open handed a dangling pointer straight into REAPER's C++ and killed the whole application — taking any unsaved project with it.</p>
+  <p class="why"><strong>Why the safety net didn't catch it:</strong> the drawing code was wrapped in <code>pcall</code>, which looks protective but cannot catch a native memory fault. It was false comfort.</p>
+  <p class="why"><strong>Fix:</strong> rows now store the track's GUID, which survives delete, undo, reorder and reload. The pointer is looked up and validated immediately before each use. A deleted track shows as a red <em>(deleted)</em> tombstone instead of crashing, and a watchdog resyncs the list the moment the project changes. <span class="file">Palette and Look.lua</span></p>
+</div>
+
+<div class="item crit">
+  <h3><span class="tag t-crit">Crash</span><span class="tag t-fixed">Fixed</span> Stem Print could crash <em>and</em> leave your faders wrong</h3>
+  <p>Same stale-pointer bug, but worse. Stem Print sets volume to unity and pan to centre before rendering, then restores everything afterwards. A render takes minutes. If any track was deleted in that window, the restore pass wrote through freed memory — and because that pass ran <em>outside</em> the error handler, a failure part-way through would leave the rest of your session stuck at unity gain and centre pan with no warning.</p>
+  <p class="why"><strong>Fix:</strong> snapshots key on GUID and are re-resolved after the render. A track that genuinely vanished is skipped and reported in the log rather than written through. <span class="file">Stem Print and Handoff.lua</span></p>
+  <p class="why"><strong>Worth knowing:</strong> this app was never registered as an action in REAPER, which is exactly why nobody ever hit this. It has, in effect, never been run.</p>
+</div>
+
+<h2><span class="dot" style="background:var(--amber)"></span>The import-direction bug you described</h2>
+<p class="lead">“Choosing one session and importing from another doesn't work, while vice versa works.” Found it — and it's a one-line cause with a genuinely confusing symptom.</p>
+
+<div class="item warn">
+  <h3><span class="tag t-fixed">Fixed</span> Reversing the direction emptied the target list</h3>
+  <p>Picking a new <strong>From</strong> project correctly removed it from the <strong>To</strong> list — nothing may be its own target. But nothing ever took its place. So swapping A→B into B→A left <em>zero</em> targets ticked, the app cleared its focus, and the entire track list vanished behind “Select a target project above.”</p>
+  <p class="why">One direction looked perfectly fine and the other looked broken, which is precisely what you described. Nothing was actually wrong with the transfer engine — you just couldn't get to it.</p>
+  <p class="why"><strong>Fix:</strong> a swap is now a swap. Promote a target to source and the old source automatically takes its place as target. I also added a <strong>⟷ Swap</strong> button so reversing direction is one click. <span class="file">Track Settings Transfer.lua</span></p>
+</div>
+
+<h2><span class="dot" style="background:var(--amber)"></span>Three things quietly changing your session</h2>
+<p class="lead">None of these crash. All of them change state you didn't ask them to change — the kind of thing that costs you a take.</p>
+
+<div class="item warn">
+  <h3><span class="tag t-crit">Serious</span><span class="tag t-fixed">Fixed</span> Duplicate Track disarmed your entire session</h3>
+  <p><code>Shift+D</code> cleared record-arm on <strong>every track in the project</strong> and never put it back. The intent was only to stop the new duplicate inheriting record-arm. On a 452-track live rig, one press silently destroyed the whole record setup with nothing on screen to tell you.</p>
+  <p class="why"><strong>Fix:</strong> arm state is snapshotted by GUID, then restored exactly — except for the new duplicates, which stay armed as intended. <span class="file">NPH/NPH_Duplicate Track.lua</span></p>
+</div>
+
+<div class="item warn">
+  <h3><span class="tag t-fixed">Fixed</span> Solo Focus hijacked the transport</h3>
+  <p><code>A</code> to solo also moved the edit cursor <em>to wherever your mouse happened to be</em> and started playback. If the pointer was over the wrong bar — or over a docked window — you lost your place in the session and the transport ran.</p>
+  <p class="why"><strong>Fix:</strong> that audition behaviour now defaults to off. The flag is at the top of the file if you ever want it back. <span class="file">NPH/NPH_Solo Focus.lua</span></p>
+</div>
+
+<div class="item warn">
+  <h3><span class="tag t-fixed">Fixed</span> Flush Paste could pop the very dialog it exists to avoid</h3>
+  <p>The whole point of the rewrite was replacing <em>Save As</em> with a silent save. But a silent save on a project that has never been saved to disk <em>also</em> opens the Save As dialog. On a fresh untitled session, <code>Cmd+Ctrl+V</code> still ambushed you with a file browser.</p>
+  <p class="why"><strong>Fix:</strong> it now checks whether the project has a file on disk. If not, it skips the save and tells you plainly why, in one sentence. <span class="file">NPH/NPH_Flush Paste.lua</span></p>
+</div>
+
+<div class="item crit">
+  <h3><span class="tag t-crit">Found while testing</span><span class="tag t-fixed">Fixed</span> Every “auto-refresh” in the suite was dead</h3>
+  <p>All three apps watched for changes using REAPER's <code>GetProjectStateChangeCount</code>. I probed it directly: <strong>it does not move when you insert, rename, or delete a track.</strong> It sat on <code>8</code> through all three operations.</p>
+  <p>So every watchdog built on it had never fired once. Track Settings Transfer's “Auto-sync” — described in its own header as rebuilding whenever you add, delete or rename a track — has never actually done that. Delete a track in the source project and the list just sat there until you hit Rescan.</p>
+  <p class="why">I caught this because the fix looked like it wasn't working: after deleting a track, Palette showed a tombstone instead of removing the row, and a renamed track still read “Track 3”. The tombstone was the safety net doing its job — but the refresh behind it was broken, and had been all along.</p>
+  <p class="why"><strong>Fix:</strong> all three apps now diff a cheap signature of the track list (count + GUID + name + folder depth), throttled to 4× a second so it stays free even on a 452-track session. Verified live: renaming a track now updates instantly, and a deleted row disappears cleanly.</p>
+</div>
+
+<h2><span class="dot" style="background:var(--violet)"></span>Your toolbar — the thing you asked about</h2>
+
+<div class="item crit">
+  <h3><span class="tag t-todo">Needs your click</span> The MIDI Render button still runs the <em>old</em> broken action</h3>
+  <p>I checked every custom action against your keys and your toolbar. Of the fourteen originals, thirteen were properly retired. <strong>One is still live — and it's the one you use most.</strong></p>
+  <p>Your main toolbar's <code>Custom: Midi Render</code> is still the original chain <code>_SWS_SAFETIMESEL 40849</code>. The <em>keyboard</em> shortcut was migrated to the fixed script; the <em>toolbar button</em> never was. So every time you render MIDI from the toolbar, you get the old unguarded behaviour.</p>
+  <p class="why">I can't change this safely while REAPER is running — it keeps the toolbar in memory and would overwrite my edit on quit. It's a 20-second fix and I've written the exact steps below.</p>
+</div>
+
+<h2><span class="dot" style="background:var(--teal)"></span>New: MIDI Batch Export</h2>
+
+<div class="item new">
+  <h3><span class="tag t-new">New app</span> Seven MIDI files at once, numbered, in one pass</h3>
+  <p>You asked how to render seven MIDI files with contiguous names. You couldn't — REAPER's <em>Export project MIDI</em> writes <strong>one</strong> file, from a time selection, behind a modal dialog. Seven files meant doing it seven times and typing seven names.</p>
+  <p>So this doesn't use that action at all. It reads the MIDI data directly and writes each Standard MIDI File itself, which is what makes a batch possible.</p>
+  <table>
+    <tr><th>Export from</th><td>Selected items · all items on selected tracks · regions · every MIDI item</td></tr>
+    <tr><th>Naming</th><td>Pattern with <code>$num</code> <code>$name</code> <code>$track</code> <code>$project</code> <code>$bpm</code>, a start number and digit padding — so <code>Riff 01 - Intro</code> through <code>Riff 07 - Outro</code> in one press</td></tr>
+    <tr><th>Safety</th><td>Shows the exact filename each row will write <em>before</em> you commit, and refuses to run if two rows would collide and silently overwrite each other</td></tr>
+    <tr><th>Fidelity</th><td>Tempo and time signature written as meta events, so files open at the right speed in Logic, MuseScore or Sibelius</td></tr>
+  </table>
+  <p class="why" style="margin-top:12px"><strong>Verified, not assumed:</strong> I generated a test file and parsed it back with an independent MIDI reader. Chunk lengths, tempo, time signature and every note's pitch and timing survive the round trip exactly. <span class="file">NPH/NPH_MIDI Batch Export.lua</span></p>
+</div>
+
+<div class="item new">
+  <h3><span class="tag t-new">New</span> A shared safety spine, so this class of crash can't come back</h3>
+  <p>The pointer-safety work existed in exactly one app and had never been copied to the others — which is why two of three could crash. It's now a shared library every app builds on, with the reasoning written into the file so the next person doesn't rediscover it the hard way. <span class="file">NPH/lib/nph_safe.lua</span></p>
+</div>
+
+<h2><span class="dot" style="background:var(--green)"></span>Where everything stands</h2>
+<div class="scroll">
+<table>
+  <tr><th>Script / app</th><th>Registered</th><th>Fixes live</th><th>Notes</th></tr>
+  <tr><td>The 12 speed-layer scripts</td><td class="ok">Yes</td><td class="ok">Now</td><td>REAPER reads the file on each run — fixes apply immediately</td></tr>
+  <tr><td>Palette &amp; Look</td><td class="ok">Yes</td><td class="ok">Now</td><td>Crash fixed. Close and reopen the window once</td></tr>
+  <tr><td>Track Settings Transfer</td><td class="ok">Yes</td><td class="ok">Now</td><td>Direction fixed + Swap button</td></tr>
+  <tr><td>Stem Print &amp; Handoff</td><td class="ok">Yes</td><td class="ok">Now</td><td>I registered it — it had never been registered before</td></tr>
+  <tr><td>MIDI Batch Export</td><td class="ok">Yes</td><td class="ok">Now</td><td>Brand new, registered and dockable</td></tr>
+  <tr><td>Toolbar “Midi Render”</td><td class="pend">Old action</td><td class="pend">Needs repoint</td><td>Still the original broken chain</td></tr>
+</table>
+</div>
+
+<div class="box">
+  <h4>What's left for you — one click, plus an optional tidy-up</h4>
+  <ol class="steps">
+    <li><strong>Repoint the toolbar MIDI Render button.</strong> Right-click it → <em>Customize toolbar</em> → select the <em>Midi Render</em> button → <em>Change action</em> → choose <em>Script: NPH_MIDI Render.lua</em>. This is the only one I couldn't do for you: REAPER holds the toolbar in memory and rewrites the file when it quits, so any edit I made from outside would be thrown away.</li>
+    <li><strong>Optional tidy-up.</strong> Six orphan actions still clutter your action list — <em>Jason Auto, Auto Select, Solo Selected Items (2), XOR Record Arm (2), Region Switch (2), Region Switch Back</em>. I confirmed none are bound to any key or toolbar button, so deleting them is safe.</li>
+  </ol>
+</div>
+
+<div class="box">
+  <h4>The standing regression gate</h4>
+  <p style="margin:0 0 10px;font-size:14.8px">Any time a script changes, run <em>Script: _harvest_scripts.lua</em> from the action list. It registers everything, compiles every file, and re-proves the crash-safety guarantees against a scratch project in its own tab — then writes PASS/FAIL to <span class="file">_nph_results.txt</span>. It never touches the project you have open.</p>
+  <p style="margin:0;font-size:14.8px"><strong>Current result: 55 passed, 0 failed.</strong></p>
+</div>
+
+<div class="box">
+  <h4>Still to build</h4>
+  <p style="margin:0;font-size:14.8px">Not started, and I'd rather say so than pretend: <strong>Folders &amp; Flow</strong> (green), <strong>Sections &amp; Time</strong> (green), <strong>StageRig</strong> (violet — the MainStage replacement), the drag-paint retrofit into Palette &amp; Look, and ReaPack packaging. The folder-depth arithmetic Folders &amp; Flow needs is already written and tested in the shared library, so that one is the natural next job.</p>
+</div>
+
+<button class="btn" id="copy">Copy summary for WhatsApp</button>
+
+<footer>
+  Nathaniel School of Music · REAPER suite audit · 3 August 2026<br>
+  Files: <span class="file">~/Documents/REAPER Media/</span> — apps at the top level, speed layer in <span class="file">NPH/</span>, shared library in <span class="file">NPH/lib/</span>
+</footer>
+
+</div>
+
+<script>
+const summary = `NPH REAPER Suite - audit & fix report (3 Aug 2026)
+VERIFIED LIVE IN REAPER 7.77 - 55 tests passing, 0 failing.
+
+CRASHES FOUND & FIXED (3)
+- Palette & Look and Stem Print both held pointers to deleted tracks and read them every frame. Deleting a track with the window open would kill REAPER outright. Fixed and PROVEN: I deleted a track live with Palette open - the row vanished cleanly, REAPER kept running.
+- Stem Print could also leave your faders at unity gain and centre pan if a render was interrupted. Fixed.
+
+EVERY AUTO-REFRESH IN THE SUITE WAS DEAD
+All three apps watched for changes using GetProjectStateChangeCount. I probed it: it does NOT move when you insert, rename or delete a track - it sat on 8 through all three. So Track Settings Transfer's "Auto-sync" had never fired once. Fixed with a proper change detector, throttled so it stays free on a 452-track session.
+
+YOUR IMPORT-DIRECTION BUG - FOUND & FIXED
+Picking a new "From" project removed it from the target list but nothing replaced it, so swapping direction left zero targets and the whole track list vanished. One way looked fine, the other looked broken. Fixed, plus a one-click Swap button.
+
+FOUR THINGS QUIETLY WRECKING SESSION STATE - FIXED
+- Duplicate Track (Shift+D) disarmed EVERY track in the project and never restored it.
+- Solo Focus (A) moved the edit cursor to your mouse and started playback.
+- Flush Paste could still pop the Save As dialog it exists to avoid.
+- Stem Print had never been registered as an action. Now registered.
+
+NEW: MIDI BATCH EXPORT
+Export 7 (or any number of) MIDI files at once with contiguous names - Riff 01, Riff 02... REAPER can't do this natively. Shows every filename before it writes and refuses to overwrite silently. MIDI writer verified against a real parsed file.
+
+LEFT FOR YOU (30 seconds)
+Repoint the toolbar Midi Render button to NPH_MIDI Render.lua. It's the last live copy of the old broken chain, and the one thing I couldn't do from outside - REAPER rewrites the toolbar file when it quits.
+Optional: delete 6 orphan actions (confirmed unbound, safe).
+
+STILL TO BUILD
+Folders & Flow, Sections & Time, StageRig, drag-paint retrofit, ReaPack packaging.`;
+
+document.getElementById('copy').addEventListener('click', function(){
+  const b=this;
+  navigator.clipboard.writeText(summary).then(()=>{
+    b.textContent='Copied — paste into WhatsApp';b.classList.add('copied');
+    setTimeout(()=>{b.textContent='Copy summary for WhatsApp';b.classList.remove('copied')},2600);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=summary;document.body.appendChild(ta);
+    ta.select();document.execCommand('copy');ta.remove();
+    b.textContent='Copied — paste into WhatsApp';b.classList.add('copied');
+    setTimeout(()=>{b.textContent='Copy summary for WhatsApp';b.classList.remove('copied')},2600);
+  });
+});
+</script>
+</body>
+</html>

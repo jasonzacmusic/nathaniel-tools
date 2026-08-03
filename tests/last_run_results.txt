@@ -1,0 +1,1 @@
+demo session built: 9 tracks, with a deliberately unclosed folder at track 5
