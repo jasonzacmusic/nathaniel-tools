@@ -1,3 +1,7 @@
+-- @noindex
+-- Shared library for the NPH REAPER Suite. Not a standalone action.
+-- Distributed by the packages that need it via their @provides tag.
+
 --[[
   nph_safe.lua  -  pointer safety and stable identity for the NPH suite
   ----------------------------------------------------------------------------
