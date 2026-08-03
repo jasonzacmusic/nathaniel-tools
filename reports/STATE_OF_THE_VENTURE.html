@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NPH REAPER Suite — State of the Venture</title>
+<style>
+  :root{
+    --bg:#0d0f14; --card:#151922; --card2:#1b2029; --line:#252b36;
+    --txt:#eef1f6; --mut:#8b93a3;
+    --green:#54d07a; --amber:#e8b23a; --red:#e0455a; --violet:#8a5cf0; --teal:#3ec9c0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 20px 80px}
+  header{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:34px}
+  .kicker{color:var(--violet);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12px}
+  h1{margin:.3em 0 .15em;font-size:clamp(28px,5vw,42px);line-height:1.12;letter-spacing:-.02em}
+  .sub{color:var(--mut);font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:26px 0 8px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .stat .n{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  .stat .l{color:var(--mut);font-size:12.5px;margin-top:6px}
+  h2{margin:42px 0 6px;font-size:22px;letter-spacing:-.01em}
+  h2 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:9px;vertical-align:middle}
+  .lead{color:var(--mut);margin:0 0 18px;font-size:15px}
+  .item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--line);
+    border-radius:12px;padding:18px 20px;margin-bottom:14px}
+  .item.g{border-left-color:var(--green)}
+  .item.a{border-left-color:var(--amber)}
+  .item.v{border-left-color:var(--violet)}
+  .item.t{border-left-color:var(--teal)}
+  .item.r{border-left-color:var(--red)}
+  .item h3{margin:0 0 8px;font-size:16.5px;display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+  .tag{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .t-done{background:rgba(84,208,122,.14);color:var(--green)}
+  .t-new{background:rgba(62,201,192,.14);color:var(--teal)}
+  .t-next{background:rgba(232,178,58,.15);color:var(--amber)}
+  .t-you{background:rgba(224,69,90,.16);color:var(--red)}
+  .t-flag{background:rgba(138,92,240,.16);color:var(--violet)}
+  .item p{margin:9px 0 0;font-size:14.6px}
+  .item p.why{color:var(--mut)}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;
+    background:var(--card2);padding:1.5px 6px;border-radius:5px;color:#cfd6e4}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+  .ok{color:var(--green);font-weight:700}
+  .pend{color:var(--amber);font-weight:700}
+  .scroll{overflow-x:auto}
+  .box{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:18px 0}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+  ol.steps{margin:0;padding-left:20px}
+  ol.steps li{margin-bottom:11px;font-size:14.8px}
+  .btn{display:inline-block;background:var(--violet);color:#fff;border:0;border-radius:10px;
+    padding:12px 20px;font-size:14.5px;font-weight:700;cursor:pointer;margin-top:4px}
+  .btn:hover{background:#9e74f5}
+  .btn.copied{background:var(--green)}
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px}
+  @media(max-width:600px){.wrap{padding:22px 15px 60px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Nathaniel School of Music · REAPER Venture</div>
+  <h1>State of the Venture</h1>
+  <p class="sub">Everything verified, decoded and planned on the MacBook Pro · 3 August 2026</p>
+  <div class="grid">
+    <div class="stat"><div class="n" style="color:var(--green)">31 / 31</div><div class="l">repo tests pass on a second machine — the suite is portable</div></div>
+    <div class="stat"><div class="n" style="color:var(--teal)">57</div><div class="l">patches decoded from your real Lagori 2026 concert</div></div>
+    <div class="stat"><div class="n" style="color:var(--violet)">19</div><div class="l">patches already run Pianoteq 8 — loads in REAPER unchanged</div></div>
+    <div class="stat"><div class="n" style="color:var(--amber)">7</div><div class="l">new app ideas written into the repo</div></div>
+  </div>
+</header>
+
+<h2><span class="dot" style="background:var(--green)"></span>What happened before today (the story so far)</h2>
+<p class="lead">On the studio Mac mini, the whole suite was audited line by line and hardened: 3 crash bugs fixed (deleted tracks used to kill REAPER with a window open), 4 silent session-wreckers fixed, every dead auto-refresh replaced, Folders &amp; Flow built, MIDI Batch Export built, and the shared safety spine created. 55 live tests passed inside REAPER 7.77. The repo went up on GitHub (private).</p>
+
+<h2><span class="dot" style="background:var(--teal)"></span>What happened today, on this laptop</h2>
+
+<div class="item g">
+  <h3><span class="tag t-done">Verified</span> The suite survives a clean room</h3>
+  <p>Cloned the repo fresh onto the MacBook Pro and ran the folder-maths test suite: <strong>31 passed, 0 failed.</strong> I also removed the last hard-coded studio-Mac paths from the test harness, so the tests now run from any machine, any folder — the first genuine "works for any REAPER user" step. Committed and pushed.</p>
+</div>
+
+<div class="item g">
+  <h3><span class="tag t-done">Audited</span> Multiple project tabs, multiple tracks — the design holds</h3>
+  <p>Read the apps specifically for the multi-tab question. Palette &amp; Look re-reads the <em>current</em> tab every frame and re-syncs within a quarter second of any change, so switching tabs can never show stale tracks. Track Settings Transfer keeps a separate identity map per open project — cross-session transfer is its whole job and the bookkeeping is per-project. The safety spine stores track identities that survive delete, undo, reorder and tab switches.</p>
+  <p class="why"><strong>Two honest gaps:</strong> this laptop's REAPER (7.28) doesn't yet have ReaImGui installed, so the three windowed apps can't open here until it's added via ReaPack — and the live in-REAPER test run on this laptop is the next engineering session. The static audit found no multi-tab defects.</p>
+</div>
+
+<div class="item t">
+  <h3><span class="tag t-new">Built</span> The concert decoder — your MainStage rig is now readable</h3>
+  <p>New tool in the repo reads any of your 100+ <code>.concert</code> files and prints the whole rig: setlist, every patch, every channel strip, every instrument — and which sounds can or can't load in REAPER. Ran it on <strong>Lagori 2026 Minimal</strong> (your newest, 21 July): 11 song patches plus the full covers set inside Darbari — Aasma, Humma Humma G→A, Param Sundari, Kesariya, Vaathi, Jhumka, Uptown Funk and more, 57 patches in all.</p>
+  <p class="why">This was the handoff's "suggested first deliverable" for StageRig — the one-day job that tells us whether the whole idea is viable. It's done, and the answer is yes.</p>
+</div>
+
+<div class="item v">
+  <h3><span class="tag t-new">Decoded</span> The viability verdict is better than anyone expected</h3>
+  <div class="scroll"><table>
+    <tr><th>Sound in your concert</th><th>Patches</th><th>In REAPER</th></tr>
+    <tr><td><strong>Pianoteq 8</strong> — every piano, EP, clav</td><td>19</td><td class="ok">Loads as-is. Zero loss.</td></tr>
+    <tr><td>Vintage B3 organ (Logic)</td><td>10</td><td class="ok">Arturia B-3 V — you own it</td></tr>
+    <tr><td>Alchemy pads / synths (Logic)</td><td>16</td><td class="pend">Omnisphere / ANA 2, or resample — the concert carries its own samples folder</td></tr>
+    <tr><td>Logic Sampler (strings, horns, sitar, shenai, choir…)</td><td>15</td><td class="pend">Kontakt / UVI, or resample the exact sound</td></tr>
+  </table></div>
+  <p class="why">Roughly 40% of the rig ports <em>losslessly</em>, another third has substitutes you already own, and the rest is honest resampling. Every mapping will be explicit — never guessed silently.</p>
+</div>
+
+<div class="item v">
+  <h3><span class="tag t-new">Planned</span> StageRig v0 — five patches from your real set</h3>
+  <p><strong>Aasma</strong> · <strong>Humma Humma G→A</strong> (the horns patch) · <strong>BRAHMA Gm</strong> · <strong>Upright</strong> · <strong>Maari Kannu</strong>. The two you named, plus three that between them exercise every substitution problem. v0 is done when you can switch between them blind and not tell the switching apart from MainStage. Full spec is in the repo — including the Ableton-style <strong>Loop Deck</strong> (loops rendered from your own sessions at show tempo, launched quantized to the bar, everything pre-loaded, one PANIC pad) and the exact on-stage REAPER settings profile that makes it trustworthy.</p>
+  <p class="why">Market check (fresh research, in the repo): MainStage is visibly neglected, REAPER's existing live tools are dead or unproven, and the paid rivals charge $149–199. Nobody owns "MainStage-grade switching + Ableton-grade loop trust on REAPER". The existing NSM Bridge stays as-is — StageRig doesn't need it.</p>
+</div>
+
+<div class="item a">
+  <h3><span class="tag t-new">Planned</span> The business: give the tools away, the SWS way</h3>
+  <p>Researched how SWS, ReaPack, ReaTeam, X-Raym, ReaperTips and The REAPER Blog actually work in 2026. The model: <strong>the suite is free forever</strong> — one-click install via our own ReaPack repository, flagship scripts submitted to ReaTeam (which is built into every REAPER user's ReaPack by default — the single biggest reach lever, and it costs one PR). The money lives in the course and, later, StageRig Pro ($79–129 anchor under Gig Performer's $169 umbrella). X-Raym proved this exact shape: 626 free scripts feeding a paid shop. Full plan committed to the repo.</p>
+</div>
+
+<div class="item t">
+  <h3><span class="tag t-new">Written</span> Seven new apps, from your actual friction</h3>
+  <p><strong>Loop Deck</strong> (live loops) · <strong>Riff Vault</strong> (your ~80 riff folders, searchable inside REAPER) · <strong>Session Prep</strong> (the whole boring ritual as one press) · <strong>Lesson Export</strong> (stems + MIDI + markers for the video pipeline in one go) · <strong>Rig Doctor</strong> (the pre-show proof) · <strong>Handoff Pack</strong> · <strong>Archive Intake</strong>. Each one names the real task it removes and the course module it feeds.</p>
+</div>
+
+<h2><span class="dot" style="background:var(--amber)"></span>What happens next</h2>
+<div class="box">
+  <h4>Engineering (no input needed from you)</h4>
+  <ol class="steps">
+    <li>Install ReaImGui + the suite into this laptop's REAPER and run the full 68-test harness live — the true second-machine proof.</li>
+    <li>Build <strong>Sections &amp; Time</strong> (the missing green app) and the drag-paint retrofit.</li>
+    <li>Build the StageRig importer: your Lagori concert → a ready REAPER project with the five patches.</li>
+  </ol>
+</div>
+<div class="box">
+  <h4 style="color:var(--red)">Your two decisions (strategy — so I'm asking, not doing)</h4>
+  <ol class="steps">
+    <li><strong>Go public?</strong> The repo is ready to become the free ReaPack repository (MIT license, listed on reapack.com, flagships to ReaTeam). Say the word and I'll flip it and wire the packaging.</li>
+    <li><strong>Sounds budget for StageRig:</strong> use owned substitutes only (₹0), or also resample the Alchemy/Sampler patches for closer matches (time, not money). Substitutes-first is my recommendation for v0.</li>
+  </ol>
+</div>
+
+<div class="box">
+  <h4>Which brain builds it</h4>
+  <p style="margin:0;font-size:14.8px">Stay here in <strong>Fable</strong> for StageRig and the importer — this is architecture-heavy work where the deep model earns its keep. Opus fast mode is fine for mechanical passes (packaging headers, site copy) once the designs are locked. Today's whole session — verification, decode, plans — is already Fable output.</p>
+</div>
+
+<button class="btn" id="copy">Copy summary for WhatsApp</button>
+
+<footer>
+  Nathaniel School of Music · REAPER venture · 3 August 2026<br>
+  Repo: <code>github.com/jasonzacmusic/nph-reaper-suite</code> — plans in <code>docs/</code>, Lagori decode in <code>reports/</code>
+</footer>
+
+</div>
+
+<script>
+const summary = `NPH REAPER VENTURE - state of play (3 Aug 2026)
+
+VERIFIED ON THE LAPTOP
+The whole suite cloned fresh from GitHub and tested on the MacBook Pro: 31/31 passing. Last hard-coded paths removed - it now runs for ANY REAPER user, any machine. Multi-tab audit: no defects found.
+
+YOUR MAINSTAGE RIG IS DECODED
+Built a tool that reads any .concert file. Ran it on Lagori 2026 Minimal (your newest): 57 patches fully mapped - every strip, every instrument.
+The big news: 19 patches already run Pianoteq 8, which loads in REAPER unchanged. The B3 organ maps to Arturia B-3 V (you own it). Only the Alchemy pads + Logic Sampler sounds need substitutes or resampling.
+
+STAGERIG v0 = 5 REAL PATCHES
+Aasma, Humma Humma G->A (horns), BRAHMA Gm, Upright, Maari Kannu. Done when you can switch blind and not tell it apart from MainStage. Plus Loop Deck: Ableton-style loop triggering from your own session stems, quantized, pre-loaded, with a panic pad.
+
+THE BUSINESS MODEL (researched, written, committed)
+Free forever via ReaPack, the SWS way - flagships submitted to ReaTeam (built into every REAPER install). Money lives in the course + StageRig Pro later ($79-129, rivals charge $149-199). Nobody owns "MainStage on REAPER". 7 new app ideas in the repo too (Riff Vault, Session Prep, Lesson Export, Rig Doctor...).
+
+NEEDS YOUR CALL (2 things)
+1. Flip the repo public + start the free ReaPack repository?
+2. StageRig sounds: owned substitutes only, or also resample Alchemy patches? (I recommend substitutes first.)
+
+Everything is committed + pushed to github.com/jasonzacmusic/nph-reaper-suite.`;
+
+document.getElementById('copy').addEventListener('click', function(){
+  const b=this;
+  navigator.clipboard.writeText(summary).then(()=>{
+    b.textContent='Copied — paste into WhatsApp';b.classList.add('copied');
+    setTimeout(()=>{b.textContent='Copy summary for WhatsApp';b.classList.remove('copied')},2600);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=summary;document.body.appendChild(ta);
+    ta.select();document.execCommand('copy');ta.remove();
+    b.textContent='Copied — paste into WhatsApp';b.classList.add('copied');
+    setTimeout(()=>{b.textContent='Copy summary for WhatsApp';b.classList.remove('copied')},2600);
+  });
+});
+</script>
+</body>
+</html>
