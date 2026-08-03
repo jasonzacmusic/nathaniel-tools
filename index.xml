@@ -13,10 +13,10 @@
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220789cc4fcab0c378df582ba78cf129be6808dedd5b95e314dd5cabc57239b6fcf">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Duplicate%20Track.lua</source>
+        <source main="main" hash="12204c0a709081f8c10b5ecd6426af2aa6a436180b7213cccdac28d1b9114df9806a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Duplicate%20Track.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_FX Float Toggle.lua" type="script" desc="NPH FX Float Toggle">
@@ -31,10 +31,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220a711b3629ffa525aac41a61da2d4914b328c1b5c1a599051585b7a8edff983e4">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_FX%20Float%20Toggle.lua</source>
+        <source main="main" hash="1220df218de87a3762f0ef5b699be403b1ebe4fb3a0f52497871e147b9d975b759a2">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_FX%20Float%20Toggle.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_FX Open Close All.lua" type="script" desc="NPH FX Open/Close All">
@@ -49,10 +49,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220087709c66f657ac98e2d4e6b279123fb66d1794e2eadeef22d45753554b28082">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_FX%20Open%20Close%20All.lua</source>
+        <source main="main" hash="1220514a17e70fcb11b2d00735f88f4ce027bcd16476097e6fc3d8edf027a9163205">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_FX%20Open%20Close%20All.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Flush Paste.lua" type="script" desc="NPH Flush Paste">
@@ -67,10 +67,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220bb82da31499c28e2eabd5ec5de7b8d7126fd8d5ecc6b2042ac5bae4ff024de18">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Flush%20Paste.lua</source>
+        <source main="main" hash="122002677acb17c042323b1181132470e1d930526227011c268625e53f82f47f6d5f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Flush%20Paste.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Folders and Flow.lua" type="script" desc="NPH Folders &amp; Flow">
@@ -85,10 +85,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122083e62084d1cba6923a27b9920ba1149960e74ec6b33b78c5425cbb0c72d0b0cc">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Folders%20and%20Flow.lua</source>
+        <source main="main" hash="122032f9732f129cade50d6844d7439abdc4fc3db8568174469f10d7380f386c745b">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Folders%20and%20Flow.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_MIDI Batch Export.lua" type="script" desc="NPH MIDI Batch Export">
@@ -103,10 +103,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220e0ed64260b68f7dca5caa90f1c58e075646ceeea49e2401eec8264f518883be0">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_MIDI%20Batch%20Export.lua</source>
+        <source main="main" hash="12205488fe833112f1f1f06e1f50b182a840bea080cd0ad0c0611d44b51214dd792f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_MIDI%20Batch%20Export.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_MIDI Render.lua" type="script" desc="NPH MIDI Render">
@@ -121,10 +121,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12207550cab76e9ab6c4a246fa6fe7ee7f0a88ba50ba3d4991517f557818c98cb132">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_MIDI%20Render.lua</source>
+        <source main="main" hash="12200b103634a836cf41f516d4a53cdf0ce1c81e39fb91011ada8dffabb64f126091">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_MIDI%20Render.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Marker at Bar.lua" type="script" desc="NPH Marker at Bar">
@@ -139,10 +139,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220aad052a45dbbda464a3e8754acf3d126af78e85142d4325fa18c1dbc9eefca87">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Marker%20at%20Bar.lua</source>
+        <source main="main" hash="12205acb5f38272f2cf37047cd422e61483b3c7ac2d3e7db24cc8e53a382018a2b9a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Marker%20at%20Bar.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Record Arm Toggle.lua" type="script" desc="NPH Record Arm Toggle">
@@ -157,10 +157,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12204c089a20b988e07f2df82afb814151462954d07f90ddb0bf095c31941df17a31">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Record%20Arm%20Toggle.lua</source>
+        <source main="main" hash="122088f516743570c498708194a403f49ee79ab77f93c0a40dc84fc8ca2216956d94">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Record%20Arm%20Toggle.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Region Next.lua" type="script" desc="NPH Region Next">
@@ -175,10 +175,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12205d88e25869d71d410ec20af102918b82f16497b671fdaa9c08a78aa09626494d">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Region%20Next.lua</source>
+        <source main="main" hash="12209476010af1aa55676dec9bbe3b805c118d515a9c3acc7ab80a85603b09c7547a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Region%20Next.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Region Prev.lua" type="script" desc="NPH Region Previous">
@@ -193,10 +193,31 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220aae664169d90443906c49e52a8cde54d6eaec7f56d25dc0c99a3910f28b36ade">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Region%20Prev.lua</source>
+        <source main="main" hash="122031912048491e322ba0d8731193032d6ae71dd88ddff489e0e202adfbee397e60">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Region%20Prev.lua</source>
+      </version>
+    </reapack>
+    <reapack name="NPH_Shared Libraries.lua" type="script" desc="NPH Shared Libraries">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 The shared code the rest of the NPH suite is built on: pointer safety and stable track identity (nph_safe), folder-nesting arithmetic (nph_hierarchy), and ReaImGui version compatibility (nph_imgui).\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+        <changelog><![CDATA[1.0.0 - split out of the individual app packages so every app can share one
+copy instead of each carrying its own.]]></changelog>
+        <source main="main" hash="1220509a25c283387cdf0a138e66437347cdd5cd0321c0b6fbb49d4d642c35ebf759">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Shared%20Libraries.lua</source>
+        <source file="lib/nph_safe.lua" hash="122033eaa507289ae5273c439f1b1f71a822f35e4b8040d09d49d91d7596f59f685c">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/17f1e583e7edb1ad589c13be6e05f9b326628fba/NPH/lib/nph_safe.lua</source>
+        <source file="lib/nph_hierarchy.lua" hash="1220a7d629b645b40f4c1f6b53c20f46ed7e937fcdf69c6dfd53b5557fc76a9f8533">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/17f1e583e7edb1ad589c13be6e05f9b326628fba/NPH/lib/nph_hierarchy.lua</source>
+        <source file="lib/nph_imgui.lua" hash="1220f4fa52b7eada0fe3d3bb388cb68fa9d24c664e52a9cd6cb0f6019bc4e968967f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/NPH/lib/nph_imgui.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Solo Focus.lua" type="script" desc="NPH Solo Focus">
@@ -211,10 +232,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12200e91926d70fcd4c4d927b568b89e553679a7dbd5565f59e2feaee0e9b765a869">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Solo%20Focus.lua</source>
+        <source main="main" hash="12205b5be8e2912b34978318f67b6270ed37a70adfb40724ac1e78fd34e404041b2f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Solo%20Focus.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_StageRig Build.lua" type="script" desc="NPH StageRig Build">
@@ -229,9 +250,9 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[0.1.0 - first version. Five-patch Lagori rig.]]></changelog>
-        <source main="main" hash="12208903b7595a1545627804ff5e1e8aaf954a421e1275e9dfb12485248b7c57cb59">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/NPH/NPH_StageRig%20Build.lua</source>
+        <source main="main" hash="12208657a96c58b3811621de3994030bdbc8182f55739eb1381085afdb7811dccc93">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_StageRig%20Build.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Tempo at Bar.lua" type="script" desc="NPH Tempo at Bar">
@@ -246,10 +267,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122063158b1624101c176912380862436c7e10f8f50463f44e6e2fbc38beec0a8883">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Tempo%20at%20Bar.lua</source>
+        <source main="main" hash="1220ffdffe77345e1a67521a1adc036e5974c4a42986a95e14c940579aa5dec011b7">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Tempo%20at%20Bar.lua</source>
       </version>
     </reapack>
     <reapack name="NPH_Unsolo Unselect.lua" type="script" desc="NPH Unsolo &amp; Unselect">
@@ -264,10 +285,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T10:42:19Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220dc1ea619673661bcfeab96c821bc80cd9bd939b082d5c0414827e5639c7c48c8">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/15fee13cab9cf97d7e72bd14c7c3a3f79519d678/NPH/NPH_Unsolo%20Unselect.lua</source>
+        <source main="main" hash="1220fbfaf0b7f3e90488d9a5d0d74e99ae267d05b81f57ea48769ab4a60c66c28e6b">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Unsolo%20Unselect.lua</source>
       </version>
     </reapack>
   </category>
@@ -284,9 +305,9 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:25:13Z">
+      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[0.1.0 - first version.]]></changelog>
-        <source hash="1220ec78bcd7f01f8bc058d4af6bbfc897480736bf208979b62cf83a5e40a1f8c16b">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/4445cbcec523306eb2ee4eb68057d55dd6238c1f/NPH/jsfx/nph_note_tracker.jsfx</source>
+        <source hash="12200be83d1be7189b6b42d54ed66e448de94c30064a4070792227106bfe3e36319a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/jsfx/nph_note_tracker.jsfx</source>
       </version>
     </reapack>
   </category>
@@ -303,10 +324,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12202b0a1dafcbc1a6047fb1d43b4fa51eb7f603fa883214c252236f59d1bb45011d">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/Palette%20and%20Look.lua</source>
+        <source main="main" hash="122073d5e0941ebecc9b2bba74a7b53c59d83f2c6c20e10d6777fa07faef2c23ba22">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/Palette%20and%20Look.lua</source>
       </version>
     </reapack>
     <reapack name="StageRig.lua" type="script" desc="NPH StageRig">
@@ -321,9 +342,9 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[0.1.0 - first version. Switching, panic, stage view.]]></changelog>
-        <source main="main" hash="1220be46d3104984166330d79643bd891285b01403b3460f729d1d5726fa90012d1d">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/StageRig.lua</source>
+        <source main="main" hash="12207bd117ecd12b5a7a47a64fea12133328fc8420a66356df619933808b3cd616d1">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/StageRig.lua</source>
       </version>
     </reapack>
     <reapack name="Stem Print and Handoff.lua" type="script" desc="NPH Stem Print &amp; Handoff">
@@ -338,10 +359,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122063c51cbe730eb2a920f1be214aa95ab48e8f006b25b1eb0e762caf54478a2b37">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/Stem%20Print%20and%20Handoff.lua</source>
+        <source main="main" hash="12203b3818fb6b5be4d37992e3baaed3ad87c2683132a6468b346ba521d149e332a5">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/Stem%20Print%20and%20Handoff.lua</source>
       </version>
     </reapack>
     <reapack name="Track Settings Transfer.lua" type="script" desc="NPH Track Settings Transfer">
@@ -356,10 +377,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220d78904807dd3ff51f84031ca551b89ac0f80bb0ee5c61ca937fda4646038e391">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/apps/Track%20Settings%20Transfer.lua</source>
+        <source main="main" hash="12203ebb9cebfa0a1b5056a16a1090db5073198a2cf46c06580d48a97fcdc7d2ae42">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/Track%20Settings%20Transfer.lua</source>
       </version>
     </reapack>
   </category>
