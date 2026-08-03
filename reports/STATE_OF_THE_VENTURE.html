@@ -73,8 +73,8 @@
   <div class="grid">
     <div class="stat"><div class="n" style="color:var(--green)">68 / 68</div><div class="l">suite tests passing live inside REAPER on this laptop</div></div>
     <div class="stat"><div class="n" style="color:var(--violet)">18 / 18</div><div class="l">StageRig build checks passing</div></div>
-    <div class="stat"><div class="n" style="color:var(--teal)">20</div><div class="l">packages published to the ReaPack repository</div></div>
-    <div class="stat"><div class="n" style="color:var(--amber)">3</div><div class="l">crashes caught today that would have hit you first</div></div>
+    <div class="stat"><div class="n" style="color:var(--teal)">24 / 24</div><div class="l">ReaPack files verified downloadable, checksums matching</div></div>
+    <div class="stat"><div class="n" style="color:var(--amber)">5</div><div class="l">failures caught today that would have hit you first</div></div>
   </div>
 </header>
 
@@ -137,7 +137,19 @@
   <h3><span class="tag t-new">Live</span> The website exists</h3>
   <p>Home, a page per app with honest status, the "why these exist" engineering story built from the real bug findings, a course page and a quiet donate page. Every page loads; nothing is loaded from an outside server.</p>
   <span class="url">https://nph-daw.vercel.app</span>
-  <p class="why">This is the review copy. Say the word and I will point <strong>daw.nathanielschool.com</strong> at it — I have deliberately not touched your DNS yet, and no branded link is published anywhere until you have looked.</p>
+  <p class="why">This is the review copy only, on a temporary address. I have not touched your DNS.</p>
+</div>
+
+<div class="item">
+  <h3><span class="tag t-you">Correction</span> daw.nathanielschool.com is already taken — by your own other product</h3>
+  <p>Earlier today I told you I could point <strong>daw.nathanielschool.com</strong> at the new site. <strong>That was wrong, and acting on it would have destroyed a live site.</strong> That address already serves a different product of yours — <em>"DAW Mentor — Learn Reaper with AI"</em>, a full Next.js app.</p>
+  <p class="why">It also affected the published packages: all twenty script headers pointed their "more info" and "donate" links at that domain, and <code>/donate</code> returned <strong>404</strong>. Every header now points at the GitHub repository instead, so nothing published sends a user to a broken or unrelated page. <strong>Where the suite should actually live is a decision for you</strong> — a new subdomain, a section inside DAW Mentor, or replacing it.</p>
+</div>
+
+<div class="item">
+  <h3><span class="tag t-you">Caught late</span> The ReaPack install would have delivered broken scripts</h3>
+  <p>I told you earlier that installing works because I verified <em>subscribing</em> to the repository works. That was not the same claim, and the difference mattered: six scripts load shared library files, but ReaPack gives each package exclusive ownership of the files it installs, so they could not each carry a copy. Installing any one app would have succeeded and then <strong>failed the moment you ran it</strong>, with an error that looks like a broken script rather than a packaging mistake.</p>
+  <p class="why"><strong>Fixed:</strong> the libraries now live in their own <em>NPH Shared Libraries</em> package, every app that needs it says so, and the index generator refuses to build if one ever forgets again. Then I checked it properly — all <strong>24 files download from the live index with matching checksums</strong>, and all 14 layout checks pass inside REAPER. The easiest install is to right-click the repository in ReaPack and choose <strong>Install All</strong>.</p>
 </div>
 
 <h2><span class="dot" style="background:var(--amber)"></span>What still stands between this and a real gig</h2>
@@ -177,9 +189,13 @@ DONE TODAY
   https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/main/index.xml
 - ReaPack + ReaImGui installed on the laptop (they were missing). All 18 scripts registered and showing in your Actions list. Full test gate ran INSIDE REAPER: 68 passed, 0 failed.
 - StageRig v0 built: importer, note-tracker effect, stage view with the proper switch sequence (unmute new patch, stop notes to the old one, let it ring, flush, mute) and panic buttons. 18/18 checks passing.
-- Website is live for review: https://nph-daw.vercel.app  (I have NOT touched your DNS - say the word and I point daw.nathanielschool.com at it)
+- Website built, live for review at https://nph-daw.vercel.app (temporary address, DNS untouched)
 
-THREE FAILURES CAUGHT BEFORE THEY HIT YOU
+TWO CORRECTIONS TO WHAT I TOLD YOU EARLIER
+1. daw.nathanielschool.com is ALREADY LIVE with your other product, "DAW Mentor - Learn Reaper with AI". I had offered to point it at the new site - that would have destroyed it. Worse, all 20 script headers pointed their info/donate links there and /donate was a 404. All now point at the GitHub repo. WHERE THE SUITE SHOULD LIVE IS YOUR CALL.
+2. I said installing via ReaPack works - I had only verified SUBSCRIBING works. Installing any single app would have succeeded and then failed at run time, because six scripts share library files and ReaPack only installs what a package declares. Fixed with a proper shared-libraries package; now verified properly - all 24 files download with matching checksums and 14 layout checks pass inside REAPER. Easiest install: right-click the repo in ReaPack and choose Install All.
+
+FIVE FAILURES CAUGHT BEFORE THEY HIT YOU
 - ReaImGui renamed two things the apps use. Palette & Look, Track Settings Transfer and Stem Print would ALL have crashed the moment you opened them. Fixed.
 - The test harness looked for the apps in the wrong folder - the exact bug that stops it working on any second machine.
 - StageRig muted only the patch folder, not the tracks inside. First switch of a set would have misbehaved.
