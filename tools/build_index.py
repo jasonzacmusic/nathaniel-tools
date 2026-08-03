@@ -584,7 +584,47 @@ def collect() -> list[Package]:
 
         packages.append(pkg)
 
+    warn_missing_libraries(packages)
     return packages
+
+
+# A bare quoted module name, i.e. the argument to require. Written this way so
+# it also catches the pcall(require, "nph_safe") form used throughout the suite,
+# while never matching a path inside a message string like "NPH/lib/nph_safe.lua".
+REQUIRE_CALL = re.compile(r"""["'](nph_[a-z0-9_]+)["']""")
+
+
+def warn_missing_libraries(packages: list[Package]) -> None:
+    """
+    Warn when a script `require`s an NPH library it does not @provides.
+
+    ReaPack installs exactly the files a package declares. A script that loads
+    nph_safe but never provides it installs cleanly and then fails at run time
+    with "could not load its shared library" - which looks like a bug in the
+    script rather than a packaging mistake, so it is worth catching here.
+
+    Note that ReaPack gives each package exclusive ownership of its target
+    paths, so two packages in the same category cannot both provide the same
+    library file. When a second script in a category needs a shared library,
+    the library has to become its own package.
+    """
+    for pkg in packages:
+        with open(os.path.join(ROOT, pkg.rel), "r", encoding="utf-8", errors="replace") as fh:
+            body = fh.read()
+        # Only names that really are Lua modules in NPH/lib/ - this must not
+        # fire on a JSFX or plugin name passed to TrackFX_AddByName.
+        needed = {
+            lib for lib in set(REQUIRE_CALL.findall(body))
+            if os.path.exists(os.path.join(ROOT, "NPH", "lib", lib + ".lua"))
+        }
+        if not needed:
+            continue
+        shipped = {os.path.splitext(os.path.basename(p.src_rel))[0] for p in pkg.provides}
+        for lib in sorted(needed - shipped):
+            sys.stderr.write(
+                f"warning: {pkg.rel} requires '{lib}' but does not @provides it - "
+                f"installing this package alone will fail at run time\n"
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -645,7 +685,9 @@ def build(packages: list[Package]) -> ET.ElementTree:
                     s_attrs["platform"] = p.platform
                 if p.ptype and p.ptype != pkg.type:
                     s_attrs["type"] = p.ptype
-                if p.sections:
+                # "main" is only effective on script files - a JS effect or a
+                # theme can never be in the Action List, so never label one.
+                if p.sections and (p.ptype or pkg.type) == "script":
                     s_attrs["main"] = " ".join(p.sections)
                 s_attrs["hash"] = multihash_sha256(blob_at(commit, p.src_rel))
                 src_el = ET.SubElement(ver_el, "source", s_attrs)

@@ -286,9 +286,9 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:22:38Z">
+      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:25:13Z">
         <changelog><![CDATA[0.1.0 - first version.]]></changelog>
-        <source main="main" hash="1220549e7b3669e7d06e24e252a32c895f96d0fcedfb9e3f12a94eb7bc1592c2689e">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/NPH/jsfx/nph_note_tracker.jsfx</source>
+        <source hash="1220ec78bcd7f01f8bc058d4af6bbfc897480736bf208979b62cf83a5e40a1f8c16b">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/4445cbcec523306eb2ee4eb68057d55dd6238c1f/NPH/jsfx/nph_note_tracker.jsfx</source>
       </version>
     </reapack>
   </category>
