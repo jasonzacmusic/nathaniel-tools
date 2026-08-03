@@ -74,14 +74,57 @@ hanging open.
 Requires **[ReaImGui](https://github.com/cfillion/reaimgui)** and
 **[SWS](https://sws-extension.org)**.
 
-Until the ReaPack repository is live:
+### With ReaPack (recommended)
+
+This repository **is** a ReaPack repository. In REAPER:
+
+1. **Extensions → ReaPack → Import repositories…**
+2. Paste this URL and click OK:
+
+```
+https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml
+```
+
+3. **Extensions → ReaPack → Browse packages…**, filter on `NPH`, and install what you want.
+
+Every package is signed with a SHA-256 checksum and every download is pinned to a git
+commit, so an installed version can never change underneath you. Updates arrive through
+**Extensions → ReaPack → Synchronize packages**.
+
+### By hand
 
 1. Copy `NPH/` and `apps/` somewhere REAPER can see them.
 2. *Actions → Show action list → New action… → Load ReaScript*, and pick each app.
 3. Or run `tests/harness.lua` once — it registers everything for you and verifies the install.
 
-Every script carries ReaPack metadata headers already, so publishing is a matter of wiring
-`reapack-index` into CI.
+---
+
+## Publishing (maintainer notes)
+
+`index.xml` at the repository root is the ReaPack index. It is rebuilt automatically by
+`.github/workflows/reapack.yml` on every push to `main`, and can be rebuilt by hand:
+
+```bash
+python3 tools/build_index.py --check   # validate headers, write nothing
+python3 tools/build_index.py           # rebuild index.xml
+```
+
+`tools/build_index.py` is a dependency-free implementation of the
+[ReaPack Index Format](https://codeberg.org/cfillion/reapack/wiki/Index-Format); CI also
+runs cfillion's own [`reapack-index`](https://github.com/cfillion/reapack-index) in
+`--check` mode as a second opinion on the headers. Install
+[Pandoc](https://pandoc.org) if you want the About panels rendered locally.
+
+Two rules for anything new that lands in `NPH/` or `apps/`:
+
+- Every `.lua` / `.jsfx` file needs a metadata header with at least `@version`, or it
+  fails the build. See the
+  [Packaging Documentation](https://github.com/cfillion/reapack-index/wiki/Packaging-Documentation).
+- Shared libraries carry `@noindex` and are listed in the `@provides` of the script that
+  needs them, so they install alongside it instead of appearing as their own package.
+
+Files must live in a subdirectory — ReaPack never indexes files at the repository root,
+and the directory name becomes the category shown in ReaPack.
 
 ---
 
