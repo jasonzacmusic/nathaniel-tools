@@ -1,0 +1,273 @@
+{
+  "concert": "Lagori 2026 Minimal.concert",
+  "concert_path": "/Users/jasonzac/Music/MainStage/Lagori 2026 Minimal.concert",
+  "generated_from": "stagerig_spec.py",
+  "patches": [
+    {
+      "name": "Aasma",
+      "path": "Darbari / Aasma",
+      "colour": [
+        138,
+        92,
+        240
+      ],
+      "tempo": 120.0,
+      "tracks": [
+        {
+          "name": "Synth",
+          "muted_in_concert": false,
+          "was": [
+            "Alchemy"
+          ],
+          "fx": "Omnisphere",
+          "kind": "substituted",
+          "why": "general synth layer",
+          "matched_on": "strip name 'synth'"
+        },
+        {
+          "name": "Strings",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler"
+          ],
+          "fx": "BBC Symphony Orchestra",
+          "kind": "substituted",
+          "why": "Spitfire BBC SO - strings section",
+          "matched_on": "strip name 'strings'"
+        },
+        {
+          "name": "Full Strings",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler"
+          ],
+          "fx": "BBC Symphony Orchestra",
+          "kind": "substituted",
+          "why": "Spitfire BBC SO - strings section",
+          "matched_on": "strip name 'strings'"
+        },
+        {
+          "name": "Cellos",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler"
+          ],
+          "fx": "BBC Symphony Orchestra",
+          "kind": "substituted",
+          "why": "BBC SO - celli",
+          "matched_on": "strip name 'cellos'"
+        },
+        {
+          "name": "Violas Staccato",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler"
+          ],
+          "fx": "BBC Symphony Orchestra",
+          "kind": "substituted",
+          "why": "BBC SO - violas, staccato articulation",
+          "matched_on": "strip name 'violas'"
+        },
+        {
+          "name": "Synth",
+          "muted_in_concert": false,
+          "was": [
+            "Alchemy"
+          ],
+          "fx": "Omnisphere",
+          "kind": "substituted",
+          "why": "general synth layer",
+          "matched_on": "strip name 'synth'"
+        },
+        {
+          "name": "ORCH",
+          "muted_in_concert": false,
+          "was": [
+            "(none detected)"
+          ],
+          "fx": "BBC Symphony Orchestra",
+          "kind": "substituted",
+          "why": "orchestral layer",
+          "matched_on": "strip name 'orch'"
+        },
+        {
+          "name": "Piano",
+          "muted_in_concert": true,
+          "was": [
+            "Pianoteq 8"
+          ],
+          "fx": "Pianoteq 8",
+          "kind": "exact",
+          "why": "exact match",
+          "matched_on": "strip name 'piano'"
+        }
+      ]
+    },
+    {
+      "name": "Humma Humma G -> A",
+      "path": "Darbari / Humma Humma G -> A",
+      "colour": [
+        62,
+        201,
+        192
+      ],
+      "tempo": 110.0,
+      "tracks": [
+        {
+          "name": "Horn",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler"
+          ],
+          "fx": "Kontakt 7",
+          "kind": "substituted",
+          "why": "brass section",
+          "matched_on": "strip name 'horn'"
+        },
+        {
+          "name": "Horns High",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler"
+          ],
+          "fx": "Kontakt 7",
+          "kind": "substituted",
+          "why": "brass section",
+          "matched_on": "strip name 'horn'"
+        },
+        {
+          "name": "Organ",
+          "muted_in_concert": false,
+          "was": [
+            "Vintage B3"
+          ],
+          "fx": "Omnisphere",
+          "kind": "substituted",
+          "why": "STAND-IN for B3 - see organ_note. Pick an organ patch in Omnisphere.",
+          "matched_on": "strip name 'organ'"
+        }
+      ]
+    },
+    {
+      "name": "BRAHMA Gm",
+      "path": "60 90 / BRAHMA Gm",
+      "colour": [
+        84,
+        208,
+        122
+      ],
+      "tempo": 118.0,
+      "tracks": [
+        {
+          "name": "Inst 39",
+          "muted_in_concert": false,
+          "was": [
+            "Vintage B3"
+          ],
+          "fx": "Omnisphere",
+          "kind": "substituted",
+          "why": "STAND-IN. Analog Lab V will not instantiate in REAPER on this Mac (probed, not assumed), so there is no real B3 available. Omnisphere has organ patches and loads reliably. Replace with Arturia B-3 V or IK B-3X when one is working.",
+          "matched_on": "Vintage B3"
+        },
+        {
+          "name": "Clav",
+          "muted_in_concert": false,
+          "was": [
+            "Pianoteq 8"
+          ],
+          "fx": "Pianoteq 8",
+          "kind": "exact",
+          "why": "Pianoteq clavinet model (the concert already used Pianoteq here)",
+          "matched_on": "strip name 'clav'"
+        }
+      ]
+    },
+    {
+      "name": "Upright",
+      "path": "Darbari / Upright",
+      "colour": [
+        232,
+        178,
+        58
+      ],
+      "tempo": 115.0,
+      "tracks": [
+        {
+          "name": "Piano",
+          "muted_in_concert": false,
+          "was": [
+            "Pianoteq 8"
+          ],
+          "fx": "Pianoteq 8",
+          "kind": "exact",
+          "why": "exact match",
+          "matched_on": "strip name 'piano'"
+        }
+      ]
+    },
+    {
+      "name": "Maari Kannu",
+      "path": "Maari Kannu / Maari Kannu",
+      "colour": [
+        224,
+        69,
+        90
+      ],
+      "tempo": 106.0,
+      "tracks": [
+        {
+          "name": "Grand Organ",
+          "muted_in_concert": false,
+          "was": [
+            "Vintage B3"
+          ],
+          "fx": "Omnisphere",
+          "kind": "substituted",
+          "why": "STAND-IN for B3 - see organ_note. Pick an organ patch in Omnisphere.",
+          "matched_on": "strip name 'organ'"
+        },
+        {
+          "name": "Clav",
+          "muted_in_concert": false,
+          "was": [
+            "Pianoteq 8"
+          ],
+          "fx": "Pianoteq 8",
+          "kind": "exact",
+          "why": "Pianoteq clavinet model (the concert already used Pianoteq here)",
+          "matched_on": "strip name 'clav'"
+        },
+        {
+          "name": "Horn Section",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler",
+            "Studio Horns"
+          ],
+          "fx": "Kontakt 7",
+          "kind": "substituted",
+          "why": "brass section",
+          "matched_on": "strip name 'horn'"
+        },
+        {
+          "name": "Horn Section",
+          "muted_in_concert": false,
+          "was": [
+            "Sampler",
+            "Studio Horns"
+          ],
+          "fx": "Kontakt 7",
+          "kind": "substituted",
+          "why": "brass section",
+          "matched_on": "strip name 'horn'"
+        }
+      ]
+    }
+  ],
+  "not_found": [],
+  "summary": {
+    "exact": 4,
+    "substituted": 14,
+    "needs_sound": 0
+  }
+}

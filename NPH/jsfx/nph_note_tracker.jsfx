@@ -1,0 +1,84 @@
+desc:NPH Note Tracker & Input Gate
+author: Jason Zac / Nathaniel School of Music
+about:
+  Sits at the TOP of a patch track's FX chain, before the instrument.
+
+  Two jobs, both of which exist so a patch change mid-phrase does not produce a
+  stuck note or a chopped-off chord:
+
+    1. GATE - when closed, new note-ons stop here. Note-offs, pitch bend and
+       CC still pass, so whatever is already sounding finishes naturally. This
+       is what "let the outgoing patch ring" actually means in practice.
+
+    2. RELEASE - flush. Emits a matching note-off for every note this track
+       still believes is held, plus CC64 = 0, plus all-notes-off. Called by
+       StageRig once the tail has decayed, immediately before the track is
+       muted.
+
+  Why this is JSFX and not Lua: reaper.defer runs at UI cadence, roughly
+  15-30 ms, and it is not sample-accurate. Note handling at that resolution
+  produces audible artefacts and, worse, races that leave notes hanging. The
+  decision to switch can live in Lua; the note path may not.
+
+  Tracking is per MIDI channel and per note, so a release cannot send a
+  note-off for something that was never pressed - which would otherwise cut a
+  note the player is still holding on another channel.
+
+slider1:gate=0<0,1,1{Open (notes pass),Closed (hold new notes)}>Gate
+slider2:release=0<0,1,1{-,FLUSH}>Release held notes
+slider3:sustain_thru=1<0,1,1{No,Yes}>Pass sustain pedal
+
+// held[ch*128 + note] = 1 while the note is down.
+// 16 channels * 128 notes = 2048 slots.
+@init
+HELD = 0;
+NSLOTS = 2048;
+pedal_down = 0;
+last_release = 0;
+
+@slider
+// A rising edge on the release slider is the trigger; the host may re-send the
+// same value repeatedly, and re-flushing every block would spam note-offs.
+release > 0 && last_release == 0 ? flush_pending = 1;
+last_release = release;
+
+@block
+flush_pending ? (
+  ch = 0;
+  loop(16,
+    note = 0;
+    loop(128,
+      HELD[ch * 128 + note] > 0 ? (
+        midisend(0, 0x80 + ch, note, 0);
+        HELD[ch * 128 + note] = 0;
+      );
+      note += 1;
+    );
+    // sustain off, then all-notes-off as a belt-and-braces second pass
+    midisend(0, 0xB0 + ch, 64, 0);
+    midisend(0, 0xB0 + ch, 123, 0);
+    ch += 1;
+  );
+  pedal_down = 0;
+  flush_pending = 0;
+);
+
+while (midirecv(offset, msg1, msg2, msg3)) (
+  status = msg1 & 0xF0;
+  chan   = msg1 & 0x0F;
+  pass   = 1;
+
+  status == 0x90 && msg3 > 0 ? (
+    // note on
+    gate ? pass = 0 : HELD[chan * 128 + msg2] = 1;
+  ) : status == 0x80 || (status == 0x90 && msg3 == 0) ? (
+    // note off (either form). Always passes - a gate must never trap a
+    // note-off, or the note it belongs to hangs forever.
+    HELD[chan * 128 + msg2] = 0;
+  ) : status == 0xB0 && msg2 == 64 ? (
+    pedal_down = msg3 >= 64;
+    sustain_thru ? pass = 1 : pass = 0;
+  );
+
+  pass ? midisend(offset, msg1, msg2, msg3);
+);

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MIDI Batch Export — NPH REAPER Suite</title>
+<meta name="description" content="Export many REAPER MIDI items, tracks or regions as separate .mid files in one pass, with pattern-based sequential names and no modal dialog.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="amber">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>MIDI Batch Export</p>
+    <p class="eyebrow"><span class="tick"></span>Amber · delivery</p>
+    <h1>MIDI Batch Export</h1>
+    <p class="lede">
+      Seven MIDI files, numbered, in one press. It does not drive REAPER's export action
+      at all — it reads the MIDI and writes the Standard MIDI Files itself, which is the
+      only reason a batch is possible.
+    </p>
+    <div class="appmeta">
+      <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      <span>NPH/NPH_MIDI Batch Export.lua</span>
+      <span>Requires ReaImGui</span>
+      <span>Dockable</span>
+    </div>
+  </div>
+
+  <article>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>How do I render seven MIDI files with contiguous names?</p>
+      <cite>Jason, mid-session, on a project with seven riffs in it</cite>
+    </blockquote>
+    <p>
+      The answer at the time was: you can't. REAPER's
+      <strong>File &rarr; Export project MIDI</strong> — action <code>40849</code> — writes
+      <em>one</em> file, from a time selection, behind a modal dialog. Seven files means
+      making seven time selections, opening the dialog seven times, and typing seven
+      filenames by hand without making a mistake.
+    </p>
+    <p>
+      That is a five-minute job that happens roughly fifty times a year in a teaching and
+      content pipeline, and every one of those five minutes is spent typing.
+    </p>
+
+    <h2>The fix</h2>
+    <p>
+      This app never touches <code>40849</code>. It reads the MIDI directly with
+      <code>MIDI_GetAllEvts</code> and writes the SMF bytes itself.
+    </p>
+    <p>
+      That turns out to be cleaner than it sounds, because the offsets REAPER hands back
+      are already delta times in the take's own PPQ — they map one-for-one onto SMF delta
+      times. No requantising, no rounding, no drift accumulating across a long take. Tempo
+      and time signature go in as meta events, so the files open at the right speed in
+      Logic, MuseScore, Sibelius or anything else that reads a standard file.
+    </p>
+
+    <h3>Verified, not assumed</h3>
+    <p>
+      Writing your own file format is the kind of thing that works for the first three
+      files and then quietly produces something a real parser rejects. So the writer was
+      tested against one: a generated file was parsed back with an independent MIDI
+      reader, and chunk lengths, tempo, time signature and every note's pitch and timing
+      survived the round trip exactly.
+    </p>
+
+    <h2>What it does</h2>
+    <ul class="speclist">
+      <li><b>Export from</b><span>Selected items · every item on the selected tracks · regions · every MIDI item in the project.</span></li>
+      <li><b>Naming</b><span>A pattern with <code>$num</code>, <code>$name</code>, <code>$track</code>, <code>$project</code> and <code>$bpm</code>, plus a start number and digit padding.</span></li>
+      <li><b>Preview</b><span>Every row shows the exact filename it is going to write before you commit to anything.</span></li>
+      <li><b>Collision guard</b><span>If two rows would resolve to the same filename it refuses to run, rather than silently overwriting the first with the second.</span></li>
+      <li><b>Fidelity</b><span>Tempo and time signature written as meta events. Delta times taken straight from the take's PPQ.</span></li>
+      <li><b>No modal</b><span>One press, one pass, no dialog per file.</span></li>
+    </ul>
+
+    <p>
+      In practice that means a pattern like <code>Riff $num - $name</code> with a start
+      number of 1 and two-digit padding turns seven riff items into
+      <code>Riff 01 - Intro.mid</code> through <code>Riff 07 - Outro.mid</code>, and you
+      can see all seven names before anything is written to disk.
+    </p>
+
+    <h2>Install</h2>
+    <p class="dek">In REAPER: <strong>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</strong></p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
+    <p class="dek">
+      Then <strong>Actions &rarr; Show action list</strong>, filter for <code>NPH</code>,
+      and run <code>Script: NPH MIDI Batch Export</code>. The ReaPack index is not live
+      yet — <a href="/#install">manual install instructions are on the home page</a>.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">1.0.0 <span>First public release</span></div>
+        <ul>
+          <li>New app. Written during the audit, in response to a question REAPER had no answer to.</li>
+          <li>Own SMF writer, proven by an independent round-trip parse.</li>
+          <li>Filename collision guard and full pre-write preview.</li>
+          <li>Rows key on track GUID and item GUID, never on raw pointers.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/stem-print-and-handoff"><span class="role">Amber · delivery</span><b>Stem Print &amp; Handoff &rarr;</b></a>
+      <a href="/apps/speed-layer"><span class="role">Green · 12 scripts</span><b>The speed layer &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

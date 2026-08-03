@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The speed layer — NPH REAPER Suite</title>
+<meta name="description" content="Twelve small REAPER scripts that replaced twelve custom actions, each of which had a real, diagnosed bug. The keys, the root causes and the test status.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="green">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>The speed layer</p>
+    <p class="eyebrow"><span class="tick"></span>Green · twelve scripts</p>
+    <h1>The speed layer</h1>
+    <p class="lede">
+      Twelve keys I press hundreds of times a day. They used to be custom actions.
+      Nine of the twelve were doing something I had not asked for, and I had been
+      pressing them for years without knowing.
+    </p>
+    <div class="appmeta">
+      <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      <span>NPH/ — 12 scripts</span>
+      <span>No ReaImGui needed</span>
+      <span>Key bindings included</span>
+    </div>
+  </div>
+
+  <article>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>Solo selected doesn't work. Record toggle doesn't work at all. And the tempo one is very tough to lock.</p>
+      <cite>Jason, listing complaints that turned out to have three completely different causes</cite>
+    </blockquote>
+    <p>
+      A REAPER custom action is a list of command IDs run in order. It is a genuinely good
+      feature and it has one property that makes it dangerous over a decade of use:
+      <strong>nothing tells you what a step does.</strong> A step you added in 2019 because
+      a forum post recommended it will still be there in 2026, still running, still
+      flipping something you have forgotten about.
+    </p>
+    <p>
+      So all fourteen of mine were read line by line, every numeric command ID resolved to
+      its real name with <code>CF_GetCommandText</code>, and the results were worse than I
+      expected.
+    </p>
+
+    <h2>What each one was actually doing</h2>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Key</th><th>Script</th><th>What the old action did</th><th>Harness</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">A</td><td>Solo Focus</td>
+            <td><code>_SWS_SELTRKWITEM</code> cleared the track selection whenever no item was selected, so the solo landed on nothing.</td>
+            <td class="mono"><span class="ok">3/3</span></td>
+          </tr>
+          <tr>
+            <td class="mono">&#8679;A</td><td>Record Arm Toggle</td>
+            <td>It had no key binding anywhere. It had never run. And the XOR variant that did run called <code>_XENAKIOS_PANTRACKSCENTER</code>, centring pans on every press.</td>
+            <td class="mono"><span class="ok">3/3</span></td>
+          </tr>
+          <tr>
+            <td class="mono">NumPad 6</td><td>FX Float Toggle</td>
+            <td>Targeted the last-touched track rather than the selection, and closed everything before toggling — so it could only ever open, never close.</td>
+            <td class="mono"><span class="ok">3/3</span></td>
+          </tr>
+          <tr>
+            <td class="mono">&#8679;F</td><td>FX Open / Close All</td>
+            <td>Eight independent toggles instead of one decision, so a mixed open/closed state got inverted rather than unified.</td>
+            <td class="mono"><span class="ok">5/5</span></td>
+          </tr>
+          <tr>
+            <td class="mono">N &nbsp;/&nbsp; B</td><td>Region Next / Previous</td>
+            <td>Step 2 was <code>_BR_OPTIONS_MOVE_CUR_ON_TIME_SEL</code> — a <em>global preference toggle</em>. The key behaved differently every other press, and changed a setting for the whole application.</td>
+            <td class="mono"><span class="ok">7/7</span></td>
+          </tr>
+          <tr>
+            <td class="mono">M</td><td>Marker at Bar</td>
+            <td>Snapped to the arrange grid (1/8 note here), not the bar line. Worse, it could grab a <em>different</em> existing marker and drag it to the mouse, destroying it silently.</td>
+            <td class="mono"><span class="ok">4/4</span></td>
+          </tr>
+          <tr>
+            <td class="mono">&#8984;&#8679;T</td><td>Tempo at Bar</td>
+            <td><code>40256</code> inserts at the raw, unquantized edit cursor. Every press landed milliseconds from the last, so the tempo map filled with near-duplicates that all looked like the same bar and fought each other.</td>
+            <td class="mono"><span class="pend">modal</span></td>
+          </tr>
+          <tr>
+            <td class="mono">&#8679;&#8963;M</td><td>MIDI Render</td>
+            <td>Wired straight to raw <code>40849</code>, bypassing its own time-selection guard entirely.</td>
+            <td class="mono"><span class="pend">modal</span></td>
+          </tr>
+          <tr>
+            <td class="mono">&#8984;&#8963;V</td><td>Flush Paste</td>
+            <td>Step 5 was <code>40022</code> — <em>Save project as</em>. A modal file browser, on every single press.</td>
+            <td class="mono"><span class="pend">modal</span></td>
+          </tr>
+          <tr>
+            <td class="mono">&#8679;D</td><td>Duplicate Track</td>
+            <td>Step 8 was <code>40065</code>, which clears only the <em>selected</em> envelope — so duplicates kept all their automation. It also cleared record-arm on every track in the project and never put it back.</td>
+            <td class="mono"><span class="ok">7/7</span></td>
+          </tr>
+          <tr>
+            <td class="mono">E</td><td>Unsolo &amp; Unselect</td>
+            <td>Worked. Extended to clear record-arm and leftover solo-defeat as well, so it is a real panic key.</td>
+            <td class="mono"><span class="ok">4/4</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Why they are scripts and not fixed custom actions</h2>
+    <p>
+      Because a custom action cannot be fixed. This is the single most useful thing the
+      whole project discovered, and it is not documented anywhere:
+    </p>
+    <p>
+      Importing a <code>.ReaperKeyMap</code> whose <code>ACT</code> line has the
+      <strong>same step count</strong> as an existing action of the same name is a
+      <strong>complete no-op</strong> — REAPER silently ignores it. Importing one with a
+      <strong>different step count</strong> creates a <strong>brand new action called
+      &ldquo;Name (2)&rdquo;</strong> with a fresh GUID, and leaves the original untouched
+      and still bound.
+    </p>
+    <p>
+      <code>KEY</code> lines always merge correctly. <code>ACT</code> lines never modify.
+      So there is no path from a broken custom action to a fixed one — you can only replace
+      it with a script and move the key. That decision is why this suite is scripts all the
+      way down, and it is written up in full on
+      <a href="/why">why these exist</a>.
+    </p>
+
+    <h2>The keys</h2>
+    <p class="dek">
+      Non-traditional on purpose — single unmodified letters for the things pressed most,
+      so the left hand never leaves the keyboard. Three of them also answer to MIDI CC,
+      because the controller is closer than the keyboard when tracking.
+    </p>
+    <ul class="speclist">
+      <li><b>A</b><span>Solo Focus — exclusive solo, follows item selection when there is one, press again to clear.</span></li>
+      <li><b>Shift A</b><span>Record Arm Toggle — exclusive arm on the selection, press again to disarm everything. Also Cmd Opt Ctrl U, and MIDI CC 75.</span></li>
+      <li><b>NumPad 6</b><span>FX Float Toggle — genuine XOR float of FX 1 across the selected tracks.</span></li>
+      <li><b>Shift F</b><span>FX Open / Close All — one unified decision across every FX on the selection. Also MIDI CC 76.</span></li>
+      <li><b>N &nbsp;/&nbsp; B</b><span>Region Next / Previous — no global preferences touched. Previous snaps to the current region's start first.</span></li>
+      <li><b>M</b><span>Marker at Bar — the true measure boundary from <code>TimeMap_GetMeasureInfo</code>, integer measures, no float drift. Uses the play cursor while playing. Also MIDI CC 23.</span></li>
+      <li><b>Cmd Shift T</b><span>Tempo at Bar — inserts or edits a tempo and time-signature marker welded to the bar line.</span></li>
+      <li><b>Shift Ctrl M</b><span>MIDI Render — builds a time selection only if there is not one, prefers selected items, falls back to the project extent, then exports.</span></li>
+      <li><b>Cmd Ctrl V</b><span>Flush Paste — clear, paste, strip envelopes, save silently. Never opens Save As.</span></li>
+      <li><b>Shift D</b><span>Duplicate Track — same FX, routing, name and colour; no items, no automation; armed and ready. The rest of the session keeps its arm state.</span></li>
+      <li><b>E</b><span>Unsolo &amp; Unselect — the panic key. Clears solo, record-arm, track and item selection, and the time selection.</span></li>
+    </ul>
+
+    <div class="note">
+      <b>What is not proven</b>
+      <p>
+        Three of these open a modal dialog, which means they cannot be driven by an
+        automated harness. <strong>They have been verified by code review, not by hand:</strong>
+        the <code>&#8984;&#8679;T</code> tempo input box, <code>&#8679;&#8963;M</code> MIDI
+        Render against action <code>40849</code>, and <code>&#8984;&#8963;V</code> Flush
+        Paste in a real saved project — where the pass condition is that no dialog appears
+        at all.
+      </p>
+      <p>
+        Everything else in the table above is covered by the harness, which builds a
+        scratch project in its own tab and closes it afterwards.
+      </p>
+    </div>
+
+    <h2>Install</h2>
+    <p class="dek">In REAPER: <strong>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</strong></p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
+    <p class="dek">
+      All twelve appear in the action list under <code>NPH</code>. Bind them however suits
+      your hands — the layout above is mine, not a recommendation. The ReaPack index is not
+      live yet; <a href="/#install">manual install instructions are on the home page</a>.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">1.0.0 <span>First public release</span></div>
+        <ul>
+          <li>All twelve custom actions replaced with scripts, each with its root cause documented at the top of the file.</li>
+          <li>Duplicate Track no longer disarms the whole project — arm state is snapshotted by GUID and restored.</li>
+          <li>Solo Focus no longer moves the edit cursor to the mouse and starts playback. The flag is at the top of the file if you want it back.</li>
+          <li>Flush Paste guards on the project having a file on disk, so it can no longer pop the Save As dialog it exists to remove.</li>
+          <li>Tempo at Bar reads tempo from <code>TimeMap_GetMeasureInfo</code> after <code>TimeMap_GetDividedBpmAtTime</code> was measured to return the project-start tempo regardless of position.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/sections-and-time"><span class="role">Green · in development</span><b>Sections &amp; Time &rarr;</b></a>
+      <a href="/apps/palette-and-look"><span class="role">Teal · look</span><b>Palette &amp; Look &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

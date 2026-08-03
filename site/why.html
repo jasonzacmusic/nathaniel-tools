@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Why these exist — NPH REAPER Suite</title>
+<meta name="description" content="The custom-action audit: fourteen REAPER custom actions read line by line, the bugs found in nine of them, and three REAPER APIs that do not do what they appear to do.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<meta property="og:title" content="Why these exist — NPH REAPER Suite">
+<meta property="og:description" content="Fourteen custom actions, read line by line. Nine were doing something nobody asked for. Here is the forensic write-up.">
+<meta property="og:type" content="article">
+</head>
+<body data-accent="violet">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps">Apps</a>
+      <a href="/why" aria-current="page">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs">Engineering<span class="sep">/</span>The audit</p>
+    <h1>Why these exist</h1>
+    <p class="lede">
+      I did not set out to build a suite. I set out to find why three keyboard shortcuts I
+      had used for years were behaving differently on different days. Fourteen custom
+      actions later, nine of them were doing something I had never asked for.
+    </p>
+    <div class="appmeta">
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>16 files audited line by line</span>
+      <span>68 automated checks</span>
+    </div>
+  </div>
+
+  <article>
+
+    <p>
+      A REAPER custom action is a list of command IDs, run in order. It is one of the best
+      features in the program and it has one property that makes it quietly dangerous over
+      a decade of use: <strong>nothing in the interface tells you what a step does.</strong>
+      You see a number. A step you added in 2019 because a forum post recommended it is
+      still there in 2026, still running, still doing whatever it does, in a chain you now
+      press two hundred times a day without looking.
+    </p>
+    <p>
+      The tool that ends that is <code>CF_GetCommandText</code>, which resolves a numeric
+      command ID to its actual name. It should be the first thing anyone reaches for and it
+      is not — I cost myself two wrong bug theories by reasoning about what a number
+      probably meant instead of asking.
+    </p>
+
+    <hr>
+
+    <h2>Part one — the actions were lying</h2>
+
+    <h3>A key that centred every pan</h3>
+    <p>
+      The complaint was that record-arm &ldquo;destroyed the mix&rdquo;. It did. The XOR
+      record-arm chain contained <code>_XENAKIOS_PANTRACKSCENTER</code>. Every press reset
+      the pan on the tracks it touched. There is no reason for a record-arm action to touch
+      pan; it was almost certainly copied in from somewhere years ago to solve a different
+      problem and never removed.
+    </p>
+    <p>
+      The replacement script is eleven lines and does exactly one thing. The test asserts
+      the pan value is <em>byte-identical</em> before and after.
+    </p>
+
+    <h3>A key that changed a global preference</h3>
+    <p>
+      Region Switch behaved differently every other press. Step 2 was
+      <code>_BR_OPTIONS_MOVE_CUR_ON_TIME_SEL</code> — a <strong>toggle of a global REAPER
+      preference</strong>. So the action alternated between two behaviours, and as a side
+      effect it left a setting for the entire application flipped from wherever you had put
+      it.
+    </p>
+    <p>
+      This is the most instructive bug in the whole audit, because there is no way to
+      notice it. The key mostly works. The preference change is invisible. You conclude
+      REAPER is flaky.
+    </p>
+
+    <h3>A key that had never run</h3>
+    <p>
+      &ldquo;Record toggle doesn't work at all&rdquo; had the least interesting root cause
+      available: <strong>it had no key binding anywhere.</strong> Not a broken binding — no
+      binding. I had been pressing a key that was bound to something else entirely and
+      attributing the result to the wrong action.
+    </p>
+
+    <h3>A key that disarmed 452 tracks</h3>
+    <p>
+      Duplicate Track cleared <code>I_RECARM</code> on <strong>every track in the
+      project</strong> and never restored it. The intent had been narrow — stop the new
+      duplicate inheriting record-arm — and the implementation was global.
+    </p>
+    <p>
+      On a small session you would never notice. On the 452-track live rig, one press
+      silently destroys the entire record setup, with nothing on screen to tell you it
+      happened. Arm state is now snapshotted by GUID and restored exactly, except for the
+      new duplicates, which stay armed on purpose.
+    </p>
+
+    <h3>A key that moved the edit cursor to the mouse</h3>
+    <p>
+      Solo Focus had an audition behaviour: on solo, jump the edit cursor to the mouse
+      position and start playback. If the pointer happened to be over the wrong bar — or
+      over a docked window — you lost your place in the session and the transport ran.
+    </p>
+    <p>
+      That now defaults to off, with the flag and the reasoning at the top of the file.
+      This is the difference between a bug and a decision: the behaviour was intentional
+      once, and the fix is not to delete it but to stop it being the default.
+    </p>
+
+    <h3>A key that opened the dialog it existed to avoid</h3>
+    <p>
+      Flush Paste was rewritten specifically to replace <code>40022</code>
+      (<em>Save project as&hellip;</em>, a modal file browser on every single press) with
+      <code>40026</code>, the silent save.
+    </p>
+    <p>
+      Except that a silent save on a project that has never been written to disk
+      <em>also</em> opens Save As. On a fresh untitled session the rewrite reproduced the
+      exact bug it was written to remove. It now checks whether the project has a file, and
+      if it does not, skips the save and says why in one sentence.
+    </p>
+
+    <h3>A marker key that could destroy a different marker</h3>
+    <p>
+      Marker at Bar's predecessor inserted at the raw edit cursor and then ran
+      <code>_BR_CLOSEST_PROJ_MARKER_MOUSE_SNAP</code>. Two problems. It snapped to the
+      <strong>arrange grid</strong> — set to <code>0.125</code> here, an eighth note — and
+      not to the bar. And because it operates on the closest marker to the mouse, it could
+      pick up an <em>existing, unrelated</em> marker and drag it to the pointer, silently.
+    </p>
+    <p>
+      The replacement computes the true measure boundary from
+      <code>TimeMap_GetMeasureInfo</code> using integer measures, so there is no float drift
+      to accumulate, and inserts there. While the transport is running it uses the play
+      cursor, so markers can be dropped live.
+    </p>
+
+    <hr>
+
+    <h2>The discovery that decided the architecture</h2>
+    <p>
+      Having found the bugs, the obvious next move is to fix the custom actions and
+      re-import them as a <code>.ReaperKeyMap</code>. That does not work, and the reason it
+      does not work is not documented anywhere I could find. Measured behaviour:
+    </p>
+    <ul>
+      <li>
+        An <code>ACT</code> line whose <strong>step count matches</strong> an existing
+        action of the same name is a <strong>complete no-op.</strong> REAPER silently
+        ignores it. No error, no warning, no change.
+      </li>
+      <li>
+        An <code>ACT</code> line whose <strong>step count differs</strong> creates a
+        <strong>brand new action named &ldquo;Name (2)&rdquo;</strong> with a fresh GUID.
+        The original is untouched and still bound to your key.
+      </li>
+      <li>
+        <code>KEY</code> lines always merge correctly.
+      </li>
+    </ul>
+    <p>
+      In other words: <strong>a custom action can never be modified by import.</strong> You
+      can only replace it with a script and move the key across. That single finding is why
+      this entire suite is ReaScript, and why the keymap files that ship with it contain
+      <code>KEY</code> lines and nothing else.
+    </p>
+    <p>
+      It also explains a pile of orphaned actions named <em>Region Switch (2)</em> and
+      <em>XOR Record Arm (2)</em> that had accumulated in the action list over the years —
+      the residue of every previous attempt to fix these by import.
+    </p>
+
+    <hr>
+
+    <h2>Part two — the apps could kill REAPER</h2>
+
+    <blockquote>
+      <p>It crashes when I delete or modify tracks.</p>
+      <cite>The complaint that turned the audit into a rewrite</cite>
+    </blockquote>
+
+    <p>
+      REAPER frees a <code>MediaTrack*</code> the instant the track is deleted. Handing a
+      freed pointer to any REAPER API faults inside REAPER's own C++.
+    </p>
+    <p>
+      <strong>Lua's <code>pcall</code> cannot catch that.</strong> This is the part worth
+      internalising if you write ReaScript at all. <code>pcall</code> catches Lua errors. A
+      native memory fault is not a Lua error — the host process dies, taking every unsaved
+      project in every tab with it. Two of the three apps had their draw loop wrapped in
+      <code>pcall</code>, which looked like a safety net and was false comfort.
+    </p>
+    <p>
+      Both apps cached raw track pointers in their row list and dereferenced them every
+      frame to draw. Deleting, undoing or reordering a track with the window open was a
+      guaranteed crash, not an intermittent one.
+    </p>
+    <p>
+      <a href="/apps/stem-print-and-handoff">Stem Print</a> had the worse version: its
+      restore pass wrote through pointers captured <em>before</em> a multi-minute render,
+      and that pass ran <strong>outside</strong> the error handler. A fault part-way through
+      would leave the remainder of the session stuck at unity gain and centre pan, silently,
+      with the log reporting a completed render.
+    </p>
+
+    <h3>The fix, and why it is a library</h3>
+    <p>
+      <code>GetTrackGUID</code> is the only stable identity in REAPER. It survives delete,
+      undo, reorder, tab switching and save-reload. So: store GUIDs, resolve them to
+      pointers immediately before use, validate with <code>ValidatePtr2</code>, and never
+      hold a pointer across a defer frame.
+    </p>
+    <p>
+      That work already existed — in exactly one of the three apps, where it had been
+      written to fix a crash, and from where it had never been copied. Pointer safety was
+      per-app folklore. It is now <code>NPH/lib/nph_safe.lua</code>, with the reasoning
+      written into the file so the next person does not have to rediscover it the expensive
+      way, and every app in the suite is built on it.
+    </p>
+    <p>
+      It was proved rather than argued: with a window open on its track list, a track was
+      deleted through the API. Old code, guaranteed crash. Observed: the row rendered as a
+      red <em>(deleted)</em> tombstone and REAPER kept running.
+    </p>
+
+    <hr>
+
+    <h2>Part three — three APIs that are not what they look like</h2>
+
+    <h3>1. The change watchdog that had never fired</h3>
+    <p>
+      All three apps watched for project changes with
+      <code>GetProjectStateChangeCount</code>. It was probed directly:
+    </p>
+    <pre><code>insert a track   -> 8
+rename a track   -> 8
+delete a track   -> 8</code></pre>
+    <p>
+      <strong>It does not move for track changes.</strong> Which means every auto-refresh
+      in the suite had never fired once — including Track Settings Transfer's
+      &ldquo;Auto-sync&rdquo;, whose own header claimed it rebuilt the list whenever you
+      added, deleted or renamed a track. Delete a track in the source project and the list
+      just sat there until you hit Rescan.
+    </p>
+    <p>
+      I only caught it because the crash fix looked broken: after deleting a track the row
+      showed a tombstone instead of disappearing, and a renamed track still read
+      &ldquo;Track 3&rdquo;. The tombstone was the safety net working correctly. The refresh
+      behind it had been dead the entire time.
+    </p>
+    <p>
+      All apps now diff a cheap signature of the track list — count, GUID, name, folder
+      depth — throttled to four times a second, which stays free even on the 452-track rig.
+    </p>
+
+    <h3>2. <code>ValidatePtr2</code> rejects <code>0</code></h3>
+    <p>
+      <code>0</code> is ReaScript's standard shorthand for &ldquo;the current
+      project&rdquo;. Almost every REAPER API accepts it. <code>ValidatePtr2</code> does
+      not — pass it <code>0</code> and it returns false.
+    </p>
+    <p>
+      Which means the guard <code>if projAlive(0) then</code>, written in the ordinary
+      idiom, silently returns false for everything and the app does nothing at all. The
+      harness caught this on its first run against the new safety library. Any future app
+      using the normal idiom would have hit it.
+    </p>
+
+    <h3>3. <code>TimeMap_GetDividedBpmAtTime</code> reports the wrong tempo</h3>
+    <p>
+      It returns the <strong>project-start tempo regardless of the position you pass</strong>,
+      even after <code>UpdateTimeline()</code>. It reported 120 at a point where the measure
+      map said 140. The consequence in practice was that the tempo dialog prefilled the
+      wrong BPM as soon as a project had more than one tempo marker.
+    </p>
+    <p>
+      The order that actually works: <code>TimeMap_GetMeasureInfo(0, m)</code> — the
+      <strong>sixth return value</strong> is the tempo — then
+      <code>TimeMap_GetTimeSigAtTime</code>, then <code>Master_GetTempo</code> as a last
+      resort.
+    </p>
+
+    <h3>And the one that broke the fix for the fix</h3>
+    <p>
+      The complaint here was &ldquo;tempo is very tough to lock&rdquo;. My first theory was
+      that <code>SetTempoTimeSigMarker</code> with <code>ptidx = -1</code> stacked duplicate
+      markers. Measured, in test pass 5, verbatim from the results file:
+    </p>
+    <pre><code>ptidx=-1 on an occupied bar: ok=true  2 -&gt; 2 markers, bar6 now 150.0 bpm
+PASS  Tempo: ptidx=-1 on an occupied bar REPLACES, does not stack</code></pre>
+    <p>
+      So the theory was wrong. The real mechanism was the old chain's step
+      <code>40256</code>, which inserts a tempo marker at the <strong>raw, unquantized edit
+      cursor.</strong> Every press lands a few milliseconds from the last one, so the tempo
+      map accumulates near-duplicates that all <em>look</em> like they are on the same bar
+      and fight each other. Quantize the insert to the bar line and the cause disappears.
+    </p>
+    <p>
+      Then the fix silently did nothing, because of this:
+    </p>
+    <pre><code>[1] ok=true tpos=10.0 mpos=5 bpos=1e-11 bpm=140.0 sig=4/4 lin=false</code></pre>
+    <p>
+      <code>GetTempoTimeSigMarker</code> returns <code>beatpos = 1e-11</code>, not
+      <code>0</code>, for a marker sitting <em>exactly</em> on a bar line. So the obvious
+      locate rule — <code>if measurepos == bar and beatpos == 0</code> — never matches, ever.
+      The first version of the fix found nothing and inserted instead of editing, which is
+      the same bug wearing a different hat. Match with a tolerance and cross-check on time.
+    </p>
+
+    <h3>A bonus: the harmless step that was one character from a disaster</h3>
+    <p>
+      Flush Paste's chain contained a blind press of <code>41052</code>.
+      <code>CF_GetCommandText</code> says:
+    </p>
+    <pre><code>41052 = Item edit: Enable relative grid snap     <- a SETTER, idempotent
+41053 = Item edit: Disable relative grid snap
+41054 = Item edit: Toggle relative grid snap
+1157  = Options: Toggle snapping</code></pre>
+    <p>
+      <code>41052</code> <em>enables</em>. It is idempotent, so pressing it blind is
+      harmless. Had anyone helpfully &ldquo;fixed&rdquo; it to <code>41054</code> — which
+      is what it looks like it should be — it would have flipped relative snap on every
+      single press.
+    </p>
+    <p>
+      Its state is also unreadable by the obvious means:
+      <code>GetToggleCommandState(41052)</code> returns <code>-1</code>, so any guard of the
+      form <code>if GetToggleCommandState(41052) ~= 1</code> is always true. And it is not
+      in the project file either — the <code>GRID</code> line was byte-identical across
+      toggles, because the setting is <strong>global, not per project.</strong> The only
+      readable source is SWS: <code>SNM_GetIntConfigVar("relsnap", 0)</code>.
+    </p>
+
+    <hr>
+
+    <h2>How any of this is known</h2>
+    <p>
+      Not by watching. The ReaScript console is effectively unreadable through a screenshot
+      and impossible to assert against. Everything here was established with a file-based
+      harness: a Lua script registered as an action, which runs each script under test,
+      asserts project state, and writes <code>PASS</code> / <code>FAIL</code> lines to a
+      text file. Then you read the text file.
+    </p>
+    <p>
+      <strong>Files are the only reliable channel between REAPER and anything outside it.</strong>
+    </p>
+    <p>
+      The harness builds its scratch project <em>in its own tab</em> and closes it
+      afterwards, so it never touches the project you had open. It registers all sixteen
+      files, compiles each one, deletes a track behind an app's back and asserts that every
+      safe accessor returns a clean default rather than faulting, checks the change
+      signature moves on delete, exercises the folder normaliser, and returns you to the tab
+      you started on.
+    </p>
+    <pre><code>$ lua tests/hierarchy_test.lua
+31 passed, 0 failed
+
+REAPER 7.77, in-app harness
+68 passed, 0 failed</code></pre>
+    <p>
+      Two of the failures in the very first pass were not bugs at all: this machine has a
+      default track FX chain, so every newly inserted track already carries a plugin, and my
+      assertions had counted on zero. Any test that counts FX has to probe the baseline at
+      runtime. Pass four came back 11 passed, 5 failed and told me that two of my theories
+      were wrong — which is the most useful result the harness has produced, and the reason
+      the two paragraphs above say &ldquo;my first theory was wrong&rdquo; instead of
+      quietly not mentioning it.
+    </p>
+
+    <hr>
+
+    <h2>The ledger</h2>
+    <p class="dek">What is proven, and what is not. This is the part most tool sites leave out.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Claim</th><th>Evidence</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>The apps cannot crash REAPER on track delete</td>
+            <td>Harness deletes a track behind the app's back and asserts clean defaults; reproduced by hand with the window open.</td>
+            <td class="mono"><span class="ok">Proven live</span></td>
+          </tr>
+          <tr>
+            <td>Folder edits cannot leave a folder unclosed</td>
+            <td>31 pure-Lua checks on the level arithmetic, runnable without REAPER, including a regression test for the one real bug found.</td>
+            <td class="mono"><span class="ok">Proven</span></td>
+          </tr>
+          <tr>
+            <td>The MIDI writer produces valid Standard MIDI Files</td>
+            <td>Generated file parsed back with an independent reader; chunk lengths, tempo, time signature and every note survived exactly.</td>
+            <td class="mono"><span class="ok">Proven</span></td>
+          </tr>
+          <tr>
+            <td>Change detection fires on insert, rename and delete</td>
+            <td>Verified live: renaming a track updates instantly, a deleted row disappears cleanly.</td>
+            <td class="mono"><span class="ok">Proven live</span></td>
+          </tr>
+          <tr>
+            <td>The three modal keyboard actions behave correctly</td>
+            <td>Cannot be automated — they open dialogs. Reviewed line by line; not yet hand-verified end to end.</td>
+            <td class="mono"><span class="pend">Reviewed only</span></td>
+          </tr>
+          <tr>
+            <td>Stem Print's render pass is correct</td>
+            <td>Restore path and pointer safety tested. No full multi-minute print of a real session has been checked file by file.</td>
+            <td class="mono"><span class="pend">Not verified</span></td>
+          </tr>
+          <tr>
+            <td>Palette &amp; Look's naming and palette surfaces</td>
+            <td>Compile clean and are reviewed. Not exercised end to end in a real session.</td>
+            <td class="mono"><span class="pend">Not verified</span></td>
+          </tr>
+          <tr>
+            <td>StageRig switches patches indistinguishably from MainStage</td>
+            <td>The app is not built. The concert decoder is, and the architecture is settled.</td>
+            <td class="mono"><span class="no">Not claimed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      That last row is the point of this page. Everything here is free and open source, so
+      the only thing worth anything is whether you can trust the description. Which means
+      the descriptions have to include the parts that are not finished.
+    </p>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/#apps"><span class="role">The suite</span><b>All eight apps &rarr;</b></a>
+      <a href="/apps/speed-layer"><span class="role">Green · 12 scripts</span><b>The speed layer &rarr;</b></a>
+      <a href="/#install"><span class="role">Free, MIT</span><b>Install it &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Folders &amp; Flow — NPH REAPER Suite</title>
+<meta name="description" content="Fix, build, dissolve, move and isolate REAPER track folders. Edits nesting levels, never I_FOLDERDEPTH, so the output is well-formed by construction.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="green">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>Folders &amp; Flow</p>
+    <p class="eyebrow"><span class="tick"></span>Green · structure</p>
+    <h1>Folders &amp; Flow</h1>
+    <p class="lede">
+      Every folder operation REAPER makes awkward — take one track out, fix wrong
+      nesting, dissolve without deleting, move a whole subtree — done on nesting
+      levels, so the arithmetic cannot come out wrong.
+    </p>
+    <div class="appmeta">
+      <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      <span>NPH/NPH_Folders and Flow.lua</span>
+      <span>Requires ReaImGui</span>
+      <span>No SWS dependency</span>
+    </div>
+  </div>
+
+  <article>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>I dragged one track out of a folder and now everything below it is inside something else.</p>
+      <cite>The failure mode this app exists to remove</cite>
+    </blockquote>
+    <p>
+      REAPER does not store folders as a tree. It stores an integer per track,
+      <code>I_FOLDERDEPTH</code>: <code>1</code> opens a folder, <code>0</code> continues,
+      and a negative number closes as many folders as its magnitude. The structure you see
+      in the track panel is the running sum of that column.
+    </p>
+    <p>
+      Which means every folder script that edits depths in place has the same failure:
+      a local change that looks correct leaves the arithmetic unbalanced further down.
+      The folder never closes, REAPER silently swallows the rest of the session into it,
+      and there is no error — just a session that is now shaped wrong.
+    </p>
+
+    <h2>The fix</h2>
+    <p>
+      <strong>This app never edits <code>I_FOLDERDEPTH</code>.</strong> It converts the
+      depth column into nesting levels, performs the edit on the levels, then regenerates
+      every depth in the project from the levels it just computed.
+    </p>
+    <p>
+      The distinction matters more than it sounds. Depths are relative and only make sense
+      as a running total, so a local edit has non-local consequences. Levels are absolute
+      per track, so an edit is exactly as local as it looks. The regenerated depth column
+      always balances — it is <em>not possible</em> for this app to leave a folder hanging
+      open, regardless of what you ask it to do.
+    </p>
+    <p>
+      The arithmetic lives in <code>NPH/lib/nph_hierarchy.lua</code> and is covered by 31
+      checks that run in plain Lua with REAPER nowhere in sight:
+    </p>
+    <pre><code>$ lua tests/hierarchy_test.lua
+31 passed, 0 failed</code></pre>
+
+    <h3>A real bug those tests caught</h3>
+    <p>
+      Building a folder from a ticked selection originally incremented the child levels
+      <em>relatively</em>. On tracks that were already nested, the sanitiser then clamped
+      inconsistently and the new folder quietly swallowed everything after it — the exact
+      bug the whole design was meant to make unreachable, arriving through the front door.
+    </p>
+    <p>
+      The fix shifts the children so the shallowest one sits exactly one level below the
+      new parent, preserving their relative nesting, and explicitly pops everything after
+      the range back out to the parent's level. There is a regression test for it, and it
+      runs on every push.
+    </p>
+
+    <h2>What it does</h2>
+    <ul class="speclist">
+      <li><b>Repair</b><span>Recompute the whole folder column from levels. Fixes a session whose nesting has already gone wrong.</span></li>
+      <li><b>Make folder</b><span>Turn the ticked tracks into a folder, correctly, whatever their existing nesting.</span></li>
+      <li><b>Indent / outdent</b><span>Promote or demote a track and everything underneath it.</span></li>
+      <li><b>Remove from folder</b><span>Take a single track out without dragging anything.</span></li>
+      <li><b>Dissolve</b><span>Remove the folder, promote the children. Nothing is deleted.</span></li>
+      <li><b>Move subtree</b><span>Move a whole folder, children and all, up or down.</span></li>
+      <li><b>Isolate</b><span>Focus one folder and get the rest of the session out of the way.</span></li>
+      <li><b>Auto-group</b><span>Build folders from track names — adjacent tracks sharing a first word become a folder.</span></li>
+      <li><b>Drag-paint</b><span>Contiguous mouse-drag select and deselect down the list.</span></li>
+    </ul>
+
+    <div class="note">
+      <b>Built without SWS on purpose</b>
+      <p>
+        <code>_SWS_UNFOLDER</code> and <code>_SWS_MOVETRACKUP</code> /
+        <code>_SWS_MOVETRACKDOWN</code> are not present on every SWS install — they are
+        absent on the machine this was written on. Rather than depend on actions that may
+        not exist, all of it is implemented in the hierarchy library.
+      </p>
+      <p>
+        Your existing folder shortcuts are untouched: <code>F</code> still runs
+        <code>_SWS_MAKEFOLDER</code>, <code>`</code> still runs <code>1042 41665</code>.
+      </p>
+    </div>
+
+    <h2>Install</h2>
+    <p class="dek">In REAPER: <strong>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</strong></p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
+    <p class="dek">
+      Then <strong>Actions &rarr; Show action list</strong>, filter for <code>NPH</code>,
+      and run <code>Script: NPH Folders &amp; Flow</code>. The ReaPack index is not live
+      yet — <a href="/#install">manual install instructions are on the home page</a>.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">1.0.0 <span>First public release</span></div>
+        <ul>
+          <li>First app built on the shared safety spine from the start rather than retrofitted.</li>
+          <li>All edits performed on nesting levels; depth column regenerated wholesale, so output is well-formed by construction.</li>
+          <li>31 pure-Lua checks on the hierarchy maths, runnable without REAPER.</li>
+          <li>Regression test for the make-folder-over-existing-nesting bug.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/track-settings-transfer"><span class="role">Green · structure</span><b>Track Settings Transfer &rarr;</b></a>
+      <a href="/apps/sections-and-time"><span class="role">Green · in development</span><b>Sections &amp; Time &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

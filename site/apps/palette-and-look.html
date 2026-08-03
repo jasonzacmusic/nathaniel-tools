@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Palette &amp; Look — NPH REAPER Suite</title>
+<meta name="description" content="Colour and name REAPER tracks from meaning rather than by hand: an ordered rule table, synonym-aware families, structure detection, and a live watcher.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="teal">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>Palette &amp; Look</p>
+    <p class="eyebrow"><span class="tick"></span>Teal · look</p>
+    <h1>Palette &amp; Look</h1>
+    <p class="lede">
+      Colour and name tracks from <em>meaning</em> — a rule table you write once, a
+      synonym layer that catches everything you did not think of, and structure it
+      works out for itself.
+    </p>
+    <div class="appmeta">
+      <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      <span>apps/Palette and Look.lua</span>
+      <span>Requires ReaImGui</span>
+      <span>Dockable</span>
+    </div>
+  </div>
+
+  <article>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>It crashes when I delete or modify tracks.</p>
+      <cite>Jason, reporting the bug that started the audit</cite>
+    </blockquote>
+    <p>
+      That was the headline complaint, and it was real, guaranteed, and worse than it
+      sounded. But the reason to open this app in the first place is duller and more
+      constant: a forty-track session takes twenty minutes to colour and name by hand,
+      you do it slightly differently every time, and three weeks later you still cannot
+      find the guitars at a glance.
+    </p>
+    <p>
+      REAPER's own answer is SWS Auto Color, which matches on a filter string and stops
+      there. It has no idea that <code>Gtr Dist L</code>, <code>OD Rhythm</code> and
+      <code>Les Paul</code> are all the same instrument, and no idea which of your
+      tracks is a bus and which is a genuine FX return.
+    </p>
+
+    <h2>The fix</h2>
+    <p>
+      Three layers, evaluated in order, so the specific always beats the general:
+    </p>
+    <ol>
+      <li>
+        <strong>My rules.</strong> An ordered filter&rarr;colour table, like SWS Auto
+        Color but with real match modes — contains, word, starts, exact, Lua pattern,
+        role — plus live auto-apply and a one-click import of your existing
+        <code>sws-autocoloricon.ini</code>, so nothing you already built is lost.
+      </li>
+      <li>
+        <strong>Families.</strong> A synonym-aware fallback. The three guitar names
+        above all resolve to guitar without you writing a rule for any of them.
+      </li>
+      <li>
+        <strong>Structure.</strong> Folders, buses and true FX returns — detected from
+        the receives and the plugins actually on the chain, not from what the track
+        happens to be called.
+      </li>
+    </ol>
+    <p>
+      Markers and regions are coloured from the same rule table, so the timeline and the
+      track panel agree with each other. Naming works the same way: rename from the
+      items on a track, name and colour in one pass, number a selection, apply a palette
+      or a gradient, shade or saturate what is already there. One undo point per action.
+    </p>
+
+    <h3>The crash, and what it really was</h3>
+    <p>
+      The track list stored REAPER's raw <code>MediaTrack*</code> and read it again on
+      <em>every frame</em> to draw the colour swatches. REAPER frees that pointer the
+      instant you delete a track. Deleting, undoing or reordering with the window open
+      handed a dangling pointer straight into REAPER's C++ and killed the application,
+      taking any unsaved project with it.
+    </p>
+    <p>
+      The draw loop was wrapped in <code>pcall</code>, which looks protective and is not:
+      <strong>Lua cannot catch a native memory fault.</strong> It was false comfort.
+    </p>
+    <p>
+      Rows now key on the track's GUID, which survives delete, undo, reorder and reload.
+      The pointer is resolved and validated with <code>ValidatePtr2</code> immediately
+      before each use and never held across a frame. This was proved live rather than
+      reasoned about: with the window open on the Tracks tab, a track was deleted through
+      the API. The row rendered as a red <em>(deleted)</em> tombstone and REAPER kept
+      running.
+    </p>
+
+    <h2>What it does</h2>
+    <ul class="speclist">
+      <li><b>Rules</b><span>Ordered filter&rarr;colour table with six match modes, live auto-apply, and import from <code>sws-autocoloricon.ini</code>.</span></li>
+      <li><b>Families</b><span>Synonym-aware instrument fallback for anything your rules missed.</span></li>
+      <li><b>Structure</b><span>Folders, buses and real FX returns detected from routing and FX chains.</span></li>
+      <li><b>Naming</b><span>Rename from items, name and colour together, numbering, prefixes.</span></li>
+      <li><b>Palettes</b><span>The theme-adjuster palettes plus your own, gradients, shade and saturate.</span></li>
+      <li><b>Markers</b><span>Markers and regions coloured by the same rules as the tracks.</span></li>
+      <li><b>Live watcher</b><span>Watches the track list and applies rules to tracks as they appear.</span></li>
+      <li><b>Export</b><span>Writes your rule table back out to SWS format.</span></li>
+    </ul>
+
+    <div class="note">
+      <b>Not yet exercised</b>
+      <p>
+        The crash safety and the change watchdog were verified live. Several surfaces
+        have not been: name-from-items, name-and-colour, numbering, the Palettes tab,
+        the Tools tab, the Tracks tab's Now&rarr;Want flow, the live watcher, docking and
+        the SWS export. They are written and they compile; they have not been run
+        through a real session end to end.
+      </p>
+      <p>
+        The contiguous drag-paint selection that every app in the suite is supposed to
+        have exists in Track Settings Transfer and has not been retrofitted here yet.
+      </p>
+    </div>
+
+    <h2>Install</h2>
+    <p class="dek">In REAPER: <strong>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</strong></p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
+    <p class="dek">
+      Then <strong>Actions &rarr; Show action list</strong>, filter for <code>NPH</code>,
+      and run <code>Script: NPH Palette &amp; Look</code>. The ReaPack index is not live
+      yet — <a href="/#install">manual install instructions are on the home page</a>.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">1.0.0 <span>First public release</span></div>
+        <ul>
+          <li>Crash hardened: rows key on track GUID, pointers resolved and validated per frame, deleted tracks show as tombstones instead of faulting.</li>
+          <li>Change detection rebuilt on a track-list signature after <code>GetProjectStateChangeCount</code> was measured not to move on insert, rename or delete.</li>
+          <li>Moved onto the shared <code>nph_safe</code> library.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/folders-and-flow"><span class="role">Green · structure</span><b>Folders &amp; Flow &rarr;</b></a>
+      <a href="/apps/speed-layer"><span class="role">Green · 12 scripts</span><b>The speed layer &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

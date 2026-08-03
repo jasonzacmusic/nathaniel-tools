@@ -350,15 +350,153 @@ def raw_url(commit: str, path_rel: str) -> str:
 # markdown -> RTF (ReaPack renders the about section as RTF)
 # ---------------------------------------------------------------------------
 
-def to_rtf(markdown: str) -> str | None:
-    try:
-        res = subprocess.run(
-            ["pandoc", "--from=commonmark", "--to=rtf", "--standalone"],
-            input=markdown, capture_output=True, text=True, check=True,
-        )
-    except (FileNotFoundError, subprocess.CalledProcessError):
-        return None
-    return res.stdout
+RTF_HEAD = (
+    r"{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}"
+    "\n" r"{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}" "\n"
+    r"\widowctrl\hyphauto" "\n\n"
+)
+
+INLINE = re.compile(
+    r"\[(?P<ltext>[^\]]+)\]\((?P<lurl>[^)\s]+)[^)]*\)"
+    r"|(?P<code>`+)(?P<ctext>.+?)(?P=code)"
+    r"|\*\*(?P<b>[^*]+)\*\*"
+    r"|(?<!\w)\*(?P<i>[^*]+)\*(?!\w)"
+)
+
+
+def rtf_escape(s: str) -> str:
+    out = []
+    for ch in s:
+        if ch in "\\{}":
+            out.append("\\" + ch)
+        elif ord(ch) < 128:
+            out.append(ch)
+        else:
+            # RTF wants signed 16-bit unicode escapes, each with an ASCII fallback.
+            n = ord(ch)
+            out.append(r"\u%d?" % (n - 65536 if n > 32767 else n))
+    return "".join(out)
+
+
+def rtf_inline(text: str) -> str:
+    """Render inline markdown (links, code, bold, italic) as RTF."""
+    out, pos = [], 0
+    for m in INLINE.finditer(text):
+        out.append(rtf_escape(text[pos:m.start()]))
+        if m.group("ltext") is not None:
+            url, label = rtf_escape(m.group("lurl")), rtf_escape(m.group("ltext"))
+            out.append("{\\field{\\*\\fldinst{HYPERLINK \"" + url + "\"}}"
+                       "{\\fldrslt{\\ul " + label + "}}}")
+        elif m.group("ctext") is not None:
+            out.append(r"{\f1 %s}" % rtf_escape(m.group("ctext")))
+        elif m.group("b") is not None:
+            out.append(r"{\b %s}" % rtf_escape(m.group("b")))
+        else:
+            out.append(r"{\i %s}" % rtf_escape(m.group("i")))
+        pos = m.end()
+    out.append(rtf_escape(text[pos:]))
+    return "".join(out)
+
+
+def to_rtf(markdown: str) -> str:
+    """
+    Render a practical subset of Markdown as RTF for ReaPack's About panel.
+
+    Deliberately not shelling out to pandoc: the output of this function is
+    committed to the repository, so it has to be byte-identical on a laptop and
+    on a CI runner. Different pandoc builds are not, and the resulting churn
+    would have CI rewriting index.xml after every local run.
+
+    Handles headings, paragraphs, bullet and numbered lists, fenced and indented
+    code, block quotes, horizontal rules, pipe tables (flattened to lines), and
+    inline links / code / bold / italic. That is everything ReaPack's About panel
+    can usefully show.
+    """
+    paras: list[str] = []
+
+    def para(text: str, style: str = "") -> None:
+        if text.strip():
+            paras.append(r"{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 %s%s\par}" % (style, text))
+
+    lines = markdown.replace("\r\n", "\n").split("\n")
+    buf: list[str] = []
+    fence: str | None = None
+    code: list[str] = []
+
+    def flush() -> None:
+        if buf:
+            para(rtf_inline(" ".join(x.strip() for x in buf)))
+            buf.clear()
+
+    for line in lines:
+        stripped = line.strip()
+
+        if fence is not None:
+            if stripped.startswith(fence):
+                for c in code:
+                    para(r"{\f1 %s}" % rtf_escape(c) if c.strip() else r"{\f1  }")
+                code.clear()
+                fence = None
+            else:
+                code.append(line)
+            continue
+
+        m = re.match(r"^(```+|~~~+)", stripped)
+        if m:
+            flush()
+            fence = m.group(1)[:3]
+            continue
+
+        if not stripped:
+            flush()
+            continue
+
+        if re.fullmatch(r"(-{3,}|\*{3,}|_{3,})", stripped):
+            flush()
+            paras.append(r"{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}")
+            continue
+
+        m = re.match(r"^(#{1,6})\s+(.*)$", stripped)
+        if m:
+            flush()
+            level = len(m.group(1))
+            size = max(24, 40 - (level - 1) * 4)
+            para(rtf_inline(m.group(2).rstrip("#").strip()),
+                 r"\outlinelevel%d \b \fs%d " % (level - 1, size))
+            continue
+
+        m = re.match(r"^>\s?(.*)$", stripped)
+        if m:
+            flush()
+            para(rtf_inline(m.group(1)), r"\li360 \i ")
+            continue
+
+        m = re.match(r"^([-*+]|\d+[.)])\s+(.*)$", stripped)
+        if m:
+            flush()
+            bullet = "\\u8226 ?" if not m.group(1)[0].isdigit() else rtf_escape(m.group(1))
+            paras.append(
+                r"{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 %s\tab %s\par}"
+                % (bullet, rtf_inline(m.group(2)))
+            )
+            continue
+
+        if stripped.startswith("|"):
+            flush()
+            cells = [c.strip() for c in stripped.strip("|").split("|")]
+            if all(re.fullmatch(r":?-{2,}:?", c) for c in cells if c):
+                continue  # the ---|--- separator row
+            para(rtf_inline("  —  ".join(c for c in cells if c)), r"\li360 ")
+            continue
+
+        buf.append(stripped)
+
+    flush()
+    if fence is not None:
+        for c in code:
+            para(r"{\f1 %s}" % rtf_escape(c))
+
+    return RTF_HEAD + "\n".join(paras) + "\n}\n"
 
 
 # ---------------------------------------------------------------------------
@@ -486,9 +624,7 @@ def build(packages: list[Package]) -> ET.ElementTree:
                 add_links(meta, pkg.donations, "donation")
                 add_links(meta, pkg.screenshots, "screenshot")
                 if pkg.about:
-                    rtf = to_rtf(pkg.about)
-                    if rtf:
-                        ET.SubElement(meta, "description").text = rtf
+                    ET.SubElement(meta, "description").text = to_rtf(pkg.about)
 
             _, when = file_commit(pkg.rel)
             v_attrs = {"name": pkg.version}
@@ -529,13 +665,7 @@ def build(packages: list[Package]) -> ET.ElementTree:
     readme = os.path.join(ROOT, "README.md")
     if os.path.exists(readme):
         with open(readme, encoding="utf-8") as fh:
-            rtf = to_rtf(fh.read())
-        if rtf:
-            ET.SubElement(meta, "description").text = rtf
-        else:
-            sys.stderr.write(
-                "warning: pandoc not found, repository about section omitted\n"
-            )
+            ET.SubElement(meta, "description").text = to_rtf(fh.read())
 
     return ET.ElementTree(index)
 

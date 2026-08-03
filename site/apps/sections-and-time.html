@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sections &amp; Time — NPH REAPER Suite</title>
+<meta name="description" content="In development: one window for markers, regions, tempo maps and the per-track timebase in REAPER. What exists today, what is designed, and what is not decided.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="green">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>Sections &amp; Time</p>
+    <p class="eyebrow"><span class="tick"></span>Green · structure</p>
+    <h1>Sections &amp; Time</h1>
+    <p class="lede">
+      One window for the things that decide where you are in a song: markers, regions,
+      the tempo map, and the timebase setting that quietly makes all three behave
+      differently than you expect.
+    </p>
+    <div class="appmeta">
+      <span class="status dev"><span class="d"></span>In development</span>
+      <span>Designed, not built</span>
+      <span>Green · structure</span>
+    </div>
+  </div>
+
+  <article>
+
+    <div class="note">
+      <b>Status, stated plainly</b>
+      <p>
+        <strong>This app does not exist yet.</strong> The design is settled and the four
+        scripts it will absorb are shipping today as part of
+        <a href="/apps/speed-layer">the speed layer</a>. Nothing on this page is a
+        promise about a date.
+      </p>
+    </div>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>The marker looks like it's on the bar. It isn't. And I can't tell by looking.</p>
+      <cite>The class of bug this app is aimed at</cite>
+    </blockquote>
+    <p>
+      Markers, regions and tempo markers all sit on the timeline, and all three can land a
+      few milliseconds off a bar line without any visible sign. Zoom out and everything
+      looks aligned. Zoom in three months later, when you are cutting a lesson to the grid,
+      and it is not.
+    </p>
+    <p>
+      Three separate mechanisms cause it, and they are all invisible from the arrange view:
+    </p>
+    <ul>
+      <li>
+        <strong>Snapping obeys the arrange grid, not the bar.</strong> With a grid division
+        of <code>0.125</code>, a marker snap lands on the nearest eighth note. That is
+        usually not where the bar is.
+      </li>
+      <li>
+        <strong>Tempo markers insert at the raw edit cursor.</strong> Action
+        <code>40256</code> does not quantize. Press it twice and you have two markers
+        milliseconds apart, both looking like they are on the same bar, fighting each other.
+      </li>
+      <li>
+        <strong>The project timebase is not what you think.</strong>
+        <code>itemtimelock = 0</code> means the project is in <em>Time</em>, not
+        <em>Beats</em> — so items do not follow tempo changes. There is no obvious place
+        in REAPER's UI where a per-track answer to that question is visible.
+      </li>
+    </ul>
+
+    <h2>What exists today</h2>
+    <p>
+      The hard parts are already written and already shipping as keyboard scripts. This
+      app is the window around them, not new arithmetic:
+    </p>
+    <ul class="speclist">
+      <li><b>Marker at Bar</b><span>True measure boundary from <code>TimeMap_GetMeasureInfo</code> — integer measures, no float drift. Shipping.</span></li>
+      <li><b>Tempo at Bar</b><span>Insert or edit a tempo and time-signature marker welded to the bar line. Shipping.</span></li>
+      <li><b>Region Next / Previous</b><span>Move between regions without flipping a global preference. Shipping.</span></li>
+    </ul>
+
+    <h2>What is designed</h2>
+    <ul class="speclist">
+      <li><b>One window</b><span>Markers, regions and tempo markers in one editable list instead of three unrelated dialogs.</span></li>
+      <li><b>Named section types</b><span>The naming convention already used across eighty riff and lesson projects — <code>C202</code>, <code>V218</code>, <code>V127.3</code> — as first-class types rather than free text you have to spell right.</span></li>
+      <li><b>Timebase view</b><span>A per-track timebase column, so the <code>itemtimelock</code> trap is a thing you can see rather than a thing you discover.</span></li>
+      <li><b>Tempo map hygiene</b><span>Find near-duplicate tempo markers that look like one marker, and collapse them onto the bar line.</span></li>
+      <li><b>Bar-locked by default</b><span>Everything the app writes is quantized to the measure unless you explicitly ask otherwise.</span></li>
+    </ul>
+
+    <h2>What is not decided</h2>
+    <p>
+      Whether the section list should be able to <em>move</em> audio and MIDI along with a
+      section boundary, or only describe the timeline. Moving material is far more useful
+      and considerably more dangerous, and it is not a decision worth making before the
+      describing half has been used in real sessions for a while.
+    </p>
+
+    <h2>Install</h2>
+    <p class="dek">
+      There is nothing to install for this app yet. The three scripts above arrive with the
+      rest of the suite:
+    </p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
+    <p class="dek">
+      The ReaPack index is not live yet —
+      <a href="/#install">manual install instructions are on the home page</a>.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">Unreleased <span>In development</span></div>
+        <p>
+          Design settled: absorbs Marker at Bar, Tempo at Bar and Region Next/Previous,
+          adds named section types and a per-track timebase view. Will be built on the
+          shared safety spine, like every app after Folders &amp; Flow.
+        </p>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/speed-layer"><span class="role">Green · shipping</span><b>The speed layer &rarr;</b></a>
+      <a href="/apps/stagerig"><span class="role">Violet · in development</span><b>StageRig &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

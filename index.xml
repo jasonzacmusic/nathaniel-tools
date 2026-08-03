@@ -317,101 +317,81 @@ signature-based change detection, shared safety library.]]></changelog>
     <link href="https://www.nathanielschool.com">Nathaniel School of Music</link>
     <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-{\*\listtable{\list\listtemplateid1{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelindent0{\leveltext\'01\u8226 ?;}{\levelnumbers;}\fi-360\li360\lin360 }{\listname ;}\listid1}
-{\list\listtemplateid2{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelindent0{\leveltext\'01\u8226 ?;}{\levelnumbers;}\fi-360\li360\lin360 }{\listname ;}\listid2}
-{\list\listtemplateid3{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat3\levelindent0{\leveltext\'01\u8226 ?;}{\levelnumbers;}\fi-360\li360\lin360 }{\listname ;}\listid3}
-{\list\listtemplateid4{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelindent0{\leveltext\'01\u8226 ?;}{\levelnumbers;}\fi-360\li360\lin360 }{\listname ;}\listid4}
-{\list\listtemplateid5{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelindent0{\leveltext\'01\u8226 ?;}{\levelnumbers;}\fi-360\li360\lin360 }{\listname ;}\listid5}
-{\list\listtemplateid6{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelindent0{\leveltext\'01\u8226 ?;}{\levelnumbers;}\fi-360\li360\lin360 }{\listname ;}\listid6}
-}
-{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel0 \b \fs34 NPH REAPER Suite\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel0 \b \fs40 NPH REAPER Suite\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Dockable ReaImGui apps and a keyboard speed layer for REAPER, built by a working producer for his own sessions.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Jason Zac} \u183 ? {\field{\*\fldinst{HYPERLINK "https://www.nathanielschool.com"}}{\fldrslt{\ul
-Nathaniel School of Music
-}}}
- \u183 ? {\field{\*\fldinst{HYPERLINK "https://daw.nathanielschool.com"}}{\fldrslt{\ul
-daw.nathanielschool.com
-}}}
-\par}
-{\pard \ql \f0 \fs24 \sa180 \li720 \fi0 These exist because his own sessions were slow, not because anyone surveyed a market. Every app in here replaces a REAPER custom action that was quietly doing the wrong thing.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Jason Zac} \u183? {\field{\*\fldinst{HYPERLINK "https://www.nathanielschool.com"}}{\fldrslt{\ul Nathaniel School of Music}}} \u183? {\field{\*\fldinst{HYPERLINK "https://daw.nathanielschool.com"}}{\fldrslt{\ul daw.nathanielschool.com}}}\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i These exist because his own sessions were slow, not because anyone surveyed a market.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i Every app in here replaces a REAPER custom action that was quietly doing the wrong thing.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Status:} 68 automated checks passing, 0 failing, against REAPER 7.77 on macOS arm64.\par}
-{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 What's in it\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs30 Apps (dockable, ReaImGui, one accent colour each)\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 | App | Colour | What it does | |---|---|---| | {\b Folders & Flow} | green | Fix, build, dissolve, move and isolate track folders. Repairs a session whose folder maths has gone wrong. | | {\b Palette & Look} | violet | Colour and name tracks from {\i meaning} \u8212- rules, palettes, families, live watcher. | | {\b Track Settings Transfer} | violet | Pro-Tools style "Import Session Data" across project tabs, in both directions. | | {\b Stem Print & Handoff} | amber | Print stems in several modes and restore the session exactly afterwards. | | {\b MIDI Batch Export} | amber | Export many MIDI items/regions as separate {\f1 \fs24 .mid} files with pattern-based sequential names. |\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs30 The speed layer (12 scripts, keyboard-bound)\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Solo Focus \u183 ? Record Arm Toggle \u183 ? FX Float Toggle \u183 ? FX Open/Close All \u183 ? Region Next/Prev \u183 ? Marker at Bar \u183 ? Tempo at Bar \u183 ? MIDI Render \u183 ? Flush Paste \u183 ? Duplicate Track \u183 ? Unsolo & Unselect\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Each one replaced a custom action that had a real, diagnosed bug \u8212- a pan-destroying step, a global preference being toggled on every press, a marker snapping to the arrange grid instead of the bar line. The root causes are documented in {\f1 \fs24 docs/NPH_TECH_BRIEF.md}.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs30 The shared spine\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls1\ilvl0\tx360 {\listtext\tab \bullet \tab} {\b {\f1 \fs24 NPH/lib/nph_safe.lua}} \u8212- pointer safety and stable identity. The reason these apps cannot crash REAPER.\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls1\ilvl0\tx360 {\listtext\tab \bullet \tab} {\b {\f1 \fs24 NPH/lib/nph_hierarchy.lua}} \u8212- folder maths. Converts REAPER's {\f1 \fs24 I_FOLDERDEPTH} integers to nesting levels, edits there, and regenerates. Well-formed output by construction.\sa180\par}
-{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Two things that make this different from a folder of scripts\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs30 1. It cannot crash REAPER\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 REAPER frees a {\f1 \fs24 MediaTrack*} the instant the track is deleted. Handing a freed pointer to any REAPER API faults inside REAPER's own C++, and {\b Lua {\f1 \fs24 pcall} cannot catch it} \u8212- the host process dies, taking unsaved projects with it. Wrapping your draw loop in {\f1 \fs24 pcall} is false comfort.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Every app here stores {\b track GUIDs}, resolves them to pointers immediately before use, validates with {\f1 \fs24 ValidatePtr2}, and never holds a pointer across a defer frame. The test suite deletes a track behind an app's back and asserts that every accessor returns a clean default instead of faulting.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs30 2. Folder edits are well-formed by construction\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Folder scripts go wrong because they edit {\f1 \fs24 I_FOLDERDEPTH} in place: a local edit that looks right leaves the arithmetic unbalanced further down, and REAPER silently swallows the rest of the session into a folder.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 \fs24 nph_hierarchy} never edits depths. It converts to levels, edits there, and regenerates every depth. The output always balances \u8212- it is not possible for the app to leave a folder hanging open.\par}
-{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Install\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires {\b {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reaimgui"}}{\fldrslt{\ul
-ReaImGui
-}}}
-} and {\b {\field{\*\fldinst{HYPERLINK "https://sws-extension.org"}}{\fldrslt{\ul
-SWS
-}}}
-}.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs30 With ReaPack (recommended)\par}
+{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 What's in it\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 Apps (dockable, ReaImGui, one accent colour each)\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 App  \u8212?  Colour  \u8212?  What it does\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Folders & Flow}  \u8212?  green  \u8212?  Fix, build, dissolve, move and isolate track folders. Repairs a session whose folder maths has gone wrong.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Palette & Look}  \u8212?  violet  \u8212?  Colour and name tracks from {\i meaning} \u8212? rules, palettes, families, live watcher.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Track Settings Transfer}  \u8212?  violet  \u8212?  Pro-Tools style "Import Session Data" across project tabs, in both directions.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Stem Print & Handoff}  \u8212?  amber  \u8212?  Print stems in several modes and restore the session exactly afterwards.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b MIDI Batch Export}  \u8212?  amber  \u8212?  Export many MIDI items/regions as separate {\f1 .mid} files with pattern-based sequential names.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 The speed layer (12 scripts, keyboard-bound)\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Solo Focus \u183? Record Arm Toggle \u183? FX Float Toggle \u183? FX Open/Close All \u183? Region Next/Prev \u183? Marker at Bar \u183? Tempo at Bar \u183? MIDI Render \u183? Flush Paste \u183? Duplicate Track \u183? Unsolo & Unselect\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Each one replaced a custom action that had a real, diagnosed bug \u8212? a pan-destroying step, a global preference being toggled on every press, a marker snapping to the arrange grid instead of the bar line. The root causes are documented in {\f1 docs/NPH_TECH_BRIEF.md}.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 The shared spine\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `NPH/lib/nph_safe.lua`} \u8212? pointer safety and stable identity. The reason these apps\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 cannot crash REAPER.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `NPH/lib/nph_hierarchy.lua`} \u8212? folder maths. Converts REAPER's {\f1 I_FOLDERDEPTH} integers\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 to nesting levels, edits there, and regenerates. Well-formed output by construction.\par}
+{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Two things that make this different from a folder of scripts\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 1. It cannot crash REAPER\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 REAPER frees a {\f1 MediaTrack*} the instant the track is deleted. Handing a freed pointer to any REAPER API faults inside REAPER's own C++, and {\b Lua `pcall` cannot catch it} \u8212? the host process dies, taking unsaved projects with it. Wrapping your draw loop in {\f1 pcall} is false comfort.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Every app here stores {\b track GUIDs}, resolves them to pointers immediately before use, validates with {\f1 ValidatePtr2}, and never holds a pointer across a defer frame. The test suite deletes a track behind an app's back and asserts that every accessor returns a clean default instead of faulting.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 2. Folder edits are well-formed by construction\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Folder scripts go wrong because they edit {\f1 I_FOLDERDEPTH} in place: a local edit that looks right leaves the arithmetic unbalanced further down, and REAPER silently swallows the rest of the session into a folder.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 nph_hierarchy} never edits depths. It converts to levels, edits there, and regenerates every depth. The output always balances \u8212? it is not possible for the app to leave a folder hanging open.\par}
+{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Install\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires {\b [ReaImGui](https://github.com/cfillion/reaimgui)} and {\b [SWS](https://sws-extension.org)}.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 With ReaPack (recommended)\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 This repository {\b is} a ReaPack repository. In REAPER:\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls2\ilvl0\tx360 {\listtext\tab 1.\tab} {\b Extensions \u8594 ? ReaPack \u8594 ? Import repositories\u8230 ?}\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls2\ilvl0\tx360 {\listtext\tab 2.\tab} Paste this URL and click OK:\sa180\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \f1 \fs24 https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls3\ilvl0\tx360 {\listtext\tab 3.\tab} {\b Extensions \u8594 ? ReaPack \u8594 ? Browse packages\u8230 ?}, filter on {\f1 \fs24 NPH}, and install what you want.\sa180\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Every package is signed with a SHA-256 checksum and every download is pinned to a git commit, so an installed version can never change underneath you. Updates arrive through {\b Extensions \u8594 ? ReaPack \u8594 ? Synchronize packages}.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs30 By hand\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls4\ilvl0\tx360 {\listtext\tab 1.\tab} Copy {\f1 \fs24 NPH/} and {\f1 \fs24 apps/} somewhere REAPER can see them.\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls4\ilvl0\tx360 {\listtext\tab 2.\tab} {\i Actions \u8594 ? Show action list \u8594 ? New action\u8230 ? \u8594 ? Load ReaScript}, and pick each app.\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls4\ilvl0\tx360 {\listtext\tab 3.\tab} Or run {\f1 \fs24 tests/harness.lua} once \u8212- it registers everything for you and verifies the install.\sa180\par}
-{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Publishing (maintainer notes)\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 \fs24 index.xml} at the repository root is the ReaPack index. It is rebuilt automatically by {\f1 \fs24 .github/workflows/reapack.yml} on every push to {\f1 \fs24 main}, and can be rebuilt by hand:\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \f1 \fs24 python3 tools/build_index.py --check   # validate headers, write nothing\line
-python3 tools/build_index.py           # rebuild index.xml\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 \fs24 tools/build_index.py} is a dependency-free implementation of the {\field{\*\fldinst{HYPERLINK "https://codeberg.org/cfillion/reapack/wiki/Index-Format"}}{\fldrslt{\ul
-ReaPack Index Format
-}}}
-; CI also runs cfillion's own {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index"}}{\fldrslt{\ul
-{\f1 \fs24 reapack-index}
-}}}
- in {\f1 \fs24 --check} mode as a second opinion on the headers. Install {\field{\*\fldinst{HYPERLINK "https://pandoc.org"}}{\fldrslt{\ul
-Pandoc
-}}}
- if you want the About panels rendered locally.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Two rules for anything new that lands in {\f1 \fs24 NPH/} or {\f1 \fs24 apps/}:\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls5\ilvl0\tx360 {\listtext\tab \bullet \tab} Every {\f1 \fs24 .lua} / {\f1 \fs24 .jsfx} file needs a metadata header with at least {\f1 \fs24 @version}, or it fails the build. See the {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index/wiki/Packaging-Documentation"}}{\fldrslt{\ul
-Packaging Documentation
-}}}
-.\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls5\ilvl0\tx360 {\listtext\tab \bullet \tab} Shared libraries carry {\f1 \fs24 @noindex} and are listed in the {\f1 \fs24 @provides} of the script that needs them, so they install alongside it instead of appearing as their own package.\sa180\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Files must live in a subdirectory \u8212- ReaPack never indexes files at the repository root, and the directory name becomes the category shown in ReaPack.\par}
-{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Testing\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \f1 \fs24 lua tests/hierarchy_test.lua      # 31 checks, no REAPER needed\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Inside REAPER, run {\f1 \fs24 tests/harness.lua} from the action list \u8212- 68 checks including live crash-safety. It builds its scratch project {\b in its own tab} and closes it afterwards, so it never touches the project you had open. Results land in {\f1 \fs24 _nph_results.txt}.\par}
-{\pard \ql \f0 \fs24 \sa180 \li720 \fi0 Edit {\f1 \fs24 BASE} at the top of {\f1 \fs24 harness.lua} to point at your install path.\par}
-{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Two REAPER API traps documented here\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab {\b Extensions \u8594? ReaPack \u8594? Import repositories\u8230?}\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab Paste this URL and click OK:\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml}\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 3.\tab {\b Extensions \u8594? ReaPack \u8594? Browse packages\u8230?}, filter on {\f1 NPH}, and install what you want.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Every package is signed with a SHA-256 checksum and every download is pinned to a git commit, so an installed version can never change underneath you. Updates arrive through {\b Extensions \u8594? ReaPack \u8594? Synchronize packages}.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 By hand\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab Copy {\f1 NPH/} and {\f1 apps/} somewhere REAPER can see them.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab {\i Actions \u8594? Show action list \u8594? New action\u8230? \u8594? Load ReaScript}, and pick each app.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 3.\tab Or run {\f1 tests/harness.lua} once \u8212? it registers everything for you and verifies the install.\par}
+{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Publishing (maintainer notes)\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 index.xml} at the repository root is the ReaPack index. It is rebuilt automatically by {\f1 .github/workflows/reapack.yml} on every push to {\f1 main}, and can be rebuilt by hand:\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 python3 tools/build_index.py --check   # validate headers, write nothing}\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 python3 tools/build_index.py           # rebuild index.xml}\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 tools/build_index.py} is a dependency-free implementation of the {\field{\*\fldinst{HYPERLINK "https://codeberg.org/cfillion/reapack/wiki/Index-Format"}}{\fldrslt{\ul ReaPack Index Format}}} \u8212? Python 3 and {\f1 git}, nothing else, and byte-identical output on any machine. CI also runs cfillion's own {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index"}}{\fldrslt{\ul `reapack-index`}}} in {\f1 --check} mode as a second opinion on the headers.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Two rules for anything new that lands in {\f1 NPH/} or {\f1 apps/}:\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab Every {\f1 .lua} / {\f1 .jsfx} file needs a metadata header with at least {\f1 @version}, or it\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 fails the build. See the {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index/wiki/Packaging-Documentation"}}{\fldrslt{\ul Packaging Documentation}}}.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab Shared libraries carry {\f1 @noindex} and are listed in the {\f1 @provides} of the script that\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 needs them, so they install alongside it instead of appearing as their own package.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Files must live in a subdirectory \u8212? ReaPack never indexes files at the repository root, and the directory name becomes the category shown in ReaPack.\par}
+{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Testing\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 lua tests/hierarchy_test.lua      # 31 checks, no REAPER needed}\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Inside REAPER, run {\f1 tests/harness.lua} from the action list \u8212? 68 checks including live crash-safety. It builds its scratch project {\b in its own tab} and closes it afterwards, so it never touches the project you had open. Results land in {\f1 _nph_results.txt}.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i Edit {\f1 BASE} at the top of {\f1 harness.lua} to point at your install path.\par}
+{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Two REAPER API traps documented here\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Both cost real debugging time. Neither is in the official docs.\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls6\ilvl0\tx360 {\listtext\tab 1.\tab} {\b {\f1 \fs24 GetProjectStateChangeCount} does not detect track changes.} Measured in 7.77: it stayed on {\f1 \fs24 8} across insert, rename {\i and} delete. Any change-watchdog built on it never fires. Use a track-list signature instead.\par}
-{\pard \ql \f0 \fs24 \sa0 \li360 \fi-360\ls6\ilvl0\tx360 {\listtext\tab 2.\tab} {\b {\f1 \fs24 ValidatePtr2} rejects {\f1 \fs24 0}} \u8212- even though {\f1 \fs24 0} is ReaScript's shorthand for "the current project". Guards must special-case it or they return false for everything.\sa180\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 More in {\f1 \fs24 docs/NPH_TECH_BRIEF.md}.\par}
-{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\emdash\emdash\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Licence\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 MIT \u8212- see {\f1 \fs24 LICENSE}.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab {\b `GetProjectStateChangeCount` does not detect track changes.} Measured in 7.77: it\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 stayed on {\f1 8} across insert, rename {\i and} delete. Any change-watchdog built on it never fires. Use a track-list signature instead.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab {\b `ValidatePtr2` rejects `0`} \u8212? even though {\f1 0} is ReaScript's shorthand for "the\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 current project". Guards must special-case it or they return false for everything.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 More in {\f1 docs/NPH_TECH_BRIEF.md}.\par}
+{\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Licence\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 MIT \u8212? see {\f1 LICENSE}.\par}
 }
 ]]></description>
   </metadata>

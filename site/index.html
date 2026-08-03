@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NPH REAPER Suite — tools a working producer built for his own sessions</title>
+<meta name="description" content="A keyboard speed layer and dockable apps for REAPER, built by Jason Zac for his own sessions. Free, MIT, installed from inside REAPER via ReaPack.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<meta property="og:title" content="NPH REAPER Suite">
+<meta property="og:description" content="A keyboard speed layer and dockable apps for REAPER, built by Jason Zac for his own sessions. Free and open source.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://daw.nathanielschool.com/">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext">
+        <b>NPH REAPER Suite</b>
+        <span>Nathaniel School of Music</span>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="/" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow" data-accent="green"><span class="tick"></span>ReaScript · ReaImGui · MIT</p>
+        <h1>The REAPER tools I built because my own sessions were slow.</h1>
+        <p class="lede">
+          A twelve-key speed layer and a set of dockable apps for organising tracks,
+          repairing folders, printing stems and exporting MIDI. Every one of them
+          replaced a custom action of mine that was quietly doing the wrong thing —
+          centring pans, disarming the session, dropping markers on the wrong grid.
+          <em>Free, MIT, installed from inside REAPER.</em>
+        </p>
+        <div class="actions">
+          <a class="btn" href="#install">Install via ReaPack <span class="arw">&darr;</span></a>
+          <a class="textlink" href="/why">Read what was actually wrong</a>
+        </div>
+      </div>
+
+      <!-- Hero visual. Real data: Jason's actual non-standard key layout, as bound
+           in reaper-kb.ini. When a screen recording of an app in a real session
+           exists, it belongs here, above this panel. -->
+      <div class="panel" aria-label="The key bindings in the speed layer">
+        <div class="panel-head">
+          <b>The speed layer, as bound</b>
+          <span>reaper-kb.ini</span>
+        </div>
+        <div class="kmrow"><span class="keys"><kbd>A</kbd></span><span class="nm">Solo Focus</span></div>
+        <div class="kmrow"><span class="keys"><kbd>&#8679;A</kbd></span><span class="nm">Record Arm Toggle<span class="alt">+ CC 75</span></span></div>
+        <div class="kmrow"><span class="keys"><kbd>NumPad 6</kbd></span><span class="nm">FX Float Toggle</span></div>
+        <div class="kmrow"><span class="keys"><kbd>&#8679;F</kbd></span><span class="nm">FX Open / Close All<span class="alt">+ CC 76</span></span></div>
+        <div class="kmrow"><span class="keys"><kbd>N</kbd></span><span class="nm">Region Next</span></div>
+        <div class="kmrow"><span class="keys"><kbd>B</kbd></span><span class="nm">Region Previous</span></div>
+        <div class="kmrow"><span class="keys"><kbd>M</kbd></span><span class="nm">Marker at Bar<span class="alt">+ CC 23</span></span></div>
+        <div class="kmrow"><span class="keys"><kbd>&#8984;&#8679;T</kbd></span><span class="nm">Tempo at Bar</span></div>
+        <div class="kmrow"><span class="keys"><kbd>&#8679;&#8963;M</kbd></span><span class="nm">MIDI Render</span></div>
+        <div class="kmrow"><span class="keys"><kbd>&#8984;&#8963;V</kbd></span><span class="nm">Flush Paste</span></div>
+        <div class="kmrow"><span class="keys"><kbd>&#8679;D</kbd></span><span class="nm">Duplicate Track</span></div>
+        <div class="kmrow"><span class="keys"><kbd>E</kbd></span><span class="nm">Unsolo &amp; Unselect</span></div>
+      </div>
+    </div>
+
+    <div class="factstrip">
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 automated checks, <span class="ok">0 failing</span></span>
+      <span>16 files, MIT</span>
+      <span>ReaImGui required · SWS optional</span>
+    </div>
+  </div>
+</div>
+
+<section id="apps">
+  <div class="wrap">
+    <div class="sechead">
+      <span class="idx">01</span>
+      <h2>The apps</h2>
+    </div>
+    <p class="seclede">
+      Five dockable apps, a twelve-script speed layer, and two still being built.
+      Colour is the language across the whole suite: green is structure, amber is
+      delivery, violet is performance, teal is look. The status on each row is what
+      is true today, not what is planned.
+    </p>
+
+    <div class="applist">
+
+      <a class="approw" data-accent="teal" href="/apps/palette-and-look">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>Palette &amp; Look</span> <span class="role">teal · look</span></div>
+          <p>Colouring and naming a forty-track session by hand takes twenty minutes, and you still cannot find the guitars at a glance.</p>
+        </div>
+        <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      </a>
+
+      <a class="approw" data-accent="green" href="/apps/folders-and-flow">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>Folders &amp; Flow</span> <span class="role">green · structure</span></div>
+          <p>One wrong folder depth and REAPER quietly swallows the rest of the session into a folder that will not close.</p>
+        </div>
+        <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      </a>
+
+      <a class="approw" data-accent="green" href="/apps/track-settings-transfer">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>Track Settings Transfer</span> <span class="role">green · structure</span></div>
+          <p>The settings you want are sitting in another project tab, and there is no way to bring them across without rebuilding by hand.</p>
+        </div>
+        <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      </a>
+
+      <a class="approw" data-accent="amber" href="/apps/stem-print-and-handoff">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>Stem Print &amp; Handoff</span> <span class="role">amber · delivery</span></div>
+          <p>Stems come back from the mixer because a fader was riding, a pan was off, or he does not own the plugin that was printed into them.</p>
+        </div>
+        <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      </a>
+
+      <a class="approw" data-accent="amber" href="/apps/midi-batch-export">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>MIDI Batch Export</span> <span class="role">amber · delivery</span></div>
+          <p>REAPER exports one MIDI file at a time from a time selection, behind a modal. Seven riffs means doing it seven times and typing seven names.</p>
+        </div>
+        <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      </a>
+
+      <a class="approw" data-accent="green" href="/apps/speed-layer">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>The speed layer</span> <span class="role">green · 12 scripts</span></div>
+          <p>Twelve custom actions that each did something slightly wrong, replaced by twelve scripts that do exactly one thing and say so.</p>
+        </div>
+        <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      </a>
+
+      <a class="approw" data-accent="green" href="/apps/sections-and-time">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>Sections &amp; Time</span> <span class="role">green · structure</span></div>
+          <p>Markers land on the arrange grid instead of the bar line, and the tempo map fills up with near-duplicates you cannot see.</p>
+        </div>
+        <span class="status dev"><span class="d"></span>In development</span>
+      </a>
+
+      <a class="approw" data-accent="violet" href="/apps/stagerig">
+        <span class="sw"></span>
+        <div>
+          <div class="nm"><span>StageRig</span> <span class="role">violet · performance</span></div>
+          <p>MainStage is macOS-only, AU-only and visibly neglected. REAPER's live-rig options are a script from 2012 and a lot of good intentions.</p>
+        </div>
+        <span class="status dev"><span class="d"></span>In development</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sechead">
+      <span class="idx">02</span>
+      <h2>Why these exist</h2>
+    </div>
+    <p class="seclede">
+      This started as a bad afternoon, not a product plan. Fourteen custom actions I
+      had been pressing for years were read line by line against REAPER 7.77. Nine
+      of them were doing something I had not asked for.
+    </p>
+
+    <div class="cards">
+      <div class="card" data-accent="green">
+        <span class="num">01</span>
+        <h3>A key that centred every pan</h3>
+        <p>The record-arm chain ran <code>_XENAKIOS_PANTRACKSCENTER</code>. Every press quietly reset the pan on every armed track.</p>
+      </div>
+      <div class="card" data-accent="amber">
+        <span class="num">02</span>
+        <h3>A key that disarmed 452 tracks</h3>
+        <p>Duplicate Track cleared record-arm across the whole project and never put it back. On the live rig that is the entire record setup, gone, with nothing on screen.</p>
+      </div>
+      <div class="card" data-accent="violet">
+        <span class="num">03</span>
+        <h3>Watchdogs that had never fired</h3>
+        <p><code>GetProjectStateChangeCount</code> does not move when you insert, rename or delete a track. Measured: it sat on <code>8</code> through all three.</p>
+      </div>
+      <div class="card" data-accent="teal">
+        <span class="num">04</span>
+        <h3>Two apps that could kill REAPER</h3>
+        <p>Both held a <code>MediaTrack*</code> after the track was deleted and read it every frame. Lua's <code>pcall</code> cannot catch that fault. The host process just dies.</p>
+      </div>
+    </div>
+
+    <div class="actions" style="margin-top:26px">
+      <a class="btn btn-ghost" href="/why">The full write-up <span class="arw">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <div class="sechead">
+      <span class="idx">03</span>
+      <h2>Install</h2>
+    </div>
+    <p class="seclede">
+      One repository URL, pasted into ReaPack. Updates arrive the same way everything
+      else in REAPER does.
+    </p>
+
+    <div class="install">
+      <h3>ReaPack</h3>
+      <p>In REAPER: <b>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</b> and paste this line.</p>
+      <div class="copyline">
+        <code id="repourl">https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code>
+        <button class="copybtn" type="button" data-copy="repourl">Copy</button>
+      </div>
+
+      <div class="reqs">
+        <div>
+          <b>ReaImGui</b>
+          <p>Required. The five windowed apps will not open without it. Install it from ReaPack's default repositories, then restart REAPER.</p>
+        </div>
+        <div>
+          <b>SWS</b>
+          <p>Optional. Nothing in the suite depends on it — the folder work is deliberately built without <code>_SWS_UNFOLDER</code>, which does not exist on every install.</p>
+        </div>
+        <div>
+          <b>Licence</b>
+          <p>MIT. Read it, fork it, take the bits you want. The free core stays free.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- HONEST-STATUS BLOCK. Delete this note the day the ReaPack index goes live
+         and the GitHub repository is public. Nothing else on the site needs changing. -->
+    <div class="note" data-accent="amber">
+      <b>Where this actually stands</b>
+      <p>
+        The scripts are finished and tested. The ReaPack index is not published yet —
+        packaging is the last job before the repository opens, and the URL above will
+        not resolve until it does.
+      </p>
+      <p>
+        In the meantime the install is manual: copy <code>NPH/</code> and
+        <code>apps/</code> anywhere REAPER can see them, then
+        <b>Actions &rarr; Show action list &rarr; New action &rarr; Load ReaScript</b>
+        for each one. Or run <code>tests/harness.lua</code> once — it registers the
+        whole suite and verifies the install for you.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="more">
+  <div class="wrap">
+    <div class="sechead">
+      <span class="idx">04</span>
+      <h2>The course, and the tip jar</h2>
+    </div>
+    <p class="seclede">
+      The tools are free and stay free. The teaching is the thing that costs money, and
+      it is honest about what it is: how a working producer actually runs a session, not
+      a feature tour of a DAW.
+    </p>
+    <div class="nextapps">
+      <a href="/course">
+        <span class="role">Course</span>
+        <b>How a working producer runs a session &rarr;</b>
+      </a>
+      <a href="/donate">
+        <span class="role">Donate</span>
+        <b>What a donation actually pays for &rarr;</b>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copybtn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var el = document.getElementById(btn.getAttribute('data-copy'));
+    if(!el) return;
+    var text = el.textContent.trim(), done = function(){
+      btn.textContent = 'Copied'; btn.classList.add('done');
+      setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('done'); }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function(){ fallback(text, done); });
+    } else { fallback(text, done); }
+  });
+});
+function fallback(text, done){
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly',''); ta.style.position='absolute'; ta.style.left='-9999px';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  ta.remove();
+}
+</script>
+</body>
+</html>

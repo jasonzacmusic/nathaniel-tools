@@ -1,0 +1,99 @@
+{
+  "_README": [
+    "Which REAPER instrument stands in for each MainStage sound.",
+    "Every entry was checked against the plugins actually installed on this Mac",
+    "(REAPER's own scanned plugin lists) - nothing here is guessed.",
+    "",
+    "'fx' is the name StageRig passes to TrackFX_AddByName. If it is null, the",
+    "track is still created, named and routed, but left empty and flagged so you",
+    "can drop your own choice in later. Nothing is silently substituted.",
+    "",
+    "Edit this file freely - it is read at build time, not compiled in."
+  ],
+
+  "_installed_reference": {
+    "pianos": ["Pianoteq 8", "Keyscape", "Grand Rhapsody Piano", "Electric Grand 80"],
+    "electric": ["Lounge Lizard EP-4", "Electric88", "Electric200", "Clavinet (Waves)"],
+    "synths": ["Omnisphere", "ANA 2", "Vital", "Massive X", "FM8", "Absynth 5", "Ultra Analog VA-2", "Hybrid", "Xpand!2"],
+    "orchestral": ["BBC Symphony Orchestra (Spitfire)", "LABS (Spitfire)", "Philharmonik 2 (IK)"],
+    "world": ["SOLO (Taqs.im)", "PercX (Auddict)"],
+    "samplers": ["Kontakt 7", "ReaSamplOmatic5000", "SSDSampler5"],
+
+    "_probed_2026_08_03": [
+      "Measured inside REAPER 7.28 by asking TrackFX_AddByName for each name",
+      "under every format prefix, not by reading a plugin list:",
+      "",
+      "  LOADS: Pianoteq 8, Omnisphere, BBC Symphony Orchestra, Kontakt 7,",
+      "         SOLO (Taqs.im), ANA 2, Keyscape, Lounge Lizard EP-4",
+      "  WILL NOT LOAD: Analog Lab V, Vital, Syntronik, GForce Axxess",
+      "",
+      "Analog Lab V appears in REAPER's Audio Unit cache but cannot be",
+      "instantiated - scanned but not authorised, or needs a rescan. So there",
+      "is currently NO Hammond/B3 plugin available to REAPER on this Mac."
+    ],
+
+    "organ_note": "Until a real organ is installed, B3 parts are carried by Omnisphere, which has tonewheel/organ patches and definitely loads. This is a stand-in and is labelled as one. The proper fix is Arturia B-3 V (authorise the V Collection so Analog Lab V loads) or IK Hammond B-3X - then change the two organ rules below and rebuild."
+  },
+
+  "map": {
+    "Pianoteq 8": {
+      "fx": "Pianoteq 8",
+      "note": "Exact match - the concert already uses this. No substitution at all."
+    },
+    "Vintage B3": {
+      "fx": "Omnisphere",
+      "note": "STAND-IN. Analog Lab V will not instantiate in REAPER on this Mac (probed, not assumed), so there is no real B3 available. Omnisphere has organ patches and loads reliably. Replace with Arturia B-3 V or IK B-3X when one is working."
+    },
+    "Alchemy": {
+      "fx": "Omnisphere",
+      "note": "Pads, synths, leads, sub bass. ANA 2 is the alternate that also loads here."
+    },
+    "Sampler": {
+      "fx": "Kontakt 7",
+      "note": "Generic Logic Sampler fallback. Where the strip name says strings/horns/world, the name rules below win instead."
+    },
+    "Studio Horns": {
+      "fx": "Kontakt 7",
+      "note": "Session-horns style library, loaded inside Kontakt."
+    },
+    "Pedalboard": {
+      "fx": null,
+      "note": "Organ drive/rotary - build it as a REAPER FX chain on the organ track instead of one plugin."
+    }
+  },
+
+  "by_strip_name": {
+    "_README": "Matched against the channel-strip NAME first (case-insensitive substring). More specific than the instrument map above, because the strip name is what actually says what the sound is.",
+
+    "strings":   { "fx": "BBC Symphony Orchestra", "note": "Spitfire BBC SO - strings section" },
+    "cellos":    { "fx": "BBC Symphony Orchestra", "note": "BBC SO - celli" },
+    "violas":    { "fx": "BBC Symphony Orchestra", "note": "BBC SO - violas, staccato articulation" },
+    "timpani":   { "fx": "BBC Symphony Orchestra", "note": "BBC SO - percussion" },
+    "orch":      { "fx": "BBC Symphony Orchestra", "note": "orchestral layer" },
+    "choir":     { "fx": "Omnisphere", "note": "Omnisphere choir patch, or LABS Voices" },
+    "voices":    { "fx": "Omnisphere", "note": "vocal-texture layer" },
+
+    "horn":      { "fx": "Kontakt 7", "note": "brass section" },
+    "trumpet":   { "fx": "Kontakt 7", "note": "brass" },
+    "brassy":    { "fx": "Omnisphere", "note": "synth brass, not acoustic" },
+
+    "shenai":    { "fx": "SOLO", "note": "Taqs.im SOLO - shehnai is exactly what this plugin is for" },
+    "sitar":     { "fx": "SOLO", "note": "Taqs.im SOLO" },
+    "flute":     { "fx": "SOLO", "note": "Taqs.im SOLO - bansuri/ney" },
+    "harmonium": { "fx": "SOLO", "note": "Taqs.im SOLO, or a Kontakt harmonium" },
+    "banjo":     { "fx": "Kontakt 7", "note": "plucked string library" },
+
+    "clav":      { "fx": "Pianoteq 8", "note": "Pianoteq clavinet model (the concert already used Pianoteq here)" },
+    "organ":     { "fx": "Omnisphere", "note": "STAND-IN for B3 - see organ_note. Pick an organ patch in Omnisphere." },
+    "piano":     { "fx": "Pianoteq 8", "note": "exact match" },
+    "upright":   { "fx": "Pianoteq 8", "note": "Pianoteq upright model" },
+
+    "pads":      { "fx": "Omnisphere", "note": "pad layer" },
+    "plucks":    { "fx": "Omnisphere", "note": "plucked synth" },
+    "lead":      { "fx": "Omnisphere", "note": "lead synth" },
+    "synth":     { "fx": "Omnisphere", "note": "general synth layer" },
+    "bass":      { "fx": "Omnisphere", "note": "synth/sub bass" },
+    "edm":       { "fx": "Omnisphere", "note": "Vital is installed but will not instantiate in REAPER here, so Omnisphere carries this." },
+    "drum":      { "fx": "Kontakt 7", "note": "drum layer" }
+  }
+}

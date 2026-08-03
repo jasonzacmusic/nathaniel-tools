@@ -31,6 +31,21 @@
 --]]
 
 local r = reaper
+
+-- ReaImGui renames enum constants between releases, and a renamed constant is
+-- a nil-call crash the moment the window opens - not a graceful degradation.
+-- nph_imgui bridges the old and new spellings in one place. See that file for
+-- the two renames measured on ReaImGui/Dear ImGui 1.92.1.
+do
+  local sep = package.config:sub(1, 1)
+  local here = ({reaper.get_action_context()})[2]:match("(.*" .. sep .. ")") or ""
+  package.path = here .. "lib" .. sep .. "?.lua;" ..
+                 here .. ".." .. sep .. "NPH" .. sep .. "lib" .. sep .. "?.lua;" ..
+                 reaper.GetResourcePath() .. "/Scripts/NPH REAPER Suite/NPH/lib/?.lua;" ..
+                 package.path
+  local ok, compat = pcall(require, "nph_imgui")
+  if ok then compat.install() end
+end
 if not r.ImGui_CreateContext then
   r.ShowMessageBox("Needs ReaImGui (Extensions > ReaPack > Browse > 'ReaImGui', install, restart).","Palette & Look",0); return
 end

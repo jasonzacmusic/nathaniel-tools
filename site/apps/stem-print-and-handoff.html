@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stem Print &amp; Handoff — NPH REAPER Suite</title>
+<meta name="description" content="Print REAPER stems pre-fader and pan-centred in four modes, mirror them into a clean project tab, and restore your working session exactly.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="amber">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>Stem Print &amp; Handoff</p>
+    <p class="eyebrow"><span class="tick"></span>Amber · delivery</p>
+    <h1>Stem Print &amp; Handoff</h1>
+    <p class="lede">
+      Print stems the way the person receiving them wants them — pre-fader, pan-centred,
+      at the project's own rate and depth — into a clean mirror project, and put your
+      session back exactly as it was.
+    </p>
+    <div class="appmeta">
+      <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      <span>apps/Stem Print and Handoff.lua</span>
+      <span>Requires ReaImGui</span>
+      <span>Dockable</span>
+    </div>
+  </div>
+
+  <article>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>Can you resend these? The kick is way hot, and half of them have your reverb printed on.</p>
+      <cite>The email this app exists to stop receiving</cite>
+    </blockquote>
+    <p>
+      Stems fail for boring reasons. A fader was riding when you rendered. A pan was left
+      where the mix wanted it, so the mixer inherits your decision and cannot undo it.
+      The reverb went down with the source. Or the receiving engineer does not own the
+      plugin you printed through, so the file he gets is not the file you heard.
+    </p>
+    <p>
+      Doing it properly by hand means writing down every fader and pan, zeroing them,
+      rendering, then putting them all back. On a large session that is twenty minutes of
+      clerical work with a real chance of an error you will not notice until the mix
+      comes back wrong.
+    </p>
+
+    <h2>The fix</h2>
+    <p>
+      The app saves the state it is about to change, prints, and restores — the whole
+      thing wrapped in one undo point. Volumes go to unity and pans to centre for the
+      print, and the mirror project re-applies your real values, so nothing about your
+      balance is lost; it is simply moved to where the mixer can change it.
+    </p>
+    <p>
+      The printed WAVs land in a <strong>new project tab</strong> that mirrors your names,
+      colours and folder structure with no plugins on anything. That tab is the handoff.
+      Your working session is not altered.
+    </p>
+
+    <h3>Four print modes</h3>
+    <ul class="speclist">
+      <li><b>Raw</b><span>No inserts at all. Clean multitracks, exactly as recorded.</span></li>
+      <li><b>Inserts only</b><span>Insert FX baked in, reverb and delay sends excluded. The dry stem.</span></li>
+      <li><b>Fully wet</b><span>Each stem printed in isolation including its own reverb and delay returns.</span></li>
+      <li><b>Front-end</b><span>Through the first insert only — the mic preamp, the channel strip, the thing you would have printed on the way in.</span></li>
+    </ul>
+
+    <h3>And two things next to it</h3>
+    <ul class="speclist">
+      <li><b>Mark folders</b><span>Uppercase every folder and parent track name, so the Render Matrix targets your buses cleanly instead of guessing.</span></li>
+      <li><b>Plugin-free clone</b><span>Duplicate the project into a new tab with names, colours, routing and folders intact and every plugin removed — for someone who has your media but not your licences.</span></li>
+    </ul>
+
+    <h2>The crash that was hiding in the restore</h2>
+    <p>
+      This app had the same dangling-pointer bug as
+      <a href="/apps/palette-and-look">Palette &amp; Look</a>, and a worse version of it.
+    </p>
+    <p>
+      It captures every track's volume and pan, sets them for the print, renders — which
+      takes minutes — and then restores. The restore pass wrote through pointers captured
+      <em>before</em> the render. Delete a track during those minutes and it wrote through
+      freed memory. And because that pass ran <strong>outside</strong> the error handler, a
+      fault part-way through would leave the remainder of the session stuck at unity gain
+      and centre pan, silently, with the log showing a completed render.
+    </p>
+    <p>
+      Snapshots now key on GUID and are re-resolved <em>after</em> the render. A track that
+      genuinely vanished is skipped and named in the log rather than written through.
+    </p>
+    <p>
+      There is a reason nobody ever hit this: <strong>the app had never been registered as
+      a REAPER action.</strong> It has, in effect, never been run. That is now fixed, and
+      it is also why the honesty note below says what it says.
+    </p>
+
+    <div class="note">
+      <b>What is not proven</b>
+      <p>
+        The crash safety and the restore path have been tested. <strong>The render pass
+        itself has not been verified against a real multi-minute print</strong> — the code
+        is reviewed line by line and correct by construction, but nobody has yet sat
+        through a full stem print of a real session and checked every file that came out.
+        Until someone has, treat the first print as a test print.
+      </p>
+      <p>
+        <strong>Gain matching is not built.</strong> Levelling the printed stems against
+        each other is designed and queued, not written.
+      </p>
+    </div>
+
+    <h2>Install</h2>
+    <p class="dek">In REAPER: <strong>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</strong></p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
+    <p class="dek">
+      Then <strong>Actions &rarr; Show action list</strong>, filter for <code>NPH</code>,
+      and run <code>Script: NPH Stem Print &amp; Handoff</code>. The ReaPack index is not
+      live yet — <a href="/#install">manual install instructions are on the home page</a>.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">1.0.0 <span>First public release</span></div>
+        <ul>
+          <li>Registered as a REAPER action for the first time. It had never been.</li>
+          <li>Crash hardened: volume and pan snapshots key on GUID and are re-resolved after the render; vanished tracks are skipped and reported, not written through.</li>
+          <li>The restore pass moved inside the error handler, so a failure mid-restore can no longer leave the session at unity gain and centre pan.</li>
+          <li>Change detection rebuilt on a track-list signature.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/midi-batch-export"><span class="role">Amber · delivery</span><b>MIDI Batch Export &rarr;</b></a>
+      <a href="/apps/track-settings-transfer"><span class="role">Green · structure</span><b>Track Settings Transfer &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

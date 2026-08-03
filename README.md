@@ -110,10 +110,10 @@ python3 tools/build_index.py           # rebuild index.xml
 ```
 
 `tools/build_index.py` is a dependency-free implementation of the
-[ReaPack Index Format](https://codeberg.org/cfillion/reapack/wiki/Index-Format); CI also
-runs cfillion's own [`reapack-index`](https://github.com/cfillion/reapack-index) in
-`--check` mode as a second opinion on the headers. Install
-[Pandoc](https://pandoc.org) if you want the About panels rendered locally.
+[ReaPack Index Format](https://codeberg.org/cfillion/reapack/wiki/Index-Format) — Python 3
+and `git`, nothing else, and byte-identical output on any machine. CI also runs cfillion's
+own [`reapack-index`](https://github.com/cfillion/reapack-index) in `--check` mode as a
+second opinion on the headers.
 
 Two rules for anything new that lands in `NPH/` or `apps/`:
 

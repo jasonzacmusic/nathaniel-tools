@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Track Settings Transfer — NPH REAPER Suite</title>
+<meta name="description" content="Pro Tools style Import Session Data for REAPER: copy FX, volume, pan, sends and folder structure between any two open project tabs, in either direction.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="green">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>Track Settings Transfer</p>
+    <p class="eyebrow"><span class="tick"></span>Green · structure</p>
+    <h1>Track Settings Transfer</h1>
+    <p class="lede">
+      Pro Tools' <em>Import Session Data</em>, for REAPER, across every open tab and in
+      both directions. Copy FX, volume, pan and sends onto matching tracks — or build the
+      tracks that are missing.
+    </p>
+    <div class="appmeta">
+      <span class="status ship"><span class="d"></span>Shipping 1.0.0</span>
+      <span>apps/Track Settings Transfer.lua</span>
+      <span>Requires ReaImGui</span>
+      <span>Dockable</span>
+    </div>
+  </div>
+
+  <article>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>Choosing one session and importing from another doesn't work, while vice versa works.</p>
+      <cite>Jason, describing a bug that turned out to be exactly what it sounded like</cite>
+    </blockquote>
+    <p>
+      The underlying need is older than the bug. You have a template, or last week's
+      session, or the same song at a different tempo, and the routing and the chains you
+      want are sitting in a tab two clicks away. REAPER's answer is to open both, select
+      carefully, and copy things across one at a time. Pro Tools has had a dialog for this
+      since the nineties.
+    </p>
+
+    <h3>Why one direction looked broken</h3>
+    <p>
+      Picking a new <strong>From</strong> project correctly removed it from the
+      <strong>To</strong> list — nothing may be its own target. But nothing ever took its
+      place. So swapping A&rarr;B into B&rarr;A left <em>zero</em> targets ticked, the app
+      cleared its focus, and the entire track list vanished behind the placeholder text
+      <em>&ldquo;Select a target project above.&rdquo;</em>
+    </p>
+    <p>
+      One direction therefore looked perfectly fine and the other looked completely
+      broken, which is precisely how it was reported. Nothing was ever wrong with the
+      transfer engine — you simply could not get to it.
+    </p>
+    <p>
+      A swap is now a swap: promote a target to source and the old source takes its place
+      as target. There is also a <strong>&#10231; Swap</strong> button, so reversing
+      direction is one click rather than two selections in the right order.
+    </p>
+
+    <h2>The fix, and the crash underneath it</h2>
+    <p>
+      REAPER frees both <code>MediaTrack*</code> and <code>ReaProject*</code> the instant
+      a track is deleted or a tab is closed. This app's whole job is holding two projects
+      in mind at once, which makes it the one most likely to be looking at something that
+      no longer exists.
+    </p>
+    <p>
+      So the UI stores no pointers at all. Identity is <code>GetTrackGUID</code>, which
+      survives delete, undo, reorder and save-reload. Every project pointer passes
+      <code>ValidatePtr2(0, p, "ReaProject*")</code> and every track pointer
+      <code>ValidatePtr2(proj, t, "MediaTrack*")</code> before it touches an API. Closing
+      a tab mid-transfer is handled: the app drops that target, re-picks a focus, and says
+      so in the log instead of dying.
+    </p>
+    <p>
+      Your per-track include, attribute and remap choices are keyed by GUID too, so when
+      the row list rebuilds itself, your decisions survive the rebuild.
+    </p>
+
+    <h2>What it does</h2>
+    <ul class="speclist">
+      <li><b>Match mode</b><span>Copy FX, volume, pan and sends onto same-named tracks. Exact matches first, then similar names — flagged as such, never silently.</span></li>
+      <li><b>Build mode</b><span>Where a source track has no match, create it: name, colour, FX, volume, pan, folder position, then rebuild the sends.</span></li>
+      <li><b>Manual remap</b><span>Point any source track at any target track when the names disagree.</span></li>
+      <li><b>Per-track control</b><span>Choose which attributes travel, track by track.</span></li>
+      <li><b>Fan-out</b><span>Tick several targets and transfer to all of them in one pass.</span></li>
+      <li><b>Preview</b><span>Shows exactly what would change and changes nothing.</span></li>
+      <li><b>Undo</b><span>One undo point per target project.</span></li>
+      <li><b>Drag-paint</b><span>Contiguous mouse-drag select and deselect. This app is where that behaviour was written.</span></li>
+    </ul>
+
+    <div class="note">
+      <b>What it will not do</b>
+      <p>
+        <strong>It never copies automation.</strong> Envelope data is the one thing where
+        a wrong guess is expensive and hard to notice, so it is out of scope by design
+        rather than by omission.
+      </p>
+      <p>
+        Build mode used to be able to leave an unclosed folder behind. The folder depths
+        it writes are now normalised, using the same arithmetic as
+        <a href="/apps/folders-and-flow">Folders &amp; Flow</a>.
+      </p>
+    </div>
+
+    <h2>Install</h2>
+    <p class="dek">In REAPER: <strong>Extensions &rarr; ReaPack &rarr; Import repositories&hellip;</strong></p>
+    <pre><code>https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml</code></pre>
+    <p class="dek">
+      Then <strong>Actions &rarr; Show action list</strong>, filter for <code>NPH</code>,
+      and run <code>Script: NPH Track Settings Transfer</code>. The ReaPack index is not
+      live yet — <a href="/#install">manual install instructions are on the home page</a>.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">1.0.0 <span>First public release</span></div>
+        <ul>
+          <li>Direction swap fixed: promoting a target to source hands the target slot to the old source. Added a one-click Swap button.</li>
+          <li>Crash hardened: no pointers stored anywhere in the UI, GUID identity throughout, both project and track pointers validated before use, tab closure handled.</li>
+          <li>Auto-sync now actually fires. It was built on <code>GetProjectStateChangeCount</code>, which does not move on track changes, so it had never fired once.</li>
+          <li>Build mode no longer leaves an unclosed folder.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/stem-print-and-handoff"><span class="role">Amber · delivery</span><b>Stem Print &amp; Handoff &rarr;</b></a>
+      <a href="/apps/folders-and-flow"><span class="role">Green · structure</span><b>Folders &amp; Flow &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

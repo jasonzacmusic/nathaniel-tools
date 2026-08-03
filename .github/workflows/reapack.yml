@@ -19,9 +19,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Pandoc
-        run: sudo apt-get install -yy pandoc
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -50,9 +47,6 @@ jobs:
           # Full history: every download URL is pinned to the commit that last
           # touched that file, which a shallow clone cannot resolve.
           fetch-depth: 0
-
-      - name: Install Pandoc
-        run: sudo apt-get install -yy pandoc
 
       - name: Build index.xml
         run: python3 tools/build_index.py

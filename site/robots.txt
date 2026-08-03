@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://daw.nathanielschool.com/sitemap.xml

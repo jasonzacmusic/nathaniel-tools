@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StageRig — NPH REAPER Suite</title>
+<meta name="description" content="In development: a live keyboard rig for REAPER. The architecture, the MainStage concert decoder that is already built, and the honest weaknesses.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-accent="violet">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>NPH REAPER Suite</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps" aria-current="page">Apps</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nph-reaper-suite">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/#apps">Apps</a><span class="sep">/</span>StageRig</p>
+    <p class="eyebrow"><span class="tick"></span>Violet · performance</p>
+    <h1>StageRig</h1>
+    <p class="lede">
+      A live keyboard rig that runs inside REAPER: one project per concert, patches as
+      track folders, and a patch change you can make in the middle of a phrase without
+      cutting the note off.
+    </p>
+    <div class="appmeta">
+      <span class="status dev"><span class="d"></span>In development</span>
+      <span>Architecture locked · app not built</span>
+      <span>Violet · performance</span>
+    </div>
+  </div>
+
+  <article>
+
+    <div class="note">
+      <b>What this page is not claiming</b>
+      <p>
+        <strong>StageRig is in development. It has not played a gig.</strong> It is not a
+        MainStage replacement and will not be described as one here until a working
+        keyboardist has played real paid shows on it and stopped carrying a backup rig.
+        Everything before that is a demo, including this page.
+      </p>
+    </div>
+
+    <h2>The problem</h2>
+    <blockquote>
+      <p>I have years of concerts in MainStage and no confidence that the next macOS update won't take them with it.</p>
+      <cite>The reason this is being built at all</cite>
+    </blockquote>
+    <p>
+      MainStage is macOS-only, AU-only, and visibly neglected — the forums are full of
+      &ldquo;has this been abandoned&rdquo; threads and update-broke-my-concert stories.
+      Its sounds are Logic's sounds, which means the rig is not portable and never will be.
+    </p>
+    <p>
+      REAPER's existing answers are thin. SWS <em>LiveConfigs</em> has documentation frozen
+      since 2012 and is half-broken on macOS. cfillion's <em>Song Switcher</em> is the only
+      living script in the space. The largest community attempt at a full live rig stalled
+      in 2019 on switch dropouts — which is the honest hard part, and the reason nobody has
+      finished one.
+    </p>
+
+    <h2>The architecture</h2>
+    <p class="dek">Locked. These are decisions, not options.</p>
+    <ul class="speclist">
+      <li><b>One project, one concert</b><span>Patches are track folders inside a single project. Project tabs and subprojects were both evaluated for live switching and rejected — the switch latency and state loss are not acceptable on stage.</span></li>
+      <li><b>Nothing is built mid-set</b><span>Everything that will ever make a sound is instantiated at load. No plugin is created, destroyed or reconfigured while the show is running.</span></li>
+      <li><b>The setlist is data</b><span>It lives in project ExtState, decoupled from the timeline, so reordering the set never touches audio routing. It is parsed defensively: a corrupt setlist may lose the order, it may never lose sound.</span></li>
+      <li><b>Two active patches, always</b><span>Idle patches are never taken offline. Anticipative FX off. The budget is two simultaneously sounding patches at any moment.</span></li>
+      <li><b>One state machine</b><span>A single deferred loop owns every transition. UI, MIDI and OSC handlers do not act — they post intents to a queue. That design removes most of the race conditions that make naive live-switching scripts unreliable.</span></li>
+    </ul>
+
+    <h3>The switch, in order</h3>
+    <ol>
+      <li>Unmute B — the incoming patch — <strong>first</strong>.</li>
+      <li>Gate A's input with a JSFX, so no new notes reach the outgoing patch.</li>
+      <li>Let A ring for 1.5&ndash;3 seconds, or until it falls below &minus;60 dB, then mute it.</li>
+      <li>Send matching note-offs and <code>CC64 = 0</code> to A.</li>
+    </ol>
+    <p>
+      What makes step 4 possible is a note-tracker JSFX sitting on the master key input,
+      holding a bitmap of every note down plus the sustain state. On a switch it emits the
+      note-offs that actually match what is held, optionally re-strikes those notes on the
+      incoming patch, and replays the sustain pedal. That is what makes a patch change in
+      the middle of a phrase survivable rather than a stab.
+    </p>
+    <p>
+      <strong>The note path is JSFX, at audio rate. It is never Lua.</strong>
+      <code>reaper.defer</code> ticks at UI cadence, which is 15&ndash;30 ms of decision
+      latency — fine for driving a stage display, not fine for anything a note passes
+      through.
+    </p>
+
+    <h2>What is already built</h2>
+    <p>
+      The first real deliverable exists: a decoder that reads a MainStage
+      <code>.concert</code> bundle and prints the entire rig — setlist, every patch, every
+      channel strip, every instrument, and whether each sound can load in REAPER at all.
+    </p>
+    <p>
+      Run against a real, current concert with 57 patches, the verdict was better than
+      expected:
+    </p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Sound in the concert</th><th>Patches</th><th>In REAPER</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pianoteq 8 — every piano, EP and clav</td><td class="mono">19</td><td><span class="ok">Loads as-is. Same plugin, same presets, zero loss.</span></td></tr>
+          <tr><td>Vintage B3 (Logic)</td><td class="mono">10</td><td>Substitute: Arturia B-3 V, already owned.</td></tr>
+          <tr><td>Alchemy pads, synths, leads (Logic)</td><td class="mono">16</td><td>Omnisphere or ANA 2, or resample — the concert bundle carries its own samples folder.</td></tr>
+          <tr><td>Logic Sampler — strings, horns, sitar, choir</td><td class="mono">15</td><td>Kontakt or UVI equivalents, or resample the exact articulations.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Roughly 40% of that rig ports losslessly, about a third has substitutes already
+      owned, and the remainder is honest resampling work. Every substitution is written
+      into an explicit, editable mapping table and reported per patch. Nothing is guessed
+      silently, and a patch whose sound could not be mapped arrives as a clearly named
+      empty track rather than as something that sounds nearly right.
+    </p>
+
+    <h2>Honest weaknesses</h2>
+    <p class="dek">Stated up front, because they do not go away by not mentioning them.</p>
+    <ul>
+      <li>
+        <strong>REAPER has no sample-accurate patch-crossfade primitive.</strong> The
+        gate-and-ring sequence above is an approximation of one. It is good; it is not the
+        same thing.
+      </li>
+      <li>
+        <strong>Lua decision latency is 15&ndash;30 ms.</strong> Acceptable for patch
+        switching only because the note path never goes through Lua.
+      </li>
+      <li>
+        <strong>ExtState is a text blob.</strong> The loader validates it or falls back to
+        a flat setlist with every patch available.
+      </li>
+      <li>
+        <strong>A faithful sonic clone of Logic-only instruments is impossible.</strong>
+        That is a licensing fact, not an engineering gap. Substitution is explicit and
+        per-patch, and stated in the report.
+      </li>
+    </ul>
+
+    <h2>What &ldquo;done&rdquo; means</h2>
+    <p>
+      Version zero is five patches from a real set, chosen because between them they
+      exercise every substitution problem in the rig. It is finished when those five can be
+      played back to back, switching blind, and the <em>switching</em> is indistinguishable
+      from MainStage. Sounds may honestly differ where a substitute was used. The switching
+      may not.
+    </p>
+    <p>
+      After that there is a stage test, and it has one gate: real paid shows, no backup rig
+      in the car. Until that has happened, the status on this page stays exactly where it is.
+    </p>
+
+    <h2>Install</h2>
+    <p class="dek">
+      Nothing to install. The concert decoder lives in the repository as a Python tool if
+      you want to read your own <code>.concert</code> files today:
+    </p>
+    <pre><code>tools/concert_report.py</code></pre>
+    <p class="dek">
+      <a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a> —
+      the repository goes public with the free core.
+    </p>
+
+    <h2>Changelog</h2>
+    <ul class="changelog">
+      <li>
+        <div class="v">Unreleased <span>In development</span></div>
+        <ul>
+          <li>Concert decoder built and run against a real 57-patch concert. Viability confirmed.</li>
+          <li>Architecture locked: one project per concert, patches as folders, setlist in ExtState, single deferred state machine, JSFX note path.</li>
+          <li>Version-zero scope set at five patches. Loop Deck designed as a second tab in the same window.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr>
+
+    <h2>Next</h2>
+    <div class="nextapps">
+      <a href="/apps/sections-and-time"><span class="role">Green · in development</span><b>Sections &amp; Time &rarr;</b></a>
+      <a href="/apps/speed-layer"><span class="role">Green · shipping</span><b>The speed layer &rarr;</b></a>
+      <a href="/why"><span class="role">Engineering</span><b>Why these exist &rarr;</b></a>
+    </div>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nph-reaper-suite">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 checks passing</span>
+      <span>daw.nathanielschool.com</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
