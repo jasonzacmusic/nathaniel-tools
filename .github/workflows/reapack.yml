@@ -19,6 +19,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      # reapack-index shells out to pandoc to turn each @about block into RTF,
+      # and fails the check without it. tools/build_index.py renders its own,
+      # so the index job below needs no such dependency.
+      - name: Install Pandoc
+        run: sudo apt-get install -yy pandoc
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
