@@ -1,0 +1,68 @@
+{
+  "name": "NSM Dark",
+  "_README": [
+    "About a dozen decisions. build_theme.py derives the other ~380 entries from",
+    "these, keeping the stock theme's lightness relationships so contrast and",
+    "legibility survive the recolour.",
+    "",
+    "'overrides' are the entries whose meaning we actually know - set those by",
+    "hand. Everything else is derived. Add an override whenever you find an entry",
+    "the derivation gets wrong; that is how this file grows.",
+    "",
+    "Colours are plain #RRGGBB. The suite's own language is used throughout:",
+    "green = structure, amber = delivery, violet = performance, teal = look."
+  ],
+
+  "palette": {
+    "accent":  "#8a5cf0",
+    "neutral": "#151922",
+    "bg":      "#0d0f14",
+    "surface": "#151922",
+    "arrange": "#12151c",
+    "text":    "#eef1f6",
+    "muted":   "#8b93a3"
+  },
+
+  "tint": {
+    "hue_pull": 0.72,
+    "saturation": 0.85,
+    "saturation_floor": 0.12,
+    "neutral_pull": 0.55,
+    "treat_as_neutral_below": 0.10
+  },
+
+  "overrides": {
+    "col_main_bg2":      "#0d0f14",
+    "col_arrangebg":     "#12151c",
+    "col_tracklistbg":   "#0d0f14",
+    "col_mixerbg":       "#0d0f14",
+    "col_transport_editbk": "#151922",
+    "col_toolbar_frame": "#252b36",
+
+    "col_main_text":     "#eef1f6",
+    "col_main_text2":    "#8b93a3",
+    "col_tl_fg":         "#8b93a3",
+    "col_tl_bg":         "#0d0f14",
+
+    "col_cursor":        "#8a5cf0",
+    "col_cursor2":       "#8a5cf0",
+    "midi_editcurs":     "#8a5cf0",
+    "col_seltrack":      "#8a5cf0",
+    "col_seltrack2":     "#1b2029",
+
+    "col_vubot":         "#54d07a",
+    "col_vumid":         "#e8b23a",
+    "col_vutop":         "#e0455a",
+    "col_vuclip":        "#e0455a",
+
+    "col_offlinetext":   "#e0455a",
+    "col_mute_bg":       "#e8b23a",
+
+    "group_0":  "#54d07a",
+    "group_1":  "#3ec9c0",
+    "group_2":  "#8a5cf0",
+    "group_3":  "#e8b23a",
+    "group_4":  "#e0455a",
+    "group_5":  "#5b9df5"
+  }
+}
