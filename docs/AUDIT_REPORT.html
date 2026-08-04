@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NPH REAPER Suite — Audit &amp; Fix Report</title>
+<title>Nathaniel Tools — Audit &amp; Fix Report</title>
 <style>
   :root{
     --bg:#0d0f14; --card:#151922; --card2:#1b2029; --line:#252b36;
@@ -116,19 +116,19 @@
 <div class="item warn">
   <h3><span class="tag t-crit">Serious</span><span class="tag t-fixed">Fixed</span> Duplicate Track disarmed your entire session</h3>
   <p><code>Shift+D</code> cleared record-arm on <strong>every track in the project</strong> and never put it back. The intent was only to stop the new duplicate inheriting record-arm. On a 452-track live rig, one press silently destroyed the whole record setup with nothing on screen to tell you.</p>
-  <p class="why"><strong>Fix:</strong> arm state is snapshotted by GUID, then restored exactly — except for the new duplicates, which stay armed as intended. <span class="file">NPH/NPH_Duplicate Track.lua</span></p>
+  <p class="why"><strong>Fix:</strong> arm state is snapshotted by GUID, then restored exactly — except for the new duplicates, which stay armed as intended. <span class="file">Nathaniel Tools/NPH_Duplicate Track.lua</span></p>
 </div>
 
 <div class="item warn">
   <h3><span class="tag t-fixed">Fixed</span> Solo Focus hijacked the transport</h3>
   <p><code>A</code> to solo also moved the edit cursor <em>to wherever your mouse happened to be</em> and started playback. If the pointer was over the wrong bar — or over a docked window — you lost your place in the session and the transport ran.</p>
-  <p class="why"><strong>Fix:</strong> that audition behaviour now defaults to off. The flag is at the top of the file if you ever want it back. <span class="file">NPH/NPH_Solo Focus.lua</span></p>
+  <p class="why"><strong>Fix:</strong> that audition behaviour now defaults to off. The flag is at the top of the file if you ever want it back. <span class="file">Nathaniel Tools/NPH_Solo Focus.lua</span></p>
 </div>
 
 <div class="item warn">
   <h3><span class="tag t-fixed">Fixed</span> Flush Paste could pop the very dialog it exists to avoid</h3>
   <p>The whole point of the rewrite was replacing <em>Save As</em> with a silent save. But a silent save on a project that has never been saved to disk <em>also</em> opens the Save As dialog. On a fresh untitled session, <code>Cmd+Ctrl+V</code> still ambushed you with a file browser.</p>
-  <p class="why"><strong>Fix:</strong> it now checks whether the project has a file on disk. If not, it skips the save and tells you plainly why, in one sentence. <span class="file">NPH/NPH_Flush Paste.lua</span></p>
+  <p class="why"><strong>Fix:</strong> it now checks whether the project has a file on disk. If not, it skips the save and tells you plainly why, in one sentence. <span class="file">Nathaniel Tools/NPH_Flush Paste.lua</span></p>
 </div>
 
 <div class="item crit">
@@ -160,12 +160,12 @@
     <tr><th>Safety</th><td>Shows the exact filename each row will write <em>before</em> you commit, and refuses to run if two rows would collide and silently overwrite each other</td></tr>
     <tr><th>Fidelity</th><td>Tempo and time signature written as meta events, so files open at the right speed in Logic, MuseScore or Sibelius</td></tr>
   </table>
-  <p class="why" style="margin-top:12px"><strong>Verified, not assumed:</strong> I generated a test file and parsed it back with an independent MIDI reader. Chunk lengths, tempo, time signature and every note's pitch and timing survive the round trip exactly. <span class="file">NPH/NPH_MIDI Batch Export.lua</span></p>
+  <p class="why" style="margin-top:12px"><strong>Verified, not assumed:</strong> I generated a test file and parsed it back with an independent MIDI reader. Chunk lengths, tempo, time signature and every note's pitch and timing survive the round trip exactly. <span class="file">Nathaniel Tools/NPH_MIDI Batch Export.lua</span></p>
 </div>
 
 <div class="item new">
   <h3><span class="tag t-new">New</span> A shared safety spine, so this class of crash can't come back</h3>
-  <p>The pointer-safety work existed in exactly one app and had never been copied to the others — which is why two of three could crash. It's now a shared library every app builds on, with the reasoning written into the file so the next person doesn't rediscover it the hard way. <span class="file">NPH/lib/nph_safe.lua</span></p>
+  <p>The pointer-safety work existed in exactly one app and had never been copied to the others — which is why two of three could crash. It's now a shared library every app builds on, with the reasoning written into the file so the next person doesn't rediscover it the hard way. <span class="file">Nathaniel Tools/lib/nt_safe.lua</span></p>
 </div>
 
 <h2><span class="dot" style="background:var(--green)"></span>Where everything stands</h2>
@@ -204,13 +204,13 @@
 
 <footer>
   Nathaniel School of Music · REAPER suite audit · 3 August 2026<br>
-  Files: <span class="file">~/Documents/REAPER Media/</span> — apps at the top level, speed layer in <span class="file">NPH/</span>, shared library in <span class="file">NPH/lib/</span>
+  Files: <span class="file">~/Documents/REAPER Media/</span> — apps at the top level, speed layer in <span class="file">Nathaniel Tools/</span>, shared library in <span class="file">Nathaniel Tools/lib/</span>
 </footer>
 
 </div>
 
 <script>
-const summary = `NPH REAPER Suite - audit & fix report (3 Aug 2026)
+const summary = `Nathaniel Tools - audit & fix report (3 Aug 2026)
 VERIFIED LIVE IN REAPER 7.77 - 55 tests passing, 0 failing.
 
 CRASHES FOUND & FIXED (3)

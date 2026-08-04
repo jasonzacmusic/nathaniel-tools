@@ -24,7 +24,7 @@ Research date: 2026-08-03. All facts verified against live pages on this date un
 - Thousands of community scripts declare SWS as a dependency, making it self-reinforcing infrastructure.
 - Stable maintainership handoff (founder → community devs) kept it alive 17 years.
 
-**Lesson for NPH:** one clean landing page, per-platform one-click install, a real manual, and being assumed-installed by educators is the endgame. Donations fund hosting, not income.
+**Lesson for Nathaniel Tools:** one clean landing page, per-platform one-click install, a real manual, and being assumed-installed by educators is the endgame. Donations fund hosting, not income.
 
 ---
 
@@ -81,15 +81,15 @@ Version-specific tags:
 
 File-type detection is by extension: `.lua`, `.eel`, `.py` → script; `.jsfx` → effect; `.ReaperTheme`/theme zips → theme; `.ReaperLangPack`, `.RPP`/`.RTrackTemplate` (templates), `.ReaperKeyMap`, etc. **Packages must live inside subdirectories (categories); files at repo root are not indexed.**
 
-Minimal working header for an NPH Lua script:
+Minimal working header for an Nathaniel Tools Lua script:
 
 ```lua
--- @description NPH Silence Splitter
+-- @description Nathaniel Tools Silence Splitter
 -- @author Jason Zac (Nathaniel School of Music)
 -- @version 1.0
 -- @changelog Initial release
 -- @about
---   # NPH Silence Splitter
+--   # Nathaniel Tools Silence Splitter
 --   Splits items at silence and names regions for lesson editing.
 -- @link Forum thread https://forum.cockos.com/showthread.php?t=XXXXXX
 -- @donation https://www.nathanielschool.com/support
@@ -119,7 +119,7 @@ Minimal working header for an NPH Lua script:
 - **Licensing:** no formal MIT/GPL gate is documented in the README or upload flow. Convention: ReaTeam-hosted content is free; many authors put a license line in @about; reapack-index itself is GPL-3.0 but that doesn't bind your scripts. If you want protection, state MIT/GPL in each header — nothing in the process forces one.
 - Naming convention in ReaTeam: files are `AuthorName_Script description.lua` (e.g. `Lokasenna_Radial Menu.lua`) — an author prefix is effectively mandatory for a recognizable brand inside the Action List.
 
-**Strategic takeaway:** the highest-reach path is (a) own repo from the template for the full NPH suite + (b) get listed at reapack.com/repos + (c) optionally push flagship general-purpose scripts into ReaTeam for default-visibility, keeping the suite's home repo as the canonical brand.
+**Strategic takeaway:** the highest-reach path is (a) own repo from the template for the full Nathaniel Tools + (b) get listed at reapack.com/repos + (c) optionally push flagship general-purpose scripts into ReaTeam for default-visibility, keeping the suite's home repo as the canonical brand.
 
 ---
 

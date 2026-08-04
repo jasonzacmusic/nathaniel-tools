@@ -1,4 +1,4 @@
-# NPH Suite — new app ideas
+# Nathaniel Tools Suite — new app ideas
 
 **Written 3 Aug 2026, from Jason's actual friction** — his ~80 riff/tutorial project
 folders, ~50 videos a year, the lesson pipeline, the live rig, and the custom actions
@@ -51,7 +51,7 @@ One press: render stems, export MIDI per track (the Batch Export engine already
 exists), dump markers/regions as CSV, dump the tempo map — into one dated folder ready
 for the B-roll/visualizer pipeline. Today this is five manual steps done ~50 times a
 year.
-**Feeds:** every YouTube lesson; directly reuses `NPH_MIDI Batch Export.lua`.
+**Feeds:** every YouTube lesson; directly reuses `MIDI Batch Export.lua`.
 
 ### 5. Rig Doctor (violet) — the pre-show gate
 A checklist app that *proves* the rig instead of trusting it: audio device present and
@@ -76,8 +76,8 @@ tempo-mapped, colour-coded project per class with named regions. Pairs with Riff
 
 ## The rule for all of them
 
-Every app builds on `NPH/lib/nph_safe.lua` (GUID identity, validated pointers, the
+Every app builds on `Nathaniel Tools/lib/nt_safe.lua` (GUID identity, validated pointers, the
 signature watchdog) — the class of crash we paid for in Palette & Look must stay
-extinct. Every app gets drag-paint selection, a dependency gate via `nph_safe.require`,
+extinct. Every app gets drag-paint selection, a dependency gate via `nt_safe.require`,
 ReaPack headers, and its accent colour. No app ships until the harness passes on a
 machine that is not the machine it was written on.

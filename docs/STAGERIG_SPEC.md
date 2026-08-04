@@ -3,7 +3,7 @@
 **Written 3 Aug 2026.** The source of truth is Jason's real, current concert:
 `~/Music/MainStage/Lagori 2026 Minimal.concert` (last touched 21 Jul 2026), fully
 decoded by `tools/concert_report.py` → `reports/Lagori 2026 Minimal.md` + `.json`.
-The architecture below is the one locked in `NPH_TECH_BRIEF.md` §7 — it is not up
+The architecture below is the one locked in `TECH_BRIEF.md` §7 — it is not up
 for relitigation.
 
 ---
@@ -120,9 +120,9 @@ config is never touched.
    five patch folders, named tracks, FX stubs (Pianoteq/B-3 V inserted where owned),
    routing, and the ExtState setlist. Unmappable sounds become clearly named empty
    tracks (`[NEEDS SOUND] Horns High`).
-2. `NPH/jsfx/nph_note_tracker.jsfx` — the note/sustain tracker + input gate.
+2. `Nathaniel Tools/jsfx/nph_note_tracker.jsfx` — the note/sustain tracker + input gate.
 3. `apps/StageRig.lua` (violet) — stage view + state machine + setlist editor, on
-   `nph_safe`.
+   `nt_safe`.
 4. Loop Deck pads inside StageRig (same window, second tab).
 5. Rehearsal gate: the five patches, blind switching test, then the eight-gate stage
    test from the tech brief. **It is a demo until real paid gigs retire the backup

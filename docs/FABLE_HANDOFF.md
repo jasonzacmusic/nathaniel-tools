@@ -45,7 +45,7 @@ It never touches the project you had open.
    7.77: it stayed on `8` across insert, rename *and* delete. Every watchdog built on it
    silently never fires — which looks like "the app doesn't refresh", not like a bug. All
    three apps here shipped with that dead watchdog before it was caught. Use
-   `nph_safe.projSignature()` instead, on a ~4Hz throttle.
+   `nt_safe.projSignature()` instead, on a ~4Hz throttle.
 2. **`ValidatePtr2` rejects `0`**, even though `0` is ReaScript's standard shorthand for
    "the current project". Any safety guard must special-case it or every check returns
    false and the app quietly does nothing.
@@ -59,13 +59,13 @@ host dies, taking unsaved projects with it. A `pcall` around your draw loop is f
 > **Store GUIDs. Resolve to a pointer immediately before use. Validate. Use. Discard.
 > Never hold a pointer across a defer frame.**
 
-That is what `NPH/lib/nph_safe.lua` exists to enforce. Build every new app on it.
+That is what `Nathaniel Tools/lib/nt_safe.lua` exists to enforce. Build every new app on it.
 
 ---
 
 ## Job 2 — Review and extend
 
-Read `docs/NPH_TECH_BRIEF.md` end to end first; it holds every API trap already paid for.
+Read `docs/TECH_BRIEF.md` end to end first; it holds every API trap already paid for.
 
 **Known-open work, roughly in value order:**
 
@@ -73,7 +73,7 @@ Read `docs/NPH_TECH_BRIEF.md` end to end first; it holds every API trap already 
 |---|---|---|
 | 1 | **Sections & Time** (green) | Absorb Marker at Bar, Tempo at Bar, Region Next/Prev into one app. Add named marker types the way Jason labels things (`C202`, `V218`, `V127.3`). Surface per-track timebase — `itemtimelock = 0` on his projects and that trap bites repeatedly. |
 | 2 | **Drag-paint retrofit** | Contiguous mouse-drag select/deselect exists in Track Settings Transfer and Folders & Flow. Jason wants it in **every** app — Palette & Look still lacks it. Standing requirement, not a nice-to-have. |
-| 3 | **Rest of the shared spine** | `nph_names.lua` (the role/similarity engine is currently duplicated between Palette & Look and Track Settings Transfer) and `nph_time.lua` (bar/tempo maths). |
+| 3 | **Rest of the shared spine** | `nt_names.lua` (the role/similarity engine is currently duplicated between Palette & Look and Track Settings Transfer) and `nt_time.lua` (bar/tempo maths). |
 | 4 | **ReaPack packaging** | Headers are already on every script. What remains: wire `reapack-index` into a GitHub Action so `index.xml` rebuilds on push. **Verify the header spec at `codeberg.org/cfillion/reapack` first** — the ReaPack GitHub wiki was archived 3 June 2026. |
 | 5 | **Gain matching in Stem Print** | Its render pass now restores state safely, but gain matching was never built. |
 
@@ -163,7 +163,7 @@ Tell Jason exactly which patch got which substitute and which ones you could not
 
 ### The architecture is already decided — do not relitigate it
 
-From `docs/NPH_TECH_BRIEF.md` §7:
+From `docs/TECH_BRIEF.md` §7:
 
 - **Nothing that touches audio is created, destroyed or reconfigured mid-set.** Everything
   that will ever make sound is instantiated at load.

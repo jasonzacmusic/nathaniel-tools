@@ -1,8 +1,8 @@
-# NPH BUSINESS BRIEF — YouTube, Course, Website
+# Nathaniel Tools BUSINESS BRIEF — YouTube, Course, Website
 
 **Owner:** Jason Zac / Nathaniel School of Music (music@nathanielschool.com)
 **Date:** 25 July 2026
-**Companion file:** `NPH_TECH_BRIEF.md` (same folder) — the REAPER engineering brief.
+**Companion file:** `TECH_BRIEF.md` (same folder) — the REAPER engineering brief.
 
 ---
 
@@ -10,7 +10,7 @@
 
 This file contains **no REAPER API work, no Lua, no test harness.** If you find
 yourself debugging a script, you are in the wrong document — switch to
-`NPH_TECH_BRIEF.md` and start a separate session.
+`TECH_BRIEF.md` and start a separate session.
 
 The owner asked explicitly for these two tracks to be kept apart, and he is right
 to. They fail differently. Engineering has a correctness gate: a harness either

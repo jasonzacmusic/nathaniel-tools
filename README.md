@@ -32,7 +32,7 @@ Marker at Bar · Tempo at Bar · MIDI Render · Flush Paste · Duplicate Track �
 
 Each one replaced a custom action that had a real, diagnosed bug — a pan-destroying step, a
 global preference being toggled on every press, a marker snapping to the arrange grid
-instead of the bar line. The root causes are documented in `docs/NPH_TECH_BRIEF.md`.
+instead of the bar line. The root causes are documented in `docs/TECH_BRIEF.md`.
 
 ### The shared spine
 
@@ -152,7 +152,7 @@ Both cost real debugging time. Neither is in the official docs.
 2. **`ValidatePtr2` rejects `0`** — even though `0` is ReaScript's shorthand for "the
    current project". Guards must special-case it or they return false for everything.
 
-More in `docs/NPH_TECH_BRIEF.md`.
+More in `docs/TECH_BRIEF.md`.
 
 ---
 

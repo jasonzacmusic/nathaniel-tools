@@ -408,7 +408,7 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b MIDI Batch Export}  \u8212?  amber  \u8212?  Export many MIDI items/regions as separate {\f1 .mid} files with pattern-based sequential names.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 The speed layer (12 scripts, keyboard-bound)\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Solo Focus \u183? Record Arm Toggle \u183? FX Float Toggle \u183? FX Open/Close All \u183? Region Next/Prev \u183? Marker at Bar \u183? Tempo at Bar \u183? MIDI Render \u183? Flush Paste \u183? Duplicate Track \u183? Unsolo & Unselect\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Each one replaced a custom action that had a real, diagnosed bug \u8212? a pan-destroying step, a global preference being toggled on every press, a marker snapping to the arrange grid instead of the bar line. The root causes are documented in {\f1 docs/NPH_TECH_BRIEF.md}.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Each one replaced a custom action that had a real, diagnosed bug \u8212? a pan-destroying step, a global preference being toggled on every press, a marker snapping to the arrange grid instead of the bar line. The root causes are documented in {\f1 docs/TECH_BRIEF.md}.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 The shared spine\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `scripts/lib/nt_safe.lua`} \u8212? pointer safety and stable identity. The reason these apps\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 cannot crash REAPER.\par}
@@ -460,7 +460,7 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 stayed on {\f1 8} across insert, rename {\i and} delete. Any change-watchdog built on it never fires. Use a track-list signature instead.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab {\b `ValidatePtr2` rejects `0`} \u8212? even though {\f1 0} is ReaScript's shorthand for "the\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 current project". Guards must special-case it or they return false for everything.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 More in {\f1 docs/NPH_TECH_BRIEF.md}.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 More in {\f1 docs/TECH_BRIEF.md}.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Licence\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 MIT \u8212? see {\f1 LICENSE}.\par}

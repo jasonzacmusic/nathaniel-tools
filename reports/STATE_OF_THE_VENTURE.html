@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NPH REAPER Suite — State of the Venture</title>
+<title>Nathaniel Tools — State of the Venture</title>
 <style>
   :root{
     --bg:#0d0f14; --card:#151922; --card2:#1b2029; --line:#252b36;
@@ -91,7 +91,7 @@
 <div class="item">
   <h3><span class="tag t-done">Live</span> The repo is public and installs through ReaPack</h3>
   <p>The suite is now a real, subscribable ReaPack repository with <strong>20 packages</strong>. I proved the install path the way a stranger would experience it: subscribed this REAPER to the public URL through ReaPack's own API and confirmed it registered and refreshed.</p>
-  <span class="url">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/main/index.xml</span>
+  <span class="url">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/main/index.xml</span>
   <p class="why">That URL is what anyone pastes into <strong>Extensions → ReaPack → Import repositories…</strong> — that is the "how do I install it" answer, and it is live.</p>
 </div>
 
@@ -149,7 +149,7 @@
 <div class="item">
   <h3><span class="tag t-you">Caught late</span> The ReaPack install would have delivered broken scripts</h3>
   <p>I told you earlier that installing works because I verified <em>subscribing</em> to the repository works. That was not the same claim, and the difference mattered: six scripts load shared library files, but ReaPack gives each package exclusive ownership of the files it installs, so they could not each carry a copy. Installing any one app would have succeeded and then <strong>failed the moment you ran it</strong>, with an error that looks like a broken script rather than a packaging mistake.</p>
-  <p class="why"><strong>Fixed:</strong> the libraries now live in their own <em>NPH Shared Libraries</em> package, every app that needs it says so, and the index generator refuses to build if one ever forgets again. Then I checked it properly — all <strong>24 files download from the live index with matching checksums</strong>, and all 14 layout checks pass inside REAPER. The easiest install is to right-click the repository in ReaPack and choose <strong>Install All</strong>.</p>
+  <p class="why"><strong>Fixed:</strong> the libraries now live in their own <em>Nathaniel Tools Shared Libraries</em> package, every app that needs it says so, and the index generator refuses to build if one ever forgets again. Then I checked it properly — all <strong>24 files download from the live index with matching checksums</strong>, and all 14 layout checks pass inside REAPER. The easiest install is to right-click the repository in ReaPack and choose <strong>Install All</strong>.</p>
 </div>
 
 <h2><span class="dot" style="background:var(--amber)"></span>What still stands between this and a real gig</h2>
@@ -173,20 +173,20 @@
 
 <footer>
   Nathaniel School of Music · REAPER venture · 3 August 2026<br>
-  Repo: <code>github.com/jasonzacmusic/nph-reaper-suite</code> (public) · rig at <code>~/Documents/REAPER Media/StageRig/</code>
+  Repo: <code>github.com/jasonzacmusic/nathaniel-tools</code> (public) · rig at <code>~/Documents/REAPER Media/StageRig/</code>
 </footer>
 
 </div>
 
 <script>
-const summary = `NPH REAPER VENTURE - 3 Aug 2026
+const summary = `Nathaniel Tools REAPER VENTURE - 3 Aug 2026
 
 CAN YOU REPLACE MAINSTAGE TODAY? Not yet - but the hard part is done.
 Your Lagori rig now EXISTS in REAPER: 5 patches, 18 instrument tracks, every one with a real instrument loaded and the note-tracker in front of it. Saved and openable at ~/Documents/REAPER Media/StageRig/Lagori 2026 StageRig.RPP
 
 DONE TODAY
 - Repo is PUBLIC and installs via ReaPack. 20 packages. I subscribed REAPER to it and confirmed it works. Paste this into Extensions > ReaPack > Import repositories:
-  https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/main/index.xml
+  https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/main/index.xml
 - ReaPack + ReaImGui installed on the laptop (they were missing). All 18 scripts registered and showing in your Actions list. Full test gate ran INSIDE REAPER: 68 passed, 0 failed.
 - StageRig v0 built: importer, note-tracker effect, stage view with the proper switch sequence (unmute new patch, stop notes to the old one, let it ring, flush, mute) and panic buttons. 18/18 checks passing.
 - Website built, live for review at https://nph-daw.vercel.app (temporary address, DNS untouched)

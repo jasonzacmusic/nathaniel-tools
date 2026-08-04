@@ -1,9 +1,9 @@
-# NPH REAPER Suite — venture plan (the SWS model, done our way)
+# Nathaniel Tools — venture plan (the SWS model, done our way)
 
 **Written 3 Aug 2026.** Grounded in two fresh research passes (full reports in
 `docs/research/`): how SWS/ReaPack/ReaTeam distribution actually works in 2026, and
 what the live-rig market looks like. This plan supersedes nothing in
-`NPH_BUSINESS_BRIEF.md` — it operationalises it.
+`BUSINESS_BRIEF.md` — it operationalises it.
 
 ---
 
@@ -19,7 +19,7 @@ working in this exact market.
 
 ## 2. Identity
 
-- **Name on every surface:** NPH REAPER Suite. Script prefix stays `NPH_` — a
+- **Name on every surface:** Nathaniel Tools. Script filenames carry no prefix — the ReaPack category and the
   consistent author prefix is how suites get recognised in the Action List.
 - **The vertical:** every successful fast-growth suite owned a vertical (Ultraschall =
   podcasts, nvk = game audio). Ours is **the working keyboardist / producer-educator**:
@@ -31,7 +31,7 @@ working in this exact market.
 ## 3. Distribution mechanics (the technical checklist)
 
 1. **Repo goes public** as the free core. License MIT. (Repo exists:
-   `jasonzacmusic/nph-reaper-suite`, currently private.)
+   `jasonzacmusic/nathaniel-tools`, currently private.)
 2. **ReaPack packaging** via cfillion's `reapack-repository-template` — a GitHub
    Action runs `reapack-index` on every push and rebuilds `index.xml`. Headers
    (`@description @author @version @changelog @about @provides @link @donation`) are

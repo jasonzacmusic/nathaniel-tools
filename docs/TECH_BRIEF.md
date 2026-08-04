@@ -1,8 +1,8 @@
-# NPH TECH BRIEF — The REAPER Suite
+# Nathaniel Tools TECH BRIEF — The REAPER Suite
 
 *(Previously circulated as `CLAUDE_CODE_BRIEF.md`. This is the current file. The
 business half — YouTube, course, website, pricing — was split out into
-`NPH_BUSINESS_BRIEF.md`; do not do both in one session.)*
+`BUSINESS_BRIEF.md`; do not do both in one session.)*
 
 **Owner:** Jason Zac / Nathaniel School of Music (music@nathanielschool.com)
 **Machine:** Mac mini, macOS arm64, REAPER 7.77, registered to "Jason Zachariah"
@@ -105,7 +105,7 @@ not just until the script returns. So any gate of the form
 `Main_OnCommand(40026, 0)` still pops Save-As.
 
 The fix is **three phases**, with the phase held in `SetExtState`/`GetExtState`/
-`DeleteExtState("NPH_TEST","phase")` rather than inferred from project state:
+`DeleteExtState("NT_TEST","phase")` rather than inferred from project state:
 
 1. build the project and `Main_SaveProjectEx(0, RPP, 0)`, then `return`
 2. `Main_openProject("noprompt:" .. RPP)`, then `return`
@@ -139,7 +139,7 @@ replaces it cleanly. Marker count does not grow.
 press lands a few milliseconds from the last one, so the tempo map accumulates
 near-duplicates that all *look* like they are on the same bar and fight each other.
 Quantizing the insert to the bar line removes the cause entirely. That is what
-`NPH_Tempo at Bar.lua` does.
+`Tempo at Bar.lua` does.
 
 #### The `beatpos = 1e-11` trap — this one is real and it silently broke the fix
 `GetTempoTimeSigMarker` returns `beatpos = 1e-11`, **not `0`**, for a marker
@@ -310,22 +310,22 @@ Syntax check before installing anything: `luac5.4 -p <file>`.
 ## 5. CURRENT STATE — inventory and ledger
 
 ### 5.1 The 12 speed-layer scripts
-All live in `/Users/nphmacmini/Documents/REAPER Media/NPH/`, all registered.
+All live in `/Users/nphmacmini/Documents/REAPER Media/Nathaniel Tools/`, all registered.
 Authoritative map is `_register.txt`:
 
 ```
-NPH_Solo Focus.lua           cmd 55885     _RS533bc7a18dffdf54bc42d5d9adefb880e9cf62de
-NPH_Record Arm Toggle.lua    cmd 55886     _RS268630c3a15f277043c45f059827a25fa7471ab4
-NPH_FX Float Toggle.lua      cmd 55887     _RS8d5c113ed44383702a49d6c52552fd87733c93e6
-NPH_FX Open Close All.lua    cmd 55888     _RSc36afb1f4ea0cf8f68b2ada12abb0d8b4d4e3783
-NPH_Region Next.lua          cmd 55889     _RS85008a203cd065e20a9d48c81552a5cf60084efa
-NPH_Region Prev.lua          cmd 55890     _RS6bcbc85d288be9422448dc8ac7ad61cfd5cb4b52
-NPH_Marker at Bar.lua        cmd 55891     _RS61e0a7e30914c6be0091573562f0c144e831e5e6
-NPH_Tempo at Bar.lua         cmd 55892     _RS0bb0d4205ed51a7a03ea6902879ece4da76dea1a
-NPH_MIDI Render.lua          cmd 55893     _RSf4f34fceaa51f44e1e1ff17fbd978a3ef302cff6
-NPH_Flush Paste.lua          cmd 55894     _RS8a1922a2686132cd22f5b6617875f52c14ef4939
-NPH_Duplicate Track.lua      cmd 55895     _RS51cab0ca51c65b37df027d64b8e95b2e9a94aeb0
-NPH_Unsolo Unselect.lua      cmd 55896     _RSa171766c8d9609767b1b3e2275eff8d3d848c237
+Solo Focus.lua           cmd 55885     _RS533bc7a18dffdf54bc42d5d9adefb880e9cf62de
+Record Arm Toggle.lua    cmd 55886     _RS268630c3a15f277043c45f059827a25fa7471ab4
+FX Float Toggle.lua      cmd 55887     _RS8d5c113ed44383702a49d6c52552fd87733c93e6
+FX Open Close All.lua    cmd 55888     _RSc36afb1f4ea0cf8f68b2ada12abb0d8b4d4e3783
+Region Next.lua          cmd 55889     _RS85008a203cd065e20a9d48c81552a5cf60084efa
+Region Prev.lua          cmd 55890     _RS6bcbc85d288be9422448dc8ac7ad61cfd5cb4b52
+Marker at Bar.lua        cmd 55891     _RS61e0a7e30914c6be0091573562f0c144e831e5e6
+Tempo at Bar.lua         cmd 55892     _RS0bb0d4205ed51a7a03ea6902879ece4da76dea1a
+MIDI Render.lua          cmd 55893     _RSf4f34fceaa51f44e1e1ff17fbd978a3ef302cff6
+Flush Paste.lua          cmd 55894     _RS8a1922a2686132cd22f5b6617875f52c14ef4939
+Duplicate Track.lua      cmd 55895     _RS51cab0ca51c65b37df027d64b8e95b2e9a94aeb0
+Unsolo Unselect.lua      cmd 55896     _RSa171766c8d9609767b1b3e2275eff8d3d848c237
 ```
 Plus `Track Settings Transfer.lua` at **cmd 55876** (v4, installed, never exercised).
 The harness execution slot is `_harvest_scripts.lua` =
@@ -411,20 +411,20 @@ in Track Settings Transfer ONLY.** It was never carried across to the other two 
 | 1 | `Palette and Look.lua` | `rows` cached raw `MediaTrack*` and dereferenced it every frame in the UI table (`trackU32(row.track)`, `setCol(row.track, ...)`). Deleting/undoing/reordering a track with the window open = guaranteed hard crash. The surrounding `pcall(frame)` is false comfort — it cannot catch a native fault. | **FIXED** — GUID rows, per-frame `liveMap()` + `ValidatePtr2`, tombstone display, state-change watchdog |
 | 2 | `Stem Print and Handoff.lua` | Same stale-pointer bug. Worse: `restoreAll()` ran **outside** the `pcall` and wrote through pointers captured *before* a multi-minute render, so a fault mid-restore left tracks stuck at unity gain / centre pan. | **FIXED** — GUID snapshots re-resolved after render; vanished tracks skipped and reported |
 | 3 | `Track Settings Transfer.lua` | **The reported "import from another session doesn't work one way" bug.** Picking a new source removed it from `targetSel` but nothing replaced it → zero targets → `ensureFocus()` nulled `focusTarget` → the whole row list vanished behind "Select a target project above." Symptom was direction-asymmetric, exactly as described. | **FIXED** — swap semantics (old source inherits target slot) + a `<-> Swap` button |
-| 4 | `NPH_Duplicate Track.lua` | Cleared `I_RECARM` on **every track in the project** and never restored it. On the 452-track live rig, one press silently destroys the record setup. | **FIXED** — arm state snapshotted by GUID and restored; only the new duplicates stay armed |
-| 5 | `NPH_Solo Focus.lua` | `AUDITION = true` moved the edit cursor to the **mouse position** and started playback on every solo press. | **FIXED** — defaults to `false`, flag documented at the top |
-| 6 | `NPH_Flush Paste.lua` | `40026` on a never-saved project opens **Save As** — the exact modal the rewrite existed to remove. | **FIXED** — guards on the project having a path, explains itself instead |
+| 4 | `Duplicate Track.lua` | Cleared `I_RECARM` on **every track in the project** and never restored it. On the 452-track live rig, one press silently destroys the record setup. | **FIXED** — arm state snapshotted by GUID and restored; only the new duplicates stay armed |
+| 5 | `Solo Focus.lua` | `AUDITION = true` moved the edit cursor to the **mouse position** and started playback on every solo press. | **FIXED** — defaults to `false`, flag documented at the top |
+| 6 | `Flush Paste.lua` | `40026` on a never-saved project opens **Save As** — the exact modal the rewrite existed to remove. | **FIXED** — guards on the project having a path, explains itself instead |
 | 7 | Toolbar (`reaper-menu.ini`) | `Main toolbar item_21` still points at the ORIGINAL `Custom: Midi Render` = `_SWS_SAFETIMESEL 40849`. The *key* was migrated; the *button* never was. Verified: this is the **only** one of the 14 old custom actions still reachable from any key or toolbar. | **NEEDS A CLICK** — cannot be edited while REAPER is running (it rewrites the file on quit) |
-| 8 | — | No way to export N MIDI files at once with sequential names. `40849` is single-file and modal. | **BUILT** — `NPH/NPH_MIDI Batch Export.lua`, writes SMF bytes directly |
-| 9 | — | Pointer safety was per-app folklore, not shared code. | **BUILT** — `NPH/lib/nph_safe.lua` |
+| 8 | — | No way to export N MIDI files at once with sequential names. `40849` is single-file and modal. | **BUILT** — `Nathaniel Tools/MIDI Batch Export.lua`, writes SMF bytes directly |
+| 9 | — | Pointer safety was per-app folklore, not shared code. | **BUILT** — `Nathaniel Tools/lib/nt_safe.lua` |
 
 **Also found:** `Stem Print and Handoff.lua` was **never registered as an action** — which is
 why its crash was never hit. It has effectively never been run.
 
 **New/changed files**
 ```
-NPH/lib/nph_safe.lua              NEW  shared pointer-safety + GUID identity spine
-NPH/NPH_MIDI Batch Export.lua     NEW  batch SMF export, amber, dockable
+Nathaniel Tools/lib/nt_safe.lua              NEW  shared pointer-safety + GUID identity spine
+Nathaniel Tools/MIDI Batch Export.lua     NEW  batch SMF export, amber, dockable
 NPH_AUDIT_REPORT.html             NEW  the findings report for Jason
 _harvest_scripts.lua              REWRITTEN as an install+verify harness
 ```
@@ -438,7 +438,7 @@ built on the shared spine from the start.
 The design decision that matters: it **never edits `I_FOLDERDEPTH` directly.** It converts
 depths to nesting LEVELS, edits there, then regenerates every depth from the levels. The
 output is well-formed by construction, so the "unclosed folder swallows the rest of the
-session" bug is not reachable from this app. Maths lives in `NPH/lib/nph_hierarchy.lua`,
+session" bug is not reachable from this app. Maths lives in `Nathaniel Tools/lib/nt_hierarchy.lua`,
 covered by 31 pure-Lua checks that run without REAPER (`tests/hierarchy_test.lua`).
 
 Features: repair folder maths · make folder from ticked · indent / outdent · remove from
@@ -455,7 +455,7 @@ popping anything after the range back out to the parent's level. Regression test
 
 **Harness now: 68 passed, 0 failed.**
 
-**Published:** `https://github.com/jasonzacmusic/nph-reaper-suite` (PRIVATE).
+**Published:** `https://github.com/jasonzacmusic/nathaniel-tools` (PRIVATE).
 Every script carries ReaPack metadata headers (`@description @version @author @link
 @donation @about @provides @changelog`). Verified by cloning back from GitHub and re-running
 the pure-logic suite from the clone: 31/31.
@@ -483,13 +483,13 @@ and never noticed:
 | # | Defect | Status |
 |---|---|---|
 | 10 | **`GetProjectStateChangeCount` does not detect track changes.** Probed directly: it stayed on `8` across insert, rename AND delete. Every watchdog in the suite was built on it, so **none of them had ever fired** — including Track Settings Transfer's "Auto-sync", which its own header claims rebuilds on add/delete/rename. | **FIXED** — all apps now diff a cheap track-list signature (count + GUID + name + folder depth), throttled to 4Hz |
-| 11 | `nph_safe.projAlive(0)` returned **false**. `0` is ReaScript's standard shorthand for "the current project", but `ValidatePtr2` rejects it. Any future app using the ordinary `0` idiom would have had every guard silently return false and do nothing. | **FIXED** — caught by the harness on its first run |
+| 11 | `nt_safe.projAlive(0)` returned **false**. `0` is ReaScript's standard shorthand for "the current project", but `ValidatePtr2` rejects it. Any future app using the ordinary `0` idiom would have had every guard silently return false and do nothing. | **FIXED** — caught by the harness on its first run |
 
 **Live proof, not inference.** With Palette & Look open on its Tracks tab I deleted a
 track through the API. Old code: guaranteed hard crash. Observed: the row rendered as a
 red `(deleted)` tombstone, REAPER kept running; after the watchdog fix the row simply
 disappeared and a renamed track updated instantly. `Stem Print and Handoff.lua` and
-`NPH_MIDI Batch Export.lua` are now **registered** (they were not before).
+`MIDI Batch Export.lua` are now **registered** (they were not before).
 
 The harness `_harvest_scripts.lua` is now the standing regression gate: it registers all
 16 scripts, compiles each, builds a 5-track scratch project **in its own tab**, deletes a
@@ -500,7 +500,7 @@ closes the tab and returns to the tab you started on. Result file: `_nph_results
 **Only one thing could not be done from outside REAPER:** repointing the toolbar's
 `Midi Render` button. REAPER holds `reaper-menu.ini` in memory and rewrites it on quit,
 so an external edit is discarded. Right-click the button → Customize toolbar → Change
-action → `Script: NPH_MIDI Render.lua`.
+action → `Script: MIDI Render.lua`.
 
 ---
 
@@ -512,11 +512,11 @@ control was declined and the MCP bridge stopped responding mid-session. They are
 construction and reviewed line by line, but the honest label is *reviewed, not yet run*.
 
 To close that gap: run `Custom: _harvest_scripts.lua` from the Actions list. It registers every
-script, compiles each one, checks the environment, exercises `nph_safe`, and writes PASS/FAIL
+script, compiles each one, checks the environment, exercises `nt_safe`, and writes PASS/FAIL
 to `_nph_results.txt`.
 
-**Still open from the original queue:** items 5 (rest of the shared spine — `nph_names`,
-`nph_hierarchy`, `nph_time`), 6 (Folders and Flow), 7 (Sections and Time), 9 (StageRig),
+**Still open from the original queue:** items 5 (rest of the shared spine — `nt_names`,
+`nt_hierarchy`, `nt_time`), 6 (Folders and Flow), 7 (Sections and Time), 9 (StageRig),
 10 (ReaPack packaging). The drag-paint retrofit into Palette and Look is also still open.
 
 ---
@@ -545,7 +545,7 @@ Leftovers from the failed `.ReaperKeyMap` experiments (see §3.1). Delete these:
 Also clean up: `_test_results*.txt`, `_nph_test.RPP*`, and any disposable test tabs.
 
 ### 5.6 Files on the Mac (`/Users/nphmacmini/Documents/REAPER Media/`)
-Scripts: `NPH/` (12 scripts), `Palette and Look.lua`, `Track Settings Transfer.lua`,
+Scripts: `Nathaniel Tools/` (12 scripts), `Palette and Look.lua`, `Track Settings Transfer.lua`,
 `Stem Print and Handoff.lua`, `_harvest_scripts.lua`, both `.ReaperKeyMap` files.
 Diagnostics: `_register.txt`, `_test_results.txt`, `_test_results2.txt`,
 `_action_audit.txt`, `_kb_dump.txt`, `_harvested_scripts.md` (149 KB — every custom
@@ -569,7 +569,7 @@ Riffs/Tutorials/Freestyle folders. **These are the raw material for the course.*
 
 **1. ~~Run the automated harness.~~ DONE — pass 9 came back 12 passed, 0 failed.**
 The harness slot `_harvest_scripts.lua` on the Mac still holds the pass-9 script;
-re-run it any time you touch `NPH_Flush Paste.lua` or `NPH_Tempo at Bar.lua` as a
+re-run it any time you touch `Flush Paste.lua` or `Tempo at Bar.lua` as a
 regression gate. It needs the `_nph_test.RPP` scratch project as the active tab.
 Read the result with `device_bash`/local `cat`, never through a cached mount, and
 check the mtime advanced first (§4.5).
@@ -585,8 +585,8 @@ saved project — **no Save-As dialog is the pass condition**.
 
 **4. Clean up the orphans** (§5.5).
 
-**5. Extract the shared spine.** Create `nph_ui.lua`, `nph_names.lua`,
-`nph_hierarchy.lua`, `nph_time.lua`. First job for `nph_ui.lua`: lift the
+**5. Extract the shared spine.** Create `nt_ui.lua`, `nt_names.lua`,
+`nt_hierarchy.lua`, `nt_time.lua`. First job for `nt_ui.lua`: lift the
 **contiguous mouse-drag select/deselect** (`paintApply` / band pattern) out of
 Track Settings Transfer v4 — it exists only there — and retrofit it into Palette
 and Look. He explicitly asked for drag-paint selection in **every** app. Verify
@@ -617,7 +617,7 @@ only. Stop at a working `index.xml` that a test REAPER install can subscribe to.
 
 Everything past that point — pricing, the landing page, the free/pro split, the
 course, YouTube — is **not your job in this session.** It is in
-`NPH_BUSINESS_BRIEF.md`.
+`BUSINESS_BRIEF.md`.
 
 ---
 
@@ -685,7 +685,7 @@ API traps, the test methodology, the inventory, the build queue, StageRig.
 
 Publishing, pricing, ReaPack distribution, the YouTube channel, the course, and
 daw.nathanielschool.com are deliberately **not** in here. They live in a separate
-document, `NPH_BUSINESS_BRIEF.md`, in the same folder. Do not mix the two in one
+document, `BUSINESS_BRIEF.md`, in the same folder. Do not mix the two in one
 session — the owner asked explicitly for them to be kept apart, and they need
 different modes of working (one is engineering with a test harness, the other is
 writing and design with no correctness gate).
@@ -709,3 +709,20 @@ tax on long build sessions. Use chat for strategy and taste; do the building her
 **First job of your first session:** the three hand-verifications in §6 item 2. The
 automated harness is already green (12 passed, 0 failed). Those three modal actions
 are the only untested things standing between the speed layer and "signed off".
+
+---
+
+## RENAMED — 4 August 2026
+
+The suite is now **Nathaniel Tools**. "NPH" was an internal codename and should
+never have reached a public surface; it was in 21 package headers, the ReaPack
+index name and the install folder.
+
+    NPH/                     -> scripts/
+    NPH_<name>.lua           -> <name>.lua
+    nph_safe / hierarchy / imgui -> nt_safe / nt_hierarchy / nt_imgui
+    Scripts/NPH REAPER Suite -> Scripts/Nathaniel Tools
+    github.com/.../nph-reaper-suite -> .../nathaniel-tools
+
+Any "NPH_" left in the older sections above is a historical record of what the
+files were called at the time, not a current path.
