@@ -1,0 +1,330 @@
+
+;##############################################################################
+;#
+;#  NATHANIEL TOOLS - theme extension block
+;#
+;#  Everything ABOVE this line is Cockos' Default 7.0 rtconfig.txt, unmodified
+;#  except for the adjuster_script line. It contributes 277 define_parameter
+;#  declarations. This block appends more.
+;#
+;#  >>> THE ORDER OF define_parameter IS A WIRE PROTOCOL. APPEND ONLY. <<<
+;#
+;#  REAPER persists theme parameter values to reaper-themeconfig.ini as
+;#  positional keys - param0, param1, param2 ... - indexed by the order in which
+;#  define_parameter is PARSED, not by name. Insert a parameter in the middle,
+;#  or delete one, and every saved setting after it shifts by one and silently
+;#  becomes garbage: a user's "TCP Meter Width" turns into their "Send Column
+;#  Limit" with no warning and no way to notice except by looking at a wrong-
+;#  looking mixer. Nothing in REAPER checks this.
+;#
+;#  So: Default 7.0's 277 stay exactly where Cockos put them, in Cockos' order.
+;#  Ours go at the BOTTOM of this file, after the last one already here. When a
+;#  future release adds more, they go at the bottom too - never in a tidy
+;#  thematic group in the middle, however much nicer that would read.
+;#  package_theme.py enforces this: it fails the build if the first 277
+;#  parameters are not byte-identical, in order, to the base theme's.
+;#
+;#  Why this file exists at all: Default 7.0 already knows how to put the FX
+;#  list, the FX-parameter list and the send list into any of nine TCP sections
+;#  - but only through nine separate per-layout parameters that you have to set
+;#  three times over for layouts A, B and C. And it has no control at all over
+;#  list row height, list spacing, how many columns a list wraps into, or which
+;#  font a list uses. Those are the things you actually reach for. This block
+;#  adds them as plain global switches, implemented against the WALTER spec on
+;#  top of Default's own section machinery. No part of it is copied from any
+;#  other theme.
+;#
+;##############################################################################
+
+
+; ---------------------------------------------------------------------------
+; TCP list placement
+;
+; Default's model is four placeable blocks (fx parameters, fx list, send list,
+; embedded FX) each assigned to one of nine sections, plus two merge flags that
+; fold the FX list and the send list INTO the parameter list. These switches
+; drive that model instead of replacing it, so the per-layout parameters keep
+; working and anything left at 0 here is left exactly as the user set it.
+; ---------------------------------------------------------------------------
+define_parameter ntTcpFxSide			'Nathaniel: TCP FX list on the side' 1 0 1
+define_parameter ntTcpSepParms			'Nathaniel: TCP separate FX parameter list' 1 0 1
+define_parameter ntTcpParmsSide			'Nathaniel: TCP FX parameter list on the side' 0 0 1
+define_parameter ntTcpSepSends			'Nathaniel: TCP separate send list' 0 0 1
+define_parameter ntTcpSendsSide			'Nathaniel: TCP send list on the side' 0 0 1
+
+; ---------------------------------------------------------------------------
+; TCP list metrics. Row height 0 means "leave the theme's own height alone" -
+; the FX list and the send list are one text row tall, the parameter list is
+; two, and forcing them all to one number is a change you should have to ask
+; for. Margin is an offset added to the theme's bottom margin, so 0 is a no-op.
+; A column limit of 1 is likewise a no-op; above 1 the minimum column width is
+; recomputed from the section width so the list wraps into that many columns.
+; ---------------------------------------------------------------------------
+define_parameter ntTcpListRowH			'Nathaniel: TCP list row height (0 = theme default)' 0 0 60
+define_parameter ntTcpListMargin		'Nathaniel: TCP list spacing' 0 0 32
+define_parameter ntTcpFxCols			'Nathaniel: TCP FX column limit' 1 1 8
+define_parameter ntTcpParmCols			'Nathaniel: TCP FX parameter column limit' 1 1 8
+define_parameter ntTcpSendCols			'Nathaniel: TCP send column limit' 1 1 8
+
+; ---------------------------------------------------------------------------
+; MCP list metrics. The extended mixer auto-populates, so its list blocks take
+; their height from the row height of their text field - which is the second
+; component of the .font statement. That is the only handle there is.
+; ---------------------------------------------------------------------------
+define_parameter ntMcpListRowH			'Nathaniel: MCP list row height (0 = theme default)' 0 0 60
+define_parameter ntMcpListMargin		'Nathaniel: MCP list spacing' 0 0 32
+define_parameter ntMcpFxCols			'Nathaniel: MCP FX column limit' 1 1 8
+define_parameter ntMcpSendCols			'Nathaniel: MCP send column limit' 1 1 8
+
+; ---------------------------------------------------------------------------
+; Font override slots. 0 = use the theme's choice. 1-5 are the 100% bank,
+; 6-10 the 150% bank, 11-15 the 200% bank, matching the font table Default
+; documents at the top of this file; the slot for the current scale is picked
+; automatically, so pick a number in the bank you are looking at.
+; ---------------------------------------------------------------------------
+define_parameter ntFont100Main			'Nathaniel: Font override 100% Main' 0 0 15
+define_parameter ntFont100Header		'Nathaniel: Font override 100% Track name' 0 0 15
+define_parameter ntFont100List			'Nathaniel: Font override 100% FX / parameters / sends' 0 0 15
+define_parameter ntFont150Main			'Nathaniel: Font override 150% Main' 0 0 15
+define_parameter ntFont150Header		'Nathaniel: Font override 150% Track name' 0 0 15
+define_parameter ntFont150List			'Nathaniel: Font override 150% FX / parameters / sends' 0 0 15
+define_parameter ntFont200Main			'Nathaniel: Font override 200% Main' 0 0 15
+define_parameter ntFont200Header		'Nathaniel: Font override 200% Track name' 0 0 15
+define_parameter ntFont200List			'Nathaniel: Font override 200% FX / parameters / sends' 0 0 15
+
+
+;##############################################################################
+;#  MACROS
+;##############################################################################
+
+; Route the three lists into sections, then hand back to Default's own drawTcp
+; to lay the panel out. We deliberately rewrite Default's per-layout parameters
+; rather than the geometry: every downstream calculation - section widths,
+; empty-section culling, the minimum TCP width - then falls out correctly
+; without being reimplemented. Default rewrites its own parameters the same way
+; (see tcpVolumeLength and the two visflags at the top of drawTcp).
+macro ntTcpRoute thisLayout
+
+	; visflag1 folds the FX list into the parameter list, visflag2 the sends.
+	set Layout##thisLayout##-tcpFxparmVisflag1		?ntTcpSepParms{0} -1 1
+	set Layout##thisLayout##-tcpFxparmVisflag2		?ntTcpSepSends{0} -1 1
+
+	; A folded-in list must not also hold a section of its own, or the section
+	; is reserved, drawn and left empty.
+	set Layout##thisLayout##-tcpFxLocation			!ntTcpSepParms{0} 0 \
+													?ntTcpFxSide{0} 7 \
+													.
+
+	set Layout##thisLayout##-tcpSendLocation		!ntTcpSepSends{0} 0 \
+													?ntTcpSendsSide{0} 9 \
+													Layout##thisLayout##-tcpSendLocation{0}==0 6 \
+													.
+
+	set Layout##thisLayout##-tcpFxparmLocation		?ntTcpParmsSide{0} 8 .
+
+endmacro
+
+
+; Row height, wrap columns, spacing and font for the three TCP lists.
+; Runs AFTER drawTcp, because the column arithmetic needs the section width
+; that drawTcp just worked out.
+macro ntTcpMetrics S
+
+	set ntScale					[S S S S S S S S]
+	set ntRowH					* ntScale ntTcpListRowH{0}
+	set ntListM					* ntScale ntTcpListMargin{0}
+	set ntColGap				* ntScale 2
+
+	set ntFontMain				ntScale{0}==1 ntFont100Main{0} ntScale{0}==1.5 ntFont150Main{0} ntFont200Main{0}
+	set ntFontHeader			ntScale{0}==1 ntFont100Header{0} ntScale{0}==1.5 ntFont150Header{0} ntFont200Header{0}
+	set ntFontList				ntScale{0}==1 ntFont100List{0} ntScale{0}==1.5 ntFont150List{0} ntFont200List{0}
+
+	; {0} font index, {1} row height, {2} minimum column width, {3} block width.
+	; A list wraps to a new column when {3} will fit another {2}, so N columns
+	; is (block width - the gaps between them) / N.
+	set ntFxColW				/ - tcp.fxlist{2}   * ntColGap{0} - ntTcpFxCols{0} 1   ntTcpFxCols{0}
+	set ntParmColW				/ - tcp.fxparm{2}   * ntColGap{0} - ntTcpParmCols{0} 1 ntTcpParmCols{0}
+	set ntSendColW				/ - tcp.sendlist{2} * ntColGap{0} - ntTcpSendCols{0} 1 ntTcpSendCols{0}
+
+	set tcp.fxlist.font			ntTcpListRowH{0}>0 [. ntRowH{0} . .] .
+	set tcp.fxparm.font			ntTcpListRowH{0}>0 [. ntRowH{0} . .] .
+	set tcp.sendlist.font		ntTcpListRowH{0}>0 [. ntRowH{0} . .] .
+
+	set tcp.fxlist.font			ntTcpFxCols{0}>1   [. . ntFxColW{0} tcp.fxlist{2}] .
+	set tcp.fxparm.font			ntTcpParmCols{0}>1 [. . ntParmColW{0} tcp.fxparm{2}] .
+	set tcp.sendlist.font		ntTcpSendCols{0}>1 [. . ntSendColW{0} tcp.sendlist{2}] .
+
+	set tcp.fxlist.font			ntFontList{0}>0 [ntFontList{0} . . .] .
+	set tcp.fxparm.font			ntFontList{0}>0 [ntFontList{0} . . .] .
+	set tcp.sendlist.font		ntFontList{0}>0 [ntFontList{0} . . .] .
+
+	set tcp.fxlist.margin		+ [0 0 0 ntListM{0}]
+	set tcp.fxparm.margin		+ [0 0 0 ntListM{0}]
+	set tcp.sendlist.margin		+ [0 0 0 ntListM{0}]
+
+	set tcp.label.font			ntFontHeader{0}>0 [ntFontHeader{0}] .
+	set tcp.volume.label.font	ntFontMain{0}>0 [ntFontMain{0}] .
+	set tcp.pan.label.font		ntFontMain{0}>0 [ntFontMain{0}] .
+	set tcp.width.label.font	ntFontMain{0}>0 [ntFontMain{0}] .
+	set tcp.recinput.font		ntFontMain{0}>0 [ntFontMain{0}] .
+
+endmacro
+
+
+; The mixer's lists are not placeable - the extended mixer decides where they
+; go - so there is nothing to route, only metrics. Their block width lives in
+; component {3} of their own .font statement.
+macro ntMcpMetrics S
+
+	set ntScale					[S S S S S S S S]
+	set ntRowH					* ntScale ntMcpListRowH{0}
+	set ntListM					* ntScale ntMcpListMargin{0}
+	set ntColGap				* ntScale 2
+
+	set ntFontMain				ntScale{0}==1 ntFont100Main{0} ntScale{0}==1.5 ntFont150Main{0} ntFont200Main{0}
+	set ntFontHeader			ntScale{0}==1 ntFont100Header{0} ntScale{0}==1.5 ntFont150Header{0} ntFont200Header{0}
+	set ntFontList				ntScale{0}==1 ntFont100List{0} ntScale{0}==1.5 ntFont150List{0} ntFont200List{0}
+
+	set ntMcpFxColW				/ - mcp.fxlist{3}   * ntColGap{0} - ntMcpFxCols{0} 1   ntMcpFxCols{0}
+	set ntMcpSendColW			/ - mcp.sendlist{3} * ntColGap{0} - ntMcpSendCols{0} 1 ntMcpSendCols{0}
+
+	set mcp.fxlist.font			ntMcpListRowH{0}>0 [. ntRowH{0} . .] .
+	set mcp.fxparm.font			ntMcpListRowH{0}>0 [. ntRowH{0} . .] .
+	set mcp.sendlist.font		ntMcpListRowH{0}>0 [. ntRowH{0} . .] .
+
+	set mcp.fxlist.font			ntMcpFxCols{0}>1   [. . ntMcpFxColW{0} .] .
+	set mcp.sendlist.font		ntMcpSendCols{0}>1 [. . ntMcpSendColW{0} .] .
+
+	set mcp.fxlist.font			ntFontList{0}>0 [ntFontList{0} . . .] .
+	set mcp.fxparm.font			ntFontList{0}>0 [ntFontList{0} . . .] .
+	set mcp.sendlist.font		ntFontList{0}>0 [ntFontList{0} . . .] .
+
+	set mcp.fxlist.margin		+ [0 0 0 ntListM{0}]
+	set mcp.fxparm.margin		+ [0 0 0 ntListM{0}]
+	set mcp.sendlist.margin		+ [0 0 0 ntListM{0}]
+
+	set mcp.label.font			ntFontHeader{0}>0 [ntFontHeader{0}] .
+	set mcp.volume.label.font	ntFontMain{0}>0 [ntFontMain{0}] .
+	set mcp.pan.label.font		ntFontMain{0}>0 [ntFontMain{0}] .
+	set mcp.width.label.font	ntFontMain{0}>0 [ntFontMain{0}] .
+	set mcp.recinput.font		ntFontMain{0}>0 [ntFontMain{0}] .
+
+endmacro
+
+
+; Master panels. Default only ever defines master.* inside the A layouts, and
+; touching an element inside a layout is what puts that layout in REAPER's
+; layout menu for that panel - so these are called from the A family only. Do
+; not add them to B or C: it would make B and C appear in the master panel's
+; layout menu, which is a behaviour change nobody asked for.
+macro ntMasterMetrics S
+
+	set ntScale					[S S S S S S S S]
+	set ntTRowH					* ntScale ntTcpListRowH{0}
+	set ntMRowH					* ntScale ntMcpListRowH{0}
+
+	set ntFontList				ntScale{0}==1 ntFont100List{0} ntScale{0}==1.5 ntFont150List{0} ntFont200List{0}
+	set ntFontHeader			ntScale{0}==1 ntFont100Header{0} ntScale{0}==1.5 ntFont150Header{0} ntFont200Header{0}
+
+	set master.tcp.fxparm.font		ntTcpListRowH{0}>0 [. ntTRowH{0} . .] .
+	set master.tcp.fxparm.font		ntFontList{0}>0 [ntFontList{0} . . .] .
+	set master.tcp.label.font		ntFontHeader{0}>0 [ntFontHeader{0}] .
+
+	set master.mcp.fxlist.font		ntMcpListRowH{0}>0 [. ntMRowH{0} . .] .
+	set master.mcp.fxparm.font		ntMcpListRowH{0}>0 [. ntMRowH{0} . .] .
+	set master.mcp.sendlist.font	ntMcpListRowH{0}>0 [. ntMRowH{0} . .] .
+	set master.mcp.fxlist.font		ntFontList{0}>0 [ntFontList{0} . . .] .
+	set master.mcp.fxparm.font		ntFontList{0}>0 [ntFontList{0} . . .] .
+	set master.mcp.sendlist.font	ntFontList{0}>0 [ntFontList{0} . . .] .
+	set master.mcp.label.font		ntFontHeader{0}>0 [ntFontHeader{0}] .
+
+endmacro
+
+
+;##############################################################################
+;#  APPLY
+;#
+;#  A layout is an alteration of the default layout, and WALTER is happy for a
+;#  layout to be reopened later in the file - Default 7.0 itself reopens
+;#  Layout "A" six times, once per panel section. So these blocks add to the
+;#  layouts already defined above rather than replacing them.
+;#
+;#  drawTcp is re-run here because routing changes the sections, and every
+;#  width, cull and minimum-size decision in the panel depends on them. It
+;#  begins with `clear tcp.*`, so running it again is a clean recompute, not a
+;#  patch on top of a stale one - which is also why Default can afford to call
+;#  it once outside the layouts and again inside each of them.
+;##############################################################################
+
+; -- default layout (no layout chosen) --
+ntTcpRoute A
+drawTcp A 1
+ntTcpMetrics 1
+ntMcpMetrics 1
+ntMasterMetrics 1
+
+Layout "A"
+	ntTcpRoute A
+	drawTcp A 1
+	ntTcpMetrics 1
+	ntMcpMetrics 1
+	ntMasterMetrics 1
+endLayout
+
+Layout "150%_A" "150"
+	ntTcpRoute A
+	drawTcp A 1.5
+	ntTcpMetrics 1.5
+	ntMcpMetrics 1.5
+	ntMasterMetrics 1.5
+endLayout
+
+Layout "200%_A" "200"
+	ntTcpRoute A
+	drawTcp A 2
+	ntTcpMetrics 2
+	ntMcpMetrics 2
+	ntMasterMetrics 2
+endLayout
+
+Layout "B"
+	ntTcpRoute B
+	drawTcp B 1
+	ntTcpMetrics 1
+	ntMcpMetrics 1
+endLayout
+
+Layout "150%_B" "150"
+	ntTcpRoute B
+	drawTcp B 1.5
+	ntTcpMetrics 1.5
+	ntMcpMetrics 1.5
+endLayout
+
+Layout "200%_B" "200"
+	ntTcpRoute B
+	drawTcp B 2
+	ntTcpMetrics 2
+	ntMcpMetrics 2
+endLayout
+
+Layout "C"
+	ntTcpRoute C
+	drawTcp C 1
+	ntTcpMetrics 1
+	ntMcpMetrics 1
+endLayout
+
+Layout "150%_C" "150"
+	ntTcpRoute C
+	drawTcp C 1.5
+	ntTcpMetrics 1.5
+	ntMcpMetrics 1.5
+endLayout
+
+Layout "200%_C" "200"
+	ntTcpRoute C
+	drawTcp C 2
+	ntTcpMetrics 2
+	ntMcpMetrics 2
+endLayout
