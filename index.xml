@@ -1,10 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="NPH REAPER Suite">
-  <category name="NPH">
-    <reapack name="NPH_Duplicate Track.lua" type="script" desc="NPH Duplicate Track">
+<index version="1" name="Nathaniel Tools">
+  <category name="apps">
+    <reapack name="Palette and Look.lua" type="script" desc="Palette &amp; Look">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Colour and name tracks from meaning, with rules, palettes and a live watcher. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
+        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
+signature-based change detection, shared safety library.]]></changelog>
+        <source main="main" hash="122065baea49f666fceb1527e855edf45936fe1ee7b7cd2c40246a5223aa1033bd8b">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/Palette%20and%20Look.lua</source>
+      </version>
+    </reapack>
+    <reapack name="StageRig.lua" type="script" desc="StageRig">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All. Live patch switching for REAPER. Reads a setlist built by StageRig Build, shows a stage view with CURRENT and NEXT, and switches patches without cutting off what is still ringing.\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.1.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
+        <changelog><![CDATA[0.1.0 - first version. Switching, panic, stage view.]]></changelog>
+        <source main="main" hash="122032241ed73a0461a68a10bda72a59fc96078d26e4142428dffcf03e4916e3fc4d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/StageRig.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Stem Print and Handoff.lua" type="script" desc="Stem Print &amp; Handoff">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print stems in several modes and restore the session exactly afterwards. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
+        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
+signature-based change detection, shared safety library.]]></changelog>
+        <source main="main" hash="12205fcfe60c7cdc68ea446fc4de1307b65f4e52ea965125c120da3f85960fd83192">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/Stem%20Print%20and%20Handoff.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Track Settings Transfer.lua" type="script" desc="Track Settings Transfer">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Pro-Tools style Import Session Data across project tabs, both directions. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
+        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
+signature-based change detection, shared safety library.]]></changelog>
+        <source main="main" hash="122036bdeab6a30312934c9345794b208ce37b6bb64b80a9d0650301241e8c76f92c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/Track%20Settings%20Transfer.lua</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="scripts">
+    <reapack name="Duplicate Track.lua" type="script" desc="Duplicate Track">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -13,16 +86,16 @@
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12204c0a709081f8c10b5ecd6426af2aa6a436180b7213cccdac28d1b9114df9806a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Duplicate%20Track.lua</source>
+        <source main="main" hash="122010d3150a4fb87f383c4e503a0f7b8bbde41e29b2c976bd633c8b8fb3ddfd05bb">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Duplicate%20Track.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_FX Float Toggle.lua" type="script" desc="NPH FX Float Toggle">
+    <reapack name="FX Float Toggle.lua" type="script" desc="FX Float Toggle">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -31,16 +104,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220df218de87a3762f0ef5b699be403b1ebe4fb3a0f52497871e147b9d975b759a2">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_FX%20Float%20Toggle.lua</source>
+        <source main="main" hash="1220e28b03382704a789b3180cd9e572e9280adfc3f4f856ce52f8ae027e7fadc544">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/FX%20Float%20Toggle.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_FX Open Close All.lua" type="script" desc="NPH FX Open/Close All">
+    <reapack name="FX Open Close All.lua" type="script" desc="FX Open/Close All">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -49,16 +122,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220514a17e70fcb11b2d00735f88f4ce027bcd16476097e6fc3d8edf027a9163205">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_FX%20Open%20Close%20All.lua</source>
+        <source main="main" hash="122030792d8b90f723c186b0e802c994a10f318b76c6f4a654b67528c9131e0e12ff">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/FX%20Open%20Close%20All.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Flush Paste.lua" type="script" desc="NPH Flush Paste">
+    <reapack name="Flush Paste.lua" type="script" desc="Flush Paste">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -67,34 +140,34 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122002677acb17c042323b1181132470e1d930526227011c268625e53f82f47f6d5f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Flush%20Paste.lua</source>
+        <source main="main" hash="1220d6b1711d314a3592bedd99705e8455b4db47f9ee44df038cfd0e7f03251e1579">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Flush%20Paste.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Folders and Flow.lua" type="script" desc="NPH Folders &amp; Flow">
+    <reapack name="Folders and Flow.lua" type="script" desc="Folders &amp; Flow">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Fix, build, dissolve, move and isolate track folders. Repairs broken folder nesting. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Fix, build, dissolve, move and isolate track folders. Repairs broken folder nesting. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122032f9732f129cade50d6844d7439abdc4fc3db8568174469f10d7380f386c745b">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Folders%20and%20Flow.lua</source>
+        <source main="main" hash="1220ccbf5479bfaf3937846512b283c6408df2f4fd895722662fcea324458ab4932c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Folders%20and%20Flow.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_MIDI Batch Export.lua" type="script" desc="NPH MIDI Batch Export">
+    <reapack name="MIDI Batch Export.lua" type="script" desc="MIDI Batch Export">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -103,16 +176,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12205488fe833112f1f1f06e1f50b182a840bea080cd0ad0c0611d44b51214dd792f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_MIDI%20Batch%20Export.lua</source>
+        <source main="main" hash="122095b2baebba31e08f46ec58ebd5753239c5f1495882f30032e60fae0391bface6">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/MIDI%20Batch%20Export.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_MIDI Render.lua" type="script" desc="NPH MIDI Render">
+    <reapack name="MIDI Render.lua" type="script" desc="MIDI Render">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -121,16 +194,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12200b103634a836cf41f516d4a53cdf0ce1c81e39fb91011ada8dffabb64f126091">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_MIDI%20Render.lua</source>
+        <source main="main" hash="1220a7b811272eff510d3a4124617cd634ce2503b8f83ddcc36d82084570383e0308">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/MIDI%20Render.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Marker at Bar.lua" type="script" desc="NPH Marker at Bar">
+    <reapack name="Marker at Bar.lua" type="script" desc="Marker at Bar">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -139,16 +212,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12205acb5f38272f2cf37047cd422e61483b3c7ac2d3e7db24cc8e53a382018a2b9a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Marker%20at%20Bar.lua</source>
+        <source main="main" hash="1220ce5e6815077704d4dab643152095c4dd0ac33737d2e812441deb2a333dc95df2">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Marker%20at%20Bar.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Record Arm Toggle.lua" type="script" desc="NPH Record Arm Toggle">
+    <reapack name="Record Arm Toggle.lua" type="script" desc="Record Arm Toggle">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -157,16 +230,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122088f516743570c498708194a403f49ee79ab77f93c0a40dc84fc8ca2216956d94">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Record%20Arm%20Toggle.lua</source>
+        <source main="main" hash="12204913b2f7f21c36ca2d0c349e06c198a9a5c0eec2827eb88ec501bc9188907fe3">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Record%20Arm%20Toggle.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Region Next.lua" type="script" desc="NPH Region Next">
+    <reapack name="Region Next.lua" type="script" desc="Region Next">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -175,16 +248,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12209476010af1aa55676dec9bbe3b805c118d515a9c3acc7ab80a85603b09c7547a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Region%20Next.lua</source>
+        <source main="main" hash="1220c6948c9b3a205b875d08053e7110bc1bacf6753e445d222bf5173911f79e79b2">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Region%20Next.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Region Prev.lua" type="script" desc="NPH Region Previous">
+    <reapack name="Region Prev.lua" type="script" desc="Region Previous">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -193,37 +266,37 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122031912048491e322ba0d8731193032d6ae71dd88ddff489e0e202adfbee397e60">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Region%20Prev.lua</source>
+        <source main="main" hash="12206a604dc93db3667a11986f2c874c182ddd34740765b06c39bab794c37102958d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Region%20Prev.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Shared Libraries.lua" type="script" desc="NPH Shared Libraries">
+    <reapack name="Shared Libraries.lua" type="script" desc="Shared Libraries">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 The shared code the rest of the NPH suite is built on: pointer safety and stable track identity (nph_safe), folder-nesting arithmetic (nph_hierarchy), and ReaImGui version compatibility (nph_imgui).\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 The shared code the rest of the Nathaniel Tools is built on: pointer safety and stable track identity (nt_safe), folder-nesting arithmetic (nt_hierarchy), and ReaImGui version compatibility (nt_imgui).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - split out of the individual app packages so every app can share one
 copy instead of each carrying its own.]]></changelog>
-        <source main="main" hash="1220509a25c283387cdf0a138e66437347cdd5cd0321c0b6fbb49d4d642c35ebf759">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Shared%20Libraries.lua</source>
-        <source file="lib/nph_safe.lua" hash="122033eaa507289ae5273c439f1b1f71a822f35e4b8040d09d49d91d7596f59f685c">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/17f1e583e7edb1ad589c13be6e05f9b326628fba/NPH/lib/nph_safe.lua</source>
-        <source file="lib/nph_hierarchy.lua" hash="1220a7d629b645b40f4c1f6b53c20f46ed7e937fcdf69c6dfd53b5557fc76a9f8533">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/17f1e583e7edb1ad589c13be6e05f9b326628fba/NPH/lib/nph_hierarchy.lua</source>
-        <source file="lib/nph_imgui.lua" hash="1220f4fa52b7eada0fe3d3bb388cb68fa9d24c664e52a9cd6cb0f6019bc4e968967f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/20f93b726fda6398347618299b9060a891364ab9/NPH/lib/nph_imgui.lua</source>
+        <source main="main" hash="122073766d0341e1e5f93f85df2e8b07c6affb3a6d6a66e5a47896dd8e6c04094019">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Shared%20Libraries.lua</source>
+        <source file="lib/nt_safe.lua" hash="1220c91fe5c549e2bdd52b25d77351ad08cf01c5a2b4b8502ef1ebf2d08c57108bff">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_safe.lua</source>
+        <source file="lib/nt_hierarchy.lua" hash="1220e83a8f76302ca7fb04a9e32f7d8e7dedfc94a01f18731596e61aa53132051a87">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_hierarchy.lua</source>
+        <source file="lib/nt_imgui.lua" hash="1220bb3a64ee7f4e31eca7d3e5297bea56272858801d281f44fdaad2ded58d2ee341">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_imgui.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Solo Focus.lua" type="script" desc="NPH Solo Focus">
+    <reapack name="Solo Focus.lua" type="script" desc="Solo Focus">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -232,33 +305,33 @@ copy instead of each carrying its own.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12205b5be8e2912b34978318f67b6270ed37a70adfb40724ac1e78fd34e404041b2f">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Solo%20Focus.lua</source>
+        <source main="main" hash="12207db682d3467dec333260fb275a95da588986f187b4c8bd32ed627598feb4ad3a">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Solo%20Focus.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_StageRig Build.lua" type="script" desc="NPH StageRig Build">
+    <reapack name="StageRig Build.lua" type="script" desc="StageRig Build">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All. Builds a live concert project from a rig spec generated out of a MainStage .concert file. Creates one folder per patch, one track per channel strip, inserts the substitute instrument where one is known, and puts the note tracker in front of every instrument so patch switching can be clean.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All. Builds a live concert project from a rig spec generated out of a MainStage .concert file. Creates one folder per patch, one track per channel strip, inserts the substitute instrument where one is known, and puts the note tracker in front of every instrument so patch switching can be clean.\par}
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="0.1.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[0.1.0 - first version. Five-patch Lagori rig.]]></changelog>
-        <source main="main" hash="12208657a96c58b3811621de3994030bdbc8182f55739eb1381085afdb7811dccc93">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_StageRig%20Build.lua</source>
+        <source main="main" hash="122059764ff638e0be9d535b3f894c59297c9e0bf4596a9bc70a7fc73d121811d067">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/StageRig%20Build.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Tempo at Bar.lua" type="script" desc="NPH Tempo at Bar">
+    <reapack name="Tempo at Bar.lua" type="script" desc="Tempo at Bar">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -267,16 +340,16 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220ffdffe77345e1a67521a1adc036e5974c4a42986a95e14c940579aa5dec011b7">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Tempo%20at%20Bar.lua</source>
+        <source main="main" hash="122066442080e4259ad57529f4169bf2096e33aef69050770882e26b56b6706a9118">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Tempo%20at%20Bar.lua</source>
       </version>
     </reapack>
-    <reapack name="NPH_Unsolo Unselect.lua" type="script" desc="NPH Unsolo &amp; Unselect">
+    <reapack name="Unsolo Unselect.lua" type="script" desc="Unsolo &amp; Unselect">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -285,18 +358,18 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220fbfaf0b7f3e90488d9a5d0d74e99ae267d05b81f57ea48769ab4a60c66c28e6b">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/NPH_Unsolo%20Unselect.lua</source>
+        <source main="main" hash="1220fab893fe8b66a832bccb420138ff561a52b2f865a9ccb73ff88fdd69bb232669">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Unsolo%20Unselect.lua</source>
       </version>
     </reapack>
   </category>
-  <category name="NPH/jsfx">
-    <reapack name="nph_note_tracker.jsfx" type="effect" desc="NPH Note Tracker &amp; Input Gate">
+  <category name="scripts/jsfx">
+    <reapack name="nt_note_tracker.jsfx" type="effect" desc="Note Tracker &amp; Input Gate">
       <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -305,82 +378,9 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
+      <version name="0.1.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[0.1.0 - first version.]]></changelog>
-        <source hash="12200be83d1be7189b6b42d54ed66e448de94c30064a4070792227106bfe3e36319a">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/NPH/jsfx/nph_note_tracker.jsfx</source>
-      </version>
-    </reapack>
-  </category>
-  <category name="apps">
-    <reapack name="Palette and Look.lua" type="script" desc="NPH Palette &amp; Look">
-      <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Colour and name tracks from meaning, with rules, palettes and a live watcher. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
-}
-]]></description>
-      </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122073d5e0941ebecc9b2bba74a7b53c59d83f2c6c20e10d6777fa07faef2c23ba22">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/Palette%20and%20Look.lua</source>
-      </version>
-    </reapack>
-    <reapack name="StageRig.lua" type="script" desc="NPH StageRig">
-      <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All. Live patch switching for REAPER. Reads a setlist built by StageRig Build, shows a stage view with CURRENT and NEXT, and switches patches without cutting off what is still ringing.\par}
-}
-]]></description>
-      </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
-        <changelog><![CDATA[0.1.0 - first version. Switching, panic, stage view.]]></changelog>
-        <source main="main" hash="12207bd117ecd12b5a7a47a64fea12133328fc8420a66356df619933808b3cd616d1">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/StageRig.lua</source>
-      </version>
-    </reapack>
-    <reapack name="Stem Print and Handoff.lua" type="script" desc="NPH Stem Print &amp; Handoff">
-      <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print stems in several modes and restore the session exactly afterwards. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
-}
-]]></description>
-      </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12203b3818fb6b5be4d37992e3baaed3ad87c2683132a6468b346ba521d149e332a5">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/Stem%20Print%20and%20Handoff.lua</source>
-      </version>
-    </reapack>
-    <reapack name="Track Settings Transfer.lua" type="script" desc="NPH Track Settings Transfer">
-      <metadata>
-        <link>https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <link rel="donation">https://github.com/jasonzacmusic/nph-reaper-suite</link>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Pro-Tools style Import Session Data across project tabs, both directions. Requires the "NPH Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
-}
-]]></description>
-      </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-03T12:52:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12203ebb9cebfa0a1b5056a16a1090db5073198a2cf46c06580d48a97fcdc7d2ae42">https://raw.githubusercontent.com/jasonzacmusic/nph-reaper-suite/56c784f11f3bf056387656f52a94ba760a8b6f78/apps/Track%20Settings%20Transfer.lua</source>
+        <source hash="1220fe5bbb5775755043f37443892cd1a1da20b0e8745898847b963fd31b6d910904">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/jsfx/nt_note_tracker.jsfx</source>
       </version>
     </reapack>
   </category>
@@ -391,7 +391,7 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel0 \b \fs40 NPH REAPER Suite\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel0 \b \fs40 Nathaniel Tools\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Dockable ReaImGui apps and a keyboard speed layer for REAPER, built by a working producer for his own sessions.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Jason Zac} \u183? {\field{\*\fldinst{HYPERLINK "https://www.nathanielschool.com"}}{\fldrslt{\ul Nathaniel School of Music}}} \u183? {\field{\*\fldinst{HYPERLINK "https://daw.nathanielschool.com"}}{\fldrslt{\ul daw.nathanielschool.com}}}\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i These exist because his own sessions were slow, not because anyone surveyed a market.\par}
@@ -410,9 +410,9 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Solo Focus \u183? Record Arm Toggle \u183? FX Float Toggle \u183? FX Open/Close All \u183? Region Next/Prev \u183? Marker at Bar \u183? Tempo at Bar \u183? MIDI Render \u183? Flush Paste \u183? Duplicate Track \u183? Unsolo & Unselect\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Each one replaced a custom action that had a real, diagnosed bug \u8212? a pan-destroying step, a global preference being toggled on every press, a marker snapping to the arrange grid instead of the bar line. The root causes are documented in {\f1 docs/NPH_TECH_BRIEF.md}.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 The shared spine\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `NPH/lib/nph_safe.lua`} \u8212? pointer safety and stable identity. The reason these apps\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `scripts/lib/nt_safe.lua`} \u8212? pointer safety and stable identity. The reason these apps\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 cannot crash REAPER.\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `NPH/lib/nph_hierarchy.lua`} \u8212? folder maths. Converts REAPER's {\f1 I_FOLDERDEPTH} integers\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `scripts/lib/nt_hierarchy.lua`} \u8212? folder maths. Converts REAPER's {\f1 I_FOLDERDEPTH} integers\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 to nesting levels, edits there, and regenerates. Well-formed output by construction.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Two things that make this different from a folder of scripts\par}
@@ -421,7 +421,7 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Every app here stores {\b track GUIDs}, resolves them to pointers immediately before use, validates with {\f1 ValidatePtr2}, and never holds a pointer across a defer frame. The test suite deletes a track behind an app's back and asserts that every accessor returns a clean default instead of faulting.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 2. Folder edits are well-formed by construction\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Folder scripts go wrong because they edit {\f1 I_FOLDERDEPTH} in place: a local edit that looks right leaves the arithmetic unbalanced further down, and REAPER silently swallows the rest of the session into a folder.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 nph_hierarchy} never edits depths. It converts to levels, edits there, and regenerates every depth. The output always balances \u8212? it is not possible for the app to leave a folder hanging open.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 nt_hierarchy} never edits depths. It converts to levels, edits there, and regenerates every depth. The output always balances \u8212? it is not possible for the app to leave a folder hanging open.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Install\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires {\b [ReaImGui](https://github.com/cfillion/reaimgui)} and {\b [SWS](https://sws-extension.org)}.\par}
@@ -429,11 +429,11 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 This repository {\b is} a ReaPack repository. In REAPER:\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab {\b Extensions \u8594? ReaPack \u8594? Import repositories\u8230?}\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab Paste this URL and click OK:\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml}\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 3.\tab {\b Extensions \u8594? ReaPack \u8594? Browse packages\u8230?}, filter on {\f1 NPH}, and install what you want.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 https://github.com/jasonzacmusic/nathaniel-tools/raw/main/index.xml}\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 3.\tab {\b Extensions \u8594? ReaPack \u8594? Browse packages\u8230?}, filter on {\f1 Nathaniel Tools}, and install what you want.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Every package is signed with a SHA-256 checksum and every download is pinned to a git commit, so an installed version can never change underneath you. Updates arrive through {\b Extensions \u8594? ReaPack \u8594? Synchronize packages}.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 By hand\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab Copy {\f1 NPH/} and {\f1 apps/} somewhere REAPER can see them.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab Copy {\f1 scripts/} and {\f1 apps/} somewhere REAPER can see them.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab {\i Actions \u8594? Show action list \u8594? New action\u8230? \u8594? Load ReaScript}, and pick each app.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 3.\tab Or run {\f1 tests/harness.lua} once \u8212? it registers everything for you and verifies the install.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
@@ -442,7 +442,7 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 python3 tools/build_index.py --check   # validate headers, write nothing}\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 python3 tools/build_index.py           # rebuild index.xml}\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 tools/build_index.py} is a dependency-free implementation of the {\field{\*\fldinst{HYPERLINK "https://codeberg.org/cfillion/reapack/wiki/Index-Format"}}{\fldrslt{\ul ReaPack Index Format}}} \u8212? Python 3 and {\f1 git}, nothing else, and byte-identical output on any machine. CI also runs cfillion's own {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index"}}{\fldrslt{\ul `reapack-index`}}} in {\f1 --check} mode as a second opinion on the headers.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Two rules for anything new that lands in {\f1 NPH/} or {\f1 apps/}:\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Two rules for anything new that lands in {\f1 scripts/} or {\f1 apps/}:\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab Every {\f1 .lua} / {\f1 .jsfx} file needs a metadata header with at least {\f1 @version}, or it\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 fails the build. See the {\field{\*\fldinst{HYPERLINK "https://github.com/cfillion/reapack-index/wiki/Packaging-Documentation"}}{\fldrslt{\ul Packaging Documentation}}}.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab Shared libraries carry {\f1 @noindex} and are listed in the {\f1 @provides} of the script that\par}
@@ -451,7 +451,7 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Testing\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 lua tests/hierarchy_test.lua      # 31 checks, no REAPER needed}\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Inside REAPER, run {\f1 tests/harness.lua} from the action list \u8212? 68 checks including live crash-safety. It builds its scratch project {\b in its own tab} and closes it afterwards, so it never touches the project you had open. Results land in {\f1 _nph_results.txt}.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Inside REAPER, run {\f1 tests/harness.lua} from the action list \u8212? 68 checks including live crash-safety. It builds its scratch project {\b in its own tab} and closes it afterwards, so it never touches the project you had open. Results land in {\f1 _nt_results.txt}.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i Edit {\f1 BASE} at the top of {\f1 harness.lua} to point at your install path.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Two REAPER API traps documented here\par}
