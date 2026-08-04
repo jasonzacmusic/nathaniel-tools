@@ -1,10 +1,10 @@
--- @description NPH Stem Print & Handoff
+-- @description Stem Print & Handoff
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Print stems in several modes and restore the session exactly afterwards.
---   Requires the "NPH Shared Libraries" package from this same repository.
+--   Requires the "Shared Libraries" package from this same repository.
 --   ReaPack has no automatic dependencies, so install that one too - or just
 --   right-click the repository in ReaPack and choose Install All.
 -- @changelog
@@ -44,16 +44,16 @@ local r = reaper
 
 -- ReaImGui renames enum constants between releases, and a renamed constant is
 -- a nil-call crash the moment the window opens - not a graceful degradation.
--- nph_imgui bridges the old and new spellings in one place. See that file for
+-- nt_imgui bridges the old and new spellings in one place. See that file for
 -- the two renames measured on ReaImGui/Dear ImGui 1.92.1.
 do
   local sep = package.config:sub(1, 1)
   local here = ({reaper.get_action_context()})[2]:match("(.*" .. sep .. ")") or ""
   package.path = here .. "lib" .. sep .. "?.lua;" ..
-                 here .. ".." .. sep .. "NPH" .. sep .. "lib" .. sep .. "?.lua;" ..
-                 reaper.GetResourcePath() .. "/Scripts/NPH REAPER Suite/NPH/lib/?.lua;" ..
+                 here .. ".." .. sep .. "Nathaniel Tools" .. sep .. "lib" .. sep .. "?.lua;" ..
+                 reaper.GetResourcePath() .. "/Scripts/Nathaniel Tools/scripts/lib/?.lua;" ..
                  package.path
-  local ok, compat = pcall(require, "nph_imgui")
+  local ok, compat = pcall(require, "nt_imgui")
   if ok then compat.install() end
 end
 if not r.ImGui_CreateContext then

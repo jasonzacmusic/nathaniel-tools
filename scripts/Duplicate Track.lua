@@ -1,14 +1,14 @@
--- @description NPH Duplicate Track
+-- @description Duplicate Track
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Duplicate tracks empty and armed, without disarming the rest of the session.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: Duplicate Track (empty)
+-- Duplicate Track (empty)
 -- Replaces "Custom: Duplicate Track".  Step 8 of the old chain was 40065
 -- "Envelope: Clear or remove envelope", which only ever touched the ONE selected
 -- envelope -- so duplicated tracks kept all their automation.
@@ -92,6 +92,6 @@ r.Main_OnCommand(r.NamedCommandLookup("_S&M_WNCLS3"), 0)
 r.Main_OnCommand(r.NamedCommandLookup("_S&M_WNCLS4"), 0)
 
 r.PreventUIRefresh(-1)
-r.Undo_EndBlock2(0, "NPH: Duplicate track (empty, armed)", -1)
+r.Undo_EndBlock2(0, "Duplicate track (empty, armed)", -1)
 r.TrackList_AdjustWindows(false)
 r.UpdateArrange()

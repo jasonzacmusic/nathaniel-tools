@@ -1,10 +1,10 @@
--- @description NPH StageRig
+-- @description StageRig
 -- @version 0.1.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about
---   Requires the "NPH Shared Libraries" package from this same repository.
+--   Requires the "Shared Libraries" package from this same repository.
 --   ReaPack has no automatic dependencies, so install that one too - or just
 --   right-click the repository in ReaPack and choose Install All.
 --   Live patch switching for REAPER. Reads a setlist built by StageRig Build,
@@ -14,7 +14,7 @@
 --   0.1.0 - first version. Switching, panic, stage view.
 
 --[[
-  NPH: StageRig  (violet - performance)
+  StageRig  (violet - performance)
   ----------------------------------------------------------------------------
   THE SWITCH, in the order that matters (NPH_TECH_BRIEF §7):
 
@@ -30,7 +30,7 @@
   WHAT THIS SCRIPT IS NOT ALLOWED TO DO
   It does not touch the note path. reaper.defer runs at UI cadence, ~15-30 ms,
   and is not sample-accurate; note handling there is audibly wrong and racy.
-  Notes are handled by nph_note_tracker.jsfx at audio rate. This script only
+  Notes are handled by nt_note_tracker.jsfx at audio rate. This script only
   decides WHEN, and sets parameters.
 
   Nothing is created, destroyed or reconfigured during a set. Every instrument
@@ -46,25 +46,25 @@ do
   local sep = package.config:sub(1, 1)
   local here = ({r.get_action_context()})[2]:match("(.*" .. sep .. ")") or ""
   package.path = here .. "lib" .. sep .. "?.lua;" ..
-                 here .. ".." .. sep .. "NPH" .. sep .. "lib" .. sep .. "?.lua;" ..
-                 r.GetResourcePath() .. "/Scripts/NPH REAPER Suite/NPH/lib/?.lua;" ..
+                 here .. ".." .. sep .. "Nathaniel Tools" .. sep .. "lib" .. sep .. "?.lua;" ..
+                 r.GetResourcePath() .. "/Scripts/Nathaniel Tools/scripts/lib/?.lua;" ..
                  package.path
 end
 
-local okSafe, safe = pcall(require, "nph_safe")
+local okSafe, safe = pcall(require, "nt_safe")
 if not okSafe then
-  r.ShowMessageBox("StageRig could not load NPH/lib/nph_safe.lua:\n\n" ..
+  r.ShowMessageBox("StageRig could not load scripts/lib/nt_safe.lua:\n\n" ..
     tostring(safe), "StageRig", 0); return
 end
-local okCompat, compat = pcall(require, "nph_imgui")
+local okCompat, compat = pcall(require, "nt_imgui")
 if okCompat then compat.install() end
 
 if not safe.require("StageRig", { imgui = true }) then return end
 
-local EXT   = "NPH_STAGERIG"
+local EXT   = "NT_STAGERIG"
 local PROJ  = 0
 
--- Note tracker parameter indices (see nph_note_tracker.jsfx sliders).
+-- Note tracker parameter indices (see nt_note_tracker.jsfx sliders).
 local P_GATE, P_RELEASE = 0, 1
 
 local RING_DEFAULT = 2.0   -- seconds the outgoing patch is allowed to decay

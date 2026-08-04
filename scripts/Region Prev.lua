@@ -1,14 +1,14 @@
--- @description NPH Region Previous
+-- @description Region Previous
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Jump to the previous region, snapping to the current region's start first.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: Region Previous
+-- Region Previous
 local r = reaper
 local EPS = 0.05   -- generous, so a press mid-region snaps to that region's start first
 

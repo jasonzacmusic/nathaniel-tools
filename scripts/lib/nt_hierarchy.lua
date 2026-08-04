@@ -1,9 +1,9 @@
 -- @noindex
--- Shared library for the NPH REAPER Suite. Not a standalone action.
+-- Shared library for the Nathaniel Tools. Not a standalone action.
 -- Distributed by the packages that need it via their @provides tag.
 
 --[[
-  nph_hierarchy.lua  -  folder maths for the NPH suite
+  nt_hierarchy.lua  -  folder maths for the Nathaniel Tools
   ----------------------------------------------------------------------------
   THE IDEA THAT MAKES FOLDER EDITING SAFE
 

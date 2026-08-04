@@ -1,14 +1,14 @@
--- @description NPH MIDI Render
+-- @description MIDI Render
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Export project MIDI with a proper time-selection guard.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: MIDI Render (safe)
+-- MIDI Render (safe)
 -- Replaces "Custom: Midi Render".  Shift+Control+M used to be wired straight to raw
 -- 40849, bypassing the time-selection guard entirely.
 -- Here: only build a time selection if there isn't one, prefer selected items,
@@ -31,7 +31,7 @@ if s == e then
       if p + l > last then last = p + l end
     end
     if last == 0 then
-      r.MB("Nothing to export - no items in this project.", "NPH MIDI Render", 0)
+      r.MB("Nothing to export - no items in this project.", "MIDI Render", 0)
       return
     end
     r.GetSet_LoopTimeRange2(0, true, false, first, last, false)

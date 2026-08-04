@@ -1,15 +1,15 @@
--- @description NPH MIDI Batch Export
+-- @description MIDI Batch Export
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Export many MIDI items/regions as separate .mid files with pattern-based sequential names.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
 --[[
-  MIDI Batch Export        NPH suite  -  amber (delivery)
+  MIDI Batch Export        Nathaniel Tools  -  amber (delivery)
   ----------------------------------------------------------------------------
   THE PROBLEM THIS SOLVES
 
@@ -32,7 +32,7 @@
   in Logic, MuseScore, Sibelius or anything else.
 
   Pointer safety: rows key on track GUID and item GUID, never on raw pointers.
-  See NPH/lib/nph_safe.lua for why that is not optional.
+  See scripts/lib/nt_safe.lua for why that is not optional.
 
   Requires: ReaImGui.
 --]]

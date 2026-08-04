@@ -1,16 +1,16 @@
--- @description NPH Shared Libraries
+-- @description Shared Libraries
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @provides
---   [nomain] lib/nph_safe.lua
---   [nomain] lib/nph_hierarchy.lua
---   [nomain] lib/nph_imgui.lua
+--   [nomain] lib/nt_safe.lua
+--   [nomain] lib/nt_hierarchy.lua
+--   [nomain] lib/nt_imgui.lua
 -- @about
---   The shared code the rest of the NPH suite is built on: pointer safety and
---   stable track identity (nph_safe), folder-nesting arithmetic (nph_hierarchy),
---   and ReaImGui version compatibility (nph_imgui).
+--   The shared code the rest of the Nathaniel Tools is built on: pointer safety and
+--   stable track identity (nt_safe), folder-nesting arithmetic (nt_hierarchy),
+--   and ReaImGui version compatibility (nt_imgui).
 --
 --   INSTALL THIS FIRST. Most apps in the suite will not run without it.
 --   ReaPack has no automatic dependency resolution, and it gives each package
@@ -18,7 +18,7 @@
 --   shipped inside every app that needs them. They live here instead.
 --
 --   The easiest route is to install the whole repository at once: right-click
---   "NPH REAPER Suite" in ReaPack's package browser and choose Install All.
+--   "Nathaniel Tools" in ReaPack's package browser and choose Install All.
 --
 --   Running this script is optional. It just reports which libraries are
 --   present and what version they are, which is the first thing worth knowing
@@ -34,12 +34,12 @@ local here = ({r.get_action_context()})[2]:match("(.*" .. sep .. ")") or ""
 package.path = here .. "lib" .. sep .. "?.lua;" .. package.path
 
 local LIBS = {
-  { "nph_safe",      "pointer safety and stable track identity" },
-  { "nph_hierarchy", "folder nesting arithmetic" },
-  { "nph_imgui",     "ReaImGui version compatibility" },
+  { "nt_safe",      "pointer safety and stable track identity" },
+  { "nt_hierarchy", "folder nesting arithmetic" },
+  { "nt_imgui",     "ReaImGui version compatibility" },
 }
 
-local lines = { "NPH Shared Libraries", "" }
+local lines = { "Shared Libraries", "" }
 local missing = 0
 
 for _, entry in ipairs(LIBS) do
@@ -60,7 +60,7 @@ if missing == 0 then
   lines[#lines + 1] = "All libraries present. Every app in the suite can run."
 else
   lines[#lines + 1] = missing .. " missing. Reinstall this package from ReaPack:"
-  lines[#lines + 1] = "Extensions > ReaPack > Browse packages > NPH Shared Libraries."
+  lines[#lines + 1] = "Extensions > ReaPack > Browse packages > Shared Libraries."
 end
 
 -- Environment, because it is what the answer usually turns on.
@@ -71,4 +71,4 @@ lines[#lines + 1] = "ReaImGui: " ..
 lines[#lines + 1] = "SWS:      " ..
   (r.BR_GetMediaTrackSendInfo_Track and "present" or "not installed (optional)")
 
-r.ShowMessageBox(table.concat(lines, "\n"), "NPH Shared Libraries", 0)
+r.ShowMessageBox(table.concat(lines, "\n"), "Shared Libraries", 0)

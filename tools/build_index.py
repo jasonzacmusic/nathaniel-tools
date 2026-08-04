@@ -16,7 +16,7 @@ Behaviour that matters, and why:
   * Only files inside a subdirectory are indexed. Files at the repository root
     are never packages - that is the spec, not a choice.
   * The directory path becomes the ReaPack category.
-  * A file carrying @noindex is skipped. Shared libraries under NPH/lib/ use
+  * A file carrying @noindex is skipped. Shared libraries under scripts/lib/ use
     this: they are not standalone actions, they ship as extra files of the
     package that requires them (@provides ... [nomain]).
   * @version is mandatory. A candidate file without it is an error, not a
@@ -49,11 +49,11 @@ from datetime import datetime, timezone
 # ---------------------------------------------------------------------------
 
 REPO_OWNER = "jasonzacmusic"
-REPO_NAME = "nph-reaper-suite"
+REPO_NAME = "nathaniel-tools"
 DEFAULT_BRANCH = "main"
 
 # Shown in ReaPack's repository list. Filename-friendly characters only.
-INDEX_NAME = "NPH REAPER Suite"
+INDEX_NAME = "Nathaniel Tools"
 
 # Repository-level links, shown in "About this repository".
 REPO_LINKS = [
@@ -589,17 +589,17 @@ def collect() -> list[Package]:
 
 
 # A bare quoted module name, i.e. the argument to require. Written this way so
-# it also catches the pcall(require, "nph_safe") form used throughout the suite,
-# while never matching a path inside a message string like "NPH/lib/nph_safe.lua".
-REQUIRE_CALL = re.compile(r"""["'](nph_[a-z0-9_]+)["']""")
+# it also catches the pcall(require, "nt_safe") form used throughout the suite,
+# while never matching a path inside a message string like "scripts/lib/nt_safe.lua".
+REQUIRE_CALL = re.compile(r"""["'](nt_[a-z0-9_]+)["']""")
 
 
 def warn_missing_libraries(packages: list[Package]) -> None:
     """
-    Warn when a script `require`s an NPH library it does not @provides.
+    Warn when a script `require`s an shared library it does not @provides.
 
     ReaPack installs exactly the files a package declares. A script that loads
-    nph_safe but never provides it installs cleanly and then fails at run time
+    nt_safe but never provides it installs cleanly and then fails at run time
     with "could not load its shared library" - which looks like a bug in the
     script rather than a packaging mistake, so it is worth catching here.
 
@@ -614,10 +614,10 @@ def warn_missing_libraries(packages: list[Package]) -> None:
     for pkg in packages:
         for p in pkg.provides:
             stem = os.path.splitext(os.path.basename(p.src_rel))[0]
-            # Only Lua modules under NPH/lib/. The nph_ prefix alone would also
+            # Only Lua modules under scripts/lib/. The nt_ prefix alone would also
             # sweep in the note-tracker JSFX, which is its own package and not a
             # library anything requires.
-            if os.path.exists(os.path.join(ROOT, "NPH", "lib", stem + ".lua")):
+            if os.path.exists(os.path.join(ROOT, "scripts", "lib", stem + ".lua")):
                 if stem in owner:
                     sys.stderr.write(
                         f"ERROR: '{stem}' is provided by both {owner[stem]} and "
@@ -630,11 +630,11 @@ def warn_missing_libraries(packages: list[Package]) -> None:
     for pkg in packages:
         with open(os.path.join(ROOT, pkg.rel), "r", encoding="utf-8", errors="replace") as fh:
             body = fh.read()
-        # Only names that really are Lua modules in NPH/lib/ - this must not
+        # Only names that really are Lua modules in scripts/lib/ - this must not
         # fire on a JSFX or plugin name passed to TrackFX_AddByName.
         needed = {
             lib for lib in set(REQUIRE_CALL.findall(body))
-            if os.path.exists(os.path.join(ROOT, "NPH", "lib", lib + ".lua"))
+            if os.path.exists(os.path.join(ROOT, "scripts", "lib", lib + ".lua"))
         }
         if not needed:
             continue

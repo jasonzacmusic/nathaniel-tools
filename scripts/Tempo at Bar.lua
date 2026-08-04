@@ -1,15 +1,15 @@
--- @description NPH Tempo at Bar
+-- @description Tempo at Bar
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Insert or edit a tempo/time-signature marker welded to the bar line.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: Tempo / time-signature marker at the nearest BAR
--- Replaces "Custom: Tempo NPH" (40256 = insert at the raw, unquantized edit cursor).
+-- Tempo / time-signature marker at the nearest BAR
+-- Replaces "Custom: Tempo Nathaniel Tools" (40256 = insert at the raw, unquantized edit cursor).
 --
 -- Uses the MEASURE-based form of SetTempoTimeSigMarker, so the marker lands exactly
 -- on a bar line with no float drift and stays put when later tempos change.
@@ -69,7 +69,7 @@ for i = 0, r.CountTempoTimeSigMarkers(0) - 1 do
 end
 
 -- ---------------------------------------------------------------- ask
-local title = ("NPH Tempo  (bar %d%s)"):format(bar + 1, existing >= 0 and ", editing" or "")
+local title = ("Nathaniel Tools Tempo  (bar %d%s)"):format(bar + 1, existing >= 0 and ", editing" or "")
 local ok, input = r.GetUserInputs(title, 1, "BPM  [num/den] :,extrawidth=90",
                                   ("%g %d/%d"):format(curBpm, num, den))
 if not ok then return end
@@ -80,7 +80,7 @@ n, d = tonumber(n), tonumber(d)
 if not bpm then bpm = curBpm end
 if not n or not d or n < 1 or d < 1 then n, d = num, den end
 if bpm <= 0 or bpm > 960 then
-  r.MB("BPM must be between 1 and 960.", "NPH Tempo", 0)
+  r.MB("BPM must be between 1 and 960.", "Nathaniel Tools Tempo", 0)
   return
 end
 
@@ -96,11 +96,11 @@ if existing >= 0 then
 else
   done = r.SetTempoTimeSigMarker(0, -1, -1, bar, 0, bpm, n, d, false)
 end
-r.Undo_EndBlock2(0, ("NPH: %s %g bpm %d/%d at bar %d")
+r.Undo_EndBlock2(0, ("%s %g bpm %d/%d at bar %d")
   :format(existing >= 0 and "Set" or "Insert", bpm, n, d, bar + 1), -1)
 
 if not done then
-  r.MB("REAPER refused the tempo marker at bar " .. (bar + 1) .. ".", "NPH Tempo", 0)
+  r.MB("REAPER refused the tempo marker at bar " .. (bar + 1) .. ".", "Nathaniel Tools Tempo", 0)
 end
 
 r.UpdateTimeline()

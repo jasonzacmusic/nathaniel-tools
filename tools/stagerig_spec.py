@@ -5,7 +5,7 @@ Reads a `.concert` bundle (via concert_report's parser), picks the patches you
 name, applies the editable substitution map, and writes `rig.json`.
 
 Nothing here touches REAPER. The JSON it emits is consumed by
-`NPH/NPH_StageRig Build.lua`, which builds the project inside REAPER using the
+`scripts/StageRig Build.lua`, which builds the project inside REAPER using the
 real API — so plugins are resolved by name against what is actually installed
 rather than hand-forged into an .RPP.
 

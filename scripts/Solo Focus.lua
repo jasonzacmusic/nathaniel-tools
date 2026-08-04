@@ -1,14 +1,14 @@
--- @description NPH Solo Focus
+-- @description Solo Focus
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Deterministic exclusive solo. Follows item selection when there is one, press again to clear.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: Solo Focus
+-- Solo Focus
 -- Replaces "Custom: Solo Selected Items".
 -- Deterministic exclusive solo. If items are selected, focus their tracks.
 -- Pressing again on the same focus un-solos everything.
@@ -58,7 +58,7 @@ end
 if #targets == 0 then
   -- nothing to focus: treat as "clear solo"
   r.Main_OnCommand(40340, 0)                     -- unsolo all
-  r.Undo_EndBlock2(0, "NPH: Clear solo", -1)
+  r.Undo_EndBlock2(0, "Clear solo", -1)
   r.PreventUIRefresh(-1)
   r.UpdateArrange()
   return
@@ -77,7 +77,7 @@ end
 
 if exact then
   r.Main_OnCommand(40340, 0)                     -- unsolo all
-  r.Undo_EndBlock2(0, "NPH: Clear solo", -1)
+  r.Undo_EndBlock2(0, "Clear solo", -1)
 else
   for i = 0, r.CountTracks(0) - 1 do
     local tr = r.GetTrack(0, i)
@@ -86,7 +86,7 @@ else
   for _, tr in ipairs(targets) do
     r.SetMediaTrackInfo_Value(tr, "I_SOLO", 2)   -- 2 = solo in place (ignore routing)
   end
-  r.Undo_EndBlock2(0, "NPH: Solo focus", -1)
+  r.Undo_EndBlock2(0, "Solo focus", -1)
 
   if AUDITION and r.GetPlayState() == 0 then
     r.Main_OnCommand(40513, 0)                   -- edit cursor to mouse

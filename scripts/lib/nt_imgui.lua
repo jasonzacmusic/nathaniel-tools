@@ -1,9 +1,9 @@
 -- @noindex
--- Shared library for the NPH REAPER Suite. Not a standalone action.
+-- Shared library for the Nathaniel Tools. Not a standalone action.
 -- Distributed by the packages that need it via their @provides tag.
 
 --[[
-  nph_imgui.lua  -  ReaImGui version compatibility for the NPH suite
+  nt_imgui.lua  -  ReaImGui version compatibility for the Nathaniel Tools
   ----------------------------------------------------------------------------
   WHY THIS FILE EXISTS
 

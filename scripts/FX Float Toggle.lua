@@ -1,14 +1,14 @@
--- @description NPH FX Float Toggle
+-- @description FX Float Toggle
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about True XOR float of FX #1 on the selected tracks.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: FX Float Toggle  (true XOR float, FX #1)
+-- FX Float Toggle  (true XOR float, FX #1)
 -- Replaces "Custom: XOR Float FX", which targeted the LAST TOUCHED track and
 -- could only ever open (it closed everything first, then toggled).
 -- This follows the track SELECTION and genuinely toggles.

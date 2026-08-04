@@ -1,9 +1,9 @@
 --[[
-  NPH install + verify harness  (the standing regression gate)
+  Nathaniel Tools install + verify harness  (the standing regression gate)
   ----------------------------------------------------------------------------
   Run this from the Actions window any time you change a script. It registers
   everything, compiles everything, proves the crash-safety guarantees against a
-  scratch project in its OWN TAB, and writes PASS/FAIL to _nph_results.txt.
+  scratch project in its OWN TAB, and writes PASS/FAIL to _nt_results.txt.
   It never touches the project you had open.
 --]]
 
@@ -11,7 +11,7 @@ local r = reaper
 -- BASE is wherever this repo sits: harness.lua lives in <BASE>/tests/, so the
 -- suite runs from any clone on any machine with no path edits.
 local BASE = (debug.getinfo(1, "S").source:sub(2)):match("(.*/)"):gsub("tests/$", "")
-local OUT  = BASE .. "_nph_results.txt"
+local OUT  = BASE .. "_nt_results.txt"
 
 local lines, pass, fail = {}, 0, 0
 local function w(s) lines[#lines+1] = s end
@@ -23,10 +23,10 @@ end
 local function finish()
   w(""); w(("=== %d passed, %d failed ==="):format(pass, fail))
   local f = io.open(OUT, "w"); f:write(table.concat(lines, "\n") .. "\n"); f:close()
-  r.ShowConsoleMsg(("NPH harness: %d passed, %d failed. See _nph_results.txt\n"):format(pass, fail))
+  r.ShowConsoleMsg(("Nathaniel Tools harness: %d passed, %d failed. See _nt_results.txt\n"):format(pass, fail))
 end
 
-w("=== NPH install + verify  " .. os.date("%Y-%m-%d %H:%M:%S") .. " ===")
+w("=== Nathaniel Tools install + verify  " .. os.date("%Y-%m-%d %H:%M:%S") .. " ===")
 w("REAPER " .. tostring(r.GetAppVersion())); w("")
 
 w("-- environment --")
@@ -37,11 +37,11 @@ check(r.ValidatePtr2 ~= nil,                   "ValidatePtr2 present")
 check(r.InsertTrackInProject ~= nil,           "InsertTrackInProject present")
 w("")
 
-package.path = BASE .. "NPH/lib/?.lua;" .. package.path
-package.loaded["nph_safe"] = nil
-local okLib, safe = pcall(require, "nph_safe")
+package.path = BASE .. "scripts/lib/?.lua;" .. package.path
+package.loaded["nt_safe"] = nil
+local okLib, safe = pcall(require, "nt_safe")
 w("-- shared library --")
-if not check(okLib, "nph_safe.lua loads") then w("  " .. tostring(safe)); finish(); return end
+if not check(okLib, "nt_safe.lua loads") then w("  " .. tostring(safe)); finish(); return end
 check(safe.projAlive(0) == true,    "projAlive(0) = the current project")
 check(safe.projAlive(nil) == false, "projAlive(nil) is false, not an error")
 check(safe.projSignature ~= nil,    "projSignature exported (the working change detector)")
@@ -49,11 +49,11 @@ w("")
 
 w("-- registration --")
 local SCRIPTS = {
-  "NPH/NPH_Solo Focus.lua", "NPH/NPH_Record Arm Toggle.lua", "NPH/NPH_FX Float Toggle.lua",
-  "NPH/NPH_FX Open Close All.lua", "NPH/NPH_Region Next.lua", "NPH/NPH_Region Prev.lua",
-  "NPH/NPH_Marker at Bar.lua", "NPH/NPH_Tempo at Bar.lua", "NPH/NPH_MIDI Render.lua",
-  "NPH/NPH_Flush Paste.lua", "NPH/NPH_Duplicate Track.lua", "NPH/NPH_Unsolo Unselect.lua",
-  "NPH/NPH_MIDI Batch Export.lua", "NPH/NPH_Folders and Flow.lua",
+  "scripts/Solo Focus.lua", "scripts/Record Arm Toggle.lua", "scripts/FX Float Toggle.lua",
+  "scripts/FX Open Close All.lua", "scripts/Region Next.lua", "scripts/Region Prev.lua",
+  "scripts/Marker at Bar.lua", "scripts/Tempo at Bar.lua", "scripts/MIDI Render.lua",
+  "scripts/Flush Paste.lua", "scripts/Duplicate Track.lua", "scripts/Unsolo Unselect.lua",
+  "scripts/MIDI Batch Export.lua", "scripts/Folders and Flow.lua",
   -- The three windowed apps live in apps/ in the repo. An earlier copy of this
   -- harness looked for them at the root, which is where they happened to sit on
   -- the machine it was written on - so on any other install it reported three
@@ -142,9 +142,9 @@ w("")
 -- folder hierarchy: build a broken folder in the scratch tab and repair it
 --------------------------------------------------------------------------------
 w("-- folders & flow --")
-package.loaded["nph_hierarchy"] = nil
-local okH, H = pcall(require, "nph_hierarchy")
-check(okH, "nph_hierarchy.lua loads")
+package.loaded["nt_hierarchy"] = nil
+local okH, H = pcall(require, "nt_hierarchy")
+check(okH, "nt_hierarchy.lua loads")
 if okH then
   r.Main_OnCommand(40859, 0)
   local fp = r.EnumProjects(-1)
@@ -190,7 +190,7 @@ w("")
 
 local rf = io.open(BASE .. "_register.txt", "w")
 if rf then
-  rf:write("NPH suite registration  " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n")
+  rf:write("Nathaniel Tools registration  " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n")
   rf:write("The _RS tokens are authoritative. The integers drift between sessions.\n\n")
   for _, e in ipairs(reg) do rf:write(("%-40s cmd %-8d %s\n"):format(e.rel, e.cmd, e.tok)) end
   rf:close()

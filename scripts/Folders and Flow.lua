@@ -1,10 +1,10 @@
--- @description NPH Folders & Flow
+-- @description Folders & Flow
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Fix, build, dissolve, move and isolate track folders. Repairs broken folder nesting.
---   Requires the "NPH Shared Libraries" package from this same repository.
+--   Requires the "Shared Libraries" package from this same repository.
 --   ReaPack has no automatic dependencies, so install that one too - or just
 --   right-click the repository in ReaPack and choose Install All.
 -- @changelog
@@ -12,7 +12,7 @@
 --           signature-based change detection, shared safety library.
 
 --[[
-  Folders & Flow        NPH suite  -  green (structure)
+  Folders & Flow        Nathaniel Tools  -  green (structure)
   ----------------------------------------------------------------------------
   The things REAPER makes hard and you keep needing:
 
@@ -31,14 +31,14 @@
   directly, and then regenerates all the depths from the levels.  The output is
   always well-formed by construction, so it is not possible for this app to leave
   a folder hanging open and swallow the rest of your session.  The maths lives in
-  NPH/lib/nph_hierarchy.lua and is covered by the harness.
+  scripts/lib/nt_hierarchy.lua and is covered by the harness.
 
   _SWS_UNFOLDER and _SWS_MOVETRACKUP / _SWS_MOVETRACKDOWN do NOT exist on this
   install, which is why none of this leans on SWS.
 
   Your existing shortcuts are untouched:  F = _SWS_MAKEFOLDER,  ` = 1042 41665
 
-  Pointer safety: rows key on track GUID, never on MediaTrack*.  See nph_safe.lua.
+  Pointer safety: rows key on track GUID, never on MediaTrack*.  See nt_safe.lua.
 
   Requires: ReaImGui.
 --]]
@@ -57,12 +57,12 @@ end
 local SEP  = package.config:sub(1, 1)
 local HERE = ({ reaper.get_action_context() })[2]:match("(.*" .. SEP .. ")")
 package.path = HERE .. "lib" .. SEP .. "?.lua;" .. package.path
-local okS, safe = pcall(require, "nph_safe")
-local okH, H    = pcall(require, "nph_hierarchy")
+local okS, safe = pcall(require, "nt_safe")
+local okH, H    = pcall(require, "nt_hierarchy")
 if not okS or not okH then
   r.ShowMessageBox(
     "Folders & Flow could not load its shared library.\n\nExpected:\n  " ..
-    HERE .. "lib/nph_safe.lua\n  " .. HERE .. "lib/nph_hierarchy.lua\n\n" ..
+    HERE .. "lib/nt_safe.lua\n  " .. HERE .. "lib/nt_hierarchy.lua\n\n" ..
     tostring(not okS and safe or H),
     "Folders & Flow", 0)
   return

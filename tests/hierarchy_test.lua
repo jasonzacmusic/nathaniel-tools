@@ -5,8 +5,8 @@ reaper = { CountTracks=function() return 0 end, GetTrack=function() return nil e
            ReorderSelectedTracks=function() end, TrackList_AdjustWindows=function() end }
 -- Resolve the library relative to this file, so the suite runs from any clone.
 local here = (debug.getinfo(1, "S").source:sub(2)):match("(.*/)") or "./"
-package.path = here .. "../NPH/lib/?.lua;" .. package.path
-local H = require("nph_hierarchy")
+package.path = here .. "../scripts/lib/?.lua;" .. package.path
+local H = require("nt_hierarchy")
 
 local pass, fail = 0, 0
 local function ck(cond, label)

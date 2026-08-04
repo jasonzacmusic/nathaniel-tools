@@ -1,4 +1,4 @@
-# NPH REAPER Suite
+# Nathaniel Tools
 
 Dockable ReaImGui apps and a keyboard speed layer for REAPER, built by a working producer
 for his own sessions.
@@ -36,9 +36,9 @@ instead of the bar line. The root causes are documented in `docs/NPH_TECH_BRIEF.
 
 ### The shared spine
 
-- **`NPH/lib/nph_safe.lua`** — pointer safety and stable identity. The reason these apps
+- **`scripts/lib/nt_safe.lua`** — pointer safety and stable identity. The reason these apps
   cannot crash REAPER.
-- **`NPH/lib/nph_hierarchy.lua`** — folder maths. Converts REAPER's `I_FOLDERDEPTH` integers
+- **`scripts/lib/nt_hierarchy.lua`** — folder maths. Converts REAPER's `I_FOLDERDEPTH` integers
   to nesting levels, edits there, and regenerates. Well-formed output by construction.
 
 ---
@@ -63,7 +63,7 @@ Folder scripts go wrong because they edit `I_FOLDERDEPTH` in place: a local edit
 right leaves the arithmetic unbalanced further down, and REAPER silently swallows the rest
 of the session into a folder.
 
-`nph_hierarchy` never edits depths. It converts to levels, edits there, and regenerates
+`nt_hierarchy` never edits depths. It converts to levels, edits there, and regenerates
 every depth. The output always balances — it is not possible for the app to leave a folder
 hanging open.
 
@@ -82,10 +82,10 @@ This repository **is** a ReaPack repository. In REAPER:
 2. Paste this URL and click OK:
 
 ```
-https://github.com/jasonzacmusic/nph-reaper-suite/raw/main/index.xml
+https://github.com/jasonzacmusic/nathaniel-tools/raw/main/index.xml
 ```
 
-3. **Extensions → ReaPack → Browse packages…**, filter on `NPH`, and install what you want.
+3. **Extensions → ReaPack → Browse packages…**, filter on `Nathaniel Tools`, and install what you want.
 
 Every package is signed with a SHA-256 checksum and every download is pinned to a git
 commit, so an installed version can never change underneath you. Updates arrive through
@@ -93,7 +93,7 @@ commit, so an installed version can never change underneath you. Updates arrive 
 
 ### By hand
 
-1. Copy `NPH/` and `apps/` somewhere REAPER can see them.
+1. Copy `scripts/` and `apps/` somewhere REAPER can see them.
 2. *Actions → Show action list → New action… → Load ReaScript*, and pick each app.
 3. Or run `tests/harness.lua` once — it registers everything for you and verifies the install.
 
@@ -115,7 +115,7 @@ and `git`, nothing else, and byte-identical output on any machine. CI also runs 
 own [`reapack-index`](https://github.com/cfillion/reapack-index) in `--check` mode as a
 second opinion on the headers.
 
-Two rules for anything new that lands in `NPH/` or `apps/`:
+Two rules for anything new that lands in `scripts/` or `apps/`:
 
 - Every `.lua` / `.jsfx` file needs a metadata header with at least `@version`, or it
   fails the build. See the
@@ -136,7 +136,7 @@ lua tests/hierarchy_test.lua      # 31 checks, no REAPER needed
 
 Inside REAPER, run `tests/harness.lua` from the action list — 68 checks including live
 crash-safety. It builds its scratch project **in its own tab** and closes it afterwards, so
-it never touches the project you had open. Results land in `_nph_results.txt`.
+it never touches the project you had open. Results land in `_nt_results.txt`.
 
 > Edit `BASE` at the top of `harness.lua` to point at your install path.
 

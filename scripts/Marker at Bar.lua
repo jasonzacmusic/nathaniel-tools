@@ -1,15 +1,15 @@
--- @description NPH Marker at Bar
+-- @description Marker at Bar
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Insert a marker on the nearest true bar line, not the arrange grid.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: Marker at nearest BAR
--- Replaces "Custom: Marker NPH", which inserted at the raw edit cursor and then ran
+-- Marker at nearest BAR
+-- Replaces "Custom: Marker Nathaniel Tools", which inserted at the raw edit cursor and then ran
 -- _BR_CLOSEST_PROJ_MARKER_MOUSE_SNAP.  That snapped to the ARRANGE GRID (currently
 -- 1/8 note), not the bar -- and worse, it could grab a DIFFERENT existing marker and
 -- drag it to the mouse, silently destroying it.
@@ -52,5 +52,5 @@ end
 r.Undo_BeginBlock2(0)
 r.AddProjectMarker2(0, false, target, 0, "", -1, 0)
 if not playing then r.SetEditCurPos2(0, target, false, false) end
-r.Undo_EndBlock2(0, "NPH: Marker at nearest bar", -1)
+r.Undo_EndBlock2(0, "Marker at nearest bar", -1)
 r.UpdateArrange()

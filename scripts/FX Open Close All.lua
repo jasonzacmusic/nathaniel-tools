@@ -1,14 +1,14 @@
--- @description NPH FX Open/Close All
+-- @description FX Open/Close All
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about One unified open/close decision across every FX on the selected tracks.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: FX Open/Close ALL
+-- FX Open/Close ALL
 -- Replaces "Custom: Open Close ALL", which fired eight INDEPENDENT toggles on the
 -- last touched track, so a mixed open/closed state got inverted instead of unified.
 -- This is a real unified open/close across every FX on the selected tracks.

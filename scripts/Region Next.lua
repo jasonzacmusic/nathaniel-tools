@@ -1,14 +1,14 @@
--- @description NPH Region Next
+-- @description Region Next
 -- @version 1.0.0
 -- @author Jason Zac
--- @link https://github.com/jasonzacmusic/nph-reaper-suite
--- @donation https://github.com/jasonzacmusic/nph-reaper-suite
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about Jump to the next region without flipping any global preference.
 -- @changelog
 --   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 --           signature-based change detection, shared safety library.
 
--- NPH: Region Next
+-- Region Next
 -- Replaces "Custom: Region Switch", whose step 2 TOGGLED a global REAPER
 -- preference on every press, so it behaved differently every other time.
 local r = reaper
