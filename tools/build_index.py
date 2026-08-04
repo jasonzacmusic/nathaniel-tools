@@ -70,8 +70,17 @@ IGNORE = {
     "site",       # the website, published separately
     "stagerig",   # generated rig data, not actions
     "tests",      # the harness is run from the action list, never installed
+    "themes",     # see below
     "tools",      # this script and its siblings
 }
+
+# Why "themes" is excluded, for now.
+# The theme ships as a .ReaperThemeZip, which is a binary and cannot carry a
+# metadata comment header, and themes/src holds its rtconfig source rather than
+# an installable package. ReaPack CAN distribute a theme, but it installs
+# without applying it, so the theme is currently offered as a download. When it
+# does go into the index it needs the documented pattern: a script-type package
+# whose <source> carries type="theme".
 
 RAW_URL = "https://raw.githubusercontent.com/{owner}/{repo}/{commit}/{path}"
 
