@@ -27,12 +27,23 @@
       "         SOLO (Taqs.im), ANA 2, Keyscape, Lounge Lizard EP-4",
       "  WILL NOT LOAD: Analog Lab V, Vital, Syntronik, GForce Axxess",
       "",
-      "Analog Lab V appears in REAPER's Audio Unit cache but cannot be",
-      "instantiated - scanned but not authorised, or needs a rescan. So there",
-      "is currently NO Hammond/B3 plugin available to REAPER on this Mac."
+      "CORRECTED 5 Aug 2026: the earlier conclusion that there is NO Hammond/B3",
+      "available was WRONG. It probed for 'Arturia B-3 V' and 'Analog Lab V'.",
+      "The plugin is installed and scanned under a different name - 'B-3 V2':",
+      "",
+      "  reaper-vstplugins_arm64.ini:",
+      "     B_3_V2.vst3=...,B-3 V2 (Arturia)!!!VSTi",
+      "  reaper-auplugins_arm64.ini:",
+      "     Arturia: B-3 V2=<inst>",
+      "",
+      "So a real Hammond IS available and Omnisphere is no longer needed as the",
+      "organ stand-in. Pass 'B-3 V2' to TrackFX_AddByName. Its factory presets",
+      "live at /Library/Arturia/Presets/B-3 V2/Factory/Factory/ - Clean Jazz,",
+      "Mr. Jimmy Smith, Full Drawbars and Church Chords cover most gigs.",
+      "Analog Lab V genuinely does not instantiate; that part was right."
     ],
 
-    "organ_note": "Until a real organ is installed, B3 parts are carried by Omnisphere, which has tonewheel/organ patches and definitely loads. This is a stand-in and is labelled as one. The proper fix is Arturia B-3 V (authorise the V Collection so Analog Lab V loads) or IK Hammond B-3X - then change the two organ rules below and rebuild."
+    "organ_note": "RESOLVED 5 Aug 2026. Arturia B-3 V2 IS installed and IS scanned by REAPER - the earlier probe missed it because it searched for 'Arturia B-3 V' rather than the actual name 'B-3 V2'. Organ parts now use the real Hammond, not an Omnisphere stand-in. Presets: Clean Jazz (default), Mr. Jimmy Smith, Full Drawbars, Church Chords."
   },
 
   "map": {
@@ -41,8 +52,9 @@
       "note": "Exact match - the concert already uses this. No substitution at all."
     },
     "Vintage B3": {
-      "fx": "Omnisphere",
-      "note": "STAND-IN. Analog Lab V will not instantiate in REAPER on this Mac (probed, not assumed), so there is no real B3 available. Omnisphere has organ patches and loads reliably. Replace with Arturia B-3 V or IK B-3X when one is working."
+      "fx": "B-3 V2",
+      "preset": "Clean Jazz",
+      "note": "REAL HAMMOND, not a stand-in. Arturia B-3 V2, verified present in both REAPER plugin caches on 5 Aug 2026. Alternates: Mr. Jimmy Smith, Full Drawbars, Church Chords."
     },
     "Alchemy": {
       "fx": "Omnisphere",
@@ -84,7 +96,7 @@
     "banjo":     { "fx": "Kontakt 7", "note": "plucked string library" },
 
     "clav":      { "fx": "Pianoteq 8", "note": "Pianoteq clavinet model (the concert already used Pianoteq here)" },
-    "organ":     { "fx": "Omnisphere", "note": "STAND-IN for B3 - see organ_note. Pick an organ patch in Omnisphere." },
+    "organ":     { "fx": "B-3 V2", "preset": "Clean Jazz", "note": "Arturia B-3 V2 - a real tonewheel organ, verified scanned by REAPER. Alternates: Mr. Jimmy Smith, Full Drawbars, Church Chords." },
     "piano":     { "fx": "Pianoteq 8", "note": "exact match" },
     "upright":   { "fx": "Pianoteq 8", "note": "Pianoteq upright model" },
 

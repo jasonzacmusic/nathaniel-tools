@@ -1,0 +1,83 @@
+desc:Nathaniel Tools - Patch Gate (live patch switching)
+// @description Nathaniel Tools Patch Gate
+// @version 1.0.0
+// @author Jason Zac
+author: Jason Zac / Nathaniel School of Music
+about:
+  Sits at the TOP of a patch track's FX chain and decides whether new notes are
+  allowed to reach the instrument below it.
+
+  WHY THIS EXISTS
+
+  Switching live patches by muting the track kills the sound instantly and chops
+  off the tail - a held piano chord just vanishes. The musical way to switch is:
+
+     1. open the incoming patch's gate     (B can make sound)
+     2. close the outgoing patch's gate    (A takes no NEW notes)
+     3. let A ring out naturally
+     4. only then mute A, if you mute it at all
+
+  This plugin is step 1-2. It never blocks note-OFFs, so nothing can ever hang,
+  and on closing it emits note-offs for everything currently held plus CC64=0,
+  so a sustained chord releases cleanly instead of droning through the next song.
+
+  Nothing here creates or destroys audio processing - the instrument below stays
+  loaded and ringing. That is the whole point.
+
+slider1:gate_open=1<0,1,1{Closed,Open}>Gate
+slider2:thru_cc=1<0,1,1{Block,Pass}>Controllers when closed
+
+options:no_meter
+
+@init
+// bitmap of held notes, 16 channels x 128 notes
+held = 0;
+memset(held, 0, 16*128);
+last_gate = -1;
+pedal_down = 0;
+
+@slider
+// on the OPEN -> CLOSED edge, release everything this patch is holding
+(last_gate != gate_open) ? (
+  (last_gate == 1 && gate_open == 0) ? (
+    ch = 0;
+    while (ch < 16) (
+      n = 0;
+      while (n < 128) (
+        held[ch*128 + n] ? (
+          midisend(0, 0x80 + ch, n, 0);      // note off
+          held[ch*128 + n] = 0;
+        );
+        n += 1;
+      );
+      midisend(0, 0xB0 + ch, 64, 0);          // sustain pedal up
+      midisend(0, 0xB0 + ch, 123, 0);         // all notes off
+      ch += 1;
+    );
+  );
+  last_gate = gate_open;
+);
+
+@block
+while (midirecv(offs, msg1, msg2, msg3)) (
+  status = msg1 & 0xF0;
+  chan   = msg1 & 0x0F;
+  pass   = 1;
+
+  status == 0x90 && msg3 > 0 ? (
+    // NOTE ON - the only thing the gate actually blocks
+    gate_open ? ( held[chan*128 + msg2] = 1 ) : ( pass = 0 );
+  ) : status == 0x80 || (status == 0x90 && msg3 == 0) ? (
+    // NOTE OFF - always allowed through, or notes hang forever
+    held[chan*128 + msg2] = 0;
+  ) : status == 0xB0 ? (
+    // controllers: pass when open; when closed follow the user's choice, but
+    // ALWAYS let an all-notes-off / sustain-up through
+    (!gate_open && !thru_cc && msg2 != 64 && msg2 != 120 && msg2 != 123) ? pass = 0;
+  ) : (
+    // pitch bend, aftertouch, program change: gate them with the notes
+    !gate_open ? pass = 0;
+  );
+
+  pass ? midisend(offs, msg1, msg2, msg3);
+);
