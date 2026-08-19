@@ -1,5 +1,5 @@
 -- @description Open Dock (all the Nathaniel Tools apps, docked)
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -10,6 +10,7 @@
 --   "at the word go". Apps that are already open are left alone.
 --   StageRig is deliberately not included - it is a stage tool, not a studio one.
 -- @changelog
+--   1.1.0 - also opens Group Deck.
 --   1.0.0 - first version.
 
 local r = reaper
@@ -20,6 +21,7 @@ local APPS = {
   "apps/Track Settings Transfer.lua",
   "apps/Stem Print and Handoff.lua",
   "scripts/MIDI Batch Export.lua",
+  "apps/Group Deck.lua",
 }
 local opened, missing = 0, {}
 for _, rel in ipairs(APPS) do

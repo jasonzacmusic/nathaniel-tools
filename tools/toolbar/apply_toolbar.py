@@ -38,7 +38,7 @@ APPS = [
 ]
 EDIT = [
   ("_RS7d0fd86d14096f7b7941abb53b93f367c81e6cd6", "Script: Instant Folder.lua",             "nt_instant_folder.png"),
-  ("_RSffddbe2a395301265b409c1b43d152c24c2315a6", "Script: Edit Group from Selection.lua",  "nt_edit_group.png"),
+  ("_RSa64fe569c8e612731bf7e3c0c957b076769a9762",                                "Script: Group Deck.lua",                  "nt_app_groupdeck.png"),
   ("40771",                                        "Track: Toggle all track grouping enabled","nt_clutch.png"),
   ("_RS3369903b90a8d86a8c382088066ca626cec0ff69", "Script: Trim Left No Overlap.lua",       "nt_trim_left.png"),
   ("_RS0260bf4e29964fd3e1f486c70f4d69c900d1c8cc", "Script: Trim Right No Overlap.lua",      "nt_trim_right.png"),
