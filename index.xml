@@ -13,8 +13,9 @@
 }
 ]]></description>
       </metadata>
-      <version name="2.1.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
-        <changelog><![CDATA[2.1.0 - first run imports your SWS Auto Color rules automatically; opens docked.
+      <version name="2.2.0" author="Jason Zac" time="2026-08-19T09:02:25Z">
+        <changelog><![CDATA[2.2.0 - "Rename + one colour" (the old Y key) with Try another colour; same-number-for-all numbering; One colour (random) in Tools.
+2.1.0 - first run imports your SWS Auto Color rules automatically; opens docked.
 2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
 dialogs, system font, plain-English labels everywhere.
 Status line now actually shows what happened (it never did).
@@ -32,7 +33,7 @@ Name + colour is one undo step; colouring markers from the button
 is undoable; rule typing no longer re-scans the project per key.
 1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220919e4ff251ecfff8aee271be32f40ad55d77c812cc6700c3aae88e1ba573a2af">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/apps/Palette%20and%20Look.lua</source>
+        <source main="main" hash="122036a264d81e9da3f82f152a30b1cb20247f9e625a35aab21ad6ce107d6b5ef331">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/apps/Palette%20and%20Look.lua</source>
       </version>
     </reapack>
     <reapack name="StageRig.lua" type="script" desc="StageRig">
@@ -141,6 +142,23 @@ refusing to launch.
         <source main="main" hash="1220f33d85f8298ac2d5ed55ca017c11bc594b1918a1ad80b08786b6c37885498e5c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Duplicate%20Track.lua</source>
       </version>
     </reapack>
+    <reapack name="Edit Group from Selection.lua" type="script" desc="Edit Group from Selection (media edits move together, nothing else)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Puts the selected tracks into one track group for EDITING ONLY: media and razor edits on one track happen on all of them (split, trim, move, delete), while faders, mutes, solos and arms stay independent. Press it again on the same tracks to take them OUT of their edit group. The clutch: "Track: Toggle all track grouping enabled" (Jason: Cmd+Shift+G) bypasses every group while you do fine edits; press again to re-engage.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T09:02:25Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12201435682da5c0461de165a43730699338b7411a6379ccd08b11e1e9d2510ea2c4">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Edit%20Group%20from%20Selection.lua</source>
+      </version>
+    </reapack>
     <reapack name="FX Float Toggle.lua" type="script" desc="FX Float Toggle">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
@@ -221,6 +239,25 @@ undoable. Auto-group asks first and says how many folders it will
 make. Every action reports what it did in the status line.
 1.0.0 - first public release.]]></changelog>
         <source main="main" hash="1220033569cda54f976cb883044bec8e5670a3e12f744a7c4c3802e017ae586b0b8f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Folders%20and%20Flow.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Instant Folder.lua" type="script" desc="Instant Folder (new parent above the selected tracks, named and coloured)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Select two (or more) tracks and press: a NEW folder track appears above them, the selected tracks go inside it, nothing else in the session changes shape. The folder is named from what the children have in common ("Kick In"\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab "Kick Out" -> KICK; "Electric L/R/C" -> ELECTRIC), coloured like its\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 children, and made a little taller so it reads as a folder. Non-adjacent selections are first gathered together under the first one. Needs the Shared Libraries package (nt_hierarchy).\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T09:02:25Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12205f1985b57097ec81471e4ffe74d6d95f1477daa01f2679f0eb9d82ba304ca2b2">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Instant%20Folder.lua</source>
       </version>
     </reapack>
     <reapack name="MIDI Batch Export.lua" type="script" desc="MIDI Batch Export">
@@ -502,6 +539,57 @@ Scripts/Nathaniel Tools/stagerig/. Ships with the NSM Tribute Night rig spec.
       </metadata>
       <version name="1.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
         <source main="main" hash="1220756302cc92a0fe9359a5175f20d804af24417457fbedae87c13bd7dccb93ea23">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Toggle%20Chorale.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Trim Left No Overlap.lua" type="script" desc="Trim Left No Overlap (to edit cursor)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Trim the LEFT edge of the selected items to the edit cursor - and if that would push the item over its neighbour on the same track, trim the neighbour's right edge to the cursor too. Items butt, they never overlap, so no surprise crossfades. Replaces "Item edit: Trim left edge of item to edit cursor" (Jason's Z key).\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T09:02:25Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12206c330970ad2e8743c69cf6bc3497852b6746e1898eaf34a7f541e7c36dba932c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Trim%20Left%20No%20Overlap.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Trim Right No Overlap.lua" type="script" desc="Trim Right No Overlap (to edit cursor)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Trim the RIGHT edge of the selected items to the edit cursor - and if that would push the item over its neighbour on the same track, move the neighbour's left edge to the cursor too (its audio stays in place). Items butt, they never overlap. Replaces "Item edit: Trim right edge of item to edit cursor" (Jason's X key).\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T09:02:25Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12200e87f4f4b880a2a1b352c3f44d209310de5e6ed0451ece59997eb98fa60483ac">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Trim%20Right%20No%20Overlap.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Unoverlap Items.lua" type="script" desc="Unoverlap Items (selected items, or all items on selected tracks)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Wherever two items on the same track overlap, the EARLIER item is cut at the start of the later one, so items butt instead of sitting on top of each other with a tangled crossfade. Works on the selected items; with no item selected, on every item of the selected tracks. Fades are left as they are.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T09:02:25Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220682c6120bddba17020dfe450d3595869a8347956306212eed1dbd485b4c7992b">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Unoverlap%20Items.lua</source>
       </version>
     </reapack>
     <reapack name="Unsolo Unselect.lua" type="script" desc="Unsolo &amp; Unselect">
