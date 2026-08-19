@@ -137,11 +137,13 @@ def main():
                 cmd = v.split(" ", 1)[0]
                 if cmd in GRID_ICONS and icons.get(i) != GRID_ICONS[cmd]:
                     icons[i] = GRID_ICONS[cmd]; changed = True
+            for i, v in list(items.items()):
+                if v.startswith("-1 ") : items[i] = "-1"; changed = True   # a labelled "-1" shows as a SEPAR button
             # CENTRE zone = grid + musical settings: marker on bar, tempo on bar, MIDI render
             present = " ".join(items.values())
             nxt = (max(items) + 1) if items else 0
             if not any(t in present for t, _, _ in MUSICAL):
-                items[nxt] = "-1 SEPARATOR"; nxt += 1
+                items[nxt] = "-1"; nxt += 1
             for tok, label, icon in MUSICAL:
                 if tok in present: continue
                 items[nxt] = f"{tok} {label}"; icons[nxt] = icon; nxt += 1; changed = True
@@ -153,13 +155,13 @@ def main():
     items, icons, k = {}, {}, 0
     def add(tok, label, icon):
         nonlocal k
-        items[k] = f"{tok} {label}"
+        items[k] = f"{tok} {label}".rstrip()
         if icon: icons[k] = icon
         k += 1
     for tok, label, icon in NT_SPEED: add(tok, label, icon)
-    add("-1", "SEPARATOR", None)
+    add("-1", "", None)
     for tok, label, icon in EDIT: add(tok, label, icon)
-    add("-1", "SEPARATOR", None)
+    add("-1", "", None)
     for tok, label, icon in APPS:
         if tok == "_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416": add(tok, label, icon)
     nt_section = rebuild_section(nt_lines, items, icons)
@@ -214,9 +216,9 @@ def patch_split():
     text = open(ini, encoding="utf-8", errors="surrogateescape").read()
     new = re.sub(r"^toolbar=0\.\d+ (\d+)$", r"toolbar=0.50000000 \1", text, flags=re.M)
     if re.search(r"^toolbar:3=", new, flags=re.M):
-        new = re.sub(r"^toolbar:3=.*$", "toolbar:3=0.66000000 3", new, flags=re.M)
+        new = re.sub(r"^toolbar:3=.*$", "toolbar:3=0.50000000 5", new, flags=re.M)
     else:
-        new = re.sub(r"^(toolbar:1=.*)$", r"\1\ntoolbar:3=0.66000000 3", new, count=1, flags=re.M)
+        new = re.sub(r"^(toolbar:1=.*)$", r"\1\ntoolbar:3=0.50000000 5", new, count=1, flags=re.M)
     # [toolbar:3] section: docked + visible
     if re.search(r"^\[toolbar:3\]", new, flags=re.M):
         sec_start = new.index("[toolbar:3]")
@@ -230,11 +232,19 @@ def patch_split():
         new = new[:sec_start] + body2 + new[sec_end:]
     else:
         new = new.rstrip("\n") + "\n[toolbar:3]\ndock=1\nwnd_height=81\nwnd_left=0\nwnd_top=64\nwnd_vis=1\nwnd_width=385\n"
-    new = re.sub(r"^dockersel15=toolbar:3\n", "", new, flags=re.M)   # stale: toolbar 3 used to sit in a hidden docker
+    new = re.sub(r"^dockersel15=toolbar:3\n", "", new, flags=re.M)
+    # docker 5 = its own pane at the TOP (mode 2, like the grid's docker 3), so the
+    # three strips sit side by side instead of as tabs
+    if re.search(r"^dockermode5=", new, flags=re.M):
+        new = re.sub(r"^dockermode5=.*$", "dockermode5=2", new, flags=re.M)
+    else:
+        new = re.sub(r"^(dockermode4=.*)$", r"\1\ndockermode5=2", new, count=1, flags=re.M)
+    new = re.sub(r"^dockersel5=.*\n", "", new, flags=re.M)
+    new = re.sub(r"^(dockermode5=2)$", r"\1", new, flags=re.M)   # stale: toolbar 3 used to sit in a hidden docker
     if new != text:
         shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
         open(ini, "w", encoding="utf-8", errors="surrogateescape").write(new)
-        print("reaper.ini: main toolbar split 0.5, Nathaniel Tools toolbar docked top (docker 3 @ 0.66)")
+        print("reaper.ini: main toolbar split 0.5, Nathaniel Tools toolbar in its own top docker (5)")
     else:
         print("reaper.ini unchanged")
 
