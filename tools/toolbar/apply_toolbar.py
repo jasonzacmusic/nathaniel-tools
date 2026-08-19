@@ -56,7 +56,10 @@ MUSICAL = [  # live in the centre Grid toolbar
   ("_RSf7b09088b1c6b6bf1a3e02c894c2616afb496a9b", "Script: Tempo at Bar.lua",   "nt_tempo_bar.png"),
   ("_RS7894b8b20be619fc9e182a197987c42c1b994dbc", "Script: MIDI Render.lua",    "nt_midi_render.png"),
 ]
-NT_SPEED = [x for x in SPEED if x[0] not in {t for t, _, _ in MUSICAL}]   # the rest go right
+# The right-hand docker pane is narrow (~450 px at 2560): only what has no
+# obvious key lives there. Region N/B, Flush Paste, Duplicate, Reset stay on keys.
+NT_SPEED = [x for x in SPEED if x[1] in ("Script: Solo Focus.lua", "Script: Record Arm Toggle.lua",
+                                         "Script: FX Float Toggle.lua", "Script: FX Open Close All.lua")]
 GRID_ICONS = {  # by command id in [Floating toolbar 1]
   "40781": "nt_grid_bar.png", "40780": "nt_grid_1_2.png", "40779": "nt_grid_1_4.png", "41214": "nt_grid_1_4t.png",
   "40778": "nt_grid_1_8.png", "40777": "nt_grid_1_8t.png", "40776": "nt_grid_1_16.png", "41213": "nt_grid_1_24.png",
@@ -159,9 +162,7 @@ def main():
         if icon: icons[k] = icon
         k += 1
     for tok, label, icon in NT_SPEED: add(tok, label, icon)
-    add("-1", "", None)
     for tok, label, icon in EDIT: add(tok, label, icon)
-    add("-1", "", None)
     for tok, label, icon in APPS:
         if tok == "_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416": add(tok, label, icon)
     nt_section = rebuild_section(nt_lines, items, icons)
