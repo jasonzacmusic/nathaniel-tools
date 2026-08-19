@@ -323,9 +323,9 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
+      <version name="0.1.0" author="Jason Zac" time="2026-08-04T04:28:30Z">
         <changelog><![CDATA[0.1.0 - first version. Five-patch Lagori rig.]]></changelog>
-        <source main="main" hash="122059764ff638e0be9d535b3f894c59297c9e0bf4596a9bc70a7fc73d121811d067">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/StageRig%20Build.lua</source>
+        <source main="main" hash="12201019ebcba1ce2ac4a4064915c0c2aacf283ad740595ae639538e83946f7c749c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/48e43584d0306852f41b46681622dee818c15943/scripts/StageRig%20Build.lua</source>
       </version>
     </reapack>
     <reapack name="Tempo at Bar.lua" type="script" desc="Tempo at Bar">
@@ -344,6 +344,20 @@ signature-based change detection, shared safety library.]]></changelog>
         <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
         <source main="main" hash="122066442080e4259ad57529f4169bf2096e33aef69050770882e26b56b6706a9118">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Tempo%20at%20Bar.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Toggle Chorale.lua" type="script" desc="Toggle Chorale (live vocal harmony)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Finds Chorale wherever it is in the project and flips it on/off. Bind this to a footswitch and you have hands-free harmony.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-05T05:28:40Z">
+        <source main="main" hash="1220d53f19d3d074d2db5e397c7d023be59cdbe8ebac4411ce7c10f708538cae63b4">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/d03da4002b48379f306af6f38b354534f5646756/scripts/Toggle%20Chorale.lua</source>
       </version>
     </reapack>
     <reapack name="Unsolo Unselect.lua" type="script" desc="Unsolo &amp; Unselect">
@@ -381,6 +395,23 @@ signature-based change detection, shared safety library.]]></changelog>
       <version name="0.1.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
         <changelog><![CDATA[0.1.0 - first version.]]></changelog>
         <source hash="1220fe5bbb5775755043f37443892cd1a1da20b0e8745898847b963fd31b6d910904">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/jsfx/nt_note_tracker.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="nt_patch_gate.jsfx" type="effect" desc="Patch Gate (live patch switching)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Sits at the top of a patch track FX chain and decides whether new notes reach the instrument below. Never blocks note-offs; flushes held notes + CC64 on close. Superseded by Note Tracker & Input Gate for StageRig, kept for simple rigs.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T06:43:12Z">
+        <changelog><![CDATA[1.0.0 - first public release.]]></changelog>
+        <source hash="1220c217a02e2c6b27c2c361fe66493b8f69a199bde24bc67a26429cb417832eea8d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/37b242e017ae2fa97295c904aab4bd82a03d62c1/scripts/jsfx/nt_patch_gate.jsfx</source>
       </version>
     </reapack>
   </category>
