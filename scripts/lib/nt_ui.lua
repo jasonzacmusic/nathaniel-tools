@@ -316,6 +316,16 @@ end
 function M.window(ctx, spec, frameFn)
   local s = S(ctx)
   M.fonts(ctx)
+  -- Running the action again while the window is open must RESTART it, never
+  -- pop REAPER's "ReaScript task control" dialog. REAPER 7.03+: flag 1 = terminate
+  -- other instances silently; 4 = show this action as ON (toolbar button lights).
+  if not s.actionOpts then
+    s.actionOpts = true
+    if r.set_action_options then
+      pcall(r.set_action_options, 1 | 4)
+      pcall(r.atexit, function() pcall(r.set_action_options, 8) end)
+    end
+  end
   if s.dockPending ~= nil then r.ImGui_SetNextWindowDockID(ctx, s.dockPending); s.dockPending = nil end
   -- Dock by default. The user's last choice (the Dock toggle) is remembered per
   -- window in ExtState, so an app opens where it was left: in the docker unless
