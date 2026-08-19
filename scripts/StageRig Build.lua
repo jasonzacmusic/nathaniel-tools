@@ -1,5 +1,5 @@
 -- @description StageRig Build
--- @version 0.1.0
+-- @version 0.2.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -12,6 +12,8 @@
 --   inserts the substitute instrument where one is known, and puts the note
 --   tracker in front of every instrument so patch switching can be clean.
 -- @changelog
+--   0.2.0 - plain-English message when no rig file exists; also looks in
+--           Scripts/Nathaniel Tools/stagerig/. Ships with the NSM Tribute Night rig spec.
 --   0.1.0 - first version. Five-patch Lagori rig.
 
 --[[
@@ -67,9 +69,10 @@ end
 local specPath = findSpec()
 if not specPath then
   r.ShowMessageBox(
-    "No rig spec found.\n\nGenerate one first:\n" ..
-    "  tools/stagerig_spec.py <concert> --patches ... --out stagerig/rig.json\n\n" ..
-    "It writes rig.lua alongside rig.json, which is what this script reads.",
+    "StageRig Build needs a rig file that describes your setlist (which patch, which sounds).\n\n" ..
+    "Put it here:\n  " .. r.GetResourcePath() .. "/Scripts/Nathaniel Tools/stagerig/rig.lua\n\n" ..
+    "It is generated from a MainStage concert by tools/stagerig_spec.py in the Nathaniel Tools repository " ..
+    "(github.com/jasonzacmusic/nathaniel-tools), or you can write one by hand following stagerig/rig.lua there.",
     "StageRig Build", 0)
   return
 end
@@ -132,7 +135,10 @@ local function addFX(track, fxName)
   if not fxName then return false, "no instrument chosen" end
   for _, pre in ipairs(FX_PREFIXES) do
     local idx = r.TrackFX_AddByName(track, pre .. fxName, false, -1)
-    if idx and idx >= 0 then return true, nil end
+    if idx and idx >= 0 then
+      r.TrackFX_Show(track, idx, 2)   -- REAPER may auto-float new FX; a rig build must not leave 16 windows open
+      return true, nil
+    end
   end
   return false, "not installed under any format prefix: " .. fxName
 end

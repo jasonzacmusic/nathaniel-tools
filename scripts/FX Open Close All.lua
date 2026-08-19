@@ -1,12 +1,12 @@
 -- @description FX Open/Close All
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about One unified open/close decision across every FX on the selected tracks.
+-- @about Open every FX window on the selected (or last touched) track, or close them all if any are open.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - honest changelog.
+--   1.0.0 - first public release.
 
 -- FX Open/Close ALL
 -- Replaces "Custom: Open Close ALL", which fired eight INDEPENDENT toggles on the

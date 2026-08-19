@@ -1,12 +1,12 @@
 -- @description Flush Paste
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Clear, paste, strip envelopes and save silently. Never opens Save As.
+-- @about Replace whatever is on the selected tracks with the clipboard: delete their items, paste, strip envelopes, save silently. Needs SWS.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - stops with a message if SWS is missing (before, it pasted without clearing).
+--   1.0.0 - first public release.
 
 -- Flush Paste
 -- Replaces "Custom: Flush Paste".  Two bugs in the old chain:
@@ -25,6 +25,9 @@
 --      toggles; had anyone "fixed" it to 41054 it would have flipped on every
 --      press.  The real state is readable through SWS as the config var
 --      "relsnap", so we check that and leave 41052 alone when it is already on.
+if not reaper.NamedCommandLookup("_SWS_DELALLITEMS") or reaper.NamedCommandLookup("_SWS_DELALLITEMS") == 0 then
+  reaper.ShowMessageBox("Flush Paste needs the SWS extension (sws-extension.org). Nothing was pasted.", "Flush Paste", 0) return
+end
 local r = reaper
 
 r.Undo_BeginBlock2(0)

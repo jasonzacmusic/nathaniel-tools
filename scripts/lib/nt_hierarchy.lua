@@ -28,11 +28,32 @@
   folder closes, and the last track can never leave one hanging open.  That one
   decision removes the entire class of bug.
 
+  CHANGED WITH FOLDERS & FLOW 2.0.0 (this file is @noindex, so no version bump)
+    * selectionRoots() / applyToRoots(): a multi-track Indent / Outdent / Out of
+      folder acts on SELECTION ROOTS only - a ticked track whose parent is also
+      ticked is skipped, because moving the parent already moves it.  The old
+      loop (demote last->first, promote first->last) moved nested selections two
+      levels.  Roots are processed first->last, which cannot double-apply.
+    * moveLevels(): the pure-Lua plan for "move this folder up/down".  The new
+      levels are computed BEFORE the tracks are reordered, then written after,
+      so a subtree whose last track closed an outer folder (depth -2) no longer
+      drags that closer with it and swallows the neighbour.
+    * moveSubtree(): saves and restores the user's track selection (it used to
+      deselect everything and leave the subtree selected).
+    * isolate() only hides tracks that were visible, and returns the GUIDs it
+      hid; showGuids() un-hides exactly those.  Tracks the user hid on purpose
+      are never touched.
+
   Author: Jason Zac / Nathaniel School of Music
 --]]
 
 local r = reaper
 local M = {}
+
+-- nt_safe is optional here (this file is also loaded by the pure-Lua tests
+-- with a fake `reaper`); moveSubtree falls back to a GUID loop without it.
+local okSafe, safe = pcall(require, "nt_safe")
+if not okSafe then safe = nil end
 
 --------------------------------------------------------------------------------
 -- depths  <->  levels
@@ -150,6 +171,52 @@ function M.toRoot(levels, i)
   return true
 end
 
+-- SELECTION ROOTS.  When several tracks are ticked, only the ones whose folder
+-- parent (or grand-parent...) is NOT also ticked should be acted on: moving a
+-- parent moves its whole subtree, so acting on a ticked child too would move
+-- it twice.  Returns the roots in ascending order.
+--
+-- Subtrees are contiguous, so a ticked track sits inside an earlier ticked
+-- root's subtree exactly when its index is <= that root's last subtree index.
+function M.selectionRoots(levels, idxs)
+  local sorted = {}
+  for _, i in ipairs(idxs or {}) do
+    if levels[i] ~= nil then sorted[#sorted + 1] = i end
+  end
+  table.sort(sorted)
+  local roots, coverEnd, lastSeen = {}, 0, nil
+  for _, i in ipairs(sorted) do
+    if i ~= lastSeen and i > coverEnd then
+      roots[#roots + 1] = i
+      local sub = M.subtree(levels, i)
+      coverEnd = sub[#sub]
+    end
+    lastSeen = i
+  end
+  return roots
+end
+
+-- Apply one of demote / promote / toRoot to every selection root, first to
+-- last.  Each root's subtree is a disjoint index range that no earlier root
+-- can touch, so every track moves at most once.  (Last-to-first is NOT safe
+-- for demote: demoting track 3 first makes it part of track 2's subtree, and
+-- demoting track 2 then moves it a second time.)
+-- Returns moved, skipped, firstReason, rootCount.
+function M.applyToRoots(levels, idxs, op)
+  local roots = M.selectionRoots(levels, idxs)
+  local moved, skipped, why = 0, 0, nil
+  for _, i in ipairs(roots) do
+    local ok, err = op(levels, i)
+    if ok then moved = moved + 1
+    else skipped = skipped + 1; why = why or err end
+  end
+  return moved, skipped, why, #roots
+end
+
+function M.demoteMany(levels, idxs)  return M.applyToRoots(levels, idxs, M.demote)  end
+function M.promoteMany(levels, idxs) return M.applyToRoots(levels, idxs, M.promote) end
+function M.toRootMany(levels, idxs)  return M.applyToRoots(levels, idxs, M.toRoot)  end
+
 -- Dissolve a folder: the parent stays as an ordinary track, its children move up
 -- one level to sit beside it.  Nothing is deleted.
 function M.dissolve(levels, i)
@@ -203,33 +270,89 @@ end
 --   _SWS_MOVETRACKUP / _SWS_MOVETRACKDOWN are not present on this install.
 --   We select the subtree and use ReorderSelectedTracks, which moves the whole
 --   selection as one block.
+--
+--   ReorderSelectedTracks carries each track's I_FOLDERDEPTH along with it.
+--   Depths are relative, so that corrupts the neighbours: a subtree whose last
+--   track closed an OUTER folder (-2) takes that closer with it, and the parent
+--   it left behind swallows whatever now follows it.  So the new nesting is
+--   planned on LEVELS first (moveLevels, pure Lua, tested), the tracks are
+--   moved, and the planned levels are written back.
 --------------------------------------------------------------------------------
+
+-- Plan a move on levels only.  Returns newLevels, dest  (dest = 0-based
+-- "insert before this track index" for ReorderSelectedTracks), or nil, reason.
+--
+--   up    swap places with the sibling subtree that ends just above; if the
+--         track is the FIRST child of its folder it hops out above the parent
+--         (becomes the parent's sibling).
+--   down  swap places with the sibling subtree that starts just below; if it
+--         is the LAST child of its folder it hops out below the folder
+--         (becomes a sibling of whatever shallower block it hopped over).
+function M.moveLevels(levels, i, dir)
+  local n = #levels
+  if n == 0 or levels[i] == nil then return nil, "nothing to move" end
+  local sub = M.subtree(levels, i)
+  local first, last = sub[1], sub[#sub]
+  local out = {}
+  local function push(a, b, delta)
+    for k = a, b do out[#out + 1] = levels[k] + (delta or 0) end
+  end
+  if dir < 0 then
+    if first == 1 then return nil, "already at the top" end
+    -- hop over the whole block that ends just above us
+    local top = first - 1
+    while top > 1 and levels[top] > levels[first] do top = top - 1 end
+    -- top is either a sibling root (same level) or our parent (one shallower)
+    local delta = levels[top] - levels[first]
+    push(1, top - 1)
+    push(first, last, delta)
+    push(top, first - 1)
+    push(last + 1, n)
+    return out, top - 1
+  else
+    if last == n then return nil, "already at the bottom" end
+    local below = last + 1
+    local bottom = below
+    while levels[bottom + 1] ~= nil and levels[bottom + 1] > levels[below] do bottom = bottom + 1 end
+    -- below is either a sibling root (same level) or shallower (we leave the folder)
+    local delta = levels[below] - levels[first]
+    push(1, first - 1)
+    push(below, bottom)
+    push(first, last, delta)
+    push(bottom + 1, n)
+    return out, bottom
+  end
+end
+
+local function saveSel(proj)
+  if safe then return safe.saveSelection(proj) end
+  local s = {}
+  for k = 0, r.CountSelectedTracks(proj) - 1 do
+    local t = r.GetSelectedTrack(proj, k)
+    if t then s[r.GetTrackGUID(t)] = true end
+  end
+  return s
+end
+local function restoreSel(proj, saved)
+  if safe then return safe.restoreSelection(proj, saved) end
+  for k = 0, r.CountTracks(proj) - 1 do
+    local t = r.GetTrack(proj, k)
+    if t then r.SetMediaTrackInfo_Value(t, "I_SELECTED", saved[r.GetTrackGUID(t)] and 1 or 0) end
+  end
+end
 
 function M.moveSubtree(proj, i, dir)
   local levels = M.readLevels(proj)
   local n = #levels
   if n == 0 then return false, "nothing to move" end
-  local sub = M.subtree(levels, i)
-  local first, last = sub[1], sub[#sub]
-
-  local dest
-  if dir < 0 then
-    if first == 1 then return false, "already at the top" end
-    -- hop over the whole subtree that ends just above us
-    local above = first - 1
-    local top = above
-    while top > 1 and levels[top] > levels[first] do top = top - 1 end
-    dest = top - 1                       -- 0-based index to insert before
-  else
-    if last == n then return false, "already at the bottom" end
-    local below = last + 1
-    local bottom = below
-    while levels[bottom + 1] ~= nil and levels[bottom + 1] > levels[below] do bottom = bottom + 1 end
-    dest = bottom                        -- 0-based: after that block
-  end
+  local plan, dest = M.moveLevels(levels, i, dir)
+  if not plan then return false, dest end
   if dest < 0 then dest = 0 end
+  local sub = M.subtree(levels, i)
 
-  -- select exactly the subtree, move it, restore nothing else
+  local saved = saveSel(proj)
+
+  -- select exactly the subtree and move it as one block
   for k = 0, n - 1 do
     local t = r.GetTrack(proj, k)
     if t then r.SetMediaTrackInfo_Value(t, "I_SELECTED", 0) end
@@ -238,8 +361,17 @@ function M.moveSubtree(proj, i, dir)
     local t = r.GetTrack(proj, k - 1)
     if t then r.SetMediaTrackInfo_Value(t, "I_SELECTED", 1) end
   end
-
   r.ReorderSelectedTracks(dest, 0)
+
+  -- write the nesting we planned; if the track count somehow changed under
+  -- us, at least make the arithmetic well-formed from what is there
+  if r.CountTracks(proj) == #plan then
+    M.writeLevels(proj, plan)
+  else
+    M.writeLevels(proj, M.readLevels(proj))
+  end
+
+  restoreSel(proj, saved)
   return true
 end
 
@@ -306,16 +438,59 @@ function M.setVisible(proj, wanted)
   r.TrackList_AdjustWindows(false)
 end
 
+-- Show only track i's subtree (plus its ancestors, so you can see where you
+-- are).  Only tracks that were VISIBLE get hidden, and their GUIDs are
+-- returned so the caller can un-hide exactly those later.  Tracks the user
+-- had already hidden are left alone and not reported.
 function M.isolate(proj, i)
   local levels = M.readLevels(proj)
   local want = {}
   for _, k in ipairs(M.subtree(levels, i)) do want[k] = true end
-  -- keep the ancestors visible so you can still see where you are
   local p = M.parentOf(levels, i)
   while p do want[p] = true; p = M.parentOf(levels, p) end
-  M.setVisible(proj, want)
+
+  local hidden = {}
+  local n = r.CountTracks(proj)
+  for k = 0, n - 1 do
+    local t = r.GetTrack(proj, k)
+    if t then
+      if want[k + 1] then
+        r.SetMediaTrackInfo_Value(t, "B_SHOWINTCP", 1)
+        r.SetMediaTrackInfo_Value(t, "B_SHOWINMIXER", 1)
+      else
+        local tcp = r.GetMediaTrackInfo_Value(t, "B_SHOWINTCP") or 0
+        local mcp = r.GetMediaTrackInfo_Value(t, "B_SHOWINMIXER") or 0
+        if tcp ~= 0 or mcp ~= 0 then
+          hidden[#hidden + 1] = r.GetTrackGUID(t)
+          r.SetMediaTrackInfo_Value(t, "B_SHOWINTCP", 0)
+          r.SetMediaTrackInfo_Value(t, "B_SHOWINMIXER", 0)
+        end
+      end
+    end
+  end
+  r.TrackList_AdjustWindows(false)
+  return hidden
 end
 
+-- Un-hide exactly the tracks whose GUID is in `set` ([guid]=true).
+-- Returns how many tracks were shown again.
+function M.showGuids(proj, set)
+  local shown = 0
+  if not set then return 0 end
+  local n = r.CountTracks(proj)
+  for k = 0, n - 1 do
+    local t = r.GetTrack(proj, k)
+    if t and set[r.GetTrackGUID(t)] then
+      r.SetMediaTrackInfo_Value(t, "B_SHOWINTCP", 1)
+      r.SetMediaTrackInfo_Value(t, "B_SHOWINMIXER", 1)
+      shown = shown + 1
+    end
+  end
+  r.TrackList_AdjustWindows(false)
+  return shown
+end
+
+-- Everything visible again (kept for callers that really want everything).
 function M.showAll(proj) M.setVisible(proj, nil) end
 
 return M

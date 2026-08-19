@@ -1,12 +1,12 @@
 -- @description Solo Focus
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Deterministic exclusive solo. Follows item selection when there is one, press again to clear.
+-- @about Solo-in-place the selected tracks (or the tracks of the selected items); press again on the same set to clear every solo. Never moves the cursor unless you turn AUDITION on.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - honest changelog; header describes what it really does.
+--   1.0.0 - first public release.
 
 -- Solo Focus
 -- Replaces "Custom: Solo Selected Items".

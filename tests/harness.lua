@@ -10,7 +10,11 @@
 local r = reaper
 -- BASE is wherever this repo sits: harness.lua lives in <BASE>/tests/, so the
 -- suite runs from any clone on any machine with no path edits.
-local BASE = (debug.getinfo(1, "S").source:sub(2)):match("(.*/)"):gsub("tests/$", "")
+-- Set the global NT_HARNESS_BASE before dofile()-ing this script to test an
+-- INSTALLED copy (e.g. the ReaPack install under Scripts/Nathaniel Tools/)
+-- instead of the clone this file sits in.
+local BASE = _G.NT_HARNESS_BASE
+  or (debug.getinfo(1, "S").source:sub(2)):match("(.*/)"):gsub("tests/$", "")
 local OUT  = BASE .. "_nt_results.txt"
 
 local lines, pass, fail = {}, 0, 0

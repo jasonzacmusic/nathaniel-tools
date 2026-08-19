@@ -1,12 +1,12 @@
 -- @description Duplicate Track
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Duplicate tracks empty and armed, without disarming the rest of the session.
+-- @about Duplicate the selected track EMPTY and armed, ready to record the next layer; your original arm state comes back exactly. Needs SWS.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - stops with a message if SWS is missing.
+--   1.0.0 - first public release.
 
 -- Duplicate Track (empty)
 -- Replaces "Custom: Duplicate Track".  Step 8 of the old chain was 40065
@@ -17,6 +17,9 @@
 --
 -- Result: same FX, routing, name and colour; no items, no automation; armed and
 -- ready to record.
+if not reaper.NamedCommandLookup("_S&M_WNCLS5") or reaper.NamedCommandLookup("_S&M_WNCLS5") == 0 then
+  reaper.ShowMessageBox("Duplicate Track needs the SWS extension (sws-extension.org). Install it and restart REAPER.", "Duplicate Track", 0) return
+end
 local r = reaper
 
 local sel = {}

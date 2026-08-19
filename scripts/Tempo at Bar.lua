@@ -1,12 +1,12 @@
 -- @description Tempo at Bar
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Insert or edit a tempo/time-signature marker welded to the bar line.
+-- @about Insert or edit a tempo / time-signature marker exactly on a bar line, with a small dialog.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - honest changelog.
+--   1.0.0 - first public release.
 
 -- Tempo / time-signature marker at the nearest BAR
 -- Replaces "Custom: Tempo Nathaniel Tools" (40256 = insert at the raw, unquantized edit cursor).

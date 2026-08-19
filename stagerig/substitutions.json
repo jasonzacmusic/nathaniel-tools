@@ -10,15 +10,44 @@
     "",
     "Edit this file freely - it is read at build time, not compiled in."
   ],
-
   "_installed_reference": {
-    "pianos": ["Pianoteq 8", "Keyscape", "Grand Rhapsody Piano", "Electric Grand 80"],
-    "electric": ["Lounge Lizard EP-4", "Electric88", "Electric200", "Clavinet (Waves)"],
-    "synths": ["Omnisphere", "ANA 2", "Vital", "Massive X", "FM8", "Absynth 5", "Ultra Analog VA-2", "Hybrid", "Xpand!2"],
-    "orchestral": ["BBC Symphony Orchestra (Spitfire)", "LABS (Spitfire)", "Philharmonik 2 (IK)"],
-    "world": ["SOLO (Taqs.im)", "PercX (Auddict)"],
-    "samplers": ["Kontakt 7", "ReaSamplOmatic5000", "SSDSampler5"],
-
+    "pianos": [
+      "Pianoteq 8",
+      "Keyscape",
+      "Grand Rhapsody Piano",
+      "Electric Grand 80"
+    ],
+    "electric": [
+      "Lounge Lizard EP-4",
+      "Electric88",
+      "Electric200",
+      "Clavinet (Waves)"
+    ],
+    "synths": [
+      "Omnisphere",
+      "ANA 2",
+      "Vital",
+      "Massive X",
+      "FM8",
+      "Absynth 5",
+      "Ultra Analog VA-2",
+      "Hybrid",
+      "Xpand!2"
+    ],
+    "orchestral": [
+      "BBC Symphony Orchestra (Spitfire)",
+      "LABS (Spitfire)",
+      "Philharmonik 2 (IK)"
+    ],
+    "world": [
+      "SOLO (Taqs.im)",
+      "PercX (Auddict)"
+    ],
+    "samplers": [
+      "Kontakt 7",
+      "ReaSamplOmatic5000",
+      "SSDSampler5"
+    ],
     "_probed_2026_08_03": [
       "Measured inside REAPER 7.28 by asking TrackFX_AddByName for each name",
       "under every format prefix, not by reading a plugin list:",
@@ -42,10 +71,8 @@
       "Mr. Jimmy Smith, Full Drawbars and Church Chords cover most gigs.",
       "Analog Lab V genuinely does not instantiate; that part was right."
     ],
-
     "organ_note": "RESOLVED 5 Aug 2026. Arturia B-3 V2 IS installed and IS scanned by REAPER - the earlier probe missed it because it searched for 'Arturia B-3 V' rather than the actual name 'B-3 V2'. Organ parts now use the real Hammond, not an Omnisphere stand-in. Presets: Clean Jazz (default), Mr. Jimmy Smith, Full Drawbars, Church Chords."
   },
-
   "map": {
     "Pianoteq 8": {
       "fx": "Pianoteq 8",
@@ -71,41 +98,146 @@
     "Pedalboard": {
       "fx": null,
       "note": "Organ drive/rotary - build it as a REAPER FX chain on the organ track instead of one plugin."
+    },
+    "Dexed": {
+      "fx": "Dexed",
+      "note": "Exact - Dexed (Digital Suburban) is installed here as VST3 and AU. Verified in REAPER's plugin caches 19 Aug 2026."
+    },
+    "Rhodes": {
+      "fx": "Pianoteq 8",
+      "note": "Pianoteq's electric-piano models (MKI/MKII, W1). Jason's own riff rig uses the Pianoteq 'MKI Leslie' preset. Alternate: Lounge Lizard EP-4 (installed)."
+    },
+    "Sweep Pad": {
+      "fx": "Omnisphere",
+      "note": "pad layer"
+    },
+    "MkII Flute": {
+      "fx": "SOLO",
+      "note": "Mellotron flute stand-in - Taqs.im SOLO flute/ney; Omnisphere also has Mellotron-style tapes."
     }
   },
-
   "by_strip_name": {
     "_README": "Matched against the channel-strip NAME first (case-insensitive substring). More specific than the instrument map above, because the strip name is what actually says what the sound is.",
-
-    "strings":   { "fx": "BBC Symphony Orchestra", "note": "Spitfire BBC SO - strings section" },
-    "cellos":    { "fx": "BBC Symphony Orchestra", "note": "BBC SO - celli" },
-    "violas":    { "fx": "BBC Symphony Orchestra", "note": "BBC SO - violas, staccato articulation" },
-    "timpani":   { "fx": "BBC Symphony Orchestra", "note": "BBC SO - percussion" },
-    "orch":      { "fx": "BBC Symphony Orchestra", "note": "orchestral layer" },
-    "choir":     { "fx": "Omnisphere", "note": "Omnisphere choir patch, or LABS Voices" },
-    "voices":    { "fx": "Omnisphere", "note": "vocal-texture layer" },
-
-    "horn":      { "fx": "Kontakt 7", "note": "brass section" },
-    "trumpet":   { "fx": "Kontakt 7", "note": "brass" },
-    "brassy":    { "fx": "Omnisphere", "note": "synth brass, not acoustic" },
-
-    "shenai":    { "fx": "SOLO", "note": "Taqs.im SOLO - shehnai is exactly what this plugin is for" },
-    "sitar":     { "fx": "SOLO", "note": "Taqs.im SOLO" },
-    "flute":     { "fx": "SOLO", "note": "Taqs.im SOLO - bansuri/ney" },
-    "harmonium": { "fx": "SOLO", "note": "Taqs.im SOLO, or a Kontakt harmonium" },
-    "banjo":     { "fx": "Kontakt 7", "note": "plucked string library" },
-
-    "clav":      { "fx": "Pianoteq 8", "note": "Pianoteq clavinet model (the concert already used Pianoteq here)" },
-    "organ":     { "fx": "B-3 V2", "preset": "Clean Jazz", "note": "Arturia B-3 V2 - a real tonewheel organ, verified scanned by REAPER. Alternates: Mr. Jimmy Smith, Full Drawbars, Church Chords." },
-    "piano":     { "fx": "Pianoteq 8", "note": "exact match" },
-    "upright":   { "fx": "Pianoteq 8", "note": "Pianoteq upright model" },
-
-    "pads":      { "fx": "Omnisphere", "note": "pad layer" },
-    "plucks":    { "fx": "Omnisphere", "note": "plucked synth" },
-    "lead":      { "fx": "Omnisphere", "note": "lead synth" },
-    "synth":     { "fx": "Omnisphere", "note": "general synth layer" },
-    "bass":      { "fx": "Omnisphere", "note": "synth/sub bass" },
-    "edm":       { "fx": "Omnisphere", "note": "Vital is installed but will not instantiate in REAPER here, so Omnisphere carries this." },
-    "drum":      { "fx": "Kontakt 7", "note": "drum layer" }
+    "dx": {
+      "fx": "Dexed",
+      "note": "DX7-style FM electric piano - Dexed is installed"
+    },
+    "rhodes": {
+      "fx": "Pianoteq 8",
+      "note": "Pianoteq electric piano model (MKI Leslie preset in Jason's rig). Alternate: Lounge Lizard EP-4."
+    },
+    "mellotron": {
+      "fx": "SOLO",
+      "note": "Mellotron flute/strings stand-in"
+    },
+    "strings": {
+      "fx": "BBC Symphony Orchestra",
+      "note": "Spitfire BBC SO - strings section"
+    },
+    "cellos": {
+      "fx": "BBC Symphony Orchestra",
+      "note": "BBC SO - celli"
+    },
+    "violas": {
+      "fx": "BBC Symphony Orchestra",
+      "note": "BBC SO - violas, staccato articulation"
+    },
+    "timpani": {
+      "fx": "BBC Symphony Orchestra",
+      "note": "BBC SO - percussion"
+    },
+    "orch": {
+      "fx": "BBC Symphony Orchestra",
+      "note": "orchestral layer"
+    },
+    "choir": {
+      "fx": "Omnisphere",
+      "note": "Omnisphere choir patch, or LABS Voices"
+    },
+    "voices": {
+      "fx": "Omnisphere",
+      "note": "vocal-texture layer"
+    },
+    "horn": {
+      "fx": "Kontakt 7",
+      "note": "brass section"
+    },
+    "trumpet": {
+      "fx": "Kontakt 7",
+      "note": "brass"
+    },
+    "brassy": {
+      "fx": "Omnisphere",
+      "note": "synth brass, not acoustic"
+    },
+    "shenai": {
+      "fx": "SOLO",
+      "note": "Taqs.im SOLO - shehnai is exactly what this plugin is for"
+    },
+    "sitar": {
+      "fx": "SOLO",
+      "note": "Taqs.im SOLO"
+    },
+    "flute": {
+      "fx": "SOLO",
+      "note": "Taqs.im SOLO - bansuri/ney"
+    },
+    "harmonium": {
+      "fx": "SOLO",
+      "note": "Taqs.im SOLO, or a Kontakt harmonium"
+    },
+    "banjo": {
+      "fx": "Kontakt 7",
+      "note": "plucked string library"
+    },
+    "clav": {
+      "fx": "Pianoteq 8",
+      "note": "Pianoteq clavinet model (the concert already used Pianoteq here)"
+    },
+    "organ": {
+      "fx": "B-3 V2",
+      "preset": "Clean Jazz",
+      "note": "Arturia B-3 V2 - a real tonewheel organ, verified scanned by REAPER. Alternates: Mr. Jimmy Smith, Full Drawbars, Church Chords."
+    },
+    "piano": {
+      "fx": "Pianoteq 8",
+      "note": "exact match"
+    },
+    "upright": {
+      "fx": "Pianoteq 8",
+      "note": "Pianoteq upright model"
+    },
+    "pads": {
+      "fx": "Omnisphere",
+      "note": "pad layer"
+    },
+    "plucks": {
+      "fx": "Omnisphere",
+      "note": "plucked synth"
+    },
+    "lead": {
+      "fx": "Omnisphere",
+      "note": "lead synth"
+    },
+    "synth": {
+      "fx": "Omnisphere",
+      "note": "general synth layer"
+    },
+    "bass": {
+      "fx": "Omnisphere",
+      "note": "synth/sub bass"
+    },
+    "edm": {
+      "fx": "Omnisphere",
+      "note": "Vital is installed but will not instantiate in REAPER here, so Omnisphere carries this."
+    },
+    "drum": {
+      "fx": "Kontakt 7",
+      "note": "drum layer"
+    },
+    "pad": {
+      "fx": "Omnisphere",
+      "note": "pad layer"
+    }
   }
 }

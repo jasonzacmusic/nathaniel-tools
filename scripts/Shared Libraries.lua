@@ -1,5 +1,5 @@
 -- @description Shared Libraries
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -7,6 +7,7 @@
 --   [nomain] lib/nt_safe.lua
 --   [nomain] lib/nt_hierarchy.lua
 --   [nomain] lib/nt_imgui.lua
+--   [nomain] lib/nt_ui.lua
 -- @about
 --   The shared code the rest of the Nathaniel Tools is built on: pointer safety and
 --   stable track identity (nt_safe), folder-nesting arithmetic (nt_hierarchy),
@@ -24,6 +25,7 @@
 --   present and what version they are, which is the first thing worth knowing
 --   when an app misbehaves.
 -- @changelog
+--   1.1.0 - adds nt_ui, the shared design system every window now uses.
 --   1.0.0 - split out of the individual app packages so every app can share one
 --           copy instead of each carrying its own.
 
@@ -37,6 +39,7 @@ local LIBS = {
   { "nt_safe",      "pointer safety and stable track identity" },
   { "nt_hierarchy", "folder nesting arithmetic" },
   { "nt_imgui",     "ReaImGui version compatibility" },
+  { "nt_ui",        "the shared look: theme, fonts, header, buttons, tables, status" },
 }
 
 local lines = { "Shared Libraries", "" }

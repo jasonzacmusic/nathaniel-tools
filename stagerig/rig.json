@@ -1,11 +1,11 @@
 {
-  "concert": "Lagori 2026 Minimal.concert",
-  "concert_path": "/Users/jasonzac/Music/MainStage/Lagori 2026 Minimal.concert",
+  "concert": "NSM Tribute Night.concert",
+  "concert_path": "/Users/nphmacmini/Music/MainStage/NSM Tribute Night.concert",
   "generated_from": "stagerig_spec.py",
   "patches": [
     {
-      "name": "Aasma",
-      "path": "Darbari / Aasma",
+      "name": "PIANO_ARENA",
+      "path": "PIANO_ARENA",
       "colour": [
         138,
         92,
@@ -14,73 +14,122 @@
       "tempo": 120.0,
       "tracks": [
         {
-          "name": "Synth",
+          "name": "Piano Arena \u2014 Splendid Grand",
           "muted_in_concert": false,
           "was": [
-            "Alchemy"
+            "(none detected)"
           ],
-          "fx": "Omnisphere",
+          "fx": "Pianoteq 8",
           "kind": "substituted",
-          "why": "general synth layer",
-          "matched_on": "strip name 'synth'"
-        },
+          "why": "exact match",
+          "matched_on": "strip name 'piano'"
+        }
+      ]
+    },
+    {
+      "name": "GOSPEL_ORGAN",
+      "path": "GOSPEL_ORGAN",
+      "colour": [
+        62,
+        201,
+        192
+      ],
+      "tempo": 120.0,
+      "tracks": [
         {
-          "name": "Strings",
+          "name": "Gospel Organ \u2014 Rock Organ",
           "muted_in_concert": false,
           "was": [
-            "Sampler"
+            "(none detected)"
           ],
-          "fx": "BBC Symphony Orchestra",
+          "fx": "B-3 V2",
           "kind": "substituted",
-          "why": "Spitfire BBC SO - strings section",
-          "matched_on": "strip name 'strings'"
-        },
+          "why": "Arturia B-3 V2 - a real tonewheel organ, verified scanned by REAPER. Alternates: Mr. Jimmy Smith, Full Drawbars, Church Chords.",
+          "matched_on": "strip name 'organ'"
+        }
+      ]
+    },
+    {
+      "name": "MELLOTRON_PSYCH",
+      "path": "MELLOTRON_PSYCH",
+      "colour": [
+        84,
+        208,
+        122
+      ],
+      "tempo": 120.0,
+      "tracks": [
         {
-          "name": "Full Strings",
+          "name": "Mellotron Psych \u2014 MkII Flute",
           "muted_in_concert": false,
           "was": [
-            "Sampler"
+            "(none detected)"
           ],
-          "fx": "BBC Symphony Orchestra",
+          "fx": "SOLO",
           "kind": "substituted",
-          "why": "Spitfire BBC SO - strings section",
-          "matched_on": "strip name 'strings'"
-        },
+          "why": "Mellotron flute/strings stand-in",
+          "matched_on": "strip name 'mellotron'"
+        }
+      ]
+    },
+    {
+      "name": "DX_EP_80S",
+      "path": "DX_EP_80S",
+      "colour": [
+        232,
+        178,
+        58
+      ],
+      "tempo": 120.0,
+      "tracks": [
         {
-          "name": "Cellos",
+          "name": "DX EP 80S \u2014 Dexed",
           "muted_in_concert": false,
           "was": [
-            "Sampler"
+            "Dexed"
           ],
-          "fx": "BBC Symphony Orchestra",
-          "kind": "substituted",
-          "why": "BBC SO - celli",
-          "matched_on": "strip name 'cellos'"
-        },
+          "fx": "Dexed",
+          "kind": "exact",
+          "why": "DX7-style FM electric piano - Dexed is installed",
+          "matched_on": "strip name 'dx'"
+        }
+      ]
+    },
+    {
+      "name": "RHODES_SOUL",
+      "path": "RHODES_SOUL",
+      "colour": [
+        224,
+        69,
+        90
+      ],
+      "tempo": 120.0,
+      "tracks": [
         {
-          "name": "Violas Staccato",
+          "name": "Rhodes Soul \u2014 Rhodes",
           "muted_in_concert": false,
           "was": [
-            "Sampler"
+            "(none detected)"
           ],
-          "fx": "BBC Symphony Orchestra",
+          "fx": "Pianoteq 8",
           "kind": "substituted",
-          "why": "BBC SO - violas, staccato articulation",
-          "matched_on": "strip name 'violas'"
-        },
+          "why": "Pianoteq electric piano model (MKI Leslie preset in Jason's rig). Alternate: Lounge Lizard EP-4.",
+          "matched_on": "strip name 'rhodes'"
+        }
+      ]
+    },
+    {
+      "name": "ORCH_HIT",
+      "path": "ORCH_HIT",
+      "colour": [
+        91,
+        157,
+        245
+      ],
+      "tempo": 120.0,
+      "tracks": [
         {
-          "name": "Synth",
-          "muted_in_concert": false,
-          "was": [
-            "Alchemy"
-          ],
-          "fx": "Omnisphere",
-          "kind": "substituted",
-          "why": "general synth layer",
-          "matched_on": "strip name 'synth'"
-        },
-        {
-          "name": "ORCH",
+          "name": "Orch Hit \u2014 Firebird",
           "muted_in_concert": false,
           "was": [
             "(none detected)"
@@ -89,185 +138,60 @@
           "kind": "substituted",
           "why": "orchestral layer",
           "matched_on": "strip name 'orch'"
-        },
-        {
-          "name": "Piano",
-          "muted_in_concert": true,
-          "was": [
-            "Pianoteq 8"
-          ],
-          "fx": "Pianoteq 8",
-          "kind": "exact",
-          "why": "exact match",
-          "matched_on": "strip name 'piano'"
         }
       ]
     },
     {
-      "name": "Humma Humma G -> A",
-      "path": "Darbari / Humma Humma G -> A",
+      "name": "SPACE_PAD",
+      "path": "SPACE_PAD",
+      "colour": [
+        138,
+        92,
+        240
+      ],
+      "tempo": 120.0,
+      "tracks": [
+        {
+          "name": "Space Pad \u2014 Sweep Pad",
+          "muted_in_concert": false,
+          "was": [
+            "(none detected)"
+          ],
+          "fx": "Omnisphere",
+          "kind": "substituted",
+          "why": "pad layer",
+          "matched_on": "strip name 'pad'"
+        }
+      ]
+    },
+    {
+      "name": "LEAD_MONO",
+      "path": "LEAD_MONO",
       "colour": [
         62,
         201,
         192
       ],
-      "tempo": 110.0,
+      "tempo": 120.0,
       "tracks": [
         {
-          "name": "Horn",
+          "name": "Lead Mono \u2014 Snarling Pig",
           "muted_in_concert": false,
           "was": [
-            "Sampler"
-          ],
-          "fx": "Kontakt 7",
-          "kind": "substituted",
-          "why": "brass section",
-          "matched_on": "strip name 'horn'"
-        },
-        {
-          "name": "Horns High",
-          "muted_in_concert": false,
-          "was": [
-            "Sampler"
-          ],
-          "fx": "Kontakt 7",
-          "kind": "substituted",
-          "why": "brass section",
-          "matched_on": "strip name 'horn'"
-        },
-        {
-          "name": "Organ",
-          "muted_in_concert": false,
-          "was": [
-            "Vintage B3"
+            "(none detected)"
           ],
           "fx": "Omnisphere",
           "kind": "substituted",
-          "why": "STAND-IN for B3 - see organ_note. Pick an organ patch in Omnisphere.",
-          "matched_on": "strip name 'organ'"
-        }
-      ]
-    },
-    {
-      "name": "BRAHMA Gm",
-      "path": "60 90 / BRAHMA Gm",
-      "colour": [
-        84,
-        208,
-        122
-      ],
-      "tempo": 118.0,
-      "tracks": [
-        {
-          "name": "Inst 39",
-          "muted_in_concert": false,
-          "was": [
-            "Vintage B3"
-          ],
-          "fx": "Omnisphere",
-          "kind": "substituted",
-          "why": "STAND-IN. Analog Lab V will not instantiate in REAPER on this Mac (probed, not assumed), so there is no real B3 available. Omnisphere has organ patches and loads reliably. Replace with Arturia B-3 V or IK B-3X when one is working.",
-          "matched_on": "Vintage B3"
-        },
-        {
-          "name": "Clav",
-          "muted_in_concert": false,
-          "was": [
-            "Pianoteq 8"
-          ],
-          "fx": "Pianoteq 8",
-          "kind": "exact",
-          "why": "Pianoteq clavinet model (the concert already used Pianoteq here)",
-          "matched_on": "strip name 'clav'"
-        }
-      ]
-    },
-    {
-      "name": "Upright",
-      "path": "Darbari / Upright",
-      "colour": [
-        232,
-        178,
-        58
-      ],
-      "tempo": 115.0,
-      "tracks": [
-        {
-          "name": "Piano",
-          "muted_in_concert": false,
-          "was": [
-            "Pianoteq 8"
-          ],
-          "fx": "Pianoteq 8",
-          "kind": "exact",
-          "why": "exact match",
-          "matched_on": "strip name 'piano'"
-        }
-      ]
-    },
-    {
-      "name": "Maari Kannu",
-      "path": "Maari Kannu / Maari Kannu",
-      "colour": [
-        224,
-        69,
-        90
-      ],
-      "tempo": 106.0,
-      "tracks": [
-        {
-          "name": "Grand Organ",
-          "muted_in_concert": false,
-          "was": [
-            "Vintage B3"
-          ],
-          "fx": "Omnisphere",
-          "kind": "substituted",
-          "why": "STAND-IN for B3 - see organ_note. Pick an organ patch in Omnisphere.",
-          "matched_on": "strip name 'organ'"
-        },
-        {
-          "name": "Clav",
-          "muted_in_concert": false,
-          "was": [
-            "Pianoteq 8"
-          ],
-          "fx": "Pianoteq 8",
-          "kind": "exact",
-          "why": "Pianoteq clavinet model (the concert already used Pianoteq here)",
-          "matched_on": "strip name 'clav'"
-        },
-        {
-          "name": "Horn Section",
-          "muted_in_concert": false,
-          "was": [
-            "Sampler",
-            "Studio Horns"
-          ],
-          "fx": "Kontakt 7",
-          "kind": "substituted",
-          "why": "brass section",
-          "matched_on": "strip name 'horn'"
-        },
-        {
-          "name": "Horn Section",
-          "muted_in_concert": false,
-          "was": [
-            "Sampler",
-            "Studio Horns"
-          ],
-          "fx": "Kontakt 7",
-          "kind": "substituted",
-          "why": "brass section",
-          "matched_on": "strip name 'horn'"
+          "why": "lead synth",
+          "matched_on": "strip name 'lead'"
         }
       ]
     }
   ],
   "not_found": [],
   "summary": {
-    "exact": 4,
-    "substituted": 14,
+    "exact": 1,
+    "substituted": 7,
     "needs_sound": 0
   }
 }

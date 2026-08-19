@@ -9,7 +9,9 @@ for his own sessions.
 > These exist because his own sessions were slow, not because anyone surveyed a market.
 > Every app in here replaces a REAPER custom action that was quietly doing the wrong thing.
 
-**Status:** 68 automated checks passing, 0 failing, against REAPER 7.77 on macOS arm64.
+**Status:** 68 in-REAPER checks + 57 pure-Lua checks passing, 0 failing, against REAPER 7.77 / ReaImGui 0.10 on macOS arm64. Installed and verified end-to-end through ReaPack on the studio Mac, 19 Aug 2026.
+
+**Plain-English user guide:** [docs/USER_GUIDE.md](docs/USER_GUIDE.md) (also on the site at `/guide`).
 
 ---
 
@@ -19,11 +21,16 @@ for his own sessions.
 
 | App | Colour | What it does |
 |---|---|---|
-| **Folders & Flow** | green | Fix, build, dissolve, move and isolate track folders. Repairs a session whose folder maths has gone wrong. |
-| **Palette & Look** | violet | Colour and name tracks from *meaning* — rules, palettes, families, live watcher. |
-| **Track Settings Transfer** | violet | Pro-Tools style "Import Session Data" across project tabs, in both directions. |
-| **Stem Print & Handoff** | amber | Print stems in several modes and restore the session exactly afterwards. |
-| **MIDI Batch Export** | amber | Export many MIDI items/regions as separate `.mid` files with pattern-based sequential names. |
+| **Palette & Look** | teal | Colour and name tracks from what they *are* — families, your own rules, palettes, live watcher. |
+| **Folders & Flow** | green | Build, fix, dissolve, move and isolate track folders. Repairs a session whose folder maths has gone wrong. |
+| **Track Settings Transfer** | green | Pro-Tools style "Import Session Data" across project tabs. Guesses stay unticked; transfer asks first. |
+| **Stem Print & Handoff** | amber | Print stems (raw / inserts / fully wet / front-end), build a plugin-free handoff tab with the files on it, restore the session exactly. |
+| **MIDI Batch Export** | amber | Export many MIDI items/regions as separate `.mid` files with pattern-based sequential names, tempo and time signature included. |
+| **StageRig** | violet | Live patch switching that lets the outgoing patch ring out. Footswitch scripts `StageRig Next` / `StageRig Panic`. Early. |
+
+All six windows share one look and one behaviour (`scripts/lib/nt_ui.lua`): header, sections,
+one primary button, a status line that always says what happened (with a log), confirmation
+before anything destructive, drag-paint tick columns, plain-English tooltips.
 
 ### The speed layer (12 scripts, keyboard-bound)
 
@@ -40,6 +47,9 @@ instead of the bar line. The root causes are documented in `docs/TECH_BRIEF.md`.
   cannot crash REAPER.
 - **`scripts/lib/nt_hierarchy.lua`** — folder maths. Converts REAPER's `I_FOLDERDEPTH` integers
   to nesting levels, edits there, and regenerates. Well-formed output by construction.
+- **`scripts/lib/nt_ui.lua`** — the design system: tokens, fonts (ReaImGui 0.9 and 0.10),
+  window/header/button/segmented/table/status/confirm/empty. Every window uses it.
+- **`scripts/lib/nt_imgui.lua`** — bridges the enum constants ReaImGui renamed between releases.
 
 ---
 
@@ -131,7 +141,7 @@ and the directory name becomes the category shown in ReaPack.
 ## Testing
 
 ```bash
-lua tests/hierarchy_test.lua      # 31 checks, no REAPER needed
+lua tests/hierarchy_test.lua      # 57 checks, no REAPER needed
 ```
 
 Inside REAPER, run `tests/harness.lua` from the action list — 68 checks including live

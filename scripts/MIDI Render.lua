@@ -1,12 +1,12 @@
 -- @description MIDI Render
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Export project MIDI with a proper time-selection guard.
+-- @about Export the project MIDI for the time selection (or the whole project if there is none) with one key.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - honest changelog.
+--   1.0.0 - first public release.
 
 -- MIDI Render (safe)
 -- Replaces "Custom: Midi Render".  Shift+Control+M used to be wired straight to raw

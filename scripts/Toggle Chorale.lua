@@ -1,6 +1,8 @@
 -- @description Toggle Chorale (live vocal harmony)
 -- @version 1.0.0
 -- @author Jason Zac
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about
 --   Finds Chorale wherever it is in the project and flips it on/off.
 --   Bind this to a footswitch and you have hands-free harmony.

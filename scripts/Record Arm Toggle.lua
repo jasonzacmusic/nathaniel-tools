@@ -1,12 +1,12 @@
 -- @description Record Arm Toggle
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Exclusive record-arm on the selected tracks. Press again to disarm everything. Never touches pan.
+-- @about Arm ONLY the selected tracks (everything else disarmed); press again to disarm all. Never touches pan, unlike the custom action it replaced.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - honest changelog.
+--   1.0.0 - first public release.
 
 -- Record Arm Toggle
 -- Replaces "Custom: Record Toggle" and "Custom: XOR Record Arm".

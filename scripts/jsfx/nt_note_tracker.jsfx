@@ -1,5 +1,5 @@
 // @description Note Tracker & Input Gate
-// @version 0.1.0
+// @version 0.2.0
 // @author Jason Zac
 // @link https://github.com/jasonzacmusic/nathaniel-tools
 // @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -8,6 +8,7 @@
 //   patch switching. Used by StageRig, but useful on its own anywhere a MIDI
 //   stream needs to be stopped without leaving notes hanging.
 // @changelog
+//   0.2.0 - FLUSH self-resets after firing, so every flush is a clean rising edge.
 //   0.1.0 - first version.
 
 desc:Note Tracker & Input Gate
@@ -73,6 +74,12 @@ flush_pending ? (
   );
   pedal_down = 0;
   flush_pending = 0;
+  // self-reset so the NEXT flush is a rising edge again even if the host
+  // never delivered the caller's own reset (two SetParam calls in one UI
+  // frame can collapse into a single value by the time we see them).
+  slider2 = 0;
+  last_release = 0;
+  sliderchange(slider2);
 );
 
 while (midirecv(offset, msg1, msg2, msg3)) (

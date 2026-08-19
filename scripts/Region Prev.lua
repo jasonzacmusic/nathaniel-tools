@@ -1,12 +1,12 @@
 -- @description Region Previous
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Jump to the previous region, snapping to the current region's start first.
+-- @about Jump to the previous region and make it the time selection. While playing, playback follows the jump (with smooth seek, on the bar).
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - no longer restarts playback with "Play (skip time selection)", which skipped the very region it had just selected.
+--   1.0.0 - first public release.
 
 -- Region Previous
 local r = reaper
@@ -42,5 +42,7 @@ end
 
 r.GetSet_LoopTimeRange2(0, true, false, ts, te, false)
 r.SetEditCurPos2(0, ts, true, true)
-if playing then r.Main_OnCommand(40317, 0) end
+-- While playing, SetEditCurPos2(seekplay=true) already moves playback (smooth
+-- seek lands it on the bar). 40317 "Play (skip time selection)" used to be
+-- called here and skipped the very region we had just selected.
 r.UpdateArrange()

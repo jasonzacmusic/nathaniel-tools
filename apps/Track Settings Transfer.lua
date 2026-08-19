@@ -1,143 +1,100 @@
 -- @description Track Settings Transfer
--- @version 1.0.0
+-- @version 2.0.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Pro-Tools style Import Session Data across project tabs, both directions.
---   Requires the "Shared Libraries" package from this same repository.
---   ReaPack has no automatic dependencies, so install that one too - or just
---   right-click the repository in ReaPack and choose Install All.
+-- @about Pro-Tools style "Import Session Data" between open project tabs.
+--   Copies FX chains, volume, pan, sends, colour and input FX from the tracks
+--   of one project onto the same-named tracks of one or more other tabs, or
+--   builds the tracks that are missing. Preview first; one undo point per
+--   target project. Automation is never copied.
+--   Requires the "Shared Libraries" package from this same repository and the
+--   SWS extension. ReaPack has no automatic dependencies, so install the
+--   libraries too - or right-click the repository in ReaPack > Install All.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   2.0.0 - new shared look (nt_ui): header, sections, one status line + log,
+--           plain-English tags (exact / guess / picked / new / none) instead of
+--           the cryptic = ~ * +. Name guessing fixed: two tracks that merely
+--           share an instrument family (Kick vs Snare) no longer count as
+--           "similar", so Kick's FX and sends can never land on Snare, and
+--           Build mode now builds Kick instead of skipping it. Guesses (amber)
+--           start OFF - you tick the ones that are right. TRANSFER asks first
+--           and says exactly what it replaces and where. Two rows aimed at the
+--           same target track are flagged and block the transfer. Built tracks
+--           no longer inherit mute / solo / record / selection / automation-
+--           mode state from the source. Preview and Transfer no longer flash
+--           through the other tab. "Selected" keeps your remaps and FX / Vol /
+--           Pan / Sends ticks. The change watcher now also notices folder
+--           changes. The compare target is a visible "Compare with" switch.
+--           Starts with one tab open and tells you what to do, instead of
+--           refusing to launch.
+--   1.0.0 - first public release.
 
 --[[
-  Track Settings Transfer  (v4)  -  REAPER / ReaImGui
+  Track Settings Transfer  -  REAPER / ReaImGui
   ------------------------------------------------------------------------------
-  Pro-Tools "Import Session Data", supercharged and dockable.
+  Pro-Tools "Import Session Data", dockable, across ANY open project tabs.
 
-  Works across ALL open projects (any number of tabs), two-way:
-    * put any project on FROM (source) and any on TO (targets).
-  Multi-target fan-out: tick several targets and transfer to all at once.
-
-  MATCH mode: copy FX / Volume / Pan / Sends onto same-named tracks
-    - exact name match, then similar-name match (flagged), plus manual remap.
-    - per-track control of which attributes copy.
-
-  BUILD mode: if a source track has no match in a target, CREATE it -
-    name, color, FX, volume, pan, folder structure, then rebuild sends.
+  FROM one project  ->  TO one or more projects.
+    * Tracks are matched by name: same name = "exact"; a look-alike name
+      ("Lead Vox" ~ "Lead Vocal", "Bass DI" ~ "Bass D.I.") = "guess".
+    * Guesses start UNTICKED. Tick the ones that are right, or pick a
+      different target from the row's combo ("picked").
+    * Per row: FX / Vol / Pan / Sends. Plus Colour and Input FX for all rows.
+    * Build missing tracks: a From track with no match is created in the To
+      project - name, colour, FX, volume, pan, folder position - then its
+      sends are rebuilt.
+    * Several To projects at once: the list is checked against the project
+      under "Compare with"; the other To projects get exact-name matches only.
 
   Never copies automation. Preview changes nothing. One undo point per target.
+  TRANSFER always asks first, because it replaces FX chains and removes the
+  existing sends on every target track it writes to.
 
-  ----------------------------------------------------------------------------
-  v4 - crash hardening.  REAPER frees MediaTrack* / ReaProject* the instant a
-  track is deleted or a tab is closed.  Handing a freed pointer to any REAPER
-  API faults inside REAPER's own C++, and Lua pcall CANNOT catch that: the host
-  just dies.  v3 cached raw pointers in rows / tlist / exactMap / focusTarget,
-  so deleting a track while the window was open was a guaranteed crash.
+  Safety: the window stores GUIDs only, never MediaTrack* / ReaProject*.
+  Pointers are resolved and validated immediately before use (nt_safe).
+  Change watching uses safe.projSignature (add / delete / rename / reorder /
+  folder), not GetProjectStateChangeCount, which does not move for those.
 
-  v4 fixes that at the root:
-    * The UI stores NO pointers.  Identity is r.GetTrackGUID(), which survives
-      delete, undo, reorder and save/reload.  Pointers are resolved fresh,
-      immediately before use, and never held across a frame.
-    * Every project pointer passes r.ValidatePtr2(0, p, "ReaProject*") and
-      every track pointer r.ValidatePtr2(proj, t, "MediaTrack*") before it
-      touches an API.
-    * GetProjectStateChangeCount() is polled each frame; when anything in the
-      source or focus target changes, the row list rebuilds itself and keeps
-      your per-track include / attribute / remap choices, keyed by GUID.
-    * Closing a tab is handled: the app drops that target, re-picks a focus,
-      and tells you in the log instead of dying.
-
-  Also fixed in v4:
-    * BUILD no longer leaves an unclosed folder.  I_FOLDERDEPTH is normalised
-      after every build pass, so a cloned folder parent landing last can't
-      swallow the rest of the target session.
-    * copySends can no longer create a track -> itself send, and no longer
-      writes send parameters to index -1 when REAPER refuses a feedback loop.
-    * roleOf() walked pairs() - Lua hash order is non-deterministic, so the
-      same track name could resolve to a different instrument family on
-      different runs.  Family and token lookup are now ordered lists.
-    * levenshtein is bounded (long names no longer stall the frame).
-    * Drag-paint on the include column is contiguous: press and drag and every
-      row between the anchor and the pointer flips; drag back and they restore.
-
-  Requires: ReaImGui + SWS.
+  Requires ReaImGui, SWS and the Shared Libraries package.
 --]]
 
 local r = reaper
 
--- ReaImGui renames enum constants between releases, and a renamed constant is
--- a nil-call crash the moment the window opens - not a graceful degradation.
--- nt_imgui bridges the old and new spellings in one place. See that file for
--- the two renames measured on ReaImGui/Dear ImGui 1.92.1.
+--------------------------------------------------------------------------------
+-- libraries
+--------------------------------------------------------------------------------
 do
   local sep = package.config:sub(1, 1)
-  local here = ({reaper.get_action_context()})[2]:match("(.*" .. sep .. ")") or ""
-  package.path = here .. "lib" .. sep .. "?.lua;" ..
-                 here .. ".." .. sep .. "Nathaniel Tools" .. sep .. "lib" .. sep .. "?.lua;" ..
-                 reaper.GetResourcePath() .. "/Scripts/Nathaniel Tools/scripts/lib/?.lua;" ..
+  local here = ({ r.get_action_context() })[2]:match("(.*" .. sep .. ")") or ""
+  package.path = here .. ".." .. sep .. "scripts" .. sep .. "lib" .. sep .. "?.lua;" ..
+                 r.GetResourcePath() .. "/Scripts/Nathaniel Tools/scripts/lib/?.lua;" ..
                  package.path
-  local ok, compat = pcall(require, "nt_imgui")
-  if ok then compat.install() end
 end
+local okSafe, safe = pcall(require, "nt_safe")
+local okUi,   ui   = pcall(require, "nt_ui")
+if not (okSafe and okUi) then
+  r.ShowMessageBox("Track Settings Transfer needs the 'Shared Libraries' package.\n\n" ..
+    "Extensions > ReaPack > Browse packages > search 'Nathaniel Tools' > Shared Libraries > Install.\n" ..
+    "(Or right-click the Nathaniel Tools repository > Install All.)", "Track Settings Transfer", 0)
+  return
+end
+do local ok, compat = pcall(require, "nt_imgui"); if ok then compat.install() end end
+if not safe.require("Track Settings Transfer", { imgui = true, sws = true }) then return end
+
+local APP = "Track Settings Transfer"
+local T = ui.tokens
 local SIM_THRESHOLD = 0.55
-
-if not r.ImGui_CreateContext then
-  r.ShowMessageBox("Needs ReaImGui (Extensions > ReaPack > Browse packages > 'ReaImGui', install, restart).",
-    "Track Settings Transfer", 0); return
-end
-if not r.BR_GetMediaTrackSendInfo_Track then
-  r.ShowMessageBox("Needs the SWS extension (sws-extension.org).", "Track Settings Transfer", 0); return
-end
-
---------------------------------------------------------------------------------
--- pointer safety  (the whole point of v4)
---------------------------------------------------------------------------------
-local function projAlive(p)
-  if p == nil then return false end
-  local ok, alive = pcall(r.ValidatePtr2, 0, p, "ReaProject*")
-  return ok and alive == true
-end
-local function trackAlive(proj, t)
-  if t == nil or not projAlive(proj) then return false end
-  local ok, alive = pcall(r.ValidatePtr2, proj, t, "MediaTrack*")
-  return ok and alive == true
-end
--- Change detection for the auto-sync watchdog.
---
--- This used to be GetProjectStateChangeCount.  MEASURED in REAPER 7.77: that
--- counter does NOT move when a track is inserted, renamed or deleted - it sat on
--- 8 through all three in a direct probe.  So the "Auto-sync" watchdog described
--- in the v4 header has in fact never fired, and the row list only ever refreshed
--- when something else happened to call ensureFocus().  That is why deleting a
--- track in the source project appeared to do nothing until you hit Rescan.
---
--- A cheap signature of the track list is the reliable substitute: it catches
--- add, delete, rename and reorder, which is exactly the set we care about.
-local function stateCount(p)
-  if not projAlive(p) then return -1 end
-  local n = r.CountTracks(p)
-  local acc = { n }
-  for i = 0, n - 1 do
-    local t = r.GetTrack(p, i)
-    if t then
-      local _, nm = r.GetSetMediaTrackInfo_String(t, "P_NAME", "", false)
-      acc[#acc + 1] = r.GetTrackGUID(t) .. ":" .. (nm or "")
-    end
-  end
-  return table.concat(acc, "|")
-end
 
 --------------------------------------------------------------------------------
 -- string / similarity
 --------------------------------------------------------------------------------
-local function trim(s) return (s:gsub("^%s+",""):gsub("%s+$","")) end
-local function norm(s) return trim((s or ""):lower():gsub("%s+"," ")) end
+local function trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
+local function norm(s) return trim((s or ""):lower():gsub("%s+", " ")) end
 local function core(s)
-  s = (s or ""):lower():gsub("[^%w]+"," ")
+  s = (s or ""):lower():gsub("[^%w]+", " ")
   local out = {}
-  for tok in s:gmatch("%S+") do if not tok:match("^%d+$") and #tok > 1 then out[#out+1] = tok end end
+  for tok in s:gmatch("%S+") do if not tok:match("^%d+$") and #tok > 1 then out[#out + 1] = tok end end
   return table.concat(out, " ")
 end
 local function tokenSet(c) local t = {} for w in c:gmatch("%S+") do t[w] = true end return t end
@@ -161,7 +118,7 @@ local function levenshtein(a, b)
     cur[0] = i; local ca = a:byte(i)
     for j = 1, #b do
       local cost = (ca == b:byte(j)) and 0 or 1
-      local del, ins, sub = prev[j] + 1, cur[j-1] + 1, prev[j-1] + cost
+      local del, ins, sub = prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost
       local m = del < ins and del or ins
       cur[j] = m < sub and m or sub
     end
@@ -170,38 +127,33 @@ local function levenshtein(a, b)
   return prev[#b]
 end
 
--- instrument role synonyms: names in the same family are treated as related.
+-- Instrument families: names in the same family are RELATED, not the same.
 local ROLE_ALIASES = {
-  acoustic = {"acoustic","aco","nylon","steel","folk"},
-  drums    = {"drum","drums","kit","kick","snare","snr","hat","hihat","tom","floor","overhead","room","cymbal","ride","crash","perc","percussion","clap","shaker"},
-  bass     = {"bass","808","sub"},
-  guitar   = {"guitar","gtr","electric","elec","dist","distortion","drive","overdrive","crunch","heavy","riff","strat","tele","lespaul"},
-  vocal    = {"vocal","vox","voice","bgv","harmony","choir","adlib"},
-  keys     = {"keys","piano","pno","rhodes","wurli","wurlitzer","organ","clav","clavinet"},
-  synth    = {"synth","pad","pads","poly","arp","pluck"},
-  strings  = {"strings","violin","cello","viola","orchestra"},
-  brass    = {"brass","horn","horns","trumpet","sax","trombone"},
-  wind     = {"flute","whistle","melodica","clarinet","oboe","recorder"},
+  acoustic = { "acoustic", "aco", "nylon", "steel", "folk" },
+  drums    = { "drum", "drums", "kit", "kick", "snare", "snr", "hat", "hihat", "tom", "floor", "overhead", "room", "cymbal", "ride", "crash", "perc", "percussion", "clap", "shaker" },
+  bass     = { "bass", "808", "sub" },
+  guitar   = { "guitar", "gtr", "electric", "elec", "dist", "distortion", "drive", "overdrive", "crunch", "heavy", "riff", "strat", "tele", "lespaul" },
+  vocal    = { "vocal", "vox", "voice", "bgv", "harmony", "choir", "adlib" },
+  keys     = { "keys", "piano", "pno", "rhodes", "wurli", "wurlitzer", "organ", "clav", "clavinet" },
+  synth    = { "synth", "pad", "pads", "poly", "arp", "pluck" },
+  strings  = { "strings", "violin", "cello", "viola", "orchestra" },
+  brass    = { "brass", "horn", "horns", "trumpet", "sax", "trombone" },
+  wind     = { "flute", "whistle", "melodica", "clarinet", "oboe", "recorder" },
 }
--- DETERMINISTIC resolution order.  "Acoustic" must win over "guitar" for a
--- track called "Acoustic Gtr", and it can only do that reliably if the walk
--- order is fixed.  pairs() does NOT give a fixed order in Lua.
-local FAMILY_ORDER = { "acoustic","drums","bass","guitar","vocal","keys","synth","strings","brass","wind" }
--- short tokens that must match as whole words (avoid false hits inside longer words)
-local ROLE_TOKENS = { ac="acoustic", ep="keys", od="guitar", gt="guitar", bs="bass" }
-local TOKEN_ORDER = { "ac","ep","od","gt","bs" }
+-- Fixed walk order so "Acoustic Gtr" always resolves the same way (pairs()
+-- order is not fixed in Lua).
+local FAMILY_ORDER = { "acoustic", "drums", "bass", "guitar", "vocal", "keys", "synth", "strings", "brass", "wind" }
+local ROLE_TOKENS = { ac = "acoustic", ep = "keys", od = "guitar", gt = "guitar", bs = "bass" }
+local TOKEN_ORDER = { "ac", "ep", "od", "gt", "bs" }
 
 local function roleOf(name)
   local low = (name or ""):lower()
   local toks = {}
   for t in low:gmatch("%a+") do toks[t] = true end
-  -- pass 1: exact short tokens, fixed order
   for _, tk in ipairs(TOKEN_ORDER) do if toks[tk] then return ROLE_TOKENS[tk] end end
-  -- pass 2: whole-word family hits, fixed order
   for _, fam in ipairs(FAMILY_ORDER) do
     for _, w in ipairs(ROLE_ALIASES[fam]) do if toks[w] then return fam end end
   end
-  -- pass 3: substring family hits (long words only), fixed order
   for _, fam in ipairs(FAMILY_ORDER) do
     for _, w in ipairs(ROLE_ALIASES[fam]) do
       if #w >= 4 and low:find(w, 1, true) then return fam end
@@ -210,11 +162,20 @@ local function roleOf(name)
   return nil
 end
 
--- convention: a fully-UPPERCASE name is a bus / folder (not a track or a return)
+-- convention: a fully-UPPERCASE name is a bus / folder
 local function isBusName(name)
   return name ~= "" and name == name:upper() and name:find("%u") ~= nil
 end
 
+-- How alike are two track names?  0 = nothing in common, 1 = the same name.
+--   one inside the other     "Kick" ~ "Kick In"           0.85
+--   shared words + spelling  "Lead Vox" ~ "Lead Vocal"    about 0.5
+--   same instrument family   "Kick" ~ "Snare"             adds a LITTLE
+-- The family can never make two names "similar" on its own: a pure family
+-- match scores 0.30, well under SIM_THRESHOLD (0.55). Version 1 gave it 0.70,
+-- which made Kick a "similar" match for Snare - so Kick's FX chain and sends
+-- were written onto the first drum track found, and Build mode never built it.
+local FAMILY_BONUS, FAMILY_ONLY = 0.15, 0.30
 local function similarity(a, b)
   local ca, cb = core(a), core(b)
   if ca == "" or cb == "" then ca, cb = norm(a), norm(b) end
@@ -224,17 +185,22 @@ local function similarity(a, b)
   local jac = jaccard(tokenSet(ca), tokenSet(cb))
   local maxlen = math.max(#ca, #cb)
   local lev = maxlen > 0 and (1 - levenshtein(ca, cb) / maxlen) or 0
+  local resemblance = math.max(contain, 0.5 * jac + 0.5 * lev)
   local ra, rb = roleOf(a), roleOf(b)
-  local roleBoost = (ra and rb and ra == rb) and 0.7 or 0
-  if isBusName(a) ~= isBusName(b) then roleBoost = roleBoost * 0.5 end
-  return math.max(contain, roleBoost, 0.5 * jac + 0.5 * lev)
+  local sameFamily = ra ~= nil and ra == rb
+  local bonus = sameFamily and FAMILY_BONUS or 0
+  if isBusName(a) ~= isBusName(b) then bonus = bonus * 0.5 end
+  local score = resemblance + bonus
+  if sameFamily and score < FAMILY_ONLY then score = FAMILY_ONLY end
+  if score > 1 then score = 1 end
+  return score
 end
 
 --------------------------------------------------------------------------------
 -- chunk helpers
 --------------------------------------------------------------------------------
 local function splitLines(chunk)
-  local t = {}; for line in (chunk .. "\n"):gmatch("(.-)\n") do t[#t+1] = line end; return t
+  local t = {}; for line in (chunk .. "\n"):gmatch("(.-)\n") do t[#t + 1] = line end; return t
 end
 local function findBlockEnd(lines, s)
   local depth = 0
@@ -251,45 +217,48 @@ local function stripParmEnv(fx)
   local out, i = {}, 1
   while i <= #fx do
     if fx[i]:match("^%s*<PARMENV") then local e = findBlockEnd(fx, i); i = (e or i) + 1
-    else out[#out+1] = fx[i]; i = i + 1 end
+    else out[#out + 1] = fx[i]; i = i + 1 end
   end
   return out
 end
 local function getBlock(proj, track, pat)
-  if not trackAlive(proj, track) then return nil end
+  if not safe.trackAlive(proj, track) then return nil end
   local ok, chunk = r.GetTrackStateChunk(track, "", false)
   if not ok then return nil end
   local lines = splitLines(chunk)
   local s, e = findBlock(lines, pat)
   if not s then return nil end
-  local b = {}; for i = s, e do b[#b+1] = lines[i] end; return b
+  local b = {}; for i = s, e do b[#b + 1] = lines[i] end; return b
 end
 local function setBlock(proj, track, pat, blk)
-  if not trackAlive(proj, track) then return false end
+  if not safe.trackAlive(proj, track) then return false end
   local ok, chunk = r.GetTrackStateChunk(track, "", false)
   if not ok then return false end
   local lines = splitLines(chunk)
   local s, e = findBlock(lines, pat)
   local out = {}
   if s then
-    for i = 1, s - 1 do out[#out+1] = lines[i] end
-    for _, l in ipairs(blk) do out[#out+1] = l end
-    for i = e + 1, #lines do out[#out+1] = lines[i] end
+    for i = 1, s - 1 do out[#out + 1] = lines[i] end
+    for _, l in ipairs(blk) do out[#out + 1] = l end
+    for i = e + 1, #lines do out[#out + 1] = lines[i] end
   else
     local at
     for i = 1, #lines do if lines[i]:match("^%s*<ITEM") then at = i; break end end
     if not at then for i = #lines, 1, -1 do if lines[i]:match("^%s*>%s*$") then at = i; break end end end
     at = at or #lines
-    for i = 1, at - 1 do out[#out+1] = lines[i] end
-    for _, l in ipairs(blk) do out[#out+1] = l end
-    for i = at, #lines do out[#out+1] = lines[i] end
+    for i = 1, at - 1 do out[#out + 1] = lines[i] end
+    for _, l in ipairs(blk) do out[#out + 1] = l end
+    for i = at, #lines do out[#out + 1] = lines[i] end
   end
   return r.SetTrackStateChunk(track, table.concat(out, "\n"), false)
 end
 local FXCHAIN_PAT     = "^%s*<FXCHAIN%s*$"
 local FXCHAIN_REC_PAT = "^%s*<FXCHAIN_REC"
 
--- for BUILD: keep name/color/fx/volpan/folder; drop items, automation, receives
+-- For BUILD: keep name / colour / FX / volume / pan / folder position.
+-- Drop items, automation, receives, and every piece of "live state" the new
+-- track must NOT inherit: mute/solo, record arm/input/monitor, selection,
+-- free item positioning and automation mode.
 local function cleanChunkForBuild(chunk)
   local lines = splitLines(chunk)
   local out, i = {}, 1
@@ -297,15 +266,16 @@ local function cleanChunkForBuild(chunk)
     local l = lines[i]
     if l:match("^%s*<ITEM") or l:match("^%s*<%u*ENV") then
       local e = findBlockEnd(lines, i); i = (e or i) + 1
-    elseif l:match("^%s*AUXRECV") then
+    elseif l:match("^%s*AUXRECV") or l:match("^%s*MUTESOLO%s") or l:match("^%s*REC%s")
+        or l:match("^%s*SEL%s") or l:match("^%s*FREEMODE%s") or l:match("^%s*AUTOMODE%s") then
       i = i + 1
     else
-      out[#out+1] = l; i = i + 1
+      out[#out + 1] = l; i = i + 1
     end
   end
   local s = table.concat(out, "\n")
-  -- give the built track its own identity.  function form of gsub so a '%' can
-  -- never appear in the replacement and blow up the pattern engine.
+  -- give the built track its own identity (function form: a '%' can never
+  -- reach the pattern engine)
   s = s:gsub("TRACKID%s+{%x+%-%x+%-%x+%-%x+%-%x+}", function() return "TRACKID " .. r.genGuid("") end)
   return s
 end
@@ -313,47 +283,12 @@ end
 --------------------------------------------------------------------------------
 -- projects / tracks
 --------------------------------------------------------------------------------
-local function trackName(t)
-  local ok, nm = r.GetSetMediaTrackInfo_String(t, "P_NAME", "", false)
-  if ok and nm ~= "" then return nm end
-  return "Track " .. math.floor(r.GetMediaTrackInfo_Value(t, "IP_TRACKNUMBER"))
-end
-local function openProjects()
-  local list, i = {}, 0
-  while true do
-    local p, path = r.EnumProjects(i)
-    if not p then break end
-    if projAlive(p) then
-      local nm = (path or ""):match("[^/\\]+$") or ""
-      nm = nm:gsub("%.[Rr][Pp][Pp]$", "")
-      if nm == "" then nm = "(unsaved " .. (i + 1) .. ")" end
-      list[#list+1] = { proj = p, name = nm, tracks = r.CountTracks(p) }
-    end
-    i = i + 1
-  end
-  return list
-end
-local function projName(proj)
-  if not projAlive(proj) then return "(closed)" end
-  for _, p in ipairs(openProjects()) do if p.proj == proj then return p.name end end
-  return "(unknown)"
-end
 local function densestOther(exclude)
   local best, bestN = nil, -1
-  for _, p in ipairs(openProjects()) do
+  for _, p in ipairs(safe.openProjects()) do
     if p.proj ~= exclude and p.tracks > bestN then bestN = p.tracks; best = p.proj end
   end
   return best
-end
--- guid -> live track, built fresh, never stored across a frame
-local function guidMapOf(proj)
-  local m = {}
-  if not projAlive(proj) then return m end
-  for i = 0, r.CountTracks(proj) - 1 do
-    local t = r.GetTrack(proj, i)
-    if t then m[r.GetTrackGUID(t)] = t end
-  end
-  return m
 end
 
 --------------------------------------------------------------------------------
@@ -363,13 +298,13 @@ end
 --------------------------------------------------------------------------------
 local function mapsFor(proj, byGuid)
   local tl, em = {}, {}
-  if not projAlive(proj) then return tl, em end
+  if not safe.projAlive(proj) then return tl, em end
   for i = 0, r.CountTracks(proj) - 1 do
     local t = r.GetTrack(proj, i)
     if t then
-      local nm = trackName(t)
+      local nm = safe.trackName(t)
       local key = byGuid and r.GetTrackGUID(t) or t
-      tl[#tl+1] = { key = key, name = nm }
+      tl[#tl + 1] = { key = key, name = nm }
       local k = norm(nm)
       if em[k] == nil then em[k] = key end
     end
@@ -391,28 +326,26 @@ end
 --------------------------------------------------------------------------------
 -- sends
 --------------------------------------------------------------------------------
-local SEND_PARAMS = { "D_VOL","D_PAN","B_MUTE","B_MONO","B_PHASE","I_SENDMODE","I_SRCCHAN","I_DSTCHAN","I_MIDIFLAGS" }
+local SEND_PARAMS = { "D_VOL", "D_PAN", "B_MUTE", "B_MONO", "B_PHASE", "I_SENDMODE", "I_SRCCHAN", "I_DSTCHAN", "I_MIDIFLAGS" }
 local function copySends(srcProj, srcTrack, dstProj, dstTrack, tl, em, dryRun)
-  if not trackAlive(srcProj, srcTrack) or not trackAlive(dstProj, dstTrack) then return 0, 0, {} end
+  if not safe.trackAlive(srcProj, srcTrack) or not safe.trackAlive(dstProj, dstTrack) then return 0, 0, {} end
   local n = r.GetTrackNumSends(srcTrack, 0)
   local mapped, similar, missing = 0, 0, {}
   if not dryRun and n > 0 then   -- only clear when the source actually has sends
     for i = r.GetTrackNumSends(dstTrack, 0) - 1, 0, -1 do r.RemoveTrackSend(dstTrack, 0, i) end
   end
-  local seen = {}   -- de-dup: never create two sends to the same resolved target
+  local seen = {}   -- never create two sends to the same resolved target
   for i = 0, n - 1 do
     local dt = r.BR_GetMediaTrackSendInfo_Track(srcTrack, 0, i, 1)
-    if dt and trackAlive(srcProj, dt) then
-      local target, kind = findTarget(trackName(dt), tl, em)
-      -- a track can never send to itself; that is what a folder/bus is for
-      if target == dstTrack then target = nil end
-      if target and trackAlive(dstProj, target) then
+    if dt and safe.trackAlive(srcProj, dt) then
+      local target, kind = findTarget(safe.trackName(dt), tl, em)
+      if target == dstTrack then target = nil end   -- a track never sends to itself
+      if target and safe.trackAlive(dstProj, target) then
         if kind == "exact" then mapped = mapped + 1 else similar = similar + 1 end
         if not dryRun and not seen[target] then
           seen[target] = true
           local sidx = r.CreateTrackSend(dstTrack, target)
-          -- CreateTrackSend returns -1 when REAPER refuses (feedback loop).
-          -- v3 wrote parameters to index -1, which is undefined behaviour.
+          -- -1 = REAPER refused (feedback loop); never write to index -1
           if sidx and sidx >= 0 then
             for _, p in ipairs(SEND_PARAMS) do
               r.SetTrackSendInfo_Value(dstTrack, 0, sidx, p, r.GetTrackSendInfo_Value(srcTrack, 0, i, p))
@@ -420,7 +353,7 @@ local function copySends(srcProj, srcTrack, dstProj, dstTrack, tl, em, dryRun)
           end
         end
       elseif not target then
-        missing[#missing+1] = trackName(dt)
+        missing[#missing + 1] = safe.trackName(dt)
       end
     end
   end
@@ -428,41 +361,10 @@ local function copySends(srcProj, srcTrack, dstProj, dstTrack, tl, em, dryRun)
 end
 
 --------------------------------------------------------------------------------
--- folder depth repair
---   A cloned folder parent that lands last leaves I_FOLDERDEPTH open, and
---   REAPER then silently swallows every track after it into that folder - or
---   worse, the rest of the session.  Walk the list and make the arithmetic
---   well-formed: no depth > 1 step, no close deeper than we are, and the last
---   track always closes everything still open.
---------------------------------------------------------------------------------
-local function normaliseFolders(proj)
-  if not projAlive(proj) then return 0 end
-  local n = r.CountTracks(proj); if n == 0 then return 0 end
-  local depth, fixes = 0, 0
-  for i = 0, n - 1 do
-    local t = r.GetTrack(proj, i)
-    if t then
-      local fd = math.floor(r.GetMediaTrackInfo_Value(t, "I_FOLDERDEPTH") or 0)
-      local want = fd
-      if want > 1 then want = 1 end
-      if i == n - 1 then
-        want = -depth
-      elseif want < 0 and -want > depth then
-        want = -depth
-      end
-      if want ~= fd then r.SetMediaTrackInfo_Value(t, "I_FOLDERDEPTH", want); fixes = fixes + 1 end
-      depth = depth + want
-      if depth < 0 then depth = 0 end
-    end
-  end
-  return fixes
-end
-
---------------------------------------------------------------------------------
 -- build a track into another project
 --------------------------------------------------------------------------------
 local function cloneTrackInto(srcProj, srcTrack, dstProj)
-  if not trackAlive(srcProj, srcTrack) or not projAlive(dstProj) then return nil end
+  if not safe.trackAlive(srcProj, srcTrack) or not safe.projAlive(dstProj) then return nil end
   local idx = r.CountTracks(dstProj)
   if r.InsertTrackInProject then
     r.InsertTrackInProject(dstProj, idx, 0)
@@ -470,7 +372,7 @@ local function cloneTrackInto(srcProj, srcTrack, dstProj)
     local cur = r.EnumProjects(-1)
     r.SelectProjectInstance(dstProj)
     r.InsertTrackAtIndex(idx, false)
-    if projAlive(cur) then r.SelectProjectInstance(cur) end
+    if safe.projAlive(cur) then r.SelectProjectInstance(cur) end
   end
   local newTr = r.GetTrack(dstProj, idx)
   if not newTr then return nil end
@@ -483,7 +385,7 @@ end
 -- apply attributes to an existing matched track
 --------------------------------------------------------------------------------
 local function applyAttrs(srcProj, s, dstProj, d, attr, extras)
-  if not trackAlive(srcProj, s) or not trackAlive(dstProj, d) then return end
+  if not safe.trackAlive(srcProj, s) or not safe.trackAlive(dstProj, d) then return end
   if attr.fx then
     local fx = getBlock(srcProj, s, FXCHAIN_PAT)
     if fx then setBlock(dstProj, d, FXCHAIN_PAT, stripParmEnv(fx)) end
@@ -502,48 +404,47 @@ local function applyAttrs(srcProj, s, dstProj, d, attr, extras)
 end
 
 --------------------------------------------------------------------------------
--- state   (NO MediaTrack* / ReaProject* is ever stored in a row)
+-- state   (NO MediaTrack* / ReaProject* is ever stored in a row - GUIDs only)
 --------------------------------------------------------------------------------
-local ctx = r.ImGui_CreateContext('Track Settings Transfer')
-local srcProj, focusTarget
-local targetSel = {}         -- [proj] = true   (validated every poll)
-local buildMode = false
-local extras = { color = true, inputfx = false }
-local tlist = {}             -- focus target: { {key=GUID, name=...} }  display only
-local rows = {}              -- { guid, name, tgtGuid, tgtName, kind, incl, attr, dead }
-local filter = ""
-local logLines = {}
-local dockPending, firstFrame = nil, true
-local autoSync = true
-local lastCount = { src = -1, tgt = -1, nproj = -1 }
-local paint = { active = false, val = false, anchorGuid = nil, base = {} }
+local ctx = r.ImGui_CreateContext(APP)
+ui.fonts(ctx)
 
-local function log(s) logLines[#logLines+1] = s; if #logLines > 500 then table.remove(logLines, 1) end end
+local srcProj, focusTarget       -- ReaProject*, re-validated every poll before any use
+local targetSel = {}             -- [proj] = true
+local buildMode = false
+local autoSync = true
+local extras = { color = true, inputfx = false }
+local tlist = {}                 -- focused To project: { {key=GUID, name=} } for the remap combos
+local rows = {}                  -- { guid, name, tgtGuid, tgtName, kind, incl, userSet, attr }
+local filter = ""
+local lastSig = {}               -- { src=, tgt=, nproj=, t= }
+local paint = {}                 -- drag-paint state for ui.tick
+local confirmText = ""
+local IDLE = "Tick the tracks to copy, check the amber guesses, Preview, then Transfer."
+
+local function say(msg, level) ui.say(ctx, msg, level) end
+local function pn(p) return safe.projName(p) end
 
 local function otherProjects()
   local o = {}
-  for _, p in ipairs(openProjects()) do if p.proj ~= srcProj then o[#o+1] = p end end
+  for _, p in ipairs(safe.openProjects()) do if p.proj ~= srcProj then o[#o + 1] = p end end
   return o
 end
 local function selectedTargets()
   local t = {}
-  for _, p in ipairs(otherProjects()) do if targetSel[p.proj] then t[#t+1] = p.proj end end
+  for _, p in ipairs(otherProjects()) do if targetSel[p.proj] then t[#t + 1] = p.proj end end
   return t
 end
-local function selectedGuids(proj)
-  local s = {}
-  if not projAlive(proj) then return s end
-  for i = 0, r.CountSelectedTracks(proj) - 1 do
-    local t = r.GetSelectedTrack(proj, i)
-    if t then s[r.GetTrackGUID(t)] = true end
-  end
-  return s
+local function tickedRows()
+  local n = 0
+  for _, row in ipairs(rows) do if row.incl then n = n + 1 end end
+  return n
 end
 
 --------------------------------------------------------------------------------
--- row building.  Rebuilds are cheap and lossless: every user choice is carried
--- across by GUID, so an auto-resync after you delete a track does not wipe
--- your include ticks or manual remaps.
+-- row building.  Rebuilds are lossless: every choice is carried across by
+-- GUID, so an auto-refresh after you delete a track does not wipe your ticks
+-- or manual remaps.  Guesses ("similar") start UNTICKED.
 --------------------------------------------------------------------------------
 local function buildRows(useSelection, keepChoices)
   local prev = {}
@@ -555,15 +456,15 @@ local function buildRows(useSelection, keepChoices)
   local tgtNames = {}
   for _, e in ipairs(tlist) do tgtNames[e.key] = e.name end
 
-  local sel = selectedGuids(srcProj)
+  local sel = safe.selectedGuids(srcProj)
   local anySel = next(sel) ~= nil
   rows = {}
-  if not projAlive(srcProj) then return end
+  if not safe.projAlive(srcProj) then return end
   for i = 0, r.CountTracks(srcProj) - 1 do
     local t = r.GetTrack(srcProj, i)
     if t then
       local guid = r.GetTrackGUID(t)
-      local nm = trackName(t)
+      local nm = safe.trackName(t)
       local old = prev[guid]
       local tgtGuid, kind
       if old and old.userSet and old.tgtGuid and tgtNames[old.tgtGuid] then
@@ -573,14 +474,16 @@ local function buildRows(useSelection, keepChoices)
       else
         tgtGuid, kind = findTarget(nm, tlist, em)
       end
+      kind = kind or "none"
       local incl
       if old then incl = old.incl
+      elseif kind == "similar" then incl = false            -- guesses are opt-in
       elseif useSelection and anySel then incl = (sel[guid] == true)
       else incl = true end
-      rows[#rows+1] = {
+      rows[#rows + 1] = {
         guid = guid, name = nm,
         tgtGuid = tgtGuid, tgtName = tgtGuid and tgtNames[tgtGuid] or nil,
-        kind = kind or "none",
+        kind = kind,
         incl = incl,
         userSet = old and old.userSet or false,
         attr = old and old.attr or { fx = true, vol = true, pan = true, sends = true },
@@ -590,8 +493,7 @@ local function buildRows(useSelection, keepChoices)
 end
 
 local function ensureFocus()
-  -- drop any target project that has been closed
-  for p in pairs(targetSel) do if not projAlive(p) then targetSel[p] = nil end end
+  for p in pairs(targetSel) do if not safe.projAlive(p) then targetSel[p] = nil end end
   local sels = selectedTargets()
   if #sels == 0 then focusTarget = nil; rows = {}; tlist = {}; return end
   local ok = false
@@ -600,37 +502,59 @@ local function ensureFocus()
   buildRows(true, true)
 end
 
---------------------------------------------------------------------------------
--- the watchdog.  Runs at the top of every frame, BEFORE anything reads a
--- pointer, so a track deleted since the last frame can never reach an API.
---------------------------------------------------------------------------------
-local function pollForChanges()
-  local changed = false
+-- Smart pairing: sitting in a blank tab next to a full one means "build this
+-- from that"; otherwise the fullest other project becomes the To.
+local function autoPair()
+  local active = r.EnumProjects(-1)
+  if not safe.projAlive(srcProj) then srcProj = active end
+  local other = densestOther(srcProj)
+  if not other then return false end
+  if r.CountTracks(srcProj) == 0 and r.CountTracks(other) > 0 then
+    srcProj, other = other, srcProj
+    buildMode = true
+  end
+  targetSel = {}; targetSel[other] = true; focusTarget = other
+  return true
+end
 
-  if not projAlive(srcProj) then
+--------------------------------------------------------------------------------
+-- the watcher.  Runs at the top of every frame, BEFORE anything reads a
+-- pointer, so a track deleted since the last frame can never reach an API.
+-- Uses safe.projSignature: it moves on add / delete / rename / reorder /
+-- folder change (GetProjectStateChangeCount does not - measured).
+--------------------------------------------------------------------------------
+local function poll()
+  local changed = false
+  if srcProj and not safe.projAlive(srcProj) then
     local alt = densestOther(nil)
-    log("Source project closed" .. (alt and (" - switched to " .. projName(alt)) or ""))
     srcProj = alt
-    if srcProj then targetSel[srcProj] = nil end
+    if alt then targetSel[alt] = nil end
+    say(alt and ("The From project was closed - From is now " .. pn(alt) .. ".") or "The From project was closed.", "warn")
     changed = true
   end
   for p in pairs(targetSel) do
-    if not projAlive(p) then targetSel[p] = nil; changed = true; log("A target project was closed - dropped.") end
+    if not safe.projAlive(p) then targetSel[p] = nil; changed = true; say("A To project was closed - dropped from the list.", "warn") end
   end
-  if focusTarget and not projAlive(focusTarget) then focusTarget = nil; changed = true end
-  if not srcProj then rows = {}; tlist = {}; return end
+  if focusTarget and not safe.projAlive(focusTarget) then focusTarget = nil; changed = true end
+  if not srcProj then rows, tlist = {}, {}; return end
 
-  -- Throttle: the signature walks every track in both projects, and this runs on
-  -- the UI thread.  4Hz is instant to a human and costs nothing on a big session.
+  -- 4Hz is instant to a human and costs nothing on a big session
   local now = r.time_precise()
-  if not changed and (now - (lastCount.t or 0)) < 0.25 then return end
-  lastCount.t = now
+  if not changed and (now - (lastSig.t or 0)) < 0.25 then return end
+  lastSig.t = now
 
-  local nproj = #openProjects()
-  local sc = stateCount(srcProj)
-  local tc = stateCount(focusTarget)
-  if changed or sc ~= lastCount.src or tc ~= lastCount.tgt or nproj ~= lastCount.nproj then
-    lastCount.src, lastCount.tgt, lastCount.nproj = sc, tc, nproj
+  local nproj = #safe.openProjects()
+  local sc = safe.projSignature(srcProj)
+  local tc = focusTarget and safe.projSignature(focusTarget) or "none"
+  if changed or sc ~= lastSig.src or tc ~= lastSig.tgt or nproj ~= lastSig.nproj then
+    local hadProjects = lastSig.nproj or 0
+    lastSig.src, lastSig.tgt, lastSig.nproj = sc, tc, nproj
+    if nproj >= 2 and hadProjects < 2 and #selectedTargets() == 0 then
+      if autoPair() then
+        changed = true
+        say(("Second tab found: %s -> %s."):format(pn(srcProj), pn(focusTarget)), "info")
+      end
+    end
     if autoSync or changed then
       ensureFocus()
       if focusTarget then buildRows(false, true) end
@@ -639,78 +563,144 @@ local function pollForChanges()
 end
 
 --------------------------------------------------------------------------------
+-- plan  (what one To project would receive - never touches anything)
+--   entry = { row=, tgtGuid=|nil, how="exact"|"guess"|"picked"|"new"|"none", clash= }
+--   The focused project uses the row's target (guess ticks and remaps).  Any
+--   other To project gets exact-name matches only: nobody has checked guesses
+--   against it.
+--------------------------------------------------------------------------------
+local function planFor(dp)
+  local plan = {}
+  if not safe.projAlive(dp) then return plan end
+  local isFocus = dp == focusTarget
+  local dstAlive = safe.guidMap(dp)
+  local _, em = mapsFor(dp, true)
+  local usedBy = {}
+  for _, row in ipairs(rows) do
+    if row.incl then
+      local e = { row = row }
+      if isFocus then
+        if row.tgtGuid and dstAlive[row.tgtGuid] then
+          e.tgtGuid = row.tgtGuid
+          e.how = row.kind == "similar" and "guess" or (row.kind == "manual" and "picked" or "exact")
+        end
+      else
+        local k = em[norm(row.name)]
+        if k then e.tgtGuid, e.how = k, "exact" end
+      end
+      if not e.tgtGuid then e.how = buildMode and "new" or "none" end
+      if e.tgtGuid then
+        local first = usedBy[e.tgtGuid]
+        if first then e.clash = true; first.clash = true else usedBy[e.tgtGuid] = e end
+      end
+      plan[#plan + 1] = e
+    end
+  end
+  return plan
+end
+local function planCounts(plan)
+  local c = { exact = 0, guess = 0, picked = 0, new = 0, none = 0, clash = 0, touch = 0 }
+  for _, e in ipairs(plan) do
+    c[e.how] = (c[e.how] or 0) + 1
+    if e.tgtGuid then c.touch = c.touch + 1 end
+    if e.clash then c.clash = c.clash + 1 end
+  end
+  return c
+end
+local function planLine(dp, c)
+  local bits = {}
+  if c.exact > 0 then bits[#bits + 1] = c.exact .. " exact" end
+  if c.picked > 0 then bits[#bits + 1] = c.picked .. " picked by you" end
+  if c.guess > 0 then bits[#bits + 1] = c.guess .. (c.guess == 1 and " ticked guess" or " ticked guesses") end
+  if c.new > 0 then bits[#bits + 1] = c.new .. " to build" end
+  if c.none > 0 then bits[#bits + 1] = c.none .. " skipped (no match" .. (buildMode and ")" or ", Build is off)") end
+  if c.clash > 0 then bits[#bits + 1] = c.clash .. " CLASH (two rows aim at one track)" end
+  local line = pn(dp) .. ": " .. (#bits > 0 and table.concat(bits, ", ") or "nothing ticked")
+  if dp ~= focusTarget then line = line .. " - exact names only; guesses are checked against the Compare-with project" end
+  return line
+end
+-- First many-to-one problem across the To projects, as a sentence - or nil.
+local function clashMessage(targets)
+  for _, dp in ipairs(targets) do
+    for _, e in ipairs(planFor(dp)) do
+      if e.clash then
+        return ("Two ticked rows point at the same track in %s (\"%s\"). Untick one of them, or give it a different target, then transfer."):format(
+          pn(dp), e.row.tgtName or e.row.name)
+      end
+    end
+  end
+  return nil
+end
+local function transferSummary(targets)
+  local parts, builds = {}, 0
+  for _, dp in ipairs(targets) do
+    local c = planCounts(planFor(dp))
+    parts[#parts + 1] = ("%d track%s in %s"):format(c.touch, c.touch == 1 and "" or "s", pn(dp))
+    builds = builds + c.new
+  end
+  local where
+  if #parts <= 1 then where = parts[1] or "0 tracks"
+  else where = table.concat(parts, ", ", 1, #parts - 1) .. " and " .. parts[#parts] end
+  local text = "Replaces FX chains and sends on " .. where .. ". Existing sends on those tracks are removed first."
+  if buildMode and builds > 0 then
+    text = text .. (" Also builds %d new track%s."):format(builds, builds == 1 and "" or "s")
+  end
+  return text .. " Undo is available in each target project."
+end
+
+--------------------------------------------------------------------------------
 -- preview / transfer
 --------------------------------------------------------------------------------
 local function doPreview()
-  logLines = {}
+  if not safe.projAlive(srcProj) then say("The From project has been closed.", "danger"); return end
   local targets = selectedTargets()
-  if #targets == 0 then log("Pick at least one target project."); return end
-  if not projAlive(srcProj) then log("Source project is gone."); return end
+  if #targets == 0 then say("Tick at least one To project first.", "warn"); return end
   local prevActive = r.EnumProjects(-1)
-  if prevActive ~= srcProj then r.SelectProjectInstance(srcProj) end
-  log(("PREVIEW  source '%s'  ->  %d target(s)%s"):format(projName(srcProj), #targets, buildMode and "   [BUILD ON]" or ""))
-  for _, dp in ipairs(targets) do
-    if projAlive(dp) then
-      local tl, em = mapsFor(dp, false)
-      local m, c, s = 0, 0, 0
-      for _, row in ipairs(rows) do
-        if row.incl then
-          local hit
-          if dp == focusTarget then hit = row.tgtGuid ~= nil
-          else hit = (findTarget(row.name, tl, em)) ~= nil end
-          if hit then m = m + 1 elseif buildMode then c = c + 1 else s = s + 1 end
-        end
-      end
-      log(("  %-22s  %d match, %d %s, %d skipped"):format(projName(dp), m, buildMode and c or 0,
-        buildMode and "to BUILD" or "unmatched(off)", buildMode and s or (c + s)))
+  r.PreventUIRefresh(1)
+  local ok, err = pcall(function()
+    local lines, anyClash = {}, false
+    for _, dp in ipairs(targets) do
+      local c = planCounts(planFor(dp))
+      if c.clash > 0 then anyClash = true end
+      local line = planLine(dp, c)
+      lines[#lines + 1] = line
+      if #targets > 1 then say(line, c.clash > 0 and "danger" or "info") end
     end
-  end
-  if projAlive(prevActive) and prevActive ~= srcProj then r.SelectProjectInstance(prevActive) end
-  log("--- preview only, nothing changed ---")
+    local head = anyClash and "Preview only, nothing changed - fix the clash before you transfer. " or "Preview only, nothing changed. "
+    if #targets == 1 then say(head .. lines[1], anyClash and "warn" or "ok")
+    else say(head .. #targets .. " projects checked - open the log for each one.", anyClash and "warn" or "ok") end
+  end)
+  local nowActive = r.EnumProjects(-1)
+  if safe.projAlive(prevActive) and prevActive ~= nowActive then r.SelectProjectInstance(prevActive) end
+  r.PreventUIRefresh(-1)
+  if not ok then say("Preview stopped: " .. tostring(err), "danger") end
 end
 
-local function applyToTarget(dp, isFocus, counters)
-  if not projAlive(srcProj) or not projAlive(dp) then return end
-  local srcByGuid = guidMapOf(srcProj)
-  local dstByGuid = guidMapOf(dp)
-  local tl, em = mapsFor(dp, false)
-
-  local plan = {}
-  for _, row in ipairs(rows) do
-    if row.incl then
-      local st = srcByGuid[row.guid]
-      if st and trackAlive(srcProj, st) then
-        local tgt
-        if isFocus then
-          tgt = row.tgtGuid and dstByGuid[row.tgtGuid] or nil
-        else
-          tgt = (findTarget(row.name, tl, em))
-        end
-        if tgt and not trackAlive(dp, tgt) then tgt = nil end
-        plan[#plan+1] = { row = row, src = st, target = tgt }
-      else
-        counters.skipped = counters.skipped + 1
-      end
-    end
+local function applyToTarget(dp, plan, counters)
+  if not safe.projAlive(srcProj) or not safe.projAlive(dp) then return end
+  local srcMap, dstMap = safe.guidMap(srcProj), safe.guidMap(dp)
+  for _, e in ipairs(plan) do
+    e.src = srcMap[e.row.guid]
+    e.target = e.tgtGuid and dstMap[e.tgtGuid] or nil
+    if not e.src then counters.vanished = counters.vanished + 1 end
   end
-
   if buildMode then
-    for _, p in ipairs(plan) do
-      if not p.target then
-        p.target = cloneTrackInto(srcProj, p.src, dp)
-        if p.target then p.created = true; counters.built = counters.built + 1 end
+    for _, e in ipairs(plan) do
+      if e.src and not e.target and e.how == "new" then
+        e.target = cloneTrackInto(srcProj, e.src, dp)
+        if e.target then e.created = true; counters.built = counters.built + 1 end
       end
     end
-    counters.folderFixes = counters.folderFixes + normaliseFolders(dp)
-    tl, em = mapsFor(dp, false) -- include new tracks as send destinations
+    counters.folderFixes = counters.folderFixes + safe.normaliseFolders(dp)
   end
-
-  for _, p in ipairs(plan) do
-    if p.target and trackAlive(dp, p.target) and trackAlive(srcProj, p.src) then
-      if not p.created then applyAttrs(srcProj, p.src, dp, p.target, p.row.attr, extras) end
-      if p.row.attr.sends then
-        r.SetMediaTrackInfo_Value(p.target, "B_MAINSEND", r.GetMediaTrackInfo_Value(p.src, "B_MAINSEND"))
-        copySends(srcProj, p.src, dp, p.target, tl, em, false)
+  local tl, em = mapsFor(dp, false)   -- live pointers, this call only; includes built tracks
+  for _, e in ipairs(plan) do
+    if e.src and e.target and safe.trackAlive(dp, e.target) and safe.trackAlive(srcProj, e.src) then
+      if not e.created then applyAttrs(srcProj, e.src, dp, e.target, e.row.attr, extras) end
+      if e.row.attr.sends then
+        r.SetMediaTrackInfo_Value(e.target, "B_MAINSEND", r.GetMediaTrackInfo_Value(e.src, "B_MAINSEND"))
+        local _, _, missing = copySends(srcProj, e.src, dp, e.target, tl, em, false)
+        for _, nm in ipairs(missing) do counters.missingSends[nm] = true end
       end
       counters.applied = counters.applied + 1
     end
@@ -718,334 +708,404 @@ local function applyToTarget(dp, isFocus, counters)
 end
 
 local function doTransfer()
-  logLines = {}
-  if not projAlive(srcProj) then log("Source project is gone."); return end
+  if not safe.projAlive(srcProj) then say("The From project has been closed.", "danger"); return end
   local targets = selectedTargets()
-  if #targets == 0 then log("Pick at least one target project."); return end
+  if #targets == 0 then say("Tick at least one To project first.", "warn"); return end
+  local clash = clashMessage(targets)
+  if clash then say(clash, "danger"); return end
+
   local prevActive = r.EnumProjects(-1)
-  local counters = { applied = 0, built = 0, skipped = 0, folderFixes = 0 }
-  if prevActive ~= srcProj then r.SelectProjectInstance(srcProj) end  -- SWS send reads need source active
+  local counters = { applied = 0, built = 0, vanished = 0, folderFixes = 0, missingSends = {} }
+  local failed = 0
+  r.PreventUIRefresh(1)
+  if prevActive ~= srcProj then r.SelectProjectInstance(srcProj) end   -- SWS reads sends from the active project
   for _, dp in ipairs(targets) do
-    if projAlive(dp) then
-      r.Undo_BeginBlock2(dp); r.PreventUIRefresh(1)
-      local ok, err = pcall(applyToTarget, dp, dp == focusTarget, counters)
-      r.PreventUIRefresh(-1)
-      r.Undo_EndBlock2(dp, "Track Settings Transfer from " .. projName(srcProj), -1)
+    if safe.projAlive(dp) then
+      local plan = planFor(dp)
+      r.Undo_BeginBlock2(dp)
+      local ok, err = pcall(applyToTarget, dp, plan, counters)
+      r.Undo_EndBlock2(dp, "Track Settings Transfer from " .. pn(srcProj), -1)
       r.MarkProjectDirty(dp)
-      log("  " .. projName(dp) .. (ok and ": done" or (": ERROR " .. tostring(err))))
+      if ok then say(pn(dp) .. ": done.", "info")
+      else failed = failed + 1; say(pn(dp) .. ": stopped - " .. tostring(err), "danger") end
     else
-      log("  (a target closed mid-transfer - skipped)")
+      say("A To project was closed during the transfer - skipped.", "warn")
     end
   end
-  if projAlive(prevActive) and prevActive ~= srcProj then r.SelectProjectInstance(prevActive) end
+  local nowActive = r.EnumProjects(-1)
+  if safe.projAlive(prevActive) and prevActive ~= nowActive then r.SelectProjectInstance(prevActive) end
+  r.PreventUIRefresh(-1)
   r.TrackList_AdjustWindows(false); r.UpdateArrange()
-  log(("Finished. %d track-ops, %d built, %d folder depths repaired, %d source tracks vanished, across %d project(s). Undo per project."):format(
-    counters.applied, counters.built, counters.folderFixes, counters.skipped, #targets))
-  lastCount.src, lastCount.tgt = -1, -1   -- force a resync next frame
+
+  local missing = {}
+  for nm in pairs(counters.missingSends) do missing[#missing + 1] = nm end
+  table.sort(missing)
+  local msg = ("Transferred: %d track%s written, %d built, across %d project%s. Undo is in each of them."):format(
+    counters.applied, counters.applied == 1 and "" or "s", counters.built, #targets, #targets == 1 and "" or "s")
+  if counters.folderFixes > 0 then msg = msg .. (" %d folder end%s repaired."):format(counters.folderFixes, counters.folderFixes == 1 and "" or "s") end
+  if counters.vanished > 0 then msg = msg .. (" %d From track%s vanished mid-way and were skipped."):format(counters.vanished, counters.vanished == 1 and "" or "s") end
+  if #missing > 0 then msg = msg .. " Sends to these had no matching track and were left out: " .. table.concat(missing, ", ") .. "." end
+  say(msg, failed > 0 and "warn" or "ok")
+  lastSig.src, lastSig.tgt = nil, nil   -- force a refresh next frame
 end
 
 --------------------------------------------------------------------------------
--- init (smart launch)
+-- small actions
 --------------------------------------------------------------------------------
-local active = r.EnumProjects(-1)
-if #openProjects() < 2 then
-  r.ShowMessageBox("Open at least two projects (tabs) so there's a source and a target.", "Track Settings Transfer", 0)
-  return
+local function pickSource(p)
+  -- A swap is a swap: when the project being promoted to From was a To, the
+  -- outgoing From takes its place, so the list never empties out.
+  local wasTarget = targetSel[p] == true
+  local oldSrc = srcProj
+  srcProj = p
+  targetSel[p] = nil
+  if wasTarget and oldSrc and oldSrc ~= p and safe.projAlive(oldSrc) then
+    targetSel[oldSrc] = true; focusTarget = oldSrc
+    say(("Swapped: now %s -> %s."):format(pn(p), pn(oldSrc)), "info")
+  else
+    say(("From is now %s."):format(pn(p)), "info")
+  end
+  if #selectedTargets() == 0 then
+    local alt = densestOther(srcProj)
+    if alt then targetSel[alt] = true; focusTarget = alt end
+  end
+  ensureFocus()
 end
-if r.CountTracks(active) == 0 then
-  srcProj = densestOther(active)   -- blank active -> build it from densest other
-  focusTarget = active
-  targetSel[active] = true
-  buildMode = true
-else
-  srcProj = active
-  focusTarget = densestOther(srcProj)
-  targetSel[focusTarget] = true
-end
-buildRows(true, false)
 
---------------------------------------------------------------------------------
--- colors / ui
---------------------------------------------------------------------------------
-local COL_EXACT, COL_SIMILAR, COL_NONE, COL_MUTED = 0x54D07AFF, 0xE8B23AFF, 0xE06A5AFF, 0x8892A0FF
-local COL_DEAD = 0xE0455AFF
-
-local function projectCombo(id, current, onPick)
-  r.ImGui_SetNextItemWidth(ctx, 170)
-  if r.ImGui_BeginCombo(ctx, id, projName(current)) then
-    for _, p in ipairs(openProjects()) do
-      if r.ImGui_Selectable(ctx, p.name .. "##" .. tostring(p.proj), p.proj == current) then onPick(p.proj) end
-    end
-    r.ImGui_EndCombo(ctx)
+local function swapDirection()
+  local newSrc = focusTarget
+  if newSrc and safe.projAlive(newSrc) and newSrc ~= srcProj then
+    local oldSrc = srcProj
+    srcProj = newSrc
+    targetSel = {}; targetSel[oldSrc] = true; focusTarget = oldSrc
+    ensureFocus()
+    say(("Swapped: now %s -> %s."):format(pn(srcProj), pn(oldSrc)), "info")
+  else
+    say("Nothing to swap with - tick a To project first.", "warn")
   end
 end
 
-local function targetCombo(row, idx)
-  local preview = row.tgtName or "-- none (build) --"
-  local col = row.tgtGuid and (row.kind == "similar" and COL_SIMILAR or COL_EXACT) or COL_NONE
-  r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Text(), col)
+local function refreshNow()
+  lastSig.src, lastSig.tgt = nil, nil
+  ensureFocus()
+  if focusTarget then
+    buildRows(false, true)
+    say(("Refreshed: %d track%s in %s compared with %s."):format(#rows, #rows == 1 and "" or "s", pn(srcProj), pn(focusTarget)), "ok")
+  else
+    say("Refreshed. Tick a To project to see the track list.", "info")
+  end
+end
+
+-- "Selected": tick only what is selected in the From project.  Remaps and
+-- FX / Vol / Pan / Sends choices are kept - nothing is thrown away.
+local function tickFromSelection()
+  local sel = safe.selectedGuids(srcProj)
+  if next(sel) == nil then
+    say(("Nothing is selected in %s. Select the tracks you want there, then press Selected."):format(pn(srcProj)), "warn")
+    return
+  end
+  local n, guessesOff = 0, 0
+  for _, row in ipairs(rows) do
+    if sel[row.guid] then
+      if row.kind == "similar" then row.incl = false; guessesOff = guessesOff + 1
+      else row.incl = true; n = n + 1 end
+    else
+      row.incl = false
+    end
+  end
+  local msg = ("Ticked the %d selected track%s in %s; everything else off. Remaps and FX / Vol / Pan / Sends choices kept."):format(n, n == 1 and "" or "s", pn(srcProj))
+  if guessesOff > 0 then
+    msg = msg .. (" %d of the selected %s a guess (amber) and stayed off - check the target, then tick it."):format(guessesOff, guessesOff == 1 and "is" or "are")
+  end
+  say(msg, guessesOff > 0 and "warn" or "ok")
+end
+
+--------------------------------------------------------------------------------
+-- table cells
+--------------------------------------------------------------------------------
+local function targetCombo(row)
+  local noneLabel = buildMode and "(build new)" or "(none - skip)"
   r.ImGui_SetNextItemWidth(ctx, -1)
-  local opened = r.ImGui_BeginCombo(ctx, "##tgt" .. idx, preview)
-  r.ImGui_PopStyleColor(ctx, 1)
-  if opened then
-    if r.ImGui_Selectable(ctx, "-- none (build) --", row.tgtGuid == nil) then
-      row.tgtGuid = nil; row.tgtName = nil; row.kind = "none"; row.userSet = true
+  if r.ImGui_BeginCombo(ctx, "##tgt", row.tgtName or noneLabel) then
+    if r.ImGui_Selectable(ctx, noneLabel, row.tgtGuid == nil) then
+      row.tgtGuid, row.tgtName, row.kind, row.userSet = nil, nil, "none", true
     end
     for _, e in ipairs(tlist) do
-      if r.ImGui_Selectable(ctx, e.name .. "##t" .. idx .. e.key, e.key == row.tgtGuid) then
-        row.tgtGuid = e.key; row.tgtName = e.name; row.userSet = true
+      r.ImGui_PushID(ctx, e.key)
+      if r.ImGui_Selectable(ctx, e.name, e.key == row.tgtGuid) then
+        row.tgtGuid, row.tgtName, row.userSet = e.key, e.name, true
         row.kind = (norm(e.name) == norm(row.name)) and "exact" or "manual"
       end
+      r.ImGui_PopID(ctx)
     end
     r.ImGui_EndCombo(ctx)
   end
 end
 
---------------------------------------------------------------------------------
--- contiguous drag paint of the include column
---   press on a checkbox and drag: every row between the anchor and the pointer
---   takes the anchor's new value; drag back and the ones you left restore.
---------------------------------------------------------------------------------
-local function paintApply(band)
-  if not paint.active or not paint.anchorGuid or #band == 0 then return end
-  local _, my = r.ImGui_GetMousePos(ctx)
-  local ai, ci
-  for i, b in ipairs(band) do
-    if b.row.guid == paint.anchorGuid then ai = i end
-    if my >= b.y1 and my <= b.y2 then ci = i end
-  end
-  if not ai then return end
-  if not ci then
-    if my < band[1].y1 then ci = 1
-    elseif my > band[#band].y2 then ci = #band
-    else ci = ai end
-  end
-  local lo, hi = math.min(ai, ci), math.max(ai, ci)
-  for i, b in ipairs(band) do
-    if i >= lo and i <= hi then b.row.incl = paint.val
-    else
-      local base = paint.base[b.row.guid]
-      if base ~= nil then b.row.incl = base end
-    end
+local function tagPill(row, clash)
+  if clash then
+    ui.pill(ctx, "clash", T.danger)
+    ui.tip(ctx, "Another ticked row also points at this target track. Untick one of them, or give it a different target.")
+  elseif row.kind == "exact" then
+    ui.pill(ctx, "exact", T.ok)
+    ui.tip(ctx, "Same name in both projects.")
+  elseif row.kind == "similar" then
+    ui.pill(ctx, "guess", T.warn)
+    ui.tip(ctx, "A guess from a look-alike name. Check the target, then tick the row if it is right.")
+  elseif row.kind == "manual" then
+    ui.pill(ctx, "picked", T.ok)
+    ui.tip(ctx, "You chose this target yourself.")
+  elseif buildMode then
+    ui.pill(ctx, "new", T.info)
+    ui.tip(ctx, "No track with this name in the To project - it will be built there.")
+  else
+    ui.pill(ctx, "none", T.danger)
+    ui.tip(ctx, "No track with this name in the To project. Skipped unless Build missing tracks is on, or you pick a target.")
   end
 end
 
+--------------------------------------------------------------------------------
+-- frame
+--------------------------------------------------------------------------------
+local ATTRS = {
+  { "FX",    "fx",    "Copy the FX chain. The target's own FX chain is replaced." },
+  { "Vol",   "vol",   "Copy the fader level." },
+  { "Pan",   "pan",   "Copy pan, width and pan mode." },
+  { "Sends", "sends", "Rebuild the track's sends in the To project (matched by name). The target's existing sends are removed first." },
+}
+
 local function frame()
-  pollForChanges()
+  poll()
+  ui.header(ctx, APP, "import session data between tabs", function() ui.dockToggle(ctx) end, 70)
 
-  if not r.ImGui_IsMouseDown(ctx, 0) then
-    paint.active = false; paint.anchorGuid = nil
+  local projects = safe.openProjects()
+  if #projects < 2 then
+    ui.empty(ctx, "Open a second project tab",
+      "Open the other project in a new tab (File > New project tab) - it shows up here the moment it opens.")
+    if ui.pushToBottom then ui.pushToBottom(ctx, 44) end
+    ui.status(ctx, { idle = IDLE })
+    return
   end
+  if not safe.projAlive(srcProj) then srcProj = r.EnumProjects(-1) end
 
-  -- row 1: source + build + dock
-  r.ImGui_AlignTextToFramePadding(ctx); r.ImGui_Text(ctx, "From")
+  ------------------------------------------------------------------ from and to
+  ui.section(ctx, "From and to")
+  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "From"); r.ImGui_SameLine(ctx)
+  local names, srcIdx = {}, 0
+  for i, p in ipairs(projects) do names[i] = p.name; if p.proj == srcProj then srcIdx = i end end
+  local fc, fidx = ui.combo(ctx, "##from", names, srcIdx, { w = 220, tip = "The project you are copying track settings FROM." })
+  if fc and projects[fidx] and projects[fidx].proj ~= srcProj then pickSource(projects[fidx].proj) end
   r.ImGui_SameLine(ctx)
-  projectCombo("##from", srcProj, function(p)
-    -- DIRECTION FIX.  Reported symptom: "choosing one session and importing from
-    -- another doesn't work, while the other way round works."
-    --
-    -- Cause: picking a new source removed that project from the target list
-    -- (correct - nothing may be its own target) but nothing ever took its place.
-    -- Swapping A->B into B->A therefore left ZERO targets selected, ensureFocus()
-    -- cleared focusTarget, and the whole track list vanished behind
-    -- "Select a target project above."  The app looked broken in one direction
-    -- and fine in the other, which is exactly what was described.
-    --
-    -- Fix: a swap is a swap.  When the project being promoted to source was a
-    -- target, the outgoing source inherits its place, so From/To simply trade
-    -- ends and the list stays populated.
-    local wasTarget = targetSel[p] == true
-    local oldSrc    = srcProj
-    srcProj = p
-    targetSel[p] = nil
-    if wasTarget and oldSrc and oldSrc ~= p and projAlive(oldSrc) then
-      targetSel[oldSrc] = true
-      focusTarget = oldSrc
-      log(("Swapped direction: now '%s'  ->  '%s'"):format(projName(p), projName(oldSrc)))
-    end
-    -- Belt and braces: never leave the user with no target at all when there is
-    -- an obvious one to pick.
-    if #selectedTargets() == 0 then
-      local alt = densestOther(srcProj)
-      if alt then targetSel[alt] = true; focusTarget = alt end
-    end
-    ensureFocus()
-  end)
-  -- One-click direction reversal.  Import INTO the session you are sitting in,
-  -- or OUT of it, without hunting through two separate controls.
+  if ui.button(ctx, "Swap", { small = true, tip = "Reverse the direction: the Compare-with project becomes From, and the current From becomes the To." }) then
+    swapDirection()
+  end
+  r.ImGui_SameLine(ctx, 0, 18)
+  local bc, bv = ui.toggle(ctx, "Build missing tracks", buildMode,
+    "When a From track has no match in a To project, create it there: name, colour, FX, volume, pan, folder position - then rebuild its sends.")
+  if bc then
+    buildMode = bv
+    say(bv and "Build is on: From tracks with no match will be created in the To project." or "Build is off: From tracks with no match are skipped.", "info")
+  end
+  r.ImGui_SameLine(ctx, 0, 18)
+  local ac, av = ui.toggle(ctx, "Auto-sync", autoSync,
+    "Watch both projects and refresh the list whenever a track is added, deleted, renamed, moved or refoldered. Your ticks and remaps are kept.")
+  if ac then autoSync = av; if av then refreshNow() else say("Auto-sync is off. Press Refresh after you change tracks.", "info") end end
   r.ImGui_SameLine(ctx)
-  if r.ImGui_SmallButton(ctx, "<-> Swap") then
-    local newSrc = focusTarget
-    if newSrc and projAlive(newSrc) and newSrc ~= srcProj then
-      local oldSrc = srcProj
-      srcProj = newSrc
-      targetSel = {}
-      targetSel[oldSrc] = true
-      focusTarget = oldSrc
-      log(("Swapped direction: now '%s'  ->  '%s'"):format(projName(srcProj), projName(oldSrc)))
-      ensureFocus()
-    else
-      log("Nothing to swap with - tick a target project first.")
-    end
-  end
-  if r.ImGui_IsItemHovered(ctx) then
-    r.ImGui_SetTooltip(ctx, "Reverse the direction: the focused target becomes the source\nand the current source becomes the target.")
-  end
+  ui.rightAlign(ctx, 76)
+  if ui.button(ctx, "Refresh", { small = true, tip = "Re-read both projects and rebuild the list now. Ticks and remaps are kept." }) then refreshNow() end
 
-  r.ImGui_SameLine(ctx)
-  local bchg, bval = r.ImGui_Checkbox(ctx, "Build missing tracks", buildMode)
-  if bchg then buildMode = bval end
-  r.ImGui_SameLine(ctx)
-  local achg, aval = r.ImGui_Checkbox(ctx, "Auto-sync", autoSync)
-  if achg then autoSync = aval end
-  if r.ImGui_IsItemHovered(ctx) then
-    r.ImGui_SetTooltip(ctx, "Watch both projects and rebuild the list whenever you add, delete,\nrename or reorder a track. Your ticks and remaps are kept.")
-  end
-  r.ImGui_SameLine(ctx)
-  if r.ImGui_SmallButton(ctx, "Rescan") then lastCount.src, lastCount.tgt = -1, -1; ensureFocus() end
-  r.ImGui_SameLine(ctx)
-  local docked = r.ImGui_IsWindowDocked(ctx)
-  local dchg, dval = r.ImGui_Checkbox(ctx, "Dock", docked)
-  if dchg then dockPending = dval and -1 or 0 end
-
-  -- row 2: targets (multi-select)
-  r.ImGui_AlignTextToFramePadding(ctx); r.ImGui_Text(ctx, "To")
+  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "To")
   for _, p in ipairs(otherProjects()) do
     r.ImGui_SameLine(ctx)
     local on = targetSel[p.proj] == true
-    local isFocus = p.proj == focusTarget
-    if isFocus then r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Text(), COL_EXACT) end
+    -- plain checkbox (not ui.toggle) so the right-click is read before the tooltip
     local c, v = r.ImGui_Checkbox(ctx, p.name .. "##sel" .. tostring(p.proj), on)
-    if isFocus then r.ImGui_PopStyleColor(ctx, 1) end
-    if c then targetSel[p.proj] = v or nil; ensureFocus() end
-    if r.ImGui_IsItemClicked and r.ImGui_IsItemClicked(ctx, 1) then focusTarget = p.proj; buildRows(true, true) end
-  end
-  r.ImGui_SameLine(ctx)
-  if r.ImGui_SmallButton(ctx, "All") then for _, p in ipairs(otherProjects()) do targetSel[p.proj] = true end ensureFocus() end
-  r.ImGui_SameLine(ctx)
-  if r.ImGui_SmallButton(ctx, "One") then targetSel = {}; if focusTarget then targetSel[focusTarget] = true end ensureFocus() end
-
-  r.ImGui_Separator(ctx)
-
-  if not focusTarget or not projAlive(focusTarget) then
-    r.ImGui_TextColored(ctx, COL_NONE, "Select a target project above.")
-    return
-  end
-
-  -- row 3: selection + filter + counts
-  if r.ImGui_Button(ctx, "Selected") then buildRows(true, false) end
-  r.ImGui_SameLine(ctx)
-  if r.ImGui_Button(ctx, "Everything") then for _, row in ipairs(rows) do row.incl = true end end
-  r.ImGui_SameLine(ctx)
-  if r.ImGui_Button(ctx, "None") then for _, row in ipairs(rows) do row.incl = false end end
-  r.ImGui_SameLine(ctx)
-  r.ImGui_SetNextItemWidth(ctx, 150)
-  local fc, fv = r.ImGui_InputTextWithHint(ctx, "##filter", "filter...", filter)
-  if fc then filter = fv end
-  r.ImGui_SameLine(ctx)
-  local nEx, nSim, nNone = 0, 0, 0
-  for _, row in ipairs(rows) do
-    if row.kind == "exact" then nEx = nEx + 1 elseif row.kind == "similar" then nSim = nSim + 1
-    elseif not row.tgtGuid then nNone = nNone + 1 end
-  end
-  r.ImGui_TextColored(ctx, COL_MUTED, "vs " .. projName(focusTarget) .. ":")
-  r.ImGui_SameLine(ctx); r.ImGui_TextColored(ctx, COL_EXACT, nEx .. " exact")
-  r.ImGui_SameLine(ctx); r.ImGui_TextColored(ctx, COL_SIMILAR, nSim .. " similar")
-  r.ImGui_SameLine(ctx); r.ImGui_TextColored(ctx, COL_NONE, nNone .. (buildMode and " to build" or " none"))
-
-  -- apply-to-all
-  r.ImGui_AlignTextToFramePadding(ctx); r.ImGui_TextColored(ctx, COL_MUTED, "Apply to all:")
-  local function allAttr(k) local all, any = true, false
-    for _, row in ipairs(rows) do if row.incl then any = true; if not row.attr[k] then all = false end end end
-    return any and all end
-  for _, kv in ipairs({ {"FX","fx"}, {"Vol","vol"}, {"Pan","pan"}, {"Sends","sends"} }) do
-    r.ImGui_SameLine(ctx)
-    local c, v = r.ImGui_Checkbox(ctx, kv[1] .. "##all" .. kv[2], allAttr(kv[2]))
-    if c then for _, row in ipairs(rows) do row.attr[kv[2]] = v end end
-  end
-
-  -- table
-  local band = {}
-  local tflags = r.ImGui_TableFlags_Borders() | r.ImGui_TableFlags_RowBg()
-    | r.ImGui_TableFlags_ScrollY() | r.ImGui_TableFlags_SizingStretchProp()
-  local _, availH = r.ImGui_GetContentRegionAvail(ctx)
-  if r.ImGui_BeginTable(ctx, "tt", 7, tflags, 0, math.max(120, availH - 120)) then
-    r.ImGui_TableSetupScrollFreeze(ctx, 0, 1)
-    r.ImGui_TableSetupColumn(ctx, "##i", r.ImGui_TableColumnFlags_WidthFixed(), 24)
-    r.ImGui_TableSetupColumn(ctx, "Source track", r.ImGui_TableColumnFlags_WidthStretch())
-    r.ImGui_TableSetupColumn(ctx, "Target track", r.ImGui_TableColumnFlags_WidthStretch())
-    r.ImGui_TableSetupColumn(ctx, "FX", r.ImGui_TableColumnFlags_WidthFixed(), 32)
-    r.ImGui_TableSetupColumn(ctx, "Vol", r.ImGui_TableColumnFlags_WidthFixed(), 34)
-    r.ImGui_TableSetupColumn(ctx, "Pan", r.ImGui_TableColumnFlags_WidthFixed(), 34)
-    r.ImGui_TableSetupColumn(ctx, "Sends", r.ImGui_TableColumnFlags_WidthFixed(), 42)
-    r.ImGui_TableHeadersRow(ctx)
-    local fn = norm(filter)
-    for i, row in ipairs(rows) do
-      if fn == "" or norm(row.name):find(fn, 1, true) then
-        r.ImGui_TableNextRow(ctx); r.ImGui_PushID(ctx, i)
-        r.ImGui_TableNextColumn(ctx)
-        local ic, iv = r.ImGui_Checkbox(ctx, "##i", row.incl)
-        local x1, y1 = r.ImGui_GetItemRectMin(ctx)
-        local x2, y2 = r.ImGui_GetItemRectMax(ctx)
-        band[#band+1] = { y1 = y1, y2 = y2, row = row }
-        if ic then
-          row.incl = iv
-          paint.active = true; paint.val = iv; paint.anchorGuid = row.guid
-          paint.base = {}
-          for _, rr in ipairs(rows) do paint.base[rr.guid] = rr.incl end
-          paint.base[row.guid] = iv
-        end
-        r.ImGui_TableNextColumn(ctx)
-        local tag = row.kind == "exact" and "=" or (row.kind == "similar" and "~" or (row.tgtGuid and "*" or "+"))
-        local tc = row.kind == "exact" and COL_EXACT or (row.kind == "similar" and COL_SIMILAR or (row.tgtGuid and COL_EXACT or COL_NONE))
-        r.ImGui_TextColored(ctx, tc, tag); r.ImGui_SameLine(ctx)
-        if row.incl then r.ImGui_Text(ctx, row.name) else r.ImGui_TextColored(ctx, COL_MUTED, row.name) end
-        r.ImGui_TableNextColumn(ctx); targetCombo(row, i)
-        local dis = not row.incl
-        for _, kv in ipairs({ {"##fx","fx"}, {"##v","vol"}, {"##p","pan"}, {"##s","sends"} }) do
-          r.ImGui_TableNextColumn(ctx)
-          if dis then r.ImGui_BeginDisabled(ctx) end
-          local cc, cv = r.ImGui_Checkbox(ctx, kv[1], row.attr[kv[2]]); if cc then row.attr[kv[2]] = cv end
-          if dis then r.ImGui_EndDisabled(ctx) end
-        end
-        r.ImGui_PopID(ctx)
-      end
+    local rclick = r.ImGui_IsItemClicked and r.ImGui_IsItemClicked(ctx, 1)
+    ui.tip(ctx, "Send settings to this project. The track list below is matched against the project under Compare with; other To projects get exact-name matches only. Right-click to compare with this one.")
+    if c then
+      targetSel[p.proj] = v or nil
+      ensureFocus()
+      say(v and ("Added " .. p.name .. " as a To project.") or ("Removed " .. p.name .. " from the To projects."), "info")
     end
-    r.ImGui_EndTable(ctx)
+    if rclick and targetSel[p.proj] and focusTarget ~= p.proj then
+      focusTarget = p.proj; buildRows(true, true)
+      say(("Now comparing %s with %s."):format(pn(srcProj), p.name), "info")
+    end
   end
-  paintApply(band)
-
-  -- extras + actions
-  local ec, ev = r.ImGui_Checkbox(ctx, "Color", extras.color); if ec then extras.color = ev end
   r.ImGui_SameLine(ctx)
-  local i2, v2 = r.ImGui_Checkbox(ctx, "Input FX", extras.inputfx); if i2 then extras.inputfx = v2 end
-  r.ImGui_SameLine(ctx); r.ImGui_TextColored(ctx, COL_MUTED, "  Automation never copied.")
-  r.ImGui_SameLine(ctx)
-  if r.ImGui_Button(ctx, "Preview") then doPreview() end
-  r.ImGui_SameLine(ctx)
-  r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(), 0x2E7D46FF)
-  r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonHovered(), 0x379B55FF)
-  local nT = #selectedTargets()
-  local go = r.ImGui_Button(ctx, (buildMode and "BUILD / TRANSFER" or "TRANSFER") .. " -> " .. nT .. " proj")
-  r.ImGui_PopStyleColor(ctx, 2)
-  if go then doTransfer() end
-
-  local cb = r.ImGui_ChildFlags_Border and r.ImGui_ChildFlags_Border() or 0
-  if r.ImGui_BeginChild(ctx, "log", 0, 0, cb) then
-    for _, l in ipairs(logLines) do r.ImGui_Text(ctx, l) end
-    r.ImGui_EndChild(ctx)
+  if ui.button(ctx, "All", { small = true, tip = "Send to every other open project." }) then
+    for _, p in ipairs(otherProjects()) do targetSel[p.proj] = true end
+    ensureFocus()
+    say(("Sending to all %d other project%s."):format(#selectedTargets(), #selectedTargets() == 1 and "" or "s"), "info")
   end
+  r.ImGui_SameLine(ctx)
+  if ui.button(ctx, "One", { small = true, tip = "Keep only the Compare-with project as the To." }) then
+    if focusTarget and safe.projAlive(focusTarget) then
+      targetSel = {}; targetSel[focusTarget] = true; ensureFocus()
+      say("Sending only to " .. pn(focusTarget) .. ".", "info")
+    else
+      say("Tick a To project first.", "warn")
+    end
+  end
+
+  local sels = selectedTargets()
+  if #sels > 0 then
+    r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Compare with"); r.ImGui_SameLine(ctx)
+    local items = {}
+    for _, p in ipairs(sels) do
+      items[#items + 1] = { id = p, label = pn(p) .. "##focus" .. tostring(p),
+        tip = "Match the track list against this project. Guess ticks and remaps apply to it; the other To projects get exact-name matches only." }
+    end
+    local nf = ui.segmented(ctx, "focus", items, focusTarget)
+    if nf ~= focusTarget then
+      focusTarget = nf; buildRows(true, true)
+      say(("Now comparing %s with %s."):format(pn(srcProj), pn(nf)), "info")
+    end
+    if #sels > 1 then r.ImGui_SameLine(ctx); ui.hint(ctx, "- the other To projects get exact-name matches only") end
+  end
+
+  ------------------------------------------------------------------ what to copy
+  ui.section(ctx, "What to copy")
+  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Every row:")
+  local function allAttr(k)
+    local all, any = true, false
+    for _, row in ipairs(rows) do if row.incl then any = true; if not row.attr[k] then all = false end end end
+    return any and all
+  end
+  for _, a in ipairs(ATTRS) do
+    r.ImGui_SameLine(ctx)
+    local c, v = ui.toggle(ctx, a[1] .. "##all" .. a[2], allAttr(a[2]), a[3] .. " (sets every row)")
+    if c then for _, row in ipairs(rows) do row.attr[a[2]] = v end end
+  end
+  r.ImGui_SameLine(ctx, 0, 18)
+  local cc, cv = ui.toggle(ctx, "Colour", extras.color, "Copy the track colour onto matched tracks.")
+  if cc then extras.color = cv end
+  r.ImGui_SameLine(ctx)
+  local ic, iv = ui.toggle(ctx, "Input FX", extras.inputfx, "Copy the input (record) FX chain onto matched tracks. The target's own input FX are replaced.")
+  if ic then extras.inputfx = iv end
+  ui.hint(ctx, "Automation is never copied.")
+
+  ------------------------------------------------------------------ tracks
+  ui.section(ctx, "Tracks")
+  local haveFocus = focusTarget ~= nil and safe.projAlive(focusTarget)
+  local nT = #sels
+  if not haveFocus then
+    ui.empty(ctx, "Tick a project to send to",
+      ("Tick one or more To projects above to match the tracks of %s against them by name."):format(pn(srcProj)))
+    if ui.pushToBottom then ui.pushToBottom(ctx, 96) end
+  else
+    if ui.button(ctx, "Selected", { small = true, tip = "Tick only the tracks that are selected in the From project right now. Remaps and FX / Vol / Pan / Sends choices are kept." }) then
+      tickFromSelection()
+    end
+    r.ImGui_SameLine(ctx)
+    if ui.button(ctx, "Everything", { small = true, tip = "Tick every row - guesses included, so check their targets." }) then
+      local g = 0
+      for _, row in ipairs(rows) do row.incl = true; if row.kind == "similar" then g = g + 1 end end
+      say(g > 0 and ("All %d rows ticked, including %d guess%s - check their targets before you transfer."):format(#rows, g, g == 1 and "" or "es")
+                 or ("All %d rows ticked."):format(#rows), g > 0 and "warn" or "info")
+    end
+    r.ImGui_SameLine(ctx)
+    if ui.button(ctx, "None", { small = true, tip = "Untick every row." }) then
+      for _, row in ipairs(rows) do row.incl = false end
+      say("All rows unticked.", "info")
+    end
+    r.ImGui_SameLine(ctx, 0, 14)
+    r.ImGui_SetNextItemWidth(ctx, 170)
+    local flc, flv = r.ImGui_InputTextWithHint(ctx, "##filter", "filter by name...", filter)
+    if flc then filter = flv end
+    ui.tip(ctx, "Show only tracks whose name contains this.")
+
+    local nEx, nSim, nPick, nNone = 0, 0, 0, 0
+    for _, row in ipairs(rows) do
+      if row.kind == "exact" then nEx = nEx + 1
+      elseif row.kind == "similar" then nSim = nSim + 1
+      elseif row.kind == "manual" then nPick = nPick + 1
+      elseif not row.tgtGuid then nNone = nNone + 1 end
+    end
+    r.ImGui_SameLine(ctx, 0, 14)
+    r.ImGui_AlignTextToFramePadding(ctx)
+    ui.text(ctx, nEx .. " exact", T.ok)
+    r.ImGui_SameLine(ctx); ui.text(ctx, nSim .. (nSim == 1 and " guess" or " guesses"), T.warn)
+    if nPick > 0 then r.ImGui_SameLine(ctx); ui.text(ctx, nPick .. " picked", T.ok) end
+    r.ImGui_SameLine(ctx); ui.text(ctx, nNone .. (buildMode and " new" or " none"), buildMode and T.info or T.danger)
+    ui.hint(ctx, "Amber rows are guesses - tick them yourself if they are right.")
+
+    -- many-to-one, computed from the rows alone (cheap enough for every frame)
+    local aimedAt = {}
+    for _, row in ipairs(rows) do
+      if row.incl and row.tgtGuid then aimedAt[row.tgtGuid] = (aimedAt[row.tgtGuid] or 0) + 1 end
+    end
+
+    if #rows == 0 then
+      ui.empty(ctx, "No tracks in " .. pn(srcProj), "Press Swap if you meant to copy the other way.")
+      if ui.pushToBottom then ui.pushToBottom(ctx, 96) end
+    elseif ui.tableBegin(ctx, "tracks", {
+        { name = "", w = 30 }, { name = "Source track" }, { name = "Target track" }, { name = "", w = 68 },
+        { name = "FX", w = 36 }, { name = "Vol", w = 40 }, { name = "Pan", w = 40 }, { name = "Sends", w = 54 } },
+        { reserve = 96 }) then
+      local fn = norm(filter)
+      for i, row in ipairs(rows) do
+        if fn == "" or norm(row.name):find(fn, 1, true) then
+          r.ImGui_TableNextRow(ctx); r.ImGui_PushID(ctx, i)
+          r.ImGui_TableNextColumn(ctx)
+          local c, v = ui.tick(ctx, "##i", row.incl, paint); if c then row.incl = v end
+          r.ImGui_TableNextColumn(ctx)
+          r.ImGui_AlignTextToFramePadding(ctx)
+          local clash = row.incl and row.tgtGuid ~= nil and (aimedAt[row.tgtGuid] or 0) > 1
+          ui.text(ctx, row.name, clash and T.danger or (row.incl and nil or T.muted))
+          r.ImGui_TableNextColumn(ctx); targetCombo(row)
+          r.ImGui_TableNextColumn(ctx); tagPill(row, clash)
+          local dis = not row.incl
+          for _, a in ipairs(ATTRS) do
+            r.ImGui_TableNextColumn(ctx)
+            if dis then r.ImGui_BeginDisabled(ctx, true) end
+            local ac2, av2 = r.ImGui_Checkbox(ctx, "##" .. a[2], row.attr[a[2]])
+            if ac2 then row.attr[a[2]] = av2 end
+            if dis then r.ImGui_EndDisabled(ctx) end
+          end
+          r.ImGui_PopID(ctx)
+        end
+      end
+      r.ImGui_EndTable(ctx)
+    end
+  end
+
+  ------------------------------------------------------------------ actions
+  local nTicked = tickedRows()
+  if ui.button(ctx, "PREVIEW", { w = 140, h = 34, disabled = nT == 0,
+      tip = "Dry run: says what would be matched, built and skipped in each To project. Changes nothing." }) then
+    doPreview()
+  end
+  r.ImGui_SameLine(ctx, 0, 12)
+  local label = nT == 1 and "TRANSFER TO 1 PROJECT" or ("TRANSFER TO %d PROJECTS"):format(nT)
+  if ui.button(ctx, label, { kind = "primary", w = 260, h = 34, disabled = nT == 0 or nTicked == 0,
+      tip = "Copies the ticked settings onto the To project(s). Asks first. One undo point per project." .. (buildMode and " Build is on: missing tracks are created." or "") }) then
+    local clash = clashMessage(sels)
+    if clash then say(clash, "danger")
+    else confirmText = transferSummary(sels); ui.ask(ctx, "transfer") end
+  end
+  if nT > 0 and nTicked == 0 and haveFocus then
+    r.ImGui_SameLine(ctx, 0, 12); r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Nothing ticked yet.")
+  end
+
+  if ui.confirm(ctx, "transfer", { title = "Transfer now?", text = confirmText, ok = "Transfer", danger = true }) then
+    doTransfer()
+  end
+
+  ui.status(ctx, { idle = IDLE })
+end
+
+--------------------------------------------------------------------------------
+-- init + loop
+--------------------------------------------------------------------------------
+srcProj = r.EnumProjects(-1)
+if #safe.openProjects() >= 2 then
+  autoPair()
+  if focusTarget then buildRows(true, false) end
 end
 
 local function loop()
-  if dockPending ~= nil then r.ImGui_SetNextWindowDockID(ctx, dockPending); dockPending = nil end
-  if firstFrame then r.ImGui_SetNextWindowSize(ctx, 860, 660); firstFrame = false end
-  local visible, open = r.ImGui_Begin(ctx, 'Track Settings Transfer', true)
-  if visible then
-    local ok, err = pcall(frame)
-    if not ok then r.ImGui_TextColored(ctx, COL_DEAD, "Error: " .. tostring(err)) end
-    r.ImGui_End(ctx)
-  end
+  local open = ui.window(ctx, { title = APP, accent = ui.accents.green, w = 940, h = 700, minW = 760, minH = 480 }, frame)
   if open then r.defer(loop) end
 end
 r.defer(loop)

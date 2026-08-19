@@ -1,17 +1,20 @@
 -- @description FX Float Toggle
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about True XOR float of FX #1 on the selected tracks.
+-- @about Float the first FX of the selected tracks, or close it if it is already open. Needs SWS.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - says so if SWS is missing instead of doing nothing.
+--   1.0.0 - first public release.
 
 -- FX Float Toggle  (true XOR float, FX #1)
 -- Replaces "Custom: XOR Float FX", which targeted the LAST TOUCHED track and
 -- could only ever open (it closed everything first, then toggled).
 -- This follows the track SELECTION and genuinely toggles.
+if not reaper.NamedCommandLookup("_S&M_WNCLS3") or reaper.NamedCommandLookup("_S&M_WNCLS3") == 0 then
+  reaper.ShowMessageBox("FX Float Toggle needs the SWS extension (sws-extension.org). Install it and restart REAPER.", "FX Float Toggle", 0) return
+end
 local r = reaper
 
 local sel = {}

@@ -107,5 +107,95 @@ ck(H.isParent(nest,4) == false, "track 4 popped out and is not a parent")
 local dn = depthsFrom(nest); local s2=0; for i=1,#dn do s2=s2+dn[i] end
 ck(s2 == 0, "depths still balance")
 
+print("\n== selection roots (multi-track indent/outdent act on roots only) ==")
+-- {0,1,2,2,1,0}: 1 holds 2..5; 2 holds 3,4; 5 is 2's sibling; 6 root
+local sr = {0,1,2,2,1,0}
+ck(eq(H.selectionRoots(sr,{1,2,3,5,6}),{1,6}), "ticked parent + children -> only the parent and the outsider are roots")
+ck(eq(H.selectionRoots(sr,{2,3,5}),{2,5}),     "ticked sub-folder + its child + a sibling -> {2,5}")
+ck(eq(H.selectionRoots(sr,{4,3}),{3,4}),       "two plain siblings are both roots, returned in order")
+ck(eq(H.selectionRoots(sr,{}),{}),             "nothing ticked -> no roots")
+ck(eq(H.selectionRoots(sr,{3,3,3}),{3}),       "duplicates collapse to one root")
+
+print("\n== multi-track Indent cannot move a track twice (the audit bug) ==")
+-- flat, tick 2 and 3: old last->first loop gave {0,1,2,0}; each should move ONE level
+local m1 = {0,0,0,0}
+local moved, skipped = H.demoteMany(m1, {2,3})
+ck(eq(m1,{0,1,1,0}) and moved == 2, "flat: tick 2,3 -> both one level deeper: got "..show(m1))
+-- 2 is a folder holding 3 and 4 (siblings); tick all three: only 2 is a root
+local m2 = {0,0,1,1}
+moved, skipped = H.demoteMany(m2, {2,3,4})
+ck(eq(m2,{0,1,2,2}) and moved == 1 and skipped == 0, "nested selection: whole subtree moves once: got "..show(m2))
+-- first track can never indent; the reason comes back
+local m3 = {0,0}
+moved, skipped = H.demoteMany(m3, {1,2})
+ck(moved == 1 and skipped == 1 and eq(m3,{0,1}), "first track skipped with a reason, second still indents")
+
+print("\n== multi-track Outdent cannot move a track twice (the mirror bug) ==")
+-- 1 > 2 > 3 ; tick 2 and 3: old first->last loop gave {0,0,0}
+local o1 = {0,1,2}
+moved = H.promoteMany(o1, {2,3})
+ck(eq(o1,{0,0,1}) and moved == 1, "nested selection outdents as one block: got "..show(o1))
+local o2 = {0,1,1}
+moved = H.promoteMany(o2, {2,3})
+ck(eq(o2,{0,0,0}) and moved == 2, "two siblings each come out one level: got "..show(o2))
+
+print("\n== multi-track Out of folder keeps the inner nesting ==")
+local t1 = {0,1,2,3}
+moved = H.toRootMany(t1, {2,3,4})
+ck(eq(t1,{0,0,1,2}) and moved == 1, "ticked folder + descendants -> folder to root, children keep shape: got "..show(t1))
+
+print("\n== brute force: every subset of ticks, no track moves more than one level ==")
+local function legal(lv)
+  if lv[1] ~= 0 then return false end
+  for i=2,#lv do if lv[i] < 0 or lv[i] > lv[i-1]+1 then return false end end
+  return true
+end
+local shapes = { {0,0,0,0,0}, {0,1,1,0,0}, {0,1,2,2,1,0}, {0,1,2,3,0,1}, {0,0,1,1,2,0} }
+for _, shape in ipairs(shapes) do
+  local n = #shape
+  local okAll, badCase = true, nil
+  for mask = 1, (1 << n) - 1 do
+    local ticks = {}
+    for i = 1, n do if (mask >> (i-1)) & 1 == 1 then ticks[#ticks+1] = i end end
+    for _, opname in ipairs({"demoteMany","promoteMany"}) do
+      local lv = {table.unpack(shape)}
+      H[opname](lv, ticks)
+      for i = 1, n do
+        if math.abs(lv[i] - shape[i]) > 1 then okAll = false; badCase = opname.." "..show(ticks).." -> "..show(lv) end
+      end
+      if not legal(lv) then okAll = false; badCase = badCase or (opname.." "..show(ticks).." illegal "..show(lv)) end
+    end
+  end
+  ck(okAll, "shape "..show(shape)..": every tick subset moves each track <= 1 level and stays legal"..(badCase and ("  ["..badCase.."]") or ""))
+end
+
+print("\n== moveLevels: move a whole folder up / down, planned on levels ==")
+-- 1 holds 2,3 ; 4 root
+local mv = {0,1,1,0}
+local plan, dest = H.moveLevels(mv, 3, -1)
+ck(plan and eq(plan,{0,1,1,0}) and dest == 1, "up: swap with sibling above -> same shape, insert before track 2 (dest 1)")
+plan, dest = H.moveLevels(mv, 2, -1)
+ck(plan and eq(plan,{0,0,1,0}) and dest == 0, "up from first child: hops out above the parent as its sibling: got "..show(plan or {}))
+plan, dest = H.moveLevels(mv, 3, 1)
+ck(plan and eq(plan,{0,1,0,0}) and dest == 4, "down from last child: leaves the folder, lands after track 4: got "..show(plan or {}))
+plan, dest = H.moveLevels(mv, 2, 1)
+ck(plan and eq(plan,{0,1,1,0}) and dest == 3, "down: swap with sibling below -> same shape, dest 3")
+plan, dest = H.moveLevels(mv, 1, -1)
+ck(plan == nil, "first track cannot move up: "..tostring(dest))
+plan, dest = H.moveLevels(mv, 4, 1)
+ck(plan == nil, "last track cannot move down: "..tostring(dest))
+plan, dest = H.moveLevels(mv, 1, 1)
+ck(plan and eq(plan,{0,0,1,1}) and dest == 4, "whole folder down past a root track: children come along: got "..show(plan or {}))
+
+print("\n== the -2 closer case: moving a subtree whose last track closes an OUTER folder ==")
+-- 1 > 2 > {3,4} ; 5 root.  depths [1,1,0,-2,0]: track 4 closes TWO folders.
+-- Move folder 2 (2,3,4) down past 5.  Carrying depths would make 5 a child of 1.
+local c2 = {0,1,2,2,0}
+plan, dest = H.moveLevels(c2, 2, 1)
+ck(plan and eq(plan,{0,0,0,1,1}), "folder 2 lands after 5 at root, its children intact: got "..show(plan or {}))
+local dc = depthsFrom(plan or {}); local sc = 0; for i=1,#dc do sc = sc + dc[i] end
+ck(sc == 0 and eq(levelsFrom(dc), plan or {}), "planned levels round-trip to well-formed depths "..show(dc))
+ck(plan and plan[2] == 0, "track 5 (now 2nd) stayed at root - the parent did not swallow it")
+
 print(("\n=== %d passed, %d failed ==="):format(pass,fail))
 os.exit(fail==0 and 0 or 1)

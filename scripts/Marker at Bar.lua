@@ -1,12 +1,12 @@
 -- @description Marker at Bar
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Insert a marker on the nearest true bar line, not the arrange grid.
+-- @about Drop a marker on the nearest bar line to the cursor (or the play position while playing). Never in between beats, never a duplicate.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - honest changelog.
+--   1.0.0 - first public release.
 
 -- Marker at nearest BAR
 -- Replaces "Custom: Marker Nathaniel Tools", which inserted at the raw edit cursor and then ran

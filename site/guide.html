@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>User guide — Nathaniel Tools</title>
+<meta name="description" content="How to install and actually use Nathaniel Tools in REAPER, in plain English: what each app is for, when to reach for it, and how every window works.">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<style>
+  .guide-toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:22px 0 34px;max-width:930px}
+  .guide-toc a{display:block;padding:12px 14px;border:1px solid var(--line);border-radius:10px;text-decoration:none;background:var(--card);font-size:14px}
+  .guide-toc a b{display:block;color:var(--txt);margin-bottom:2px}
+  .guide-toc a span{color:var(--mut);font-size:12.5px}
+  .guide-toc a[data-accent]{border-left:3px solid var(--ac)}
+  .whenbox{border-left:3px solid var(--ac);background:var(--card);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0 20px;max-width:730px}
+  .whenbox b{color:var(--txt)}
+  .steps{counter-reset:s;list-style:none;padding:0;max-width:730px}
+  .steps li{counter-increment:s;position:relative;padding-left:40px;margin:10px 0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--card2);border:1px solid var(--line-hi);color:var(--txt);font-size:12.5px;display:flex;align-items:center;justify-content:center;font-weight:600}
+  .accentbar{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--ac);vertical-align:middle;margin-right:8px}
+  h2[data-accent]{color:var(--txt)}
+  .install-url{font-family:var(--mono);font-size:13px;background:var(--card);border:1px solid var(--line);padding:10px 14px;border-radius:8px;display:block;overflow-x:auto;max-width:730px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="/assets/nsm-mark.png" alt="">
+      <span class="brandtext"><b>Nathaniel Tools</b><span>Nathaniel School of Music</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/#apps">Apps</a>
+      <a href="/guide" aria-current="page">User guide</a>
+      <a href="/why">Why these exist</a>
+      <a href="/course">Course</a>
+      <a href="/donate">Donate</a>
+      <a class="ext" href="https://github.com/jasonzacmusic/nathaniel-tools">Source</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap prose">
+
+  <div class="page-head">
+    <p class="crumbs"><a href="/">Home</a><span class="sep">/</span>User guide</p>
+    <p class="eyebrow" data-accent="teal"><span class="tick"></span>Plain English · no code words</p>
+    <h1>How to actually use it</h1>
+    <p class="lede">
+      Nathaniel Tools is a small set of REAPER add-ons Jason Zac built for his own
+      multitrack sessions. This page tells you what each one is for, when to reach for
+      it, and how every window works. If a word here needs a dictionary, that is a bug —
+      tell us.
+    </p>
+  </div>
+
+  <nav class="guide-toc" aria-label="On this page">
+    <a href="#install"><b>1 · Install</b><span>two minutes, from inside REAPER</span></a>
+    <a href="#palette" data-accent="teal"><b>Palette &amp; Look</b><span>colour and name tracks</span></a>
+    <a href="#folders" data-accent="green"><b>Folders &amp; Flow</b><span>folders without dragging</span></a>
+    <a href="#transfer" data-accent="green"><b>Track Settings Transfer</b><span>import session data</span></a>
+    <a href="#stems" data-accent="amber"><b>Stem Print &amp; Handoff</b><span>clean stems, session untouched</span></a>
+    <a href="#midi" data-accent="amber"><b>MIDI Batch Export</b><span>many .mid files in one go</span></a>
+    <a href="#stagerig" data-accent="violet"><b>StageRig</b><span>live patch switching</span></a>
+    <a href="#speed"><b>The speed layer</b><span>twelve one-key actions</span></a>
+    <a href="#windows"><b>Every window, same way</b><span>header · sections · one big button · status</span></a>
+    <a href="#help"><b>If something is wrong</b><span>what to check, who to tell</span></a>
+  </nav>
+
+  <article>
+
+    <h2 id="install">1 · Install (once, two minutes)</h2>
+    <ol class="steps">
+      <li>Make sure REAPER has <b>ReaPack</b> and <b>ReaImGui</b> (both free). If not: get them from
+        <a href="https://reapack.com">reapack.com</a> and
+        <a href="https://github.com/cfillion/reaimgui/releases">github.com/cfillion/reaimgui</a>,
+        drop the file into REAPER's <em>UserPlugins</em> folder, restart REAPER.</li>
+      <li>In REAPER: <b>Extensions → ReaPack → Import repositories…</b> and paste
+        <code class="install-url">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/main/index.xml</code></li>
+      <li><b>Extensions → ReaPack → Browse packages…</b>, right-click <b>Nathaniel Tools</b> → <b>Install All</b>.
+        Install All matters: the apps share one “Shared Libraries” package.</li>
+      <li>Updates arrive with <b>Extensions → ReaPack → Synchronize packages</b>.</li>
+    </ol>
+    <p>After that everything is in <b>Actions → Show action list</b> — filter on the app's name.
+      To give anything a key: select it → <b>Add…</b> → press the key (or the MIDI pedal).</p>
+
+    <hr>
+
+    <p class="eyebrow" data-accent="teal"><span class="tick"></span>Teal · look</p>
+    <h2 id="palette">Palette &amp; Look</h2>
+    <p>Colours and names your tracks from what they <em>are</em>. It reads the track name, its
+      folder and the plugins on it, works out “this is a bass”, “this is a bus”, “this is a
+      reverb return”, and paints it the colour you chose for that family. Your own rules
+      (“anything called <em>harm</em> → purple”) sit on top and win. It can also colour
+      markers and regions the same way, name tracks after their audio file, number them,
+      and re-colour on the fly (<b>LIVE</b>) as you add tracks.</p>
+    <div class="whenbox" data-accent="teal"><b>Use it when</b> a session has grown past twenty tracks and you can't
+      find the guitars at a glance. Open it, press <b>APPLY COLOURS</b>. Done.</div>
+    <ol class="steps">
+      <li><b>Apply to</b> — Selection or Whole project. With Selection and nothing selected it tells you, and does nothing.</li>
+      <li><b>Families</b> tab — pick a colour per family (Drums, Bass, Keys, Vocals, Harmony, Winds, Bus, FX return …).</li>
+      <li><b>My rules</b> tab — your own rules win over families. Import your SWS Auto Color rules if you have them.</li>
+      <li><b>Palettes</b> — colour by family, by folder, in order, or “surprise”. <b>Tools</b> — gradients, lighter/darker, match to first selected, children inherit folder colour.</li>
+      <li><b>Tracks</b> tab shows now-colour and want-colour for every track; click a swatch to apply just that one.</li>
+    </ol>
+
+    <p class="eyebrow" data-accent="green"><span class="tick"></span>Green · structure</p>
+    <h2 id="folders">Folders &amp; Flow</h2>
+    <p>Folders without dragging. Tick tracks → <b>Make folder</b>. Indent, outdent, pull a track
+      out, dissolve a folder, move a whole folder up or down, hide everything except one
+      folder while you work on it, and <b>Repair folder maths</b> for the session where one
+      folder never closed and swallowed everything after it.</p>
+    <div class="whenbox" data-accent="green"><b>Use it when</b> you are building or fixing the shape of a session —
+      the drum kit into one folder, the harmony stack into another, the horns into a third.</div>
+    <ol class="steps">
+      <li>Tick the tracks (press one box, drag down to paint many).</li>
+      <li><b>Make folder from ticked</b>, or <b>Indent &gt;</b> to push them into the folder above.</li>
+      <li>On any row: <b>Up / Down</b> moves a whole folder with its children. On a folder row: <b>Dissolve</b> (children stay), <b>Isolate</b> (hide the rest; <b>Show all tracks</b> brings them back — only the ones it hid).</li>
+      <li><b>Auto-group by name</b> — neighbours that share a first word (Kick In / Kick Out) become one folder. It shows you the plan and asks first.</li>
+    </ol>
+
+    <p class="eyebrow" data-accent="green"><span class="tick"></span>Green · structure</p>
+    <h2 id="transfer">Track Settings Transfer</h2>
+    <p>Pro Tools' “Import Session Data”, for REAPER. Open two project tabs, pick FROM and TO;
+      it matches tracks by name and copies FX chains, volume, pan and sends onto the matching
+      tracks — or builds the missing ones. Green rows are exact matches. Amber rows are
+      guesses and stay <em>unticked</em> until you say yes. Nothing is written until you press
+      TRANSFER and confirm. Automation is never copied.</p>
+    <div class="whenbox" data-accent="green"><b>Use it when</b> last week's session has the vocal chain — or the whole
+      drum bus — that this week's session should have.</div>
+    <ol class="steps">
+      <li>Open both projects as tabs. <b>From</b> = where the settings are. Tick the <b>To</b> project(s).</li>
+      <li>Check the rows: exact / guess / new (will be built) / none. Fix a wrong match with the target dropdown on the row.</li>
+      <li>Untick what you don't want per row (FX, Vol, Pan, Sends). <b>Preview</b> lists what would happen.</li>
+      <li><b>TRANSFER</b> — it says exactly what will be replaced and asks. Undo works in each target project.</li>
+    </ol>
+
+    <p class="eyebrow" data-accent="amber"><span class="tick"></span>Amber · delivery</p>
+    <h2 id="stems">Stem Print &amp; Handoff</h2>
+    <p>Prints stems and puts your session back exactly as it was. Tick tracks and buses,
+      choose <b>Raw</b> (no plugins), <b>Inserts only</b> (the normal dry stem), <b>Fully wet</b>
+      (each stem on its own <em>with</em> its reverb/delay), or <b>Front-end</b> (through the
+      first plugin only). Files print at unity fader and centre pan so the mixer gets clean
+      files. Tick <b>Build a handoff tab</b> and you get a new project tab with the same names,
+      colours and folders, no plugins, and each printed file already on its track — that tab
+      is what you send.</p>
+    <div class="whenbox" data-accent="amber"><b>Use it when</b> something leaves your room — to a mixer, a collaborator,
+      another DAW, a student.</div>
+    <ol class="steps">
+      <li>Pick how: Raw / Inserts only / Fully wet / Front-end. Leave <b>Unity fader, centre pan</b> on unless the receiver wants your balance printed.</li>
+      <li>Pick where the files go.</li>
+      <li>Tick tracks and buses (<b>All buses</b> is the usual answer). <b>Test: first stem only</b> to check one before doing them all.</li>
+      <li><b>PRINT</b> → confirm → REAPER renders. Your faders, pans, mutes, plugin bypasses and render settings are put back. One undo step.</li>
+      <li>Utilities: <b>Uppercase bus names</b>, <b>Plugin-free clone tab</b> (whole session, FX removed, everything else kept).</li>
+    </ol>
+
+    <p class="eyebrow" data-accent="amber"><span class="tick"></span>Amber · delivery</p>
+    <h2 id="midi">MIDI Batch Export</h2>
+    <p>Many <code>.mid</code> files in one go. Choose the source (selected items / items on
+      selected tracks / regions / every MIDI item), a name pattern such as
+      <code>$num - $name</code>, a folder, see the exact filenames it will write, press
+      EXPORT. It refuses to overwrite by accident. Every file carries the tempo and time
+      signature from where the item sits.</p>
+    <div class="whenbox" data-accent="amber"><b>Use it when</b> you want every riff or idea from a session as its own
+      MIDI file — for a student pack, a notation program, or another DAW.</div>
+
+    <p class="eyebrow" data-accent="violet"><span class="tick"></span>Violet · performance</p>
+    <h2 id="stagerig">StageRig <span class="status pend"><span class="d"></span>early</span></h2>
+    <p>Live patch switching for the stage. <b>StageRig Build</b> turns a setlist into a project
+      (one folder per patch, instruments loaded, a note tracker in front of each);
+      <b>StageRig</b> shows NOW and NEXT in big letters and switches without cutting off the
+      chord you are still holding — the outgoing patch rings out, then is flushed and muted.
+      <b>GO / PANIC / ALL OFF</b>. Space or Enter = GO. Bind <b>StageRig Next</b> and
+      <b>StageRig Panic</b> to footswitches for hands-free.</p>
+    <div class="whenbox" data-accent="violet"><b>Honest status:</b> it works on the studio Mac with real instruments
+      (Pianoteq, Arturia B-3, Dexed, Omnisphere, BBC SO). It has not yet played a paid show.
+      Keep a backup rig until it has.</div>
+
+    <h2 id="speed">The speed layer — twelve one-key actions</h2>
+    <p>Each replaced a REAPER custom action that was quietly doing the wrong thing. Keys are
+      Jason's layout — bind whatever you like.</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Key</th><th>Action</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">A</td><td>Solo Focus</td><td>Solo just what's selected (in place); press again to clear all solos</td></tr>
+        <tr><td class="mono">⇧A · pedal CC75</td><td>Record Arm Toggle</td><td>Arm only the selected tracks; press again to disarm all</td></tr>
+        <tr><td class="mono">NumPad 6</td><td>FX Float Toggle</td><td>Float the first plugin on the selected track / close it</td></tr>
+        <tr><td class="mono">⇧F · pedal CC76</td><td>FX Open/Close All</td><td>Open every plugin window on the track, or close them all</td></tr>
+        <tr><td class="mono">N / B</td><td>Region Next / Prev</td><td>Jump to the next / previous region; playback follows on the bar</td></tr>
+        <tr><td class="mono">M · pedal CC23</td><td>Marker at Bar</td><td>Drop a marker exactly on the nearest bar line</td></tr>
+        <tr><td class="mono">⌘⇧T</td><td>Tempo at Bar</td><td>Insert or edit a tempo / time signature exactly on a bar</td></tr>
+        <tr><td class="mono">⇧⌃M</td><td>MIDI Render</td><td>Export the project MIDI for the time selection with one key</td></tr>
+        <tr><td class="mono">⌘⌃V</td><td>Flush Paste</td><td>Empty the selected tracks, paste the clipboard in their place, save silently</td></tr>
+        <tr><td class="mono">⇧D</td><td>Duplicate Track</td><td>Duplicate the track empty and armed — the next layer, instantly</td></tr>
+        <tr><td class="mono">E</td><td>Unsolo &amp; Unselect</td><td>The reset key: clears solos, arms, selections, time selection</td></tr>
+        <tr><td class="mono">pedal</td><td>Toggle Chorale</td><td>Finds the Chorale plugin wherever it is and flips it on / off</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2 id="windows">Every window works the same way</h2>
+    <ul>
+      <li><b>Header</b> — the app name, what it does in five words, and <b>Dock</b> (put it in REAPER's docker next to the mixer).</li>
+      <li><b>Sections</b> in capitals tell you the order: what → where → which tracks → the big button.</li>
+      <li><b>One big button</b> does the thing. Anything that changes your session in a big way asks first.</li>
+      <li><b>The status line at the bottom</b> always says what just happened. <b>Log</b> opens the history. Nothing happens silently.</li>
+      <li><b>Tick columns paint</b> — press on one box and drag down to tick many.</li>
+      <li>Hover anything for a tip in plain words. Every action is one <b>Undo</b> step, named in plain words.</li>
+    </ul>
+
+    <h2 id="help">If something is wrong</h2>
+    <ul>
+      <li>An app says it needs the “Shared Libraries” package → ReaPack → Browse → Nathaniel Tools → Shared Libraries → Install (or Install All on the repository).</li>
+      <li>A window opens but shows a red line at the bottom → the window stays up; read the line and send it to us. Nothing was written to your session.</li>
+      <li><b>Actions → Nathaniel Tools: Shared Libraries</b> prints what is installed and which version.</li>
+      <li>WhatsApp <b>+91 7760456847</b> · <a href="https://github.com/jasonzacmusic/nathaniel-tools/issues">issues on GitHub</a>.</li>
+    </ul>
+
+  </article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <img src="/assets/nsm-logo.png" alt="Nathaniel School of Music">
+        <p>Built by Jason Zac in Bangalore, between sessions. Nathaniel School of Music.</p>
+      </div>
+      <div>
+        <h4>Suite</h4>
+        <ul>
+          <li><a href="/#apps">All apps</a></li>
+          <li><a href="/guide">User guide</a></li>
+          <li><a href="/#install">Install</a></li>
+          <li><a href="/why">Why these exist</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://learnmusic.nathanielschool.com">The course</a></li>
+          <li><a href="https://www.nathanielschool.com">Nathaniel School of Music</a></li>
+          <li><a href="https://github.com/jasonzacmusic/nathaniel-tools">Source on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>MIT licence</span>
+      <span>REAPER 7.77 · macOS arm64</span>
+      <span>68 + 57 checks passing</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

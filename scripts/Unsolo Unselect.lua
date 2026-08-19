@@ -1,12 +1,12 @@
 -- @description Unsolo & Unselect
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about The panic key: clear solo, record-arm, selections and time selection.
+-- @about Clear every solo, arm, selection and the time selection in one press. The reset key.
 -- @changelog
---   1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
---           signature-based change detection, shared safety library.
+--   1.1.0 - honest changelog.
+--   1.0.0 - first public release.
 
 -- Unsolo & Unselect  (the panic key)
 -- Extends "Custom: Unsolo & Unselect".  Same four steps, plus it clears record arm
