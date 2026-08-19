@@ -355,12 +355,13 @@ MIDI items say so in the list BEFORE you export. New $region name.
 }
 ]]></description>
       </metadata>
-      <version name="1.3.0" author="Jason Zac" time="2026-08-19T10:55:58Z">
-        <changelog><![CDATA[1.3.0 - trim-behind ON / auto-crossfade OFF re-asserted for every project (projects save their own copy).
+      <version name="1.4.1" author="Jason Zac" time="2026-08-19T16:17:39Z">
+        <changelog><![CDATA[1.4.1 - render guard moved to the "Render Safe" script (setting it here marked every project modified).
+1.3.0 - trim-behind ON / auto-crossfade OFF re-asserted for every project (projects save their own copy).
 1.2.0 - the mixer is shown whenever a project comes to the front.
 1.1.0 - repeat is switched off for EVERY project that comes to the front, not only new ones.
 1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220602fc7f7f2808106c2f762dde049b1a4f111cd0e22df390c2cf2393dddaa4988">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/90efdea10b0c80ad0097095114fdb5b2150afa93/scripts/New%20Project%20Defaults.lua</source>
+        <source main="main" hash="12202965178218bf04bb05e278fff128ea418c6e14328adf7e194c65c62b2414025e">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/33b6effc4a464a7bf1a47cba3cebcd3f4a2ed977/scripts/New%20Project%20Defaults.lua</source>
       </version>
     </reapack>
     <reapack name="Open Dock.lua" type="script" desc="Open Dock (all the Nathaniel Tools apps, docked)">
@@ -433,6 +434,27 @@ MIDI items say so in the list BEFORE you export. New $region name.
         <changelog><![CDATA[1.1.0 - no longer restarts playback with "Play (skip time selection)", which skipped the very region it had just selected.
 1.0.0 - first public release.]]></changelog>
         <source main="main" hash="122001faf0ce258fbc50e077b399c2bfcbccd91901c43020d590167d8a7e98cc2516">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Region%20Prev.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Render Safe.lua" type="script" desc="Render Safe (open the Render dialog with the artifact guards on)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Renders used to start with a burst of stray audio - plugin tails and buffers from wherever playback last was, and plugins (Waves, samplers) that are not ready on the first block. Jason's workaround was "play silence for 5 s, then render". This does the equivalent automatically and opens the Render dialog:\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab stops playback and flushes every FX buffer\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab turns on REAPER's "Delay render start to allow FX to initialize" with a\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 2-second delay, for this project (survives save; presets keep it too)\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab then opens File > Render. Press your render key as before.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T15:59:28Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220b005360df136af44f7cb9d81734198139173e6ee006eacba8e1bcf2bc9db7460">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/1a4fcdf9445fc437c37efb059b126cbf15f05d0c/scripts/Render%20Safe.lua</source>
       </version>
     </reapack>
     <reapack name="Shared Libraries.lua" type="script" desc="Shared Libraries">
