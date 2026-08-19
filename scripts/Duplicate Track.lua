@@ -1,10 +1,11 @@
 -- @description Duplicate Track
--- @version 1.1.0
+-- @version 1.2.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Duplicate the selected track EMPTY and armed, ready to record the next layer; your original arm state comes back exactly. Needs SWS.
+-- @about Duplicate the selected track EMPTY and armed, ready to record the next layer; the original is disarmed, every other track keeps its arm state. Needs SWS.
 -- @changelog
+--   1.2.0 - the track you duplicated is DISARMED; only the new layer is armed. Other tracks untouched.
 --   1.1.0 - stops with a message if SWS is missing.
 --   1.0.0 - first public release.
 
@@ -23,7 +24,10 @@ end
 local r = reaper
 
 local sel = {}
-for i = 0, r.CountSelectedTracks(0) - 1 do sel[#sel+1] = r.GetSelectedTrack(0, i) end
+local srcGuid = {}   -- the tracks being duplicated: they hand their arm to the new layer
+for i = 0, r.CountSelectedTracks(0) - 1 do
+  local t = r.GetSelectedTrack(0, i); sel[#sel+1] = t; srcGuid[r.GetTrackGUID(t)] = true
+end
 if #sel == 0 then return end
 
 r.Undo_BeginBlock2(0)
@@ -75,7 +79,9 @@ for i = 0, r.CountTracks(0) - 1 do
   if tr then
     local g = r.GetTrackGUID(tr)
     if not isDup[g] and armWas[g] ~= nil then
-      r.SetMediaTrackInfo_Value(tr, "I_RECARM", armWas[g])
+      -- the source track hands its arm over to the new layer (Jason: "it needs
+      -- to unarm the old track"); every other track keeps exactly what it had
+      r.SetMediaTrackInfo_Value(tr, "I_RECARM", srcGuid[g] and 0 or armWas[g])
     end
   end
 end

@@ -163,7 +163,7 @@ local SCOPE = {
     tip = "Strictest: only items with exactly the same start and end follow." },
 }
 for _, sc in ipairs(SCOPE) do
-  for c = 40000, 43500 do if r.kbd_getTextFromCmd(c, 0) == sc.name then sc.cmd = c break end end
+  for c = 40000, 45000 do if r.kbd_getTextFromCmd(c, 0) == sc.name then sc.cmd = c break end end
 end
 local function scopeNow()
   for _, sc in ipairs(SCOPE) do if sc.cmd and r.GetToggleCommandState(sc.cmd) == 1 then return sc.id end end
