@@ -1,5 +1,5 @@
 -- @description New Project Defaults (snap on, relative snap on, repeat off)
--- @version 1.3.0
+-- @version 1.4.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -11,6 +11,7 @@
 --   ON with auto-crossfade OFF (projects save their own copy of that). New, never-saved projects also get snapping ON
 --   and relative grid snap ON. (Saved projects keep their own snap settings.)
 -- @changelog
+--   1.4.0 - render guard: "delay render start" + 2 s set on every project that comes to the front.
 --   1.3.0 - trim-behind ON / auto-crossfade OFF re-asserted for every project (projects save their own copy).
 --   1.2.0 - the mixer is shown whenever a project comes to the front.
 --   1.1.0 - repeat is switched off for EVERY project that comes to the front, not only new ones.
@@ -32,6 +33,15 @@ local function trimBehindOn()
   if r.GetToggleCommandState(41117) ~= 1 then r.Main_OnCommand(41120, 0) end
   if r.GetToggleCommandState(40041) == 1 then r.Main_OnCommand(40041, 0) end   -- auto-crossfade off
 end
+local function renderGuards()
+  -- "Delay render start to allow FX to initialize" + 2 s: stops the burst of
+  -- stray audio at the top of a render (plugin buffers / slow-loading plugins).
+  local flag = 16 << 16
+  local v = r.GetSetProjectInfo(0, "RENDER_SETTINGS", 0, false)
+  if v & flag == 0 then r.GetSetProjectInfo(0, "RENDER_SETTINGS", v | flag, true) end
+  local d = r.GetSetProjectInfo(0, "RENDER_DELAY", 0, false)
+  if not d or d < 2 then r.GetSetProjectInfo(0, "RENDER_DELAY", 2, true) end
+end
 local function mixerOn()
   if r.GetToggleCommandState(40078) ~= 1 then r.Main_OnCommand(40078, 0) end    -- View: Toggle mixer visible -> on
 end
@@ -44,6 +54,7 @@ local function tick()
     repeatOff()
     mixerOn()
     trimBehindOn()
+    renderGuards()
     if (path == nil or path == "") and r.CountTracks(cur) == 0 then applyNew() end
   end
   r.defer(function() r.defer(tick) end)
