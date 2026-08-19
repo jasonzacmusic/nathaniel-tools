@@ -9,14 +9,29 @@
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Colour and name tracks from meaning, with rules, palettes and a live watcher. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Colour and name your tracks from what they are: your own ordered rules (import/export SWS Auto Color), instrument families with colours, palettes, gradients and nudges, name-from-items, numbering, and a LIVE mode that re-colours as tracks are added or renamed. Markers and regions too. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
+      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
+dialogs, system font, plain-English labels everywhere.
+Status line now actually shows what happened (it never did).
+"Selection" with nothing selected now says so instead of quietly
+colouring the whole project.
+Clear all rules / Import SWS / Export SWS / Clear colours and
+Surprise on the whole project all ask first.
+Export to SWS keeps every other line of sws-autocoloricon.ini
+(icons, layouts, switches) and quotes multi-word filters.
+"whole word" now matches a multi-word phrase; "wildcard" is a real
+wildcard (* anything, ? one letter).
+LIVE respects the Selection / Whole project choice, coalesces
+bursts of changes (0.5 s), and re-fires on arm/mute changes.
+Name + colour is one undo step; colouring markers from the button
+is undoable; rule typing no longer re-scans the project per key.
+1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122065baea49f666fceb1527e855edf45936fe1ee7b7cd2c40246a5223aa1033bd8b">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/Palette%20and%20Look.lua</source>
+        <source main="main" hash="1220d217d7bde4a9b659e89336e4d2b6416a7635e086c2201faa9f654bfb78476f53">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/Palette%20and%20Look.lua</source>
       </version>
     </reapack>
     <reapack name="StageRig.lua" type="script" desc="StageRig">
@@ -27,13 +42,19 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All. Live patch switching for REAPER. Reads a setlist built by StageRig Build, shows a stage view with CURRENT and NEXT, and switches patches without cutting off what is still ringing.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Live patch switching for REAPER. Reads a setlist built by StageRig Build, shows a stage view with NOW and NEXT, and switches patches without cutting off what is still ringing. Bind "StageRig Next" / "StageRig Panic" to a footswitch for hands-free use. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[0.1.0 - first version. Switching, panic, stage view.]]></changelog>
-        <source main="main" hash="122032241ed73a0461a68a10bda72a59fc96078d26e4142428dffcf03e4916e3fc4d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/StageRig.lua</source>
+      <version name="0.2.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[0.2.0 - works on ReaImGui 0.10 (the 0.1.0 font calls died on open).
+New shared look (nt_ui). Switching back to a patch that is still
+ringing out no longer mutes it. Flush pulse is now edge-safe.
+Missing patch tracks are reported, not silently skipped.
+Space / Enter / Right = GO next when the window is focused, and
+the "StageRig Next" / "StageRig Panic" scripts drive it hands-free.
+0.1.0 - first version. Switching, panic, stage view.]]></changelog>
+        <source main="main" hash="12208ddf3d45a0cb818cfe9e1368f822082889eb0c922a64a30767d50382722c27da">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/StageRig.lua</source>
       </version>
     </reapack>
     <reapack name="Stem Print and Handoff.lua" type="script" desc="Stem Print &amp; Handoff">
@@ -44,14 +65,19 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print stems in several modes and restore the session exactly afterwards. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print clean stems (raw / inserts / fully wet / front-end) and put the session back exactly as it was. Optionally builds a plugin-free mirror tab with the printed files on it, ready to hand to anyone on any DAW. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12205fcfe60c7cdc68ea446fc4de1307b65f4e52ea965125c120da3f85960fd83192">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/Stem%20Print%20and%20Handoff.lua</source>
+      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
+dialogs, system font. "Mirror to new tab" now actually works.
+"Fully wet" now actually prints (one isolated pass per stem).
+Render tail is applied via the real RENDER_TAILFLAG/RENDER_TAILMS
+keys; stems no longer come with an unwanted master mix file.
+Plugin-free clone keeps items and receives (only FX removed).
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220774bf4c2503ee93bb5cd6486e905806f992a90fe10abfa7a2691e24916602f2f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/Stem%20Print%20and%20Handoff.lua</source>
       </version>
     </reapack>
     <reapack name="Track Settings Transfer.lua" type="script" desc="Track Settings Transfer">
@@ -62,14 +88,29 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Pro-Tools style Import Session Data across project tabs, both directions. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Pro-Tools style "Import Session Data" between open project tabs. Copies FX chains, volume, pan, sends, colour and input FX from the tracks of one project onto the same-named tracks of one or more other tabs, or builds the tracks that are missing. Preview first; one undo point per target project. Automation is never copied. Requires the "Shared Libraries" package from this same repository and the SWS extension. ReaPack has no automatic dependencies, so install the libraries too - or right-click the repository in ReaPack > Install All.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122036bdeab6a30312934c9345794b208ce37b6bb64b80a9d0650301241e8c76f92c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/apps/Track%20Settings%20Transfer.lua</source>
+      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, sections, one status line + log,
+plain-English tags (exact / guess / picked / new / none) instead of
+the cryptic = ~ * +. Name guessing fixed: two tracks that merely
+share an instrument family (Kick vs Snare) no longer count as
+"similar", so Kick's FX and sends can never land on Snare, and
+Build mode now builds Kick instead of skipping it. Guesses (amber)
+start OFF - you tick the ones that are right. TRANSFER asks first
+and says exactly what it replaces and where. Two rows aimed at the
+same target track are flagged and block the transfer. Built tracks
+no longer inherit mute / solo / record / selection / automation-
+mode state from the source. Preview and Transfer no longer flash
+through the other tab. "Selected" keeps your remaps and FX / Vol /
+Pan / Sends ticks. The change watcher now also notices folder
+changes. The compare target is a visible "Compare with" switch.
+Starts with one tab open and tells you what to do, instead of
+refusing to launch.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220812edd4460c5ad8dad34061516832fc7f25faa025a0faf9caf25f7f48c3f1104">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/Track%20Settings%20Transfer.lua</source>
       </version>
     </reapack>
   </category>
@@ -82,14 +123,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Duplicate tracks empty and armed, without disarming the rest of the session.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Duplicate the selected track EMPTY and armed, ready to record the next layer; your original arm state comes back exactly. Needs SWS.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122010d3150a4fb87f383c4e503a0f7b8bbde41e29b2c976bd633c8b8fb3ddfd05bb">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Duplicate%20Track.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - stops with a message if SWS is missing.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220f33d85f8298ac2d5ed55ca017c11bc594b1918a1ad80b08786b6c37885498e5c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Duplicate%20Track.lua</source>
       </version>
     </reapack>
     <reapack name="FX Float Toggle.lua" type="script" desc="FX Float Toggle">
@@ -100,14 +141,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 True XOR float of FX #1 on the selected tracks.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Float the first FX of the selected tracks, or close it if it is already open. Needs SWS.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220e28b03382704a789b3180cd9e572e9280adfc3f4f856ce52f8ae027e7fadc544">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/FX%20Float%20Toggle.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - says so if SWS is missing instead of doing nothing.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220798a1de70a7f3c9d371754866780d16a1253fa925b6129a82562562ce7c55de5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/FX%20Float%20Toggle.lua</source>
       </version>
     </reapack>
     <reapack name="FX Open Close All.lua" type="script" desc="FX Open/Close All">
@@ -118,14 +159,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 One unified open/close decision across every FX on the selected tracks.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Open every FX window on the selected (or last touched) track, or close them all if any are open.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122030792d8b90f723c186b0e802c994a10f318b76c6f4a654b67528c9131e0e12ff">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/FX%20Open%20Close%20All.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - honest changelog.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="12207607c61aa2ccb9cf81f895e69eeed3d28cd88153c3bf3254572372c93901db75">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/FX%20Open%20Close%20All.lua</source>
       </version>
     </reapack>
     <reapack name="Flush Paste.lua" type="script" desc="Flush Paste">
@@ -136,14 +177,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Clear, paste, strip envelopes and save silently. Never opens Save As.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Replace whatever is on the selected tracks with the clipboard: delete their items, paste, strip envelopes, save silently. Needs SWS.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220d6b1711d314a3592bedd99705e8455b4db47f9ee44df038cfd0e7f03251e1579">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Flush%20Paste.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - stops with a message if SWS is missing (before, it pasted without clearing).
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220b955b35b3f036e0f4b76c2bb1a67615db6a63d89a52095ade6682c056a3c3c07">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Flush%20Paste.lua</source>
       </version>
     </reapack>
     <reapack name="Folders and Flow.lua" type="script" desc="Folders &amp; Flow">
@@ -154,14 +195,24 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Fix, build, dissolve, move and isolate track folders. Repairs broken folder nesting. Requires the "Shared Libraries" package from this same repository. ReaPack has no automatic dependencies, so install that one too - or just right-click the repository in ReaPack and choose Install All.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Build, dissolve, move and isolate track folders without dragging. Indent / outdent ticked tracks, take a track out of its folder, move a whole folder up or down, auto-group tracks by name, and repair a session whose folder nesting has gone wrong. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220ccbf5479bfaf3937846512b283c6408df2f4fd895722662fcea324458ab4932c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Folders%20and%20Flow.lua</source>
+      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, sections, one status line + log,
+confirm dialog, system font, drag-paint ticks, empty state.
+Indent / Outdent / Out of folder on several ticked tracks now move
+each track ONE level (a ticked track inside a ticked folder used to
+be moved twice). Up / Down on a folder no longer scrambles the
+nesting of its neighbours (a folder whose last track closed an
+outer folder took that closer with it) and no longer wipes your
+track selection. Isolate remembers what it hid; "Show all tracks"
+only brings those back, never tracks you hid yourself. Both are
+undoable. Auto-group asks first and says how many folders it will
+make. Every action reports what it did in the status line.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220033569cda54f976cb883044bec8e5670a3e12f744a7c4c3802e017ae586b0b8f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Folders%20and%20Flow.lua</source>
       </version>
     </reapack>
     <reapack name="MIDI Batch Export.lua" type="script" desc="MIDI Batch Export">
@@ -172,14 +223,24 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Export many MIDI items/regions as separate .mid files with pattern-based sequential names.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Export many MIDI items or regions as separate .mid files in one go, named from a pattern ($num, $name, $track, $region, $project, $bpm). Every file carries the tempo and time signature at its own start, at the item's own tick resolution, so it opens at the right speed anywhere. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122095b2baebba31e08f46ec58ebd5753239c5f1495882f30032e60fae0391bface6">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/MIDI%20Batch%20Export.lua</source>
+      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
+before replacing files, empty state, Choose... folder button,
+system font. The files themselves are now correct MIDI: tick
+resolution is read from the item (was hard-wired to 960), text /
+notation / sysex events get their proper length fields (were
+written raw and could break the file), and tempo + time signature
+are taken at the item's own start (was the master tempo and bar 1).
+"Notes only" now also leaves out muted notes and REAPER's notation.
+Rows remember items by identity, so deleting an item while the
+window is open can no longer crash REAPER. Regions holding several
+MIDI items say so in the list BEFORE you export. New $region name.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="12206d54051717c702e2b27f6e407a99832ca5468820c1ace0cfe843dfb3245306a7">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/MIDI%20Batch%20Export.lua</source>
       </version>
     </reapack>
     <reapack name="MIDI Render.lua" type="script" desc="MIDI Render">
@@ -190,14 +251,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Export project MIDI with a proper time-selection guard.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Export the project MIDI for the time selection (or the whole project if there is none) with one key.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220a7b811272eff510d3a4124617cd634ce2503b8f83ddcc36d82084570383e0308">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/MIDI%20Render.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - honest changelog.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="12208b6108a6f0606be5c2d034d0192f30e70455a4c968b5137cf4d185b78e52b134">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/MIDI%20Render.lua</source>
       </version>
     </reapack>
     <reapack name="Marker at Bar.lua" type="script" desc="Marker at Bar">
@@ -208,14 +269,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Insert a marker on the nearest true bar line, not the arrange grid.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Drop a marker on the nearest bar line to the cursor (or the play position while playing). Never in between beats, never a duplicate.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220ce5e6815077704d4dab643152095c4dd0ac33737d2e812441deb2a333dc95df2">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Marker%20at%20Bar.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - honest changelog.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220ca710dbc2dbd1c8f38d0397d59205a65b2edc26aa4b30e26f80a86c359da986f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Marker%20at%20Bar.lua</source>
       </version>
     </reapack>
     <reapack name="Record Arm Toggle.lua" type="script" desc="Record Arm Toggle">
@@ -226,14 +287,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Exclusive record-arm on the selected tracks. Press again to disarm everything. Never touches pan.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Arm ONLY the selected tracks (everything else disarmed); press again to disarm all. Never touches pan, unlike the custom action it replaced.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12204913b2f7f21c36ca2d0c349e06c198a9a5c0eec2827eb88ec501bc9188907fe3">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Record%20Arm%20Toggle.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - honest changelog.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="122058c11814c5686200935802316af4c8b3a469e8e4b42fe146350644b78286ed02">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Record%20Arm%20Toggle.lua</source>
       </version>
     </reapack>
     <reapack name="Region Next.lua" type="script" desc="Region Next">
@@ -244,14 +305,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Jump to the next region without flipping any global preference.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Jump to the next region and make it the time selection. While playing, playback follows the jump (with smooth seek, on the bar).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220c6948c9b3a205b875d08053e7110bc1bacf6753e445d222bf5173911f79e79b2">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Region%20Next.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - no longer restarts playback with "Play (skip time selection)", which skipped the very region it had just selected.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="122041cc684ab3306a11d306a63fdff5138917d9929b36ca8a04766d86ac1bdfd5ca">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Region%20Next.lua</source>
       </version>
     </reapack>
     <reapack name="Region Prev.lua" type="script" desc="Region Previous">
@@ -262,14 +323,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Jump to the previous region, snapping to the current region's start first.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Jump to the previous region and make it the time selection. While playing, playback follows the jump (with smooth seek, on the bar).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12206a604dc93db3667a11986f2c874c182ddd34740765b06c39bab794c37102958d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Region%20Prev.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - no longer restarts playback with "Play (skip time selection)", which skipped the very region it had just selected.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="122001faf0ce258fbc50e077b399c2bfcbccd91901c43020d590167d8a7e98cc2516">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Region%20Prev.lua</source>
       </version>
     </reapack>
     <reapack name="Shared Libraries.lua" type="script" desc="Shared Libraries">
@@ -284,13 +345,15 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - split out of the individual app packages so every app can share one
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - adds nt_ui, the shared design system every window now uses.
+1.0.0 - split out of the individual app packages so every app can share one
 copy instead of each carrying its own.]]></changelog>
-        <source main="main" hash="122073766d0341e1e5f93f85df2e8b07c6affb3a6d6a66e5a47896dd8e6c04094019">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Shared%20Libraries.lua</source>
+        <source main="main" hash="12200133b62ad41cf169e213a2f6b8dc714aa548805e379b1206d701fca1e4109387">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Shared%20Libraries.lua</source>
         <source file="lib/nt_safe.lua" hash="1220c91fe5c549e2bdd52b25d77351ad08cf01c5a2b4b8502ef1ebf2d08c57108bff">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_safe.lua</source>
-        <source file="lib/nt_hierarchy.lua" hash="1220e83a8f76302ca7fb04a9e32f7d8e7dedfc94a01f18731596e61aa53132051a87">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_hierarchy.lua</source>
+        <source file="lib/nt_hierarchy.lua" hash="12209b0a6118c07e24cda3cedfa30ad11f4933b46bffa7c68f70ffd0069637649d8d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/lib/nt_hierarchy.lua</source>
         <source file="lib/nt_imgui.lua" hash="1220bb3a64ee7f4e31eca7d3e5297bea56272858801d281f44fdaad2ded58d2ee341">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_imgui.lua</source>
+        <source file="lib/nt_ui.lua" hash="1220aaf2d08721265cd01793d43398a27facaedc53d15ed82b92a160ca8ffbf025fe">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/lib/nt_ui.lua</source>
       </version>
     </reapack>
     <reapack name="Solo Focus.lua" type="script" desc="Solo Focus">
@@ -301,14 +364,14 @@ copy instead of each carrying its own.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Deterministic exclusive solo. Follows item selection when there is one, press again to clear.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Solo-in-place the selected tracks (or the tracks of the selected items); press again on the same set to clear every solo. Never moves the cursor unless you turn AUDITION on.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="12207db682d3467dec333260fb275a95da588986f187b4c8bd32ed627598feb4ad3a">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Solo%20Focus.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - honest changelog; header describes what it really does.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="122036f65f79be455339793a994e3cb1ed86b24ad0d1f54a8de159202ab0854502d7">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Solo%20Focus.lua</source>
       </version>
     </reapack>
     <reapack name="StageRig Build.lua" type="script" desc="StageRig Build">
@@ -323,9 +386,45 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-04T04:28:30Z">
-        <changelog><![CDATA[0.1.0 - first version. Five-patch Lagori rig.]]></changelog>
-        <source main="main" hash="12201019ebcba1ce2ac4a4064915c0c2aacf283ad740595ae639538e83946f7c749c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/48e43584d0306852f41b46681622dee818c15943/scripts/StageRig%20Build.lua</source>
+      <version name="0.2.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[0.2.0 - plain-English message when no rig file exists; also looks in
+Scripts/Nathaniel Tools/stagerig/. Ships with the NSM Tribute Night rig spec.
+0.1.0 - first version. Five-patch Lagori rig.]]></changelog>
+        <source main="main" hash="122058fb8bfcd68100afb95abf33cc93322ba2a3a0359b463c0e8bbebdc549345fc5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/StageRig%20Build.lua</source>
+      </version>
+    </reapack>
+    <reapack name="StageRig Next.lua" type="script" desc="StageRig Next (footswitch)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Tells the running StageRig window to switch to the NEXT patch. Bind this to a footswitch or MIDI pedal (Actions > find "StageRig Next" > Add shortcut > press the pedal) and you never touch the mouse on stage. Does nothing if StageRig is not open.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="122084100485c92d5c05b5d037bfecf6c9449610aed0cc1e98dea674c0c8403f8725">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/StageRig%20Next.lua</source>
+      </version>
+    </reapack>
+    <reapack name="StageRig Panic.lua" type="script" desc="StageRig Panic (footswitch)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Tells the running StageRig window to PANIC: mute and flush every patch except the one you are playing. Bind it to a second pedal. Does nothing if StageRig is not open.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12205b94c668fcde43853feb7efa86b505379461c3d6e2dd01f13b10519123abc854">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/StageRig%20Panic.lua</source>
       </version>
     </reapack>
     <reapack name="Tempo at Bar.lua" type="script" desc="Tempo at Bar">
@@ -336,18 +435,20 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Insert or edit a tempo/time-signature marker welded to the bar line.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Insert or edit a tempo / time-signature marker exactly on a bar line, with a small dialog.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="122066442080e4259ad57529f4169bf2096e33aef69050770882e26b56b6706a9118">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Tempo%20at%20Bar.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - honest changelog.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="1220b3572f0d48541b5ff7a7aabae1cd06dfcb7fc8a5c3a4bbc714f1fa5746eaa434">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Tempo%20at%20Bar.lua</source>
       </version>
     </reapack>
     <reapack name="Toggle Chorale.lua" type="script" desc="Toggle Chorale (live vocal harmony)">
       <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
@@ -356,8 +457,8 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-05T05:28:40Z">
-        <source main="main" hash="1220d53f19d3d074d2db5e397c7d023be59cdbe8ebac4411ce7c10f708538cae63b4">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/d03da4002b48379f306af6f38b354534f5646756/scripts/Toggle%20Chorale.lua</source>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <source main="main" hash="1220756302cc92a0fe9359a5175f20d804af24417457fbedae87c13bd7dccb93ea23">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Toggle%20Chorale.lua</source>
       </version>
     </reapack>
     <reapack name="Unsolo Unselect.lua" type="script" desc="Unsolo &amp; Unselect">
@@ -368,14 +469,14 @@ signature-based change detection, shared safety library.]]></changelog>
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 The panic key: clear solo, record-arm, selections and time selection.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Clear every solo, arm, selection and the time selection in one press. The reset key.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
-signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220fab893fe8b66a832bccb420138ff561a52b2f865a9ccb73ff88fdd69bb232669">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/Unsolo%20Unselect.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[1.1.0 - honest changelog.
+1.0.0 - first public release.]]></changelog>
+        <source main="main" hash="122035cb040c9f091fa890abed073582d87249f08b077a7048de3317e8e5020ed7c9">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Unsolo%20Unselect.lua</source>
       </version>
     </reapack>
   </category>
@@ -392,9 +493,10 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.1.0" author="Jason Zac" time="2026-08-04T02:41:26Z">
-        <changelog><![CDATA[0.1.0 - first version.]]></changelog>
-        <source hash="1220fe5bbb5775755043f37443892cd1a1da20b0e8745898847b963fd31b6d910904">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/jsfx/nt_note_tracker.jsfx</source>
+      <version name="0.2.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+        <changelog><![CDATA[0.2.0 - FLUSH self-resets after firing, so every flush is a clean rising edge.
+0.1.0 - first version.]]></changelog>
+        <source hash="1220c946af417653bca442716378dbc6145eff540afdbdff1000f3e28fca5b4ce9bf">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/jsfx/nt_note_tracker.jsfx</source>
       </version>
     </reapack>
     <reapack name="nt_patch_gate.jsfx" type="effect" desc="Patch Gate (live patch switching)">
@@ -427,16 +529,19 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Jason Zac} \u183? {\field{\*\fldinst{HYPERLINK "https://www.nathanielschool.com"}}{\fldrslt{\ul Nathaniel School of Music}}} \u183? {\field{\*\fldinst{HYPERLINK "https://daw.nathanielschool.com"}}{\fldrslt{\ul daw.nathanielschool.com}}}\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i These exist because his own sessions were slow, not because anyone surveyed a market.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i Every app in here replaces a REAPER custom action that was quietly doing the wrong thing.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Status:} 68 automated checks passing, 0 failing, against REAPER 7.77 on macOS arm64.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Status:} 68 in-REAPER checks + 57 pure-Lua checks passing, 0 failing, against REAPER 7.77 / ReaImGui 0.10 on macOS arm64. Installed and verified end-to-end through ReaPack on the studio Mac, 19 Aug 2026.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\b Plain-English user guide:} {\field{\*\fldinst{HYPERLINK "docs/USER_GUIDE.md"}}{\fldrslt{\ul docs/USER_GUIDE.md}}} (also on the site at {\f1 /guide}).\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 What's in it\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 Apps (dockable, ReaImGui, one accent colour each)\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 App  \u8212?  Colour  \u8212?  What it does\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Folders & Flow}  \u8212?  green  \u8212?  Fix, build, dissolve, move and isolate track folders. Repairs a session whose folder maths has gone wrong.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Palette & Look}  \u8212?  violet  \u8212?  Colour and name tracks from {\i meaning} \u8212? rules, palettes, families, live watcher.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Track Settings Transfer}  \u8212?  violet  \u8212?  Pro-Tools style "Import Session Data" across project tabs, in both directions.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Stem Print & Handoff}  \u8212?  amber  \u8212?  Print stems in several modes and restore the session exactly afterwards.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b MIDI Batch Export}  \u8212?  amber  \u8212?  Export many MIDI items/regions as separate {\f1 .mid} files with pattern-based sequential names.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Palette & Look}  \u8212?  teal  \u8212?  Colour and name tracks from what they {\i are} \u8212? families, your own rules, palettes, live watcher.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Folders & Flow}  \u8212?  green  \u8212?  Build, fix, dissolve, move and isolate track folders. Repairs a session whose folder maths has gone wrong.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Track Settings Transfer}  \u8212?  green  \u8212?  Pro-Tools style "Import Session Data" across project tabs. Guesses stay unticked; transfer asks first.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b Stem Print & Handoff}  \u8212?  amber  \u8212?  Print stems (raw / inserts / fully wet / front-end), build a plugin-free handoff tab with the files on it, restore the session exactly.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b MIDI Batch Export}  \u8212?  amber  \u8212?  Export many MIDI items/regions as separate {\f1 .mid} files with pattern-based sequential names, tempo and time signature included.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 {\b StageRig}  \u8212?  violet  \u8212?  Live patch switching that lets the outgoing patch ring out. Footswitch scripts {\f1 StageRig Next} / {\f1 StageRig Panic}. Early.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 All six windows share one look and one behaviour ({\f1 scripts/lib/nt_ui.lua}): header, sections, one primary button, a status line that always says what happened (with a log), confirmation before anything destructive, drag-paint tick columns, plain-English tooltips.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 The speed layer (12 scripts, keyboard-bound)\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Solo Focus \u183? Record Arm Toggle \u183? FX Float Toggle \u183? FX Open/Close All \u183? Region Next/Prev \u183? Marker at Bar \u183? Tempo at Bar \u183? MIDI Render \u183? Flush Paste \u183? Duplicate Track \u183? Unsolo & Unselect\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Each one replaced a custom action that had a real, diagnosed bug \u8212? a pan-destroying step, a global preference being toggled on every press, a marker snapping to the arrange grid instead of the bar line. The root causes are documented in {\f1 docs/TECH_BRIEF.md}.\par}
@@ -445,6 +550,9 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 cannot crash REAPER.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `scripts/lib/nt_hierarchy.lua`} \u8212? folder maths. Converts REAPER's {\f1 I_FOLDERDEPTH} integers\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 to nesting levels, edits there, and regenerates. Well-formed output by construction.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `scripts/lib/nt_ui.lua`} \u8212? the design system: tokens, fonts (ReaImGui 0.9 and 0.10),\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 window/header/button/segmented/table/status/confirm/empty. Every window uses it.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab {\b `scripts/lib/nt_imgui.lua`} \u8212? bridges the enum constants ReaImGui renamed between releases.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Two things that make this different from a folder of scripts\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel2 \b \fs32 1. It cannot crash REAPER\par}
@@ -481,7 +589,7 @@ signature-based change detection, shared safety library.]]></changelog>
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Files must live in a subdirectory \u8212? ReaPack never indexes files at the repository root, and the directory name becomes the category shown in ReaPack.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \outlinelevel1 \b \fs36 Testing\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 lua tests/hierarchy_test.lua      # 31 checks, no REAPER needed}\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 {\f1 lua tests/hierarchy_test.lua      # 57 checks, no REAPER needed}\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Inside REAPER, run {\f1 tests/harness.lua} from the action list \u8212? 68 checks including live crash-safety. It builds its scratch project {\b in its own tab} and closes it afterwards, so it never touches the project you had open. Results land in {\f1 _nt_results.txt}.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 \li360 \i Edit {\f1 BASE} at the top of {\f1 harness.lua} to point at your install path.\par}
 {\pard \qc \f0 \fs24 \sa180 \li0 \fi0 \emdash\emdash\emdash\par}
