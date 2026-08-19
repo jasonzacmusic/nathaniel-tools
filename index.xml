@@ -324,6 +324,23 @@ MIDI items say so in the list BEFORE you export. New $region name.
         <source main="main" hash="1220ca710dbc2dbd1c8f38d0397d59205a65b2edc26aa4b30e26f80a86c359da986f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Marker%20at%20Bar.lua</source>
       </version>
     </reapack>
+    <reapack name="New Project Defaults.lua" type="script" desc="New Project Defaults (snap on, relative snap on, repeat off)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background (start it from __startup.lua or the Actions list). Every time a NEW, never-saved project appears - REAPER launch, File > New project, a new project tab - it switches snapping ON, relative grid snap ON, and transport repeat (loop) OFF. Projects you open from disk are left exactly as they were saved.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T10:01:35Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220a3a412f8369caae85bb530b689acdd0d2db388badb6dead1b840a18f54ba888f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/41993aac4f618ca9217889666db9217fd2086dc0/scripts/New%20Project%20Defaults.lua</source>
+      </version>
+    </reapack>
     <reapack name="Open Dock.lua" type="script" desc="Open Dock (all the Nathaniel Tools apps, docked)">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
