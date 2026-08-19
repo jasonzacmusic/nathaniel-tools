@@ -60,6 +60,19 @@ MUSICAL = [  # live in the centre Grid toolbar
 # obvious key lives there. Region N/B, Flush Paste, Duplicate, Reset stay on keys.
 NT_SPEED = [x for x in SPEED if x[1] in ("Script: Solo Focus.lua", "Script: Record Arm Toggle.lua",
                                          "Script: FX Float Toggle.lua", "Script: FX Open Close All.lua")]
+# LEFT zone (top row): the session toggles from Jason's main toolbar, lifted up.
+# Exact command ids from his [Main toolbar]; REAPER's own theme icons are kept.
+LEFT_ZONE = ["40364", "40041", "1156", "40070", "40145", "1157", "1135", "41819"]
+LEFT_ITEMS = [  # (command, label, icon or None) - exactly as they were on his main toolbar
+  ("40364", "Enable metronome", None),
+  ("40041", "Enable auto-crossfade", None),
+  ("1156",  "Enable grouping", None),
+  ("40070", "Move envelope points with media items", None),
+  ("40145", "Show arrange view grid", None),
+  ("1157",  "Enable snapping", None),
+  ("1135",  "Enable locking", None),
+  ("41819", "Pre-roll: Toggle pre-roll on record", "toolbar_preroll_clock_record.png"),
+]
 GRID_ICONS = {  # by command id in [Floating toolbar 1]
   "40781": "nt_grid_bar.png", "40780": "nt_grid_1_2.png", "40779": "nt_grid_1_4.png", "41214": "nt_grid_1_4t.png",
   "40778": "nt_grid_1_8.png", "40777": "nt_grid_1_8t.png", "40776": "nt_grid_1_16.png", "41213": "nt_grid_1_24.png",
@@ -122,7 +135,11 @@ def main():
             d = items_of(lines); items = d.get("item", {}); icons = d.get("icon", {})
             # LEFT zone = Jason's own REAPER buttons only. Everything of ours moves to
             # the centre (musical) and right (Nathaniel Tools) toolbars.
-            ours = {t for t, _, _ in SPEED + APPS + EDIT} | {"-1"}
+            ours = {t for t, _, _ in SPEED + APPS + EDIT} | {"-1"} | set(LEFT_ZONE)
+            lifted = {}   # keep his original lines for the LEFT zone toolbar
+            for i in sorted(items):
+                tok = items[i].split(" ", 1)[0]
+                if tok in LEFT_ZONE: lifted[tok] = (items[i], icons.get(i))
             keep_items, keep_icons = {}, {}
             k = 0
             for i in sorted(items):
@@ -166,15 +183,21 @@ def main():
     for tok, label, icon in APPS:
         if tok == "_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416": add(tok, label, icon)
     nt_section = rebuild_section(nt_lines, items, icons)
-    replaced = False
-    for idx, (name, lines) in enumerate(secs):
-        if name == "Floating toolbar 3":
-            if lines != nt_section: changed = True
-            secs[idx] = (name, nt_section); replaced = True
-    if not replaced:
-        # insert after Floating toolbar 2 (or 1)
-        at = max(i for i, (n, _) in enumerate(secs) if n and n.startswith("Floating toolbar")) + 1
-        secs.insert(at, ("Floating toolbar 3", nt_section)); changed = True
+    # LEFT zone toolbar (Floating toolbar 4): his session toggles, original labels/icons
+    left_items, left_icons = {}, {}
+    for k2, (tok, label, icon) in enumerate(LEFT_ITEMS):
+        left_items[k2] = f"{tok} {label}"
+        if icon: left_icons[k2] = icon
+    left_section = rebuild_section(["title=Session"], left_items, left_icons)
+    for want_name, want_sec in (("Floating toolbar 3", nt_section), ("Floating toolbar 4", left_section)):
+        replaced = False
+        for idx, (name, lines) in enumerate(secs):
+            if name == want_name:
+                if lines != want_sec: changed = True
+                secs[idx] = (name, want_sec); replaced = True
+        if not replaced:
+            at = max(i for i, (n, _) in enumerate(secs) if n and n.startswith("Floating toolbar")) + 1
+            secs.insert(at, (want_name, want_sec)); changed = True
     new = unparse(secs)
     if changed or new != text:
         open(INI, "w", encoding="utf-8", errors="surrogateescape").write(new)
@@ -234,6 +257,7 @@ def patch_split():
     else:
         new = new.rstrip("\n") + "\n[toolbar:3]\ndock=1\nwnd_height=81\nwnd_left=0\nwnd_top=64\nwnd_vis=1\nwnd_width=385\n"
     new = re.sub(r"^dockersel15=toolbar:3\n", "", new, flags=re.M)
+    new = re.sub(r"^toolbar:1=.*$", "toolbar:1=0.50000000 6", new, flags=re.M)   # grid strip: middle pane
     # docker 5 = its own pane at the TOP (mode 2, like the grid's docker 3), so the
     # three strips sit side by side instead of as tabs
     if re.search(r"^dockermode5=", new, flags=re.M):
@@ -241,6 +265,19 @@ def patch_split():
     else:
         new = re.sub(r"^(dockermode4=.*)$", r"\1\ndockermode5=2", new, count=1, flags=re.M)
     new = re.sub(r"^dockersel5=.*\n", "", new, flags=re.M)
+    if re.search(r"^toolbar:4=", new, flags=re.M):
+        new = re.sub(r"^toolbar:4=.*$", "toolbar:4=0.50000000 3", new, flags=re.M)
+    else:
+        new = re.sub(r"^(toolbar:1=.*)$", r"\1\ntoolbar:4=0.50000000 3", new, count=1, flags=re.M)
+    if re.search(r"^dockermode6=", new, flags=re.M):
+        new = re.sub(r"^dockermode6=.*$", "dockermode6=2", new, flags=re.M)
+    if re.search(r"^\[toolbar:4\]", new, flags=re.M):
+        a = new.index("[toolbar:4]"); b = new.find("\n[", a + 1); b = len(new) if b < 0 else b
+        body = new[a:b]
+        body = re.sub(r"^dock=\d+$", "dock=1", body, flags=re.M); body = re.sub(r"^wnd_vis=\d+$", "wnd_vis=1", body, flags=re.M)
+        new = new[:a] + body + new[b:]
+    else:
+        new = new.rstrip("\n") + "\n[toolbar:4]\ndock=1\nwnd_height=42\nwnd_left=0\nwnd_top=1346\nwnd_vis=1\nwnd_width=420\n"
     new = re.sub(r"^(dockermode5=2)$", r"\1", new, flags=re.M)   # stale: toolbar 3 used to sit in a hidden docker
     if new != text:
         shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
