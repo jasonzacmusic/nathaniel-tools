@@ -436,7 +436,7 @@ MIDI items say so in the list BEFORE you export. New $region name.
         <source main="main" hash="122001faf0ce258fbc50e077b399c2bfcbccd91901c43020d590167d8a7e98cc2516">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Region%20Prev.lua</source>
       </version>
     </reapack>
-    <reapack name="Render Safe.lua" type="script" desc="Render Safe (open the Render dialog with the artifact guards on)">
+    <reapack name="Render Safe.lua" type="script" desc="Render Safe (flush the plugins, then open the Render dialog)">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
         <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
@@ -444,17 +444,19 @@ MIDI items say so in the list BEFORE you export. New $region name.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Renders used to start with a burst of stray audio - plugin tails and buffers from wherever playback last was, and plugins (Waves, samplers) that are not ready on the first block. Jason's workaround was "play silence for 5 s, then render". This does the equivalent automatically and opens the Render dialog:\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab stops playback and flushes every FX buffer\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab turns on REAPER's "Delay render start to allow FX to initialize" with a\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 2-second delay, for this project (survives save; presets keep it too)\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 \u8226 ?\tab then opens File > Render. Press your render key as before.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Renders used to start with a burst of stray audio: reverb/delay tails and plugin buffers left over from wherever playback last was. Measured on the studio Mac: after playing a section and rendering the top of the song, the first half-second of the file carried a -32 dBFS tail that was not in the song - even with REAPER's "delay render start" on. Jason's hand workaround was "play 5 s of silence at the end of the project, then render". This script does exactly that, automatically:\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab stops, jumps past the end of the project, plays 4 s of silence through\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 every plugin so every tail decays, stops, puts the cursor back\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab opens File > Render. Press Render as usual.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Bound to your render keys (F14, Cmd+Opt+R).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-19T15:59:28Z">
-        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220b005360df136af44f7cb9d81734198139173e6ee006eacba8e1bcf2bc9db7460">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/1a4fcdf9445fc437c37efb059b126cbf15f05d0c/scripts/Render%20Safe.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T16:38:32Z">
+        <changelog><![CDATA[1.1.0 - flushes by playing silence past the end (the thing that really clears the tails);
+no longer forces "delay render start" (that pops a 30 s dialog on one-click renders).
+1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220e92f7330141e06de6a38e70d94e3d98f4dbb07886d08ea7331113c66f0756ec0">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/118899e0c765aaea25eb6205717ab08f3789f693/scripts/Render%20Safe.lua</source>
       </version>
     </reapack>
     <reapack name="Shared Libraries.lua" type="script" desc="Shared Libraries">
