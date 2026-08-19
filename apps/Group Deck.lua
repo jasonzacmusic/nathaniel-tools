@@ -1,5 +1,5 @@
 -- @description Group Deck
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -12,6 +12,7 @@
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
+--   1.1.0 - unique auto names (ELECTRIC, ELECTRIC 2); grouped-edit scope switch (inside / start-or-end / start-and-end) with a fades hint.
 --   1.0.0 - first version.
 
 local r = reaper
@@ -114,7 +115,12 @@ local function suggestName(tracks)
   end
   local nm = #common > 0 and table.concat(common, " ") or (words(names[1])[1] or "group")
   nm = nm:gsub("%s+[lrcLRC]$", ""):gsub("%s+%d+$", "")
-  return nm:upper()
+  nm = nm:upper()
+  -- never two groups with the same name: ELECTRIC, ELECTRIC 2, ELECTRIC 3 ...
+  local taken = {}
+  for g = 1, MAXG do local gn = groupName(g); if gn ~= "" then taken[gn:upper()] = true end end
+  if taken[nm] then local k = 2; while taken[nm .. " " .. k] do k = k + 1 end; nm = nm .. " " .. k end
+  return nm
 end
 
 local function selectedTracks()
@@ -145,6 +151,27 @@ end
 
 local CLUTCH = 40771  -- Track: Toggle all track grouping enabled
 local function groupingOn() return r.GetToggleCommandState(CLUTCH) == 1 end
+
+-- Which items on the OTHER tracks follow a grouped edit. REAPER has three rules,
+-- each its own toggle action; find them by name so the ids never go stale.
+local SCOPE = {
+  { id = "enclosed", label = "inside the edited item",  name = "Options: Track media/razor edit grouping affects items that are enclosed by the edited item",
+    tip = "Edit the LONGEST item and every item on the grouped tracks that sits inside its span follows. Best for layered takes of different lengths." },
+  { id = "either",   label = "start OR end together",   name = "Options: Track media/razor edit grouping affects items that start or end at the same time",
+    tip = "Items on the other tracks follow if they share the start or the end time with the edited item." },
+  { id = "both",     label = "start AND end together",  name = "Options: Track media/razor edit grouping affects items that start and end at the same time",
+    tip = "Strictest: only items with exactly the same start and end follow." },
+}
+for _, sc in ipairs(SCOPE) do
+  for c = 40000, 43500 do if r.kbd_getTextFromCmd(c, 0) == sc.name then sc.cmd = c break end end
+end
+local function scopeNow()
+  for _, sc in ipairs(SCOPE) do if sc.cmd and r.GetToggleCommandState(sc.cmd) == 1 then return sc.id end end
+  return nil
+end
+local function setScope(id)
+  for _, sc in ipairs(SCOPE) do if sc.id == id and sc.cmd and r.GetToggleCommandState(sc.cmd) ~= 1 then r.Main_OnCommand(sc.cmd, 0) end end
+end
 
 --------------------------------------------------------------------------------
 -- actions
@@ -230,6 +257,15 @@ local function frame()
   end
   r.ImGui_SameLine(ctx, 0, 14)
   ui.hint(ctx, on and "Groups are active." or "Bypassed: nothing moves together right now.")
+  -- grouped-edit scope
+  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Grouped edits follow items that are"); r.ImGui_SameLine(ctx, 0, 8)
+  local items = {}
+  for _, sc in ipairs(SCOPE) do if sc.cmd then items[#items + 1] = { id = sc.id, label = sc.label, tip = sc.tip } end end
+  local cur = scopeNow()
+  local nsc = ui.segmented(ctx, "scope", items, cur)
+  if nsc ~= cur then setScope(nsc); say("Grouped edits now follow items that are " .. nsc:gsub("enclosed", "inside the edited item"):gsub("either", "starting or ending together"):gsub("both", "starting and ending together") .. ".", "ok") end
+  r.ImGui_SameLine(ctx, 0, 10)
+  ui.hint(ctx, "Fades: select the items across the tracks, then drag one fade - all selected fades move.")
 
   -- NEW GROUP
   ui.section(ctx, "New group from the selected tracks")
