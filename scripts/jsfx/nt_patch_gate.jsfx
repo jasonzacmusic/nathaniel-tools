@@ -1,7 +1,16 @@
-desc:Nathaniel Tools - Patch Gate (live patch switching)
-// @description Nathaniel Tools Patch Gate
+// @description Patch Gate (live patch switching)
 // @version 1.0.0
 // @author Jason Zac
+// @link https://github.com/jasonzacmusic/nathaniel-tools
+// @donation https://github.com/jasonzacmusic/nathaniel-tools
+// @about
+//   Sits at the top of a patch track FX chain and decides whether new notes reach the
+//   instrument below. Never blocks note-offs; flushes held notes + CC64 on close.
+//   Superseded by Note Tracker & Input Gate for StageRig, kept for simple rigs.
+// @changelog
+//   1.0.0 - first public release.
+
+desc:Nathaniel Tools - Patch Gate (live patch switching)
 author: Jason Zac / Nathaniel School of Music
 about:
   Sits at the TOP of a patch track's FX chain and decides whether new notes are
