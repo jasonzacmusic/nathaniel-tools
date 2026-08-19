@@ -602,13 +602,14 @@ Scripts/Nathaniel Tools/stagerig/. Ships with the NSM Tribute Night rig spec.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Wherever two items on the same track overlap, the EARLIER item is cut at the start of the later one, so items butt instead of sitting on top of each other with a tangled crossfade. Works on the selected items; with no item selected, on every item of the selected tracks. Fades are left as they are.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Wherever two items on the same track overlap, the EARLIER item is cut at the start of the later one, so items butt instead of sitting on top of each other - and the tangled crossfade at that join (a long fade-out on the earlier item / long fade-in on the later one) is reset to REAPER's short default fade. Fades elsewhere (a song-ending fade-out, say) are left alone. Works on the selected items; with none, on the selected tracks; with no selection at all, on every track. One undo step.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-19T09:02:25Z">
-        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220682c6120bddba17020dfe450d3595869a8347956306212eed1dbd485b4c7992b">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Unoverlap%20Items.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T10:49:10Z">
+        <changelog><![CDATA[1.1.0 - also resets the crossfade at every join it fixes; no selection = whole project.
+1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220f44e2d05e427b0063f5d96927bc505bb8cc6ff424be90ceaf65cb3b4f312d155">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/34f8fa3aa072ebf4ae2ea25aae4079eedc376d92/scripts/Unoverlap%20Items.lua</source>
       </version>
     </reapack>
     <reapack name="Unsolo Unselect.lua" type="script" desc="Unsolo &amp; Unselect">
