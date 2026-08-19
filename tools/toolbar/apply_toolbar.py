@@ -51,6 +51,12 @@ KEYS = [
   ("1", "70", "_RS7d0fd86d14096f7b7941abb53b93f367c81e6cd6", "F: Instant Folder"),
   ("17", "71", "_RSffddbe2a395301265b409c1b43d152c24c2315a6", "Opt+G: Edit Group from Selection"),
 ]
+MUSICAL = [  # live in the centre Grid toolbar
+  ("_RS3e3d37cee699d29e819156f567875be6284ea8c1", "Script: Marker at Bar.lua",  "nt_marker_bar.png"),
+  ("_RSf7b09088b1c6b6bf1a3e02c894c2616afb496a9b", "Script: Tempo at Bar.lua",   "nt_tempo_bar.png"),
+  ("_RS7894b8b20be619fc9e182a197987c42c1b994dbc", "Script: MIDI Render.lua",    "nt_midi_render.png"),
+]
+NT_SPEED = [x for x in SPEED if x[0] not in {t for t, _, _ in MUSICAL}]   # the rest go right
 GRID_ICONS = {  # by command id in [Floating toolbar 1]
   "40781": "nt_grid_bar.png", "40780": "nt_grid_1_2.png", "40779": "nt_grid_1_4.png", "41214": "nt_grid_1_4t.png",
   "40778": "nt_grid_1_8.png", "40777": "nt_grid_1_8t.png", "40776": "nt_grid_1_16.png", "41213": "nt_grid_1_24.png",
@@ -111,7 +117,8 @@ def main():
     for idx, (name, lines) in enumerate(secs):
         if name == "Main toolbar":
             d = items_of(lines); items = d.get("item", {}); icons = d.get("icon", {})
-            # Jason's own buttons are everything that is not ours; keep them in order.
+            # LEFT zone = Jason's own REAPER buttons only. Everything of ours moves to
+            # the centre (musical) and right (Nathaniel Tools) toolbars.
             ours = {t for t, _, _ in SPEED + APPS + EDIT} | {"-1"}
             keep_items, keep_icons = {}, {}
             k = 0
@@ -122,20 +129,6 @@ def main():
                 if i in icons: keep_icons[k] = icons[i]
                 if tok == "_RS7894b8b20be619fc9e182a197987c42c1b994dbc": keep_icons[k] = "nt_midi_render.png"
                 k += 1
-            # then ours, in three breathing groups: speed layer | editing | dock
-            def sep():
-                nonlocal k
-                keep_items[k] = "-1 SEPARATOR"; k += 1
-            sep()
-            for tok, label, icon in SPEED:
-                keep_items[k] = f"{tok} {label}"; keep_icons[k] = icon; k += 1
-            sep()
-            for tok, label, icon in EDIT:
-                keep_items[k] = f"{tok} {label}"; keep_icons[k] = icon; k += 1
-            sep()
-            for tok, label, icon in APPS:
-                if tok == "_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416":   # only Open Dock; the apps live in the docker
-                    keep_items[k] = f"{tok} {label}"; keep_icons[k] = icon; k += 1
             if keep_items != items or keep_icons != icons: changed = True
             secs[idx] = (name, rebuild_section(lines, keep_items, keep_icons))
         if name == "Floating toolbar 1":
@@ -144,7 +137,41 @@ def main():
                 cmd = v.split(" ", 1)[0]
                 if cmd in GRID_ICONS and icons.get(i) != GRID_ICONS[cmd]:
                     icons[i] = GRID_ICONS[cmd]; changed = True
+            # CENTRE zone = grid + musical settings: marker on bar, tempo on bar, MIDI render
+            present = " ".join(items.values())
+            nxt = (max(items) + 1) if items else 0
+            if not any(t in present for t, _, _ in MUSICAL):
+                items[nxt] = "-1 SEPARATOR"; nxt += 1
+            for tok, label, icon in MUSICAL:
+                if tok in present: continue
+                items[nxt] = f"{tok} {label}"; icons[nxt] = icon; nxt += 1; changed = True
             secs[idx] = (name, rebuild_section(lines, items, icons))
+        if name == "Floating toolbar 3":
+            haveNT = True
+    # RIGHT zone = Nathaniel Tools toolbar (Floating toolbar 3), rebuilt every time
+    nt_lines = ["title=Nathaniel Tools"]
+    items, icons, k = {}, {}, 0
+    def add(tok, label, icon):
+        nonlocal k
+        items[k] = f"{tok} {label}"
+        if icon: icons[k] = icon
+        k += 1
+    for tok, label, icon in NT_SPEED: add(tok, label, icon)
+    add("-1", "SEPARATOR", None)
+    for tok, label, icon in EDIT: add(tok, label, icon)
+    add("-1", "SEPARATOR", None)
+    for tok, label, icon in APPS:
+        if tok == "_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416": add(tok, label, icon)
+    nt_section = rebuild_section(nt_lines, items, icons)
+    replaced = False
+    for idx, (name, lines) in enumerate(secs):
+        if name == "Floating toolbar 3":
+            if lines != nt_section: changed = True
+            secs[idx] = (name, nt_section); replaced = True
+    if not replaced:
+        # insert after Floating toolbar 2 (or 1)
+        at = max(i for i, (n, _) in enumerate(secs) if n and n.startswith("Floating toolbar")) + 1
+        secs.insert(at, ("Floating toolbar 3", nt_section)); changed = True
     new = unparse(secs)
     if changed or new != text:
         open(INI, "w", encoding="utf-8", errors="surrogateescape").write(new)
@@ -179,18 +206,37 @@ def patch_keys():
         print("keys already set")
 
 def patch_split():
-    """reaper.ini 'toolbar=<split> <docker>': the main toolbar's share of the top strip.
-    0.5 = half the width = four cramped rows; 0.72 = one clean row at 2560 px."""
+    """reaper.ini: main toolbar keeps half the strip (his two tidy rows); the
+    Nathaniel Tools toolbar (toolbar:3) is docked into the top toolbar docker
+    (docker 3, where the Grid toolbar lives) at the right-hand split."""
     ini = os.path.join(os.path.dirname(INI), "reaper.ini")
     if not os.path.exists(ini): return
     text = open(ini, encoding="utf-8", errors="surrogateescape").read()
-    new = re.sub(r"^toolbar=0\.5\d* (\d+)$", r"toolbar=0.72000000 \1", text, flags=re.M)
+    new = re.sub(r"^toolbar=0\.\d+ (\d+)$", r"toolbar=0.50000000 \1", text, flags=re.M)
+    if re.search(r"^toolbar:3=", new, flags=re.M):
+        new = re.sub(r"^toolbar:3=.*$", "toolbar:3=0.66000000 3", new, flags=re.M)
+    else:
+        new = re.sub(r"^(toolbar:1=.*)$", r"\1\ntoolbar:3=0.66000000 3", new, count=1, flags=re.M)
+    # [toolbar:3] section: docked + visible
+    if re.search(r"^\[toolbar:3\]", new, flags=re.M):
+        sec_start = new.index("[toolbar:3]")
+        sec_end = new.find("\n[", sec_start + 1)
+        if sec_end < 0: sec_end = len(new)
+        body = new[sec_start:sec_end]
+        body2 = re.sub(r"^dock=\d+$", "dock=1", body, flags=re.M)
+        body2 = re.sub(r"^wnd_vis=\d+$", "wnd_vis=1", body2, flags=re.M)
+        if "dock=" not in body2: body2 += "\ndock=1"
+        if "wnd_vis=" not in body2: body2 += "\nwnd_vis=1"
+        new = new[:sec_start] + body2 + new[sec_end:]
+    else:
+        new = new.rstrip("\n") + "\n[toolbar:3]\ndock=1\nwnd_height=81\nwnd_left=0\nwnd_top=64\nwnd_vis=1\nwnd_width=385\n"
+    new = re.sub(r"^dockersel15=toolbar:3\n", "", new, flags=re.M)   # stale: toolbar 3 used to sit in a hidden docker
     if new != text:
         shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
         open(ini, "w", encoding="utf-8", errors="surrogateescape").write(new)
-        print("widened main toolbar split to 0.72")
+        print("reaper.ini: main toolbar split 0.5, Nathaniel Tools toolbar docked top (docker 3 @ 0.66)")
     else:
-        print("split unchanged")
+        print("reaper.ini unchanged")
 
 if __name__ == "__main__":
     main()
