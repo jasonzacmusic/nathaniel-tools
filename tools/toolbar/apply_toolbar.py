@@ -36,6 +36,21 @@ APPS = [
   ("_RS63e8c07c47868ba7378219838fb02c0d8b3ce2e5", "Script: MIDI Batch Export.lua",       "nt_app_midi_export.png"),
   ("_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416", "Script: Open Dock.lua",               "nt_app_dock.png"),
 ]
+EDIT = [
+  ("_RS7d0fd86d14096f7b7941abb53b93f367c81e6cd6", "Script: Instant Folder.lua",             "nt_instant_folder.png"),
+  ("_RSffddbe2a395301265b409c1b43d152c24c2315a6", "Script: Edit Group from Selection.lua",  "nt_edit_group.png"),
+  ("40771",                                        "Track: Toggle all track grouping enabled","nt_clutch.png"),
+  ("_RS3369903b90a8d86a8c382088066ca626cec0ff69", "Script: Trim Left No Overlap.lua",       "nt_trim_left.png"),
+  ("_RS0260bf4e29964fd3e1f486c70f4d69c900d1c8cc", "Script: Trim Right No Overlap.lua",      "nt_trim_right.png"),
+  ("_RS22cf425eb9b6c6f19f26a8cc44db19480018a687", "Script: Unoverlap Items.lua",            "nt_unoverlap.png"),
+]
+# key rebinds in reaper-kb.ini: (modifier code, key code, new token, label)
+KEYS = [
+  ("1", "90", "_RS3369903b90a8d86a8c382088066ca626cec0ff69", "Z: Trim Left No Overlap"),
+  ("1", "88", "_RS0260bf4e29964fd3e1f486c70f4d69c900d1c8cc", "X: Trim Right No Overlap"),
+  ("1", "70", "_RS7d0fd86d14096f7b7941abb53b93f367c81e6cd6", "F: Instant Folder"),
+  ("17", "71", "_RSffddbe2a395301265b409c1b43d152c24c2315a6", "Opt+G: Edit Group from Selection"),
+]
 GRID_ICONS = {  # by command id in [Floating toolbar 1]
   "40781": "nt_grid_bar.png", "40780": "nt_grid_1_2.png", "40779": "nt_grid_1_4.png", "41214": "nt_grid_1_4t.png",
   "40778": "nt_grid_1_8.png", "40777": "nt_grid_1_8t.png", "40776": "nt_grid_1_16.png", "41213": "nt_grid_1_24.png",
@@ -101,7 +116,7 @@ def main():
             # give his existing MIDI Render button our icon if it is the installed script
             for i, v in list(items.items()):
                 if v.startswith("_RS7894b8b20be619fc9e182a197987c42c1b994dbc"): icons[i] = "nt_midi_render.png"
-            for tok, label, icon in SPEED + APPS:
+            for tok, label, icon in SPEED + APPS + EDIT:
                 if tok in present: continue
                 items[nxt] = f"{tok} {label}"; icons[nxt] = icon; nxt += 1; changed = True
             secs[idx] = (name, rebuild_section(lines, items, icons))
@@ -119,5 +134,32 @@ def main():
     else:
         print("nothing to change")
 
+def patch_keys():
+    kb = os.path.join(os.path.dirname(INI), "reaper-kb.ini")
+    if not os.path.exists(kb): return
+    text = open(kb, encoding="utf-8", errors="surrogateescape").read()
+    shutil.copy(kb, kb + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
+    lines = text.split("\n"); out = []; done = set(); changed = False
+    for ln in lines:
+        m = re.match(r"^KEY (\d+) (\d+) (\S+) (\d+)(.*)$", ln)
+        if m:
+            for mod, key, tok, label in KEYS:
+                if m.group(1) == mod and m.group(2) == key and m.group(4) == "0":
+                    if m.group(3) != tok:
+                        ln = f"KEY {mod} {key} {tok} 0"; changed = True
+                    done.add((mod, key))
+        out.append(ln)
+    for mod, key, tok, label in KEYS:
+        if (mod, key) not in done:
+            # add after the last KEY line
+            idx = max(i for i, l in enumerate(out) if l.startswith("KEY ")) if any(l.startswith("KEY ") for l in out) else len(out)
+            out.insert(idx + 1, f"KEY {mod} {key} {tok} 0"); changed = True
+    if changed:
+        open(kb, "w", encoding="utf-8", errors="surrogateescape").write("\n".join(out))
+        print("patched keys in", kb)
+    else:
+        print("keys already set")
+
 if __name__ == "__main__":
     main()
+    patch_keys()

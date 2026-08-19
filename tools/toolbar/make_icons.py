@@ -67,6 +67,14 @@ for key, label, size in [("grid_bar","BAR",7.2), ("grid_1_2","1/2",8.2), ("grid_
 G["grid_click"]      = ("grid",  lambda i: f'<path d="M9 19.5L11 5.5H13L15 19.5Z" {S(i,1.4)}/><line x1="7" y1="19.5" x2="17" y2="19.5" {S(i,1.6)}/><circle cx="12" cy="11" r="1.4" fill="{i}"/>')
 G["grid_random_col"] = ("grid",  lambda i: f'<circle cx="8" cy="9" r="2.4" fill="{i}"/><circle cx="15.5" cy="8" r="2.4" fill="{i}" opacity=".75"/><circle cx="10" cy="15.5" r="2.4" fill="{i}" opacity=".55"/><circle cx="16.5" cy="15" r="2.4" fill="{i}" opacity=".9"/>')
 
+# --- editing helpers (19-Aug afternoon)
+G["instant_folder"]  = ("green", lambda i: f'<path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H9.5L11.5 8H18.5A1.5 1.5 0 0 1 20 9.5V17A1.5 1.5 0 0 1 18.5 18.5H5.5A1.5 1.5 0 0 1 4 17Z" {S(i,1.5)}/><path d="M12 10.5V16M9.2 13.2H14.8" {S(i,1.7)}/>')
+G["edit_group"]      = ("speed", lambda i: f'<path d="M4 8H20M4 12H20M4 16H20" {S(i,1.6)}/><path d="M9 5.5V18.5M15 5.5V18.5" {S(i,1.2)} stroke-dasharray="2 2"/>')
+G["clutch"]          = ("red",   lambda i: text(i, "CLUTCH", 5.6, 14.6))
+G["unoverlap"]       = ("speed", lambda i: f'<rect x="3.5" y="8" width="8" height="8" rx="1.5" {S(i,1.5)}/><rect x="12.5" y="8" width="8" height="8" rx="1.5" {S(i,1.5)}/><path d="M12 5V19" {S(i,1.2)}/>')
+G["trim_left"]       = ("speed", lambda i: f'<rect x="9" y="7" width="11" height="10" rx="1.5" {S(i,1.5)}/><path d="M9 5.5V18.5M4 12H8.5M6 9.5L3.5 12L6 14.5" {S(i,1.6)}/>')
+G["trim_right"]      = ("speed", lambda i: f'<rect x="4" y="7" width="11" height="10" rx="1.5" {S(i,1.5)}/><path d="M15 5.5V18.5M20 12H15.5M18 9.5L20.5 12L18 14.5" {S(i,1.6)}/>')
+
 def render(name, accent, body):
     svg = strip(ACC[accent], body)
     os.makedirs(OUT, exist_ok=True)

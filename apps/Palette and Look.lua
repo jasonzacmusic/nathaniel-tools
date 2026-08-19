@@ -1,5 +1,5 @@
 -- @description Palette & Look
--- @version 2.1.0
+-- @version 2.2.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -10,6 +10,7 @@
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
+--   2.2.0 - "Rename + one colour" (the old Y key) with Try another colour; same-number-for-all numbering; One colour (random) in Tools.
 --   2.1.0 - first run imports your SWS Auto Color rules automatically; opens docked.
 --   2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
 --           dialogs, system font, plain-English labels everywhere.
@@ -572,6 +573,8 @@ local rows        = {}             -- { guid, name, kind, label, want, depth, se
 local lastSig, lastSigT = nil, 0
 local shadeChildren = true
 local numberTracks, numberStart = false, 1
+local numberSame = false      -- true = every track gets the SAME number (a session/batch number), false = count up
+local lastUniform = nil        -- GUIDs of the tracks last painted one colour (for "Try another")
 local useMyRules   = true
 local doMarkers    = true
 local liveOn       = false
@@ -963,7 +966,7 @@ local function nameFromItems(o)
     end
     if not newName or newName == "" then newName = prettify(tName(t)) end
     if newName ~= "" then
-      if numberTracks then newName = string.format("%02d %s", num, newName) end
+      if numberTracks then newName = numberSame and (tostring(numberStart) .. " " .. newName) or string.format("%02d %s", num, newName) end
       r.GetSetMediaTrackInfo_String(t, "P_NAME", newName, true)
       renamed = renamed + 1
     end
@@ -986,6 +989,54 @@ local function nameAndColor()
   refreshUI()
   say(("Renamed %d and coloured %d track(s) in %s - one undo step."):format(renamed, painted, scopeWord()), "ok")
   rebuild()
+end
+
+-- One colour for the whole set - Jason's old "Y" script, grown up: rename from
+-- items (with the number prefix if on), paint every track the SAME random
+-- pleasant colour, and offer "Try another" until it looks right.
+local function pleasantRandom()
+  local h = math.random()
+  local sat, lig = 0.55 + math.random() * 0.3, 0.50 + math.random() * 0.15
+  local function f(n) local k = (n + h * 12) % 12; local a = sat * math.min(lig, 1 - lig); return lig - a * math.max(-1, math.min(k - 3, 9 - k, 1)) end
+  return { math.floor(f(0) * 255 + 0.5), math.floor(f(8) * 255 + 0.5), math.floor(f(4) * 255 + 0.5) }
+end
+local function paintUniform(list, rgb)
+  for _, t in ipairs(list) do setCol(t, rgb) end
+  r.TrackList_AdjustWindows(false); r.UpdateArrange()
+end
+local function renameAndOneColour()
+  local list = scopeList(); if not list then return end
+  r.Undo_BeginBlock2(0)
+  local renamed = nameFromItems({ list = list, undo = false, silent = true })
+  local rgb = pleasantRandom()
+  paintUniform(list, rgb)
+  r.Undo_EndBlock2(0, "Palette & Look: rename + one colour", -1)
+  lastUniform = {}
+  for _, t in ipairs(list) do lastUniform[#lastUniform + 1] = r.GetTrackGUID(t) end
+  refreshUI(); rebuild()
+  say(("Renamed %d track(s) from their items and painted them one colour. Not the one? Press 'Try another colour'."):format(renamed), "ok")
+end
+local function tryAnotherColour()
+  if not lastUniform or #lastUniform == 0 then say("Nothing to recolour yet - press 'Rename + one colour' first.", "warn") return end
+  local map = safe.guidMap(0)
+  local list = {}
+  for _, g in ipairs(lastUniform) do if map[g] then list[#list + 1] = map[g] end end
+  if #list == 0 then say("Those tracks are gone.", "warn") lastUniform = nil return end
+  r.Undo_BeginBlock2(0)
+  paintUniform(list, pleasantRandom())
+  r.Undo_EndBlock2(0, "Palette & Look: try another colour", -1)
+  refreshUI(); rebuild()
+  say(("Another colour on %d track(s). Again?"):format(#list), "ok")
+end
+local function oneColourOnly()
+  local list = scopeList(); if not list then return end
+  r.Undo_BeginBlock2(0)
+  paintUniform(list, pleasantRandom())
+  r.Undo_EndBlock2(0, "Palette & Look: one colour", -1)
+  lastUniform = {}
+  for _, t in ipairs(list) do lastUniform[#lastUniform + 1] = r.GetTrackGUID(t) end
+  refreshUI(); rebuild()
+  say(("Painted %d track(s) one colour. Press 'Try another colour' to re-roll."):format(#list), "ok")
 end
 
 local function stripEmoji(nm)
@@ -1250,6 +1301,8 @@ local function tabTools()
   r.ImGui_SameLine(ctx); if ui.button(ctx, "Hue -", { tip = "Turn the other way round the colour wheel." }) then nudge("hue", -0.04) end
 
   ui.section(ctx, "Structure and housekeeping")
+  if ui.button(ctx, "One colour (random)", { tip = "Paint " .. scopeWord() .. " one random colour. Then Try another colour up top to re-roll." }) then oneColourOnly() end
+  r.ImGui_SameLine(ctx)
   if ui.button(ctx, "Match to first selected", { tip = "Give every other track in " .. scopeWord() .. " the colour of the first one." }) then copyFirstColor() end
   r.ImGui_SameLine(ctx)
   if ui.button(ctx, "Children inherit folder", { tip = "Tracks inside a folder take a lighter shade of the folder's colour. Always the whole project." }) then inheritFromParent() end
@@ -1359,14 +1412,20 @@ local function frame()
   r.ImGui_SameLine(ctx)
   if ui.button(ctx, "Name + colour", { h = 34, tip = "Name from items, then apply colours - one undo step." }) then nameAndColor() end
   r.ImGui_SameLine(ctx, 0, 14)
-  local nc, nv = ui.toggle(ctx, "Number them", numberTracks, "When naming, put a number in front of each name (01 Kick, 02 Snare...).")
+  if ui.button(ctx, "Rename + one colour", { h = 34, tip = "Your old 'Y' key: rename " .. scopeWord() .. " from their items (with the number in front if Number them is on) and paint them all ONE colour. Then 'Try another colour' until it looks right." }) then renameAndOneColour() end
+  r.ImGui_SameLine(ctx)
+  if ui.button(ctx, "Try another colour", { h = 34, kind = "ghost", disabled = not lastUniform, tip = "Re-roll the one colour on the same tracks." }) then tryAnotherColour() end
+  r.ImGui_SameLine(ctx, 0, 14)
+  local nc, nv = ui.toggle(ctx, "Number them", numberTracks, "When naming, put a number in front of each name.")
   if nc then numberTracks = nv end
   r.ImGui_SameLine(ctx, 0, 6)
-  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "from"); r.ImGui_SameLine(ctx, 0, 6)
   r.ImGui_SetNextItemWidth(ctx, 56)
   local sc, sv = r.ImGui_InputInt(ctx, "##start", numberStart, 0, 0)
   if sc then numberStart = math.max(1, sv) end
-  ui.tip(ctx, "The first number to use.")
+  ui.tip(ctx, numberSame and "The number every track gets (a session / batch number)." or "The first number to use.")
+  r.ImGui_SameLine(ctx, 0, 6)
+  local nm2, nv2 = ui.toggle(ctx, "same for all", numberSame, "ON: every track gets this one number in front (4 Kick, 4 Snare - a batch number, like files you were given). OFF: count up 01, 02, 03...")
+  if nm2 then numberSame = nv2 end
 
   -- tabs
   ui.vspace(ctx, 4)

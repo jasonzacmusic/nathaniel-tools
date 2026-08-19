@@ -40,7 +40,9 @@ way, name tracks after their audio file, number them, and re-colour on the fly (
 as you add tracks.
 
 **Use it when:** a session has grown past twenty tracks and you can't find the guitars at
-a glance. Press **APPLY COLOURS**. Done.
+a glance. Press **APPLY COLOURS**. Done. Files someone gave you? **Rename + one colour**
+(the old Y key): names from the items, one colour for the lot, **Try another colour** until it
+looks right; **Number them → same for all** puts one batch number in front of every name.
 
 ### Folders & Flow — green
 Folders without dragging. Tick tracks → **Make folder**. Indent, outdent, pull a track out,
@@ -107,6 +109,10 @@ Each replaced a REAPER custom action that was quietly doing the wrong thing.
 | **E** | Unsolo & Unselect | The reset key: clears solos, arms, selections, time selection |
 | *(pedal)* | Toggle Chorale | Finds the Chorale plugin wherever it is and flips it on/off |
 | **Control+click** in the bottom half of an item | Stretch Marker at Mouse | Adds a stretch marker right under the pointer (assigned as a mouse modifier) |
+| **F** | Instant Folder | A NEW folder track appears above the selected tracks, named from what they share (ELECTRIC, KICK), coloured like them, a little taller; nothing else moves |
+| **⌥G** | Edit Group from Selection | The selected tracks edit together (split/trim/move) but faders, mutes, solos stay independent; press again to ungroup. Clutch = ⌘⇧G (toggle all grouping) |
+| **Z** / **X** | Trim Left / Right No Overlap | Trim the item edge to the cursor AND keep the neighbour from overlapping — items butt, no tangled crossfades |
+| — | Unoverlap Items | Fix existing overlaps on selected items / tracks: the earlier item is cut where the next one starts |
 
 Keys are *suggestions* — bind whatever you like in the Actions list.
 
