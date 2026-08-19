@@ -13,10 +13,10 @@
 }
 ]]></description>
       </metadata>
-      <version name="1.1.0" author="Jason Zac" time="2026-08-19T11:14:01Z">
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T15:47:21Z">
         <changelog><![CDATA[1.1.0 - unique auto names (ELECTRIC, ELECTRIC 2); grouped-edit scope switch (inside / start-or-end / start-and-end) with a fades hint.
 1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220452f14adf2622054696daac2fa134a782bce426e40a0b5fa0d68a8d26d4064d5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/76549fe4702cb93663920f01f3a9ed45e9818b53/apps/Group%20Deck.lua</source>
+        <source main="main" hash="1220201f9e0ba2ad373b736ed29c0e2b86c859c63e42e7562ae9cee546558b70704c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/f36e82b16395e4918550856a932cfb30958626ec/apps/Group%20Deck.lua</source>
       </version>
     </reapack>
     <reapack name="Palette and Look.lua" type="script" desc="Palette &amp; Look">
@@ -150,14 +150,15 @@ refusing to launch.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Duplicate the selected track EMPTY and armed, ready to record the next layer; your original arm state comes back exactly. Needs SWS.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Duplicate the selected track EMPTY and armed, ready to record the next layer; the original is disarmed, every other track keeps its arm state. Needs SWS.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
-        <changelog><![CDATA[1.1.0 - stops with a message if SWS is missing.
+      <version name="1.2.0" author="Jason Zac" time="2026-08-19T15:47:21Z">
+        <changelog><![CDATA[1.2.0 - the track you duplicated is DISARMED; only the new layer is armed. Other tracks untouched.
+1.1.0 - stops with a message if SWS is missing.
 1.0.0 - first public release.]]></changelog>
-        <source main="main" hash="1220f33d85f8298ac2d5ed55ca017c11bc594b1918a1ad80b08786b6c37885498e5c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Duplicate%20Track.lua</source>
+        <source main="main" hash="122020b100db53f487e9c997f2ef889f793b33982376f5b3d273b0758244e3a1b2fa">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/f36e82b16395e4918550856a932cfb30958626ec/scripts/Duplicate%20Track.lua</source>
       </version>
     </reapack>
     <reapack name="Edit Group from Selection.lua" type="script" desc="Edit Group from Selection (media edits move together, nothing else)">
