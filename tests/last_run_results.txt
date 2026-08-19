@@ -1,1 +1,87 @@
-demo session built: 9 tracks, with a deliberately unclosed folder at track 5
+=== Nathaniel Tools install + verify  2026-08-19 13:02:44 ===
+REAPER 7.77/macOS-arm64
+
+-- environment --
+PASS  ReaImGui present
+PASS  SWS present
+PASS  SWS SNM config vars present
+PASS  ValidatePtr2 present
+PASS  InsertTrackInProject present
+
+-- shared library --
+PASS  nt_safe.lua loads
+PASS  projAlive(0) = the current project
+PASS  projAlive(nil) is false, not an error
+PASS  projSignature exported (the working change detector)
+
+-- registration --
+PASS  registered  scripts/Solo Focus.lua                 _RS70b23e69efd7b91020ba89e8d4544abdc7cd0773
+PASS  registered  scripts/Record Arm Toggle.lua          _RS47e470b1f815b379e308f3a5880334082c203f27
+PASS  registered  scripts/FX Float Toggle.lua            _RSf33a8443194a2b78d99b0cc573318b004b0fe0f6
+PASS  registered  scripts/FX Open Close All.lua          _RS7403f7876dafe558afa4a4d96801885fe894f7c4
+PASS  registered  scripts/Region Next.lua                _RSfbd8119451b590b59a820883c58822f28312b15a
+PASS  registered  scripts/Region Prev.lua                _RS315128d9dc42b05eadbbbfc2199bd140ff044e4d
+PASS  registered  scripts/Marker at Bar.lua              _RS3e3d37cee699d29e819156f567875be6284ea8c1
+PASS  registered  scripts/Tempo at Bar.lua               _RSf7b09088b1c6b6bf1a3e02c894c2616afb496a9b
+PASS  registered  scripts/MIDI Render.lua                _RS7894b8b20be619fc9e182a197987c42c1b994dbc
+PASS  registered  scripts/Flush Paste.lua                _RS6e3a6a5220585e88edb2599dcb39ff2e660666ae
+PASS  registered  scripts/Duplicate Track.lua            _RSf06839d8a9ba0ae9b2fd8dbb6ea42965faad1d0b
+PASS  registered  scripts/Unsolo Unselect.lua            _RSa3fc5d1453deba43ad330cab451e2355aec16fed
+PASS  registered  scripts/MIDI Batch Export.lua          _RS63e8c07c47868ba7378219838fb02c0d8b3ce2e5
+PASS  registered  scripts/Folders and Flow.lua           _RSba60274f69340b2f812fadfdfa53d903450380c8
+PASS  registered  apps/Palette and Look.lua              _RS4f379389f26945fd4ef7165c13447e527a89a3b4
+PASS  registered  apps/Track Settings Transfer.lua       _RS1cb3069be72c50172fd6497a5235bcceb285479e
+PASS  registered  apps/Stem Print and Handoff.lua        _RS3b480c1a3973c4cab21a84663fae3a4c244a8174
+
+-- compile --
+PASS  compiles: scripts/Solo Focus.lua
+PASS  compiles: scripts/Record Arm Toggle.lua
+PASS  compiles: scripts/FX Float Toggle.lua
+PASS  compiles: scripts/FX Open Close All.lua
+PASS  compiles: scripts/Region Next.lua
+PASS  compiles: scripts/Region Prev.lua
+PASS  compiles: scripts/Marker at Bar.lua
+PASS  compiles: scripts/Tempo at Bar.lua
+PASS  compiles: scripts/MIDI Render.lua
+PASS  compiles: scripts/Flush Paste.lua
+PASS  compiles: scripts/Duplicate Track.lua
+PASS  compiles: scripts/Unsolo Unselect.lua
+PASS  compiles: scripts/MIDI Batch Export.lua
+PASS  compiles: scripts/Folders and Flow.lua
+PASS  compiles: apps/Palette and Look.lua
+PASS  compiles: apps/Track Settings Transfer.lua
+PASS  compiles: apps/Stem Print and Handoff.lua
+
+-- crash safety (scratch tab) --
+PASS  opened a scratch tab; your session untouched
+PASS  built 5 scratch tracks
+PASS  snapshot() returned 5 rows
+PASS  cached a pointer the way the old code used to
+PASS  projSignature CHANGES on delete (the watchdog fires)
+PASS  GetProjectStateChangeCount readable but NOT trusted
+PASS  trackAlive() sees the freed pointer as dead
+PASS  resolve() on a deleted GUID returns nil
+PASS  getVal() returns the default, no fault
+PASS  setVal() refuses and reports it
+PASS  getName() is empty, not a fault
+  (REAPER is still running - that is the point of this section)
+PASS  normaliseFolders repaired an unclosed folder
+PASS  folder depths balance to zero
+PASS  returned to the exact tab you started on
+
+-- folders & flow --
+PASS  nt_hierarchy.lua loads
+PASS  readLevels saw 5 tracks
+PASS  writeLevels closed the hanging folder (depths sum to 0)
+PASS  makeFolder over tracks 1-3
+PASS  DRUMS is now a folder parent
+PASS  its subtree is 3 tracks
+PASS  dissolve accepted
+PASS  after dissolve DRUMS is an ordinary track
+PASS  dissolve deleted nothing
+PASS  autoGroupPlan returns a plan
+PASS  folder tab closed, back where we started
+
+wrote _register.txt with 17 entries
+
+=== 68 passed, 0 failed ===

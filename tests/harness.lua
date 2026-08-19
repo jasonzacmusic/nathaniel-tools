@@ -138,6 +138,9 @@ end
 check(depth == 0, "folder depths balance to zero")
 
 r.Main_OnCommand(40860, 0)
+-- with several tabs open REAPER may land on a neighbour after closing ours;
+-- go back to where the user was, then prove it
+if r.EnumProjects(-1) ~= before and r.ValidatePtr2(0, before, "ReaProject*") then r.SelectProjectInstance(before) end
 check(r.EnumProjects(-1) == before, "returned to the exact tab you started on")
 w("")
 
@@ -188,6 +191,7 @@ if okH then
   check(type(plan) == "table", "autoGroupPlan returns a plan")
 
   r.Main_OnCommand(40860, 0)
+  if r.EnumProjects(-1) ~= before and r.ValidatePtr2(0, before, "ReaProject*") then r.SelectProjectInstance(before) end
   check(r.EnumProjects(-1) == before, "folder tab closed, back where we started")
 end
 w("")
