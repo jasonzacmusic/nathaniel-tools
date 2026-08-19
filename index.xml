@@ -13,9 +13,10 @@
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-19T11:09:06Z">
-        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220227282efb7ccced8a27646a462d5d6d38d0c30928255ae834e7efbdbde6a6f92">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/90e6fe0127bcb1e6c47a49e389e3439b66cb3460/apps/Group%20Deck.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T11:14:01Z">
+        <changelog><![CDATA[1.1.0 - unique auto names (ELECTRIC, ELECTRIC 2); grouped-edit scope switch (inside / start-or-end / start-and-end) with a fades hint.
+1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220452f14adf2622054696daac2fa134a782bce426e40a0b5fa0d68a8d26d4064d5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/76549fe4702cb93663920f01f3a9ed45e9818b53/apps/Group%20Deck.lua</source>
       </version>
     </reapack>
     <reapack name="Palette and Look.lua" type="script" desc="Palette &amp; Look">
