@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <index version="1" name="Nathaniel Tools">
   <category name="apps">
+    <reapack name="Group Deck.lua" type="script" desc="Group Deck">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Intelligent track grouping with buttons. Select tracks, tick what should move together (solo, mute, record arm, volume, editing - pan off by default), press GROUP. Every existing group is listed with its name, its members and one tick per behaviour you can flip live; Select / Ungroup per group; and the CLUTCH (REAPER's "all grouping enabled") as a big switch. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T11:09:06Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220227282efb7ccced8a27646a462d5d6d38d0c30928255ae834e7efbdbde6a6f92">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/90e6fe0127bcb1e6c47a49e389e3439b66cb3460/apps/Group%20Deck.lua</source>
+      </version>
+    </reapack>
     <reapack name="Palette and Look.lua" type="script" desc="Palette &amp; Look">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
@@ -356,9 +373,10 @@ MIDI items say so in the list BEFORE you export. New $region name.
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
-        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="12208b64c312c6c06e3163290d619f42a7d8c35e54060ce67cb05ce726758be3bc4d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/scripts/Open%20Dock.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-08-19T11:09:06Z">
+        <changelog><![CDATA[1.1.0 - also opens Group Deck.
+1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220aa53b8b7ada0ef63bd1475d980ee28123b1200afa942c07357e89521ebd4e74b">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/90e6fe0127bcb1e6c47a49e389e3439b66cb3460/scripts/Open%20Dock.lua</source>
       </version>
     </reapack>
     <reapack name="Record Arm Toggle.lua" type="script" desc="Record Arm Toggle">
