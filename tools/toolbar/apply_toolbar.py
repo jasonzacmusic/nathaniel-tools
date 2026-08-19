@@ -50,6 +50,8 @@ KEYS = [
   ("1", "88", "_RS0260bf4e29964fd3e1f486c70f4d69c900d1c8cc", "X: Trim Right No Overlap"),
   ("1", "70", "_RS7d0fd86d14096f7b7941abb53b93f367c81e6cd6", "F: Instant Folder"),
   ("17", "71", "_RSffddbe2a395301265b409c1b43d152c24c2315a6", "Opt+G: Edit Group from Selection"),
+  ("1",  "125", "_RS249501b53149bef6a583a0fd9304028ba8fd913a", "F14: Render Safe"),
+  ("25", "82",  "_RS249501b53149bef6a583a0fd9304028ba8fd913a", "Cmd+Opt+R: Render Safe"),
 ]
 MUSICAL = [  # live in the centre Grid toolbar
   ("_RS3e3d37cee699d29e819156f567875be6284ea8c1", "Script: Marker at Bar.lua",  "nt_marker_bar.png"),
