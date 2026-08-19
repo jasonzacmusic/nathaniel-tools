@@ -13,8 +13,9 @@
 }
 ]]></description>
       </metadata>
-      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
-        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
+      <version name="2.1.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
+        <changelog><![CDATA[2.1.0 - first run imports your SWS Auto Color rules automatically; opens docked.
+2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
 dialogs, system font, plain-English labels everywhere.
 Status line now actually shows what happened (it never did).
 "Selection" with nothing selected now says so instead of quietly
@@ -31,7 +32,7 @@ Name + colour is one undo step; colouring markers from the button
 is undoable; rule typing no longer re-scans the project per key.
 1.0.0 - first public release. Crash-hardened (GUID identity + ValidatePtr2),
 signature-based change detection, shared safety library.]]></changelog>
-        <source main="main" hash="1220d217d7bde4a9b659e89336e4d2b6416a7635e086c2201faa9f654bfb78476f53">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/Palette%20and%20Look.lua</source>
+        <source main="main" hash="1220919e4ff251ecfff8aee271be32f40ad55d77c812cc6700c3aae88e1ba573a2af">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/apps/Palette%20and%20Look.lua</source>
       </version>
     </reapack>
     <reapack name="StageRig.lua" type="script" desc="StageRig">
@@ -46,7 +47,7 @@ signature-based change detection, shared safety library.]]></changelog>
 }
 ]]></description>
       </metadata>
-      <version name="0.2.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
+      <version name="0.2.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
         <changelog><![CDATA[0.2.0 - works on ReaImGui 0.10 (the 0.1.0 font calls died on open).
 New shared look (nt_ui). Switching back to a patch that is still
 ringing out no longer mutes it. Flush pulse is now edge-safe.
@@ -54,7 +55,7 @@ Missing patch tracks are reported, not silently skipped.
 Space / Enter / Right = GO next when the window is focused, and
 the "StageRig Next" / "StageRig Panic" scripts drive it hands-free.
 0.1.0 - first version. Switching, panic, stage view.]]></changelog>
-        <source main="main" hash="12208ddf3d45a0cb818cfe9e1368f822082889eb0c922a64a30767d50382722c27da">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/StageRig.lua</source>
+        <source main="main" hash="12208a64d6831c5be8b63434b1fd159d7ab1482005a4ee298a79cbd0cd5b1528c559">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/apps/StageRig.lua</source>
       </version>
     </reapack>
     <reapack name="Stem Print and Handoff.lua" type="script" desc="Stem Print &amp; Handoff">
@@ -65,19 +66,24 @@ the "StageRig Next" / "StageRig Panic" scripts drive it hands-free.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print clean stems (raw / inserts / fully wet / front-end) and put the session back exactly as it was. Optionally builds a plugin-free mirror tab with the printed files on it, ready to hand to anyone on any DAW. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Print stems four ways (raw / to the bus / through master / fully wet) and put the session back exactly as it was. Optionally builds a plugin-free mirror tab with the printed files on it, ready to hand to anyone on any DAW. Requires the "Shared Libraries" package from this same repository (right-click the repository in ReaPack > Install All).\par}
 }
 ]]></description>
       </metadata>
-      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
-        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
+      <version name="2.1.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
+        <changelog><![CDATA[2.1.0 - print modes are now the four you actually use: Raw (no plugins, your
+fader), To the bus (plugins on, fader + pan, sends muted), Through the
+master (your "Stems Default" preset: each stem via the master bus and its
+plugins) and Fully wet (solo-in-place with its reverbs/delays). Unity
+fader / centre pan is now an option that defaults OFF.
+2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
 dialogs, system font. "Mirror to new tab" now actually works.
 "Fully wet" now actually prints (one isolated pass per stem).
 Render tail is applied via the real RENDER_TAILFLAG/RENDER_TAILMS
 keys; stems no longer come with an unwanted master mix file.
 Plugin-free clone keeps items and receives (only FX removed).
 1.0.0 - first public release.]]></changelog>
-        <source main="main" hash="1220774bf4c2503ee93bb5cd6486e905806f992a90fe10abfa7a2691e24916602f2f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/Stem%20Print%20and%20Handoff.lua</source>
+        <source main="main" hash="122031bbd1a6c67fc8fa500f942051cdda2955225831dfd5a67d6d92bae467d13ce6">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/apps/Stem%20Print%20and%20Handoff.lua</source>
       </version>
     </reapack>
     <reapack name="Track Settings Transfer.lua" type="script" desc="Track Settings Transfer">
@@ -92,8 +98,10 @@ Plugin-free clone keeps items and receives (only FX removed).
 }
 ]]></description>
       </metadata>
-      <version name="2.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
-        <changelog><![CDATA[2.0.0 - new shared look (nt_ui): header, sections, one status line + log,
+      <version name="2.1.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
+        <changelog><![CDATA[2.1.0 - the From / To / what-to-copy setup folds into one line so the track list
+gets the room in the docker; opens docked by default.
+2.0.0 - new shared look (nt_ui): header, sections, one status line + log,
 plain-English tags (exact / guess / picked / new / none) instead of
 the cryptic = ~ * +. Name guessing fixed: two tracks that merely
 share an instrument family (Kick vs Snare) no longer count as
@@ -110,7 +118,7 @@ changes. The compare target is a visible "Compare with" switch.
 Starts with one tab open and tells you what to do, instead of
 refusing to launch.
 1.0.0 - first public release.]]></changelog>
-        <source main="main" hash="1220812edd4460c5ad8dad34061516832fc7f25faa025a0faf9caf25f7f48c3f1104">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/apps/Track%20Settings%20Transfer.lua</source>
+        <source main="main" hash="1220c89c7f9f74c66188fbb3d5bf33af19d091b72bc3ae72d3d9990f07f7bf14436b">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/apps/Track%20Settings%20Transfer.lua</source>
       </version>
     </reapack>
   </category>
@@ -279,6 +287,23 @@ MIDI items say so in the list BEFORE you export. New $region name.
         <source main="main" hash="1220ca710dbc2dbd1c8f38d0397d59205a65b2edc26aa4b30e26f80a86c359da986f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Marker%20at%20Bar.lua</source>
       </version>
     </reapack>
+    <reapack name="Open Dock.lua" type="script" desc="Open Dock (all the Nathaniel Tools apps, docked)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Opens Palette & Look, Folders & Flow, Track Settings Transfer, Stem Print & Handoff and MIDI Batch Export in REAPER's docker, as tabs, in one go. Run it once from the Actions list, or put it in your startup so the tools are there "at the word go". Apps that are already open are left alone. StageRig is deliberately not included - it is a stage tool, not a studio one.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12208b64c312c6c06e3163290d619f42a7d8c35e54060ce67cb05ce726758be3bc4d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/scripts/Open%20Dock.lua</source>
+      </version>
+    </reapack>
     <reapack name="Record Arm Toggle.lua" type="script" desc="Record Arm Toggle">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
@@ -345,15 +370,16 @@ MIDI items say so in the list BEFORE you export. New $region name.
 }
 ]]></description>
       </metadata>
-      <version name="1.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
-        <changelog><![CDATA[1.1.0 - adds nt_ui, the shared design system every window now uses.
+      <version name="1.2.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
+        <changelog><![CDATA[1.2.0 - windows open docked by default and remember the Dock toggle; heartbeat for Open Dock.
+1.1.0 - adds nt_ui, the shared design system every window now uses.
 1.0.0 - split out of the individual app packages so every app can share one
 copy instead of each carrying its own.]]></changelog>
-        <source main="main" hash="12200133b62ad41cf169e213a2f6b8dc714aa548805e379b1206d701fca1e4109387">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Shared%20Libraries.lua</source>
+        <source main="main" hash="122065877b35ef567da92135ae2eacfb96d54e39505d47b362ae0d5d5b266b968ff5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/scripts/Shared%20Libraries.lua</source>
         <source file="lib/nt_safe.lua" hash="1220c91fe5c549e2bdd52b25d77351ad08cf01c5a2b4b8502ef1ebf2d08c57108bff">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_safe.lua</source>
         <source file="lib/nt_hierarchy.lua" hash="12209b0a6118c07e24cda3cedfa30ad11f4933b46bffa7c68f70ffd0069637649d8d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/lib/nt_hierarchy.lua</source>
         <source file="lib/nt_imgui.lua" hash="1220bb3a64ee7f4e31eca7d3e5297bea56272858801d281f44fdaad2ded58d2ee341">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_imgui.lua</source>
-        <source file="lib/nt_ui.lua" hash="1220aaf2d08721265cd01793d43398a27facaedc53d15ed82b92a160ca8ffbf025fe">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/lib/nt_ui.lua</source>
+        <source file="lib/nt_ui.lua" hash="1220f654229785b8400c7581892f7e3dd9e13b3fbe2c8e30d79fb51266cd5a7a5fed">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/scripts/lib/nt_ui.lua</source>
       </version>
     </reapack>
     <reapack name="Solo Focus.lua" type="script" desc="Solo Focus">
@@ -425,6 +451,23 @@ Scripts/Nathaniel Tools/stagerig/. Ships with the NSM Tribute Night rig spec.
       <version name="1.0.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
         <changelog><![CDATA[1.0.0 - first version.]]></changelog>
         <source main="main" hash="12205b94c668fcde43853feb7efa86b505379461c3d6e2dd01f13b10519123abc854">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/StageRig%20Panic.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Stretch Marker at Mouse.lua" type="script" desc="Stretch Marker at Mouse">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Adds a stretch marker exactly under the mouse pointer, in the item you are pointing at, without moving the edit cursor. Meant to be assigned as a mouse modifier: Preferences > Mouse modifiers > "Media item bottom half" > left click > Action list > this script. (Nathaniel Tools sets Control+click.) Needs SWS (for the mouse-position lookup).\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220fc133927ae30a467be42e0a44f788485b14453e9029e65aba876043a96ac2873">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/scripts/Stretch%20Marker%20at%20Mouse.lua</source>
       </version>
     </reapack>
     <reapack name="Tempo at Bar.lua" type="script" desc="Tempo at Bar">
