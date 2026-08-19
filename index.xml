@@ -332,14 +332,15 @@ MIDI items say so in the list BEFORE you export. New $region name.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background (start it from __startup.lua or the Actions list). Every project that comes to the front for the first time - REAPER launch, File > New, a new tab, or one opened from disk - gets transport repeat (loop) switched OFF. New, never-saved projects also get snapping ON and relative grid snap ON. (Saved projects keep their own snap settings.)\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background (start it from __startup.lua or the Actions list). Every project that comes to the front for the first time - REAPER launch, File > New, a new tab, or one opened from disk - gets transport repeat (loop) switched OFF and the mixer shown. New, never-saved projects also get snapping ON and relative grid snap ON. (Saved projects keep their own snap settings.)\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.1.0" author="Jason Zac" time="2026-08-19T10:40:31Z">
-        <changelog><![CDATA[1.1.0 - repeat is switched off for EVERY project that comes to the front, not only new ones.
+      <version name="1.2.0" author="Jason Zac" time="2026-08-19T10:46:21Z">
+        <changelog><![CDATA[1.2.0 - the mixer is shown whenever a project comes to the front.
+1.1.0 - repeat is switched off for EVERY project that comes to the front, not only new ones.
 1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220f4c204e6e26c3a5ec0bfa569096c281f0b4150ca987fc12b353024fe3d49bcd5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/9791004f8998d253cf25d6845d7c10253796b0ff/scripts/New%20Project%20Defaults.lua</source>
+        <source main="main" hash="1220fdadfb633f2db6fe248267f8338fff611bd4e34e8ba9b6d123ab4f12add47198">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/5e30a7c64d8318d6a6a1c7f6642c774dec9d029e/scripts/New%20Project%20Defaults.lua</source>
       </version>
     </reapack>
     <reapack name="Open Dock.lua" type="script" desc="Open Dock (all the Nathaniel Tools apps, docked)">
