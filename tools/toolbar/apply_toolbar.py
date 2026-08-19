@@ -184,7 +184,7 @@ def patch_split():
     ini = os.path.join(os.path.dirname(INI), "reaper.ini")
     if not os.path.exists(ini): return
     text = open(ini, encoding="utf-8", errors="surrogateescape").read()
-    new = re.sub(r"^toolbar=0\.5+ (\d+)$", r"toolbar=0.72000000 \1", text, flags=re.M)
+    new = re.sub(r"^toolbar=0\.5\d* (\d+)$", r"toolbar=0.72000000 \1", text, flags=re.M)
     if new != text:
         shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
         open(ini, "w", encoding="utf-8", errors="surrogateescape").write(new)
