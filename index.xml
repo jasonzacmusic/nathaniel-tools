@@ -455,7 +455,7 @@ copy instead of each carrying its own.]]></changelog>
         <source file="lib/nt_safe.lua" hash="1220c91fe5c549e2bdd52b25d77351ad08cf01c5a2b4b8502ef1ebf2d08c57108bff">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_safe.lua</source>
         <source file="lib/nt_hierarchy.lua" hash="12209b0a6118c07e24cda3cedfa30ad11f4933b46bffa7c68f70ffd0069637649d8d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/lib/nt_hierarchy.lua</source>
         <source file="lib/nt_imgui.lua" hash="1220bb3a64ee7f4e31eca7d3e5297bea56272858801d281f44fdaad2ded58d2ee341">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_imgui.lua</source>
-        <source file="lib/nt_ui.lua" hash="1220f654229785b8400c7581892f7e3dd9e13b3fbe2c8e30d79fb51266cd5a7a5fed">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/scripts/lib/nt_ui.lua</source>
+        <source file="lib/nt_ui.lua" hash="1220d9737055822f19d398f45e5be9f308c3fc36d8e6522651164aae9ff0c9a497ef">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/4b4f86d860889aafa16a740aa07ddb6d95e07443/scripts/lib/nt_ui.lua</source>
       </version>
     </reapack>
     <reapack name="Solo Focus.lua" type="script" desc="Solo Focus">
