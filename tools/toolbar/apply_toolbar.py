@@ -111,15 +111,33 @@ def main():
     for idx, (name, lines) in enumerate(secs):
         if name == "Main toolbar":
             d = items_of(lines); items = d.get("item", {}); icons = d.get("icon", {})
-            present = " ".join(items.values())
-            nxt = (max(items) + 1) if items else 0
-            # give his existing MIDI Render button our icon if it is the installed script
-            for i, v in list(items.items()):
-                if v.startswith("_RS7894b8b20be619fc9e182a197987c42c1b994dbc"): icons[i] = "nt_midi_render.png"
-            for tok, label, icon in SPEED + APPS + EDIT:
-                if tok in present: continue
-                items[nxt] = f"{tok} {label}"; icons[nxt] = icon; nxt += 1; changed = True
-            secs[idx] = (name, rebuild_section(lines, items, icons))
+            # Jason's own buttons are everything that is not ours; keep them in order.
+            ours = {t for t, _, _ in SPEED + APPS + EDIT} | {"-1"}
+            keep_items, keep_icons = {}, {}
+            k = 0
+            for i in sorted(items):
+                tok = items[i].split(" ", 1)[0]
+                if tok in ours: continue
+                keep_items[k] = items[i]
+                if i in icons: keep_icons[k] = icons[i]
+                if tok == "_RS7894b8b20be619fc9e182a197987c42c1b994dbc": keep_icons[k] = "nt_midi_render.png"
+                k += 1
+            # then ours, in three breathing groups: speed layer | editing | dock
+            def sep():
+                nonlocal k
+                keep_items[k] = "-1 SEPARATOR"; k += 1
+            sep()
+            for tok, label, icon in SPEED:
+                keep_items[k] = f"{tok} {label}"; keep_icons[k] = icon; k += 1
+            sep()
+            for tok, label, icon in EDIT:
+                keep_items[k] = f"{tok} {label}"; keep_icons[k] = icon; k += 1
+            sep()
+            for tok, label, icon in APPS:
+                if tok == "_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416":   # only Open Dock; the apps live in the docker
+                    keep_items[k] = f"{tok} {label}"; keep_icons[k] = icon; k += 1
+            if keep_items != items or keep_icons != icons: changed = True
+            secs[idx] = (name, rebuild_section(lines, keep_items, keep_icons))
         if name == "Floating toolbar 1":
             d = items_of(lines); items = d.get("item", {}); icons = d.get("icon", {})
             for i, v in items.items():
@@ -160,6 +178,21 @@ def patch_keys():
     else:
         print("keys already set")
 
+def patch_split():
+    """reaper.ini 'toolbar=<split> <docker>': the main toolbar's share of the top strip.
+    0.5 = half the width = four cramped rows; 0.72 = one clean row at 2560 px."""
+    ini = os.path.join(os.path.dirname(INI), "reaper.ini")
+    if not os.path.exists(ini): return
+    text = open(ini, encoding="utf-8", errors="surrogateescape").read()
+    new = re.sub(r"^toolbar=0\.5+ (\d+)$", r"toolbar=0.72000000 \1", text, flags=re.M)
+    if new != text:
+        shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
+        open(ini, "w", encoding="utf-8", errors="surrogateescape").write(new)
+        print("widened main toolbar split to 0.72")
+    else:
+        print("split unchanged")
+
 if __name__ == "__main__":
     main()
     patch_keys()
+    patch_split()
