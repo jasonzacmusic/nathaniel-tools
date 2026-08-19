@@ -1,5 +1,5 @@
 -- @description Track Settings Transfer
--- @version 2.0.0
+-- @version 2.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -12,6 +12,8 @@
 --   SWS extension. ReaPack has no automatic dependencies, so install the
 --   libraries too - or right-click the repository in ReaPack > Install All.
 -- @changelog
+--   2.1.0 - the From / To / what-to-copy setup folds into one line so the track list
+--           gets the room in the docker; opens docked by default.
 --   2.0.0 - new shared look (nt_ui): header, sections, one status line + log,
 --           plain-English tags (exact / guess / picked / new / none) instead of
 --           the cryptic = ~ * +. Name guessing fixed: two tracks that merely
@@ -874,6 +876,8 @@ local ATTRS = {
   { "Sends", "sends", "Rebuild the track's sends in the To project (matched by name). The target's existing sends are removed first." },
 }
 
+local setupOpen = nil   -- nil = decide from window height on first frame; then the user's choice
+
 local function frame()
   poll()
   ui.header(ctx, APP, "import session data between tabs", function() ui.dockToggle(ctx) end, 70)
@@ -888,103 +892,134 @@ local function frame()
   end
   if not safe.projAlive(srcProj) then srcProj = r.EnumProjects(-1) end
 
-  ------------------------------------------------------------------ from and to
-  ui.section(ctx, "From and to")
-  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "From"); r.ImGui_SameLine(ctx)
-  local names, srcIdx = {}, 0
-  for i, p in ipairs(projects) do names[i] = p.name; if p.proj == srcProj then srcIdx = i end end
-  local fc, fidx = ui.combo(ctx, "##from", names, srcIdx, { w = 220, tip = "The project you are copying track settings FROM." })
-  if fc and projects[fidx] and projects[fidx].proj ~= srcProj then pickSource(projects[fidx].proj) end
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "Swap", { small = true, tip = "Reverse the direction: the Compare-with project becomes From, and the current From becomes the To." }) then
-    swapDirection()
-  end
-  r.ImGui_SameLine(ctx, 0, 18)
-  local bc, bv = ui.toggle(ctx, "Build missing tracks", buildMode,
-    "When a From track has no match in a To project, create it there: name, colour, FX, volume, pan, folder position - then rebuild its sends.")
-  if bc then
-    buildMode = bv
-    say(bv and "Build is on: From tracks with no match will be created in the To project." or "Build is off: From tracks with no match are skipped.", "info")
-  end
-  r.ImGui_SameLine(ctx, 0, 18)
-  local ac, av = ui.toggle(ctx, "Auto-sync", autoSync,
-    "Watch both projects and refresh the list whenever a track is added, deleted, renamed, moved or refoldered. Your ticks and remaps are kept.")
-  if ac then autoSync = av; if av then refreshNow() else say("Auto-sync is off. Press Refresh after you change tracks.", "info") end end
-  r.ImGui_SameLine(ctx)
-  ui.rightAlign(ctx, 76)
-  if ui.button(ctx, "Refresh", { small = true, tip = "Re-read both projects and rebuild the list now. Ticks and remaps are kept." }) then refreshNow() end
-
-  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "To")
-  for _, p in ipairs(otherProjects()) do
-    r.ImGui_SameLine(ctx)
-    local on = targetSel[p.proj] == true
-    -- plain checkbox (not ui.toggle) so the right-click is read before the tooltip
-    local c, v = r.ImGui_Checkbox(ctx, p.name .. "##sel" .. tostring(p.proj), on)
-    local rclick = r.ImGui_IsItemClicked and r.ImGui_IsItemClicked(ctx, 1)
-    ui.tip(ctx, "Send settings to this project. The track list below is matched against the project under Compare with; other To projects get exact-name matches only. Right-click to compare with this one.")
-    if c then
-      targetSel[p.proj] = v or nil
-      ensureFocus()
-      say(v and ("Added " .. p.name .. " as a To project.") or ("Removed " .. p.name .. " from the To projects."), "info")
-    end
-    if rclick and targetSel[p.proj] and focusTarget ~= p.proj then
-      focusTarget = p.proj; buildRows(true, true)
-      say(("Now comparing %s with %s."):format(pn(srcProj), p.name), "info")
-    end
-  end
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "All", { small = true, tip = "Send to every other open project." }) then
-    for _, p in ipairs(otherProjects()) do targetSel[p.proj] = true end
-    ensureFocus()
-    say(("Sending to all %d other project%s."):format(#selectedTargets(), #selectedTargets() == 1 and "" or "s"), "info")
-  end
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "One", { small = true, tip = "Keep only the Compare-with project as the To." }) then
-    if focusTarget and safe.projAlive(focusTarget) then
-      targetSel = {}; targetSel[focusTarget] = true; ensureFocus()
-      say("Sending only to " .. pn(focusTarget) .. ".", "info")
-    else
-      say("Tick a To project first.", "warn")
-    end
-  end
-
   local sels = selectedTargets()
-  if #sels > 0 then
-    r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Compare with"); r.ImGui_SameLine(ctx)
-    local items = {}
-    for _, p in ipairs(sels) do
-      items[#items + 1] = { id = p, label = pn(p) .. "##focus" .. tostring(p),
-        tip = "Match the track list against this project. Guess ticks and remaps apply to it; the other To projects get exact-name matches only." }
+  -- SETUP (from/to + what to copy) folds away so the track list gets the room,
+  -- especially in the docker. Default: open when the window is tall, folded when
+  -- it is short; your choice sticks for the session.
+  if setupOpen == nil then setupOpen = (r.ImGui_GetWindowHeight(ctx) > 560) or (#sels == 0) end
+  do
+    local fromName = pn(srcProj)
+    local toNames = {}
+    for _, p in ipairs(sels) do toNames[#toNames + 1] = pn(p) end
+    local what = {}
+    for _, a in ipairs(ATTRS) do
+      local any = false
+      for _, row in ipairs(rows) do if row.incl and row.attr[a[2]] then any = true break end end
+      if any then what[#what + 1] = a[1] end
     end
-    local nf = ui.segmented(ctx, "focus", items, focusTarget)
-    if nf ~= focusTarget then
-      focusTarget = nf; buildRows(true, true)
-      say(("Now comparing %s with %s."):format(pn(srcProj), pn(nf)), "info")
+    if extras.color then what[#what + 1] = "Colour" end
+    if extras.inputfx then what[#what + 1] = "Input FX" end
+    local summary = ("From %s  >  To %s   |   %s%s"):format(fromName,
+      #toNames > 0 and table.concat(toNames, ", ") or "(none)",
+      #what > 0 and table.concat(what, " + ") or "nothing ticked",
+      buildMode and "   |   builds missing tracks" or "")
+    if ui.button(ctx, setupOpen and "Hide setup" or "Setup", { small = true, kind = setupOpen and "secondary" or "primary",
+        tip = "Show or hide the From / To / what-to-copy controls so the track list gets the space." }) then
+      setupOpen = not setupOpen
     end
-    if #sels > 1 then r.ImGui_SameLine(ctx); ui.hint(ctx, "- the other To projects get exact-name matches only") end
+    r.ImGui_SameLine(ctx, 0, 12)
+    r.ImGui_AlignTextToFramePadding(ctx)
+    ui.hint(ctx, summary)
   end
-
-  ------------------------------------------------------------------ what to copy
-  ui.section(ctx, "What to copy")
-  r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Every row:")
-  local function allAttr(k)
-    local all, any = true, false
-    for _, row in ipairs(rows) do if row.incl then any = true; if not row.attr[k] then all = false end end end
-    return any and all
-  end
-  for _, a in ipairs(ATTRS) do
+  if setupOpen then
+    ------------------------------------------------------------------ from and to
+    ui.section(ctx, "From and to")
+    r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "From"); r.ImGui_SameLine(ctx)
+    local names, srcIdx = {}, 0
+    for i, p in ipairs(projects) do names[i] = p.name; if p.proj == srcProj then srcIdx = i end end
+    local fc, fidx = ui.combo(ctx, "##from", names, srcIdx, { w = 220, tip = "The project you are copying track settings FROM." })
+    if fc and projects[fidx] and projects[fidx].proj ~= srcProj then pickSource(projects[fidx].proj) end
     r.ImGui_SameLine(ctx)
-    local c, v = ui.toggle(ctx, a[1] .. "##all" .. a[2], allAttr(a[2]), a[3] .. " (sets every row)")
-    if c then for _, row in ipairs(rows) do row.attr[a[2]] = v end end
-  end
-  r.ImGui_SameLine(ctx, 0, 18)
-  local cc, cv = ui.toggle(ctx, "Colour", extras.color, "Copy the track colour onto matched tracks.")
-  if cc then extras.color = cv end
-  r.ImGui_SameLine(ctx)
-  local ic, iv = ui.toggle(ctx, "Input FX", extras.inputfx, "Copy the input (record) FX chain onto matched tracks. The target's own input FX are replaced.")
-  if ic then extras.inputfx = iv end
-  ui.hint(ctx, "Automation is never copied.")
+    if ui.button(ctx, "Swap", { small = true, tip = "Reverse the direction: the Compare-with project becomes From, and the current From becomes the To." }) then
+      swapDirection()
+    end
+    r.ImGui_SameLine(ctx, 0, 18)
+    local bc, bv = ui.toggle(ctx, "Build missing tracks", buildMode,
+      "When a From track has no match in a To project, create it there: name, colour, FX, volume, pan, folder position - then rebuild its sends.")
+    if bc then
+      buildMode = bv
+      say(bv and "Build is on: From tracks with no match will be created in the To project." or "Build is off: From tracks with no match are skipped.", "info")
+    end
+    r.ImGui_SameLine(ctx, 0, 18)
+    local ac, av = ui.toggle(ctx, "Auto-sync", autoSync,
+      "Watch both projects and refresh the list whenever a track is added, deleted, renamed, moved or refoldered. Your ticks and remaps are kept.")
+    if ac then autoSync = av; if av then refreshNow() else say("Auto-sync is off. Press Refresh after you change tracks.", "info") end end
+    r.ImGui_SameLine(ctx)
+    ui.rightAlign(ctx, 76)
+    if ui.button(ctx, "Refresh", { small = true, tip = "Re-read both projects and rebuild the list now. Ticks and remaps are kept." }) then refreshNow() end
 
+    r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "To")
+    for _, p in ipairs(otherProjects()) do
+      r.ImGui_SameLine(ctx)
+      local on = targetSel[p.proj] == true
+      -- plain checkbox (not ui.toggle) so the right-click is read before the tooltip
+      local c, v = r.ImGui_Checkbox(ctx, p.name .. "##sel" .. tostring(p.proj), on)
+      local rclick = r.ImGui_IsItemClicked and r.ImGui_IsItemClicked(ctx, 1)
+      ui.tip(ctx, "Send settings to this project. The track list below is matched against the project under Compare with; other To projects get exact-name matches only. Right-click to compare with this one.")
+      if c then
+        targetSel[p.proj] = v or nil
+        ensureFocus()
+        say(v and ("Added " .. p.name .. " as a To project.") or ("Removed " .. p.name .. " from the To projects."), "info")
+      end
+      if rclick and targetSel[p.proj] and focusTarget ~= p.proj then
+        focusTarget = p.proj; buildRows(true, true)
+        say(("Now comparing %s with %s."):format(pn(srcProj), p.name), "info")
+      end
+    end
+    r.ImGui_SameLine(ctx)
+    if ui.button(ctx, "All", { small = true, tip = "Send to every other open project." }) then
+      for _, p in ipairs(otherProjects()) do targetSel[p.proj] = true end
+      ensureFocus()
+      say(("Sending to all %d other project%s."):format(#selectedTargets(), #selectedTargets() == 1 and "" or "s"), "info")
+    end
+    r.ImGui_SameLine(ctx)
+    if ui.button(ctx, "One", { small = true, tip = "Keep only the Compare-with project as the To." }) then
+      if focusTarget and safe.projAlive(focusTarget) then
+        targetSel = {}; targetSel[focusTarget] = true; ensureFocus()
+        say("Sending only to " .. pn(focusTarget) .. ".", "info")
+      else
+        say("Tick a To project first.", "warn")
+      end
+    end
+
+    if #sels > 0 then
+      r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Compare with"); r.ImGui_SameLine(ctx)
+      local items = {}
+      for _, p in ipairs(sels) do
+        items[#items + 1] = { id = p, label = pn(p) .. "##focus" .. tostring(p),
+          tip = "Match the track list against this project. Guess ticks and remaps apply to it; the other To projects get exact-name matches only." }
+      end
+      local nf = ui.segmented(ctx, "focus", items, focusTarget)
+      if nf ~= focusTarget then
+        focusTarget = nf; buildRows(true, true)
+        say(("Now comparing %s with %s."):format(pn(srcProj), pn(nf)), "info")
+      end
+      if #sels > 1 then r.ImGui_SameLine(ctx); ui.hint(ctx, "- the other To projects get exact-name matches only") end
+    end
+
+    ------------------------------------------------------------------ what to copy
+    ui.section(ctx, "What to copy")
+    r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Every row:")
+    local function allAttr(k)
+      local all, any = true, false
+      for _, row in ipairs(rows) do if row.incl then any = true; if not row.attr[k] then all = false end end end
+      return any and all
+    end
+    for _, a in ipairs(ATTRS) do
+      r.ImGui_SameLine(ctx)
+      local c, v = ui.toggle(ctx, a[1] .. "##all" .. a[2], allAttr(a[2]), a[3] .. " (sets every row)")
+      if c then for _, row in ipairs(rows) do row.attr[a[2]] = v end end
+    end
+    r.ImGui_SameLine(ctx, 0, 18)
+    local cc, cv = ui.toggle(ctx, "Colour", extras.color, "Copy the track colour onto matched tracks.")
+    if cc then extras.color = cv end
+    r.ImGui_SameLine(ctx)
+    local ic, iv = ui.toggle(ctx, "Input FX", extras.inputfx, "Copy the input (record) FX chain onto matched tracks. The target's own input FX are replaced.")
+    if ic then extras.inputfx = iv end
+    ui.hint(ctx, "Automation is never copied.")
+
+
+  end
   ------------------------------------------------------------------ tracks
   ui.section(ctx, "Tracks")
   local haveFocus = focusTarget ~= nil and safe.projAlive(focusTarget)

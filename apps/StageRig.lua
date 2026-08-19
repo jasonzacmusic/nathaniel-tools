@@ -350,7 +350,7 @@ local function frame()
 end
 
 local function loop()
-  local open = ui.window(ctx, { title = APP, accent = ui.accents.violet, w = 520, h = 680, minW = 380, minH = 420 }, frame)
+  local open = ui.window(ctx, { title = APP, accent = ui.accents.violet, w = 520, h = 680, minW = 380, minH = 420, dock = false }, frame)
   if open then r.defer(loop) end
 end
 r.defer(loop)

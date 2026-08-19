@@ -1,5 +1,5 @@
 -- @description Shared Libraries
--- @version 1.1.0
+-- @version 1.2.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -25,6 +25,7 @@
 --   present and what version they are, which is the first thing worth knowing
 --   when an app misbehaves.
 -- @changelog
+--   1.2.0 - windows open docked by default and remember the Dock toggle; heartbeat for Open Dock.
 --   1.1.0 - adds nt_ui, the shared design system every window now uses.
 --   1.0.0 - split out of the individual app packages so every app can share one
 --           copy instead of each carrying its own.

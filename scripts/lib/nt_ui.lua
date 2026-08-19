@@ -317,6 +317,15 @@ function M.window(ctx, spec, frameFn)
   local s = S(ctx)
   M.fonts(ctx)
   if s.dockPending ~= nil then r.ImGui_SetNextWindowDockID(ctx, s.dockPending); s.dockPending = nil end
+  -- Dock by default. The user's last choice (the Dock toggle) is remembered per
+  -- window in ExtState, so an app opens where it was left: in the docker unless
+  -- you floated it. Jason: "set up to load in the docker at the word go".
+  if not s.sized then
+    s.dockKey = "dock:" .. tostring(spec.title or "window")
+    local pref = r.GetExtState("NT_UI", s.dockKey)
+    local wantDock = (pref == "" and (spec.dock ~= false)) or pref == "1"
+    r.ImGui_SetNextWindowDockID(ctx, wantDock and -1 or 0, E("Cond_Always") or 0)
+  end
   if not s.sized then
     r.ImGui_SetNextWindowSize(ctx, spec.w or 820, spec.h or 620, E("Cond_FirstUseEver") or 0)
     -- a window closed while collapsed would reopen as a bare title bar and
@@ -327,6 +336,9 @@ function M.window(ctx, spec, frameFn)
   if r.ImGui_SetNextWindowSizeConstraints and (spec.minW or spec.minH) then
     r.ImGui_SetNextWindowSizeConstraints(ctx, spec.minW or 320, spec.minH or 200, 1e9, 1e9)
   end
+  -- heartbeat so "Open Dock" knows this window is alive (and does not relaunch it)
+  local now = os.time()
+  if s.lastBeat ~= now then s.lastBeat = now; r.SetExtState("NT_UI", "alive:" .. tostring(spec.title or "window"), tostring(now), false) end
   local pop = M.pushTheme(ctx, spec.accent)
   M.pushFont(ctx, "body")
   local flags = spec.flags or 0
@@ -346,7 +358,11 @@ function M.window(ctx, spec, frameFn)
   return open
 end
 
-function M.requestDock(ctx, docked) S(ctx).dockPending = docked and -1 or 0 end
+function M.requestDock(ctx, docked)
+  local s = S(ctx)
+  s.dockPending = docked and -1 or 0
+  if s.dockKey then r.SetExtState("NT_UI", s.dockKey, docked and "1" or "0", true) end
+end
 
 --------------------------------------------------------------------------------
 -- text helpers

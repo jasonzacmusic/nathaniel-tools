@@ -61,9 +61,11 @@ confirm. Automation is never copied.
 
 ### Stem Print & Handoff — amber
 Prints stems and puts your session back exactly as it was. Tick tracks and buses,
-choose **Raw** (no plugins), **Inserts only** (the normal dry stem), **Fully wet**
-(each stem on its own *with* its reverb/delay), or **Front-end** (through the first
-plugin only). Files print at unity fader and centre pan so the mixer gets clean files.
+choose **Raw** (no plugins, your fader and pan as they are), **To the bus** (plugins
+on, fader + pan, every send muted — no reverb or delay), **Through master** (each
+stem alone through the master bus and its plugins — your "Stems Default" preset) or
+**Fully wet** (each stem solo-in-place *with* its reverbs and delays). Tick
+**Unity fader, centre pan** only when a mixer wants clean files.
 Tick **Build a handoff tab** and you get a new project tab with the same names,
 colours and folders, no plugins, and each printed file already on its track — that tab
 is what you send. Also: **Uppercase bus names**, **Plugin-free clone tab**.
@@ -104,12 +106,17 @@ Each replaced a REAPER custom action that was quietly doing the wrong thing.
 | **⇧D** | Duplicate Track | Duplicate the track empty and armed — the next layer, instantly |
 | **E** | Unsolo & Unselect | The reset key: clears solos, arms, selections, time selection |
 | *(pedal)* | Toggle Chorale | Finds the Chorale plugin wherever it is and flips it on/off |
+| **Control+click** in the bottom half of an item | Stretch Marker at Mouse | Adds a stretch marker right under the pointer (assigned as a mouse modifier) |
 
 Keys are *suggestions* — bind whatever you like in the Actions list.
 
 ---
 
 ## 3. Every window works the same way
+
+* **They open in the docker** — "Open Dock" (also run at REAPER start on Jason's Mac) puts
+  Palette & Look, Folders & Flow, Track Settings Transfer, Stem Print and MIDI Batch Export
+  in the docker as tabs. Untick **Dock** to float one; it remembers.
 
 * **Header** — the app name, what it does in five words, and **Dock** (put it in
   REAPER's docker next to the mixer).

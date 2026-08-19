@@ -1,14 +1,19 @@
 -- @description Stem Print & Handoff
--- @version 2.0.0
+-- @version 2.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Print clean stems (raw / inserts / fully wet / front-end) and put the
+-- @about Print stems four ways (raw / to the bus / through master / fully wet) and put the
 --   session back exactly as it was. Optionally builds a plugin-free mirror tab
 --   with the printed files on it, ready to hand to anyone on any DAW.
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
+--   2.1.0 - print modes are now the four you actually use: Raw (no plugins, your
+--           fader), To the bus (plugins on, fader + pan, sends muted), Through the
+--           master (your "Stems Default" preset: each stem via the master bus and its
+--           plugins) and Fully wet (solo-in-place with its reverbs/delays). Unity
+--           fader / centre pan is now an option that defaults OFF.
 --   2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
 --           dialogs, system font. "Mirror to new tab" now actually works.
 --           "Fully wet" now actually prints (one isolated pass per stem).
@@ -23,14 +28,14 @@
   Prepares a session to hand to another engineer / another DAW.
 
     Print stems     Bounce the tracks and buses you tick to WAV at the project's
-                    own sample rate, at unity fader and centre pan (so the mixer
-                    gets clean files), then restore every fader, pan, mute and
+                    own sample rate, at your fader and pan (or at unity / centre if you ask),
+                    then restore every fader, pan, mute, send-mute and
                     FX-bypass exactly. Everything happens inside one undo point.
 
-        Raw          no inserts - clean multitracks
-        Inserts only insert FX baked in, reverb/delay sends left out (dry stem)
-        Fully wet    each stem printed in isolation INCLUDING its sends
-        Front-end    through the first insert only (mic pre / channel strip)
+        Raw            no plugins, the fader and pan as they are
+        To the bus     plugins on, fader + pan, every send muted (no reverb/delay)
+        Through master each stem alone through the master bus and its plugins
+        Fully wet      each stem solo-in-place, with its reverbs and delays
 
     Mirror tab      After the print, a new project tab with the same track
                     names, colours and folders - no plugins - and each printed
@@ -140,12 +145,17 @@ local function restoreTrackState(proj, s, map)
   return true
 end
 
-local function applyInsertMode(t, mode)
-  for i = 0, r.TrackFX_GetCount(t) - 1 do
-    local enable = true
-    if mode == "raw" then enable = false elseif mode == "frontend" then enable = (i == 0) end
-    r.TrackFX_SetEnabled(t, i, enable)
+local function bypassAllInserts(t)
+  for i = 0, r.TrackFX_GetCount(t) - 1 do r.TrackFX_SetEnabled(t, i, false) end
+end
+-- mute every send leaving a track; returns the previous mute states so they can be put back
+local function muteSends(t)
+  local prev = {}
+  for i = 0, r.GetTrackNumSends(t, 0) - 1 do
+    prev[i] = r.GetTrackSendInfo_Value(t, 0, i, "B_MUTE")
+    r.SetTrackSendInfo_Value(t, 0, i, "B_MUTE", 1)
   end
+  return prev
 end
 
 --------------------------------------------------------------------------------
@@ -219,8 +229,8 @@ ui.fonts(ctx)
 
 local rows = {}          -- { guid, name, folder, depth, level, sel }
 local lastSig, lastSigT = nil, 0
-local mode = "inserts"   -- raw / inserts / wet / frontend
-local opts = { mirror = true, preFaderCenter = true, testOne = false }
+local mode = "bus"   -- raw / bus / master / wet
+local opts = { mirror = true, preFaderCenter = false, testOne = false }
 local outDir = ""
 local paint = {}
 local lastPrinted = nil  -- { dir=, files={...} }
@@ -339,7 +349,7 @@ local function buildMirrorTab(src, targets, dir, fileFor)
   return placed
 end
 
--- The print. One native stem pass for raw / inserts / front-end; one isolated
+-- The print. One native stem pass for raw / bus / master; one isolated
 -- pass per stem for fully wet. Everything touched is restored, even on error.
 local function printStems()
   local proj = activeProj()
@@ -354,16 +364,23 @@ local function printStems()
   end
   local rcfg = snapshotRenderCfg()
   local before = listWavs(outDir)
+  local sendMutes = {} -- guid -> { sendIndex -> previous B_MUTE }
 
   local function restoreAll()
     local missed = 0
     if projAlive(proj) then
       local map = safe.guidMap(proj)
       for _, s in ipairs(saved) do if not restoreTrackState(proj, s, map) then missed = missed + 1 end end
-      if mode == "raw" or mode == "frontend" then
+      if mode == "raw" then
         for _, s in ipairs(saved) do
           local t = map[s.guid]
           if trackAlive(proj, t) and s.chunk then r.SetTrackStateChunk(t, s.chunk, false) end
+        end
+      end
+      for guid, prev in pairs(sendMutes) do
+        local t = map[guid]
+        if trackAlive(proj, t) then
+          for i, v in pairs(prev) do r.SetTrackSendInfo_Value(t, 0, i, "B_MUTE", v) end
         end
       end
     else
@@ -411,12 +428,15 @@ local function printStems()
             r.SetMediaTrackInfo_Value(t, "D_PAN", 0)
             r.SetMediaTrackInfo_Value(t, "D_WIDTH", 1)
           end
-          if mode == "raw" or mode == "frontend" then applyInsertMode(t, mode) end
+          if mode == "raw" then bypassAllInserts(t) end
+          if mode == "bus" then sendMutes[row.guid] = muteSends(t) end
           fileOf[row.guid] = safeName(row.name) .. ".wav"
         end
       end
-      configureStemRender(outDir, "$track", 2)          -- 2 = stems of selected tracks only
-      say(("Printing %d stem(s) to %s ..."):format(#targets, outDir), "info")
+      -- 2 = stems of the selected tracks (post-fader/pan, no master);
+      -- 128 = selected tracks via master (each alone, through the master chain)
+      configureStemRender(outDir, "$track", mode == "master" and 128 or 2)
+      say(("Printing %d stem(s) [%s] to %s ..."):format(#targets, MODE_NAME[mode] or mode, outDir), "info")
       r.Main_OnCommand(42230, 0)
     end
   end)
@@ -460,11 +480,12 @@ end
 -- frame
 --------------------------------------------------------------------------------
 local MODES = {
-  { id = "raw",      label = "Raw",          tip = "No inserts at all. Clean multitracks for someone who will mix from scratch." },
-  { id = "inserts",  label = "Inserts only", tip = "Insert FX baked in; reverb/delay SENDS left out. The usual dry stem." },
-  { id = "wet",      label = "Fully wet",    tip = "Each stem printed on its own INCLUDING its sends. One pass per stem, so slower." },
-  { id = "frontend", label = "Front-end",    tip = "Through the first insert only - mic pre / channel strip - nothing after it." },
+  { id = "raw",    label = "Raw",            tip = "No plugins at all. Fader and pan exactly as they are now. For someone who will mix from scratch." },
+  { id = "bus",    label = "To the bus",     tip = "Plugins on, fader and pan as they are, every SEND muted - so no reverb or delay. What your bus hears from this track." },
+  { id = "master", label = "Through master", tip = "Each stem on its own through the master bus and its plugins - your 'Stems Default' render preset." },
+  { id = "wet",    label = "Fully wet",      tip = "Each stem solo-in-place INCLUDING its reverbs and delays. One pass per stem, so slower." },
 }
+local MODE_NAME = { raw = "Raw", bus = "To the bus", master = "Through master", wet = "Fully wet" }
 
 local function frame()
   ui.header(ctx, APP, "clean stems out, session untouched", function() ui.dockToggle(ctx) end, 70)
@@ -474,7 +495,7 @@ local function frame()
   mode = ui.segmented(ctx, "mode", MODES, mode)
   local ch, v
   ch, v = ui.toggle(ctx, "Unity fader, centre pan", opts.preFaderCenter,
-    "Print every stem at 0 dB and centred so the next person mixes from clean files. Your real fader/pan is put back after (and carried into the mirror tab).")
+    "OFF = stems at your current fader and pan (what you asked for). ON = every stem at 0 dB and centred so a mixer gets clean files; your real fader/pan is put back after and carried into the handoff tab.")
   if ch then opts.preFaderCenter = v end
   r.ImGui_SameLine(ctx, 0, 18)
   ch, v = ui.toggle(ctx, "Build a handoff tab", opts.mirror,
@@ -559,7 +580,7 @@ local function frame()
 
   if ui.confirm(ctx, "print", {
       title = ("Print %d stem%s now?"):format(n, n == 1 and "" or "s"),
-      text  = ("Mode: %s. Files go to %s. REAPER renders with its own progress window; the session is put back exactly afterwards."):format(mode, outDir),
+      text  = ("Mode: %s. Files go to %s. REAPER renders with its own progress window; the session is put back exactly afterwards."):format(MODE_NAME[mode] or mode, outDir),
       ok = "Print" }) then
     printStems()
   end

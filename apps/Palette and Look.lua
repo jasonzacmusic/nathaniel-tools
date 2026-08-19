@@ -1,5 +1,5 @@
 -- @description Palette & Look
--- @version 2.0.0
+-- @version 2.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -10,6 +10,7 @@
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
+--   2.1.0 - first run imports your SWS Auto Color rules automatically; opens docked.
 --   2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
 --           dialogs, system font, plain-English labels everywhere.
 --           Status line now actually shows what happened (it never did).
@@ -304,6 +305,16 @@ local function importSWS(list)
   return #list
 end
 
+-- First run on a machine: start from the SWS Auto Color rules already there, so
+-- the colours you know (and your V / C / B marker colours) are the colours this
+-- app uses from the first click. Done once; "Import my SWS rules" redoes it.
+local autoImportedNow = 0
+if #MYRULES == 0 and r.GetExtState(EXT, "sws_autoimported") ~= "1" then
+  local list = scanSWS()
+  if list and #list > 0 then autoImportedNow = importSWS(list) end
+  r.SetExtState(EXT, "sws_autoimported", "1", true)
+end
+
 -- WDL-style quoting: bare when the filter has no spaces or quotes.
 local function swsQuote(s)
   if s == "" then return '""' end
@@ -549,6 +560,7 @@ end
 --------------------------------------------------------------------------------
 local ctx = r.ImGui_CreateContext(APP)
 ui.fonts(ctx)
+if autoImportedNow > 0 then ui.say(ctx, ("First run: took over your %d SWS Auto Color rule(s) and your SWS family colours."):format(autoImportedNow), "ok") end
 
 local paletteIdx  = 10
 local scope       = "sel"          -- "sel" | "all"
