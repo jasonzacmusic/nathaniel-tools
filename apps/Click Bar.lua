@@ -54,7 +54,6 @@ local METERS = {
 }
 
 local prerollText = nil
-local splitOffset = 0     -- nudges where a split falls
 
 --------------------------------------------------------------------------------
 local function drawFrame()
@@ -73,29 +72,8 @@ local function drawFrame()
     }) then click.setMeter(meter[1], meter[2]) end
   end
 
-  -- ---- split --------------------------------------------------------------
-  -- Half and half by default, and the arrows walk the split point.
-  local half = math.floor(num / 2) + splitOffset
-  half = math.max(1, math.min(num - 1, half))
-  local other = num - half
-
-  r.ImGui_SameLine(ctx)
-  r.ImGui_Dummy(ctx, 10, 1)
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "<", { w = 20, h = h, small = true, disabled = half <= 1,
-    tip = "Move the split one beat earlier." }) then splitOffset = splitOffset - 1 end
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, string.format("SPLIT %d/%d + %d/%d", half, den, other, den), {
-    kind = "primary", colour = ACCENT, w = 132, h = h, small = true,
-    disabled = num < 2,
-    tip = "Break this bar into two bars. The bar after them keeps the meter it had."
-  }) then
-    click.splitMeter(half, other, den)
-    splitOffset = 0
-  end
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, ">", { w = 20, h = h, small = true, disabled = other <= 1,
-    tip = "Move the split one beat later." }) then splitOffset = splitOffset + 1 end
+  -- Meter and groupings live in Meter Map, where they can be designed first
+  -- and applied once. Nothing here writes a tempo.
 
   -- ---- pre-roll -----------------------------------------------------------
   r.ImGui_SameLine(ctx)

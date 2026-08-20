@@ -1,5 +1,5 @@
 -- @description Open Dock (all the Nathaniel Tools apps, docked)
--- @version 1.3.0
+-- @version 1.4.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -11,6 +11,7 @@
 --   "at the word go". Apps that are already open are left alone.
 --   StageRig is deliberately not included - it is a stage tool, not a studio one.
 -- @changelog
+--   1.4.0 - also opens Meter Map.
 --   1.3.0 - opens the Click Bar (toolbar row) and Click Levels (docker) instead of the old Click Strip.
 --   1.2.0 - also opens the Click Strip.
 --   1.1.0 - also opens Group Deck.
@@ -27,6 +28,7 @@ local APPS = {
   "apps/Group Deck.lua",
   "apps/Click Bar.lua",
   "apps/Click Levels.lua",
+  "apps/Meter Map.lua",
 }
 local opened, missing = 0, {}
 for _, rel in ipairs(APPS) do
