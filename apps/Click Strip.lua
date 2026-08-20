@@ -1,3 +1,59 @@
+local function dragBar(id, label, db, width, height)
+  local dl = r.ImGui_GetWindowDrawList(ctx)
+  local x, y = r.ImGui_GetCursorScreenPos(ctx)
+  r.ImGui_InvisibleButton(ctx, id, width, height)
+
+  local hovered = r.ImGui_IsItemHovered(ctx)
+  local active  = r.ImGui_IsItemActive(ctx)
+  local newDb = db
+
+  if active then
+    local mx = r.ImGui_GetMousePos(ctx)
+    newDb = positionToDb((mx - x) / math.max(1, width))
+  elseif hovered and r.ImGui_GetMouseWheel then
+    -- Wheel over the fader nudges it half a dB at a time, which is how you
+    -- actually set a click: by ear, in small steps, without grabbing anything.
+    local wheel = select(2, r.ImGui_GetMouseWheel(ctx)) or 0
+    if wheel == 0 then wheel = r.ImGui_GetMouseWheel(ctx) or 0 end
+    if wheel ~= 0 then newDb = clampDb(db + (wheel > 0 and 0.5 or -0.5)) end
+  end
+  if hovered and r.ImGui_IsMouseDoubleClicked(ctx, 0) then
+    newDb = nil   -- caller resets to its default
+  end
+
+  local shown = newDb or db
+  local fill = dbToPosition(shown)
+
+  r.ImGui_DrawList_AddRectFilled(dl, x, y, x + width, y + height, T.panel, 7)
+  local barColour = active and ui.shade(ACCENT, 0.18) or (hovered and ui.shade(ACCENT, 0.08) or ACCENT)
+  if fill > 0 then
+    r.ImGui_DrawList_AddRectFilled(dl, x, y, x + width * fill, y + height, barColour, 7)
+  end
+
+  -- unity mark, so 0 dB is findable by eye
+  local zero = dbToPosition(0)
+  r.ImGui_DrawList_AddRectFilled(dl, x + width * zero - 1, y + 4, x + width * zero + 1, y + height - 4, ui.alpha(T.white, 0.30))
+
+  -- a real handle at the level: something to aim at and grab
+  local hx = x + width * fill
+  local hw = 7
+  r.ImGui_DrawList_AddRectFilled(dl, hx - hw, y - 2, hx + hw, y + height + 2, T.white, 3)
+  r.ImGui_DrawList_AddRectFilled(dl, hx - 1, y + 6, hx + 1, y + height - 6, ui.alpha(0x000000FF, 0.35), 1)
+
+  r.ImGui_DrawList_AddRect(dl, x, y, x + width, y + height, hovered and ui.alpha(T.white, 0.35) or T.border, 7)
+
+  ui.pushFont(ctx, "small", true)
+  r.ImGui_DrawList_AddText(dl, x + 12, y + height / 2 - 7, ui.alpha(T.white, 0.95), label)
+  ui.popFont(ctx)
+  ui.pushFont(ctx, "body", true)
+  local value = (shown <= MIN_DB) and "off" or string.format("%.1f dB", shown)
+  local tw = r.ImGui_CalcTextSize(ctx, value)
+  r.ImGui_DrawList_AddText(dl, x + width - tw - 12, y + height / 2 - 9, ui.alpha(T.white, 0.95), value)
+  ui.popFont(ctx)
+
+  return newDb, (newDb == nil)
+end
+
 -- @description Click Strip
 -- @version 1.0.0
 -- @author Jason Zac
@@ -304,134 +360,111 @@ end
 local reportedSize = false
 local function drawFrame()
   readMailbox()
+
   local metro   = isOn(METRONOME)
   local preroll = isOn(PREROLL)
   local countIn = isOn(COUNT_IN)
 
-  local avail, availH = r.ImGui_GetContentRegionAvail(ctx)
-  avail = avail or 0
+  local avail = r.ImGui_GetContentRegionAvail(ctx)
+  avail = avail or 600
   if not reportedSize then
     reportedSize = true
     local fh = io.open(r.GetResourcePath() .. "/nt_click_strip_error.log", "a")
-    if fh then
-      fh:write(os.date("%Y-%m-%d %H:%M:%S ") .. string.format("first frame, content region %.0f x %.0f\n", avail, availH or 0))
-      fh:close()
-    end
+    if fh then fh:write(os.date("%Y-%m-%d %H:%M:%S ") .. string.format("first frame, %.0f wide\n", avail)); fh:close() end
   end
-  local narrow = avail < 900
 
-  -- ---- switches -----------------------------------------------------------
+  -- ---- row 1: the switches, small ----------------------------------------
+  local h1 = 32
   if ui.button(ctx, metro and "CLICK ON" or "CLICK OFF", {
-    kind = metro and "primary" or "secondary", colour = ACCENT, w = narrow and 120 or 150, h = 40,
-    tip = "The metronome. Same as REAPER's own metronome button."
+    kind = metro and "primary" or "secondary", colour = ACCENT, w = 104, h = h1,
+    tip = "The metronome."
   }) then fire(METRONOME) end
 
   r.ImGui_SameLine(ctx)
-  if ui.button(ctx, preroll and "PRE-ROLL ON" or "PRE-ROLL OFF", {
-    kind = preroll and "primary" or "secondary", colour = ACCENT, w = narrow and 130 or 165, h = 40,
-    tip = "Count you in before recording actually starts."
+  if ui.button(ctx, preroll and "PRE-ROLL" or "PRE-ROLL", {
+    kind = preroll and "primary" or "secondary", colour = ACCENT, w = 104, h = h1,
+    tip = "Count in before recording starts."
   }) then fire(PREROLL) end
 
   r.ImGui_SameLine(ctx)
   local bars = prerollBars()
-  if ui.button(ctx, "-", { w = 34, h = 40, tip = "One bar less of pre-roll." }) then setPrerollBars(bars - 1) end
+  if ui.button(ctx, "-", { w = 30, h = h1, tip = "One bar less." }) then setPrerollBars(bars - 1) end
   r.ImGui_SameLine(ctx)
-  ui.pushFont(ctx, "title", true)
+  ui.pushFont(ctx, "body", true)
   r.ImGui_Text(ctx, string.format("%d", bars))
   ui.popFont(ctx)
   r.ImGui_SameLine(ctx)
-  ui.dim(ctx, bars == 1 and "bar" or "bars")
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "+", { w = 34, h = 40, tip = "One bar more of pre-roll." }) then setPrerollBars(bars + 1) end
+  if ui.button(ctx, "+", { w = 30, h = h1, tip = "One bar more." }) then setPrerollBars(bars + 1) end
 
   r.ImGui_SameLine(ctx)
-  if ui.button(ctx, countIn and "COUNT-IN ON" or "COUNT-IN OFF", {
-    kind = countIn and "primary" or "secondary", colour = ACCENT, w = narrow and 130 or 160, h = 40,
-    tip = "Click through the pre-roll bars before recording."
+  if ui.button(ctx, countIn and "COUNT-IN" or "COUNT-IN", {
+    kind = countIn and "primary" or "secondary", colour = ACCENT, w = 104, h = h1,
+    tip = "Click through the pre-roll bars."
   }) then fire(COUNT_IN) end
 
-  -- ---- the two drag bars --------------------------------------------------
-  if narrow then
-    r.ImGui_Dummy(ctx, 1, 8)
-  else
-    r.ImGui_SameLine(ctx)
-    r.ImGui_Dummy(ctx, 18, 1)
-    r.ImGui_SameLine(ctx)
-  end
-
-  -- Whatever room is left goes to the bars: on a wide screen they are long
-  -- enough to set a level precisely without a dialog.
-  local remaining = r.ImGui_GetContentRegionAvail(ctx)
-  local cogWidth = 62
-  local barWidth = math.max(180, (remaining - cogWidth - 30) / 2)
-
-  local db1 = readDb("projmetrov1", DEFAULT_DB[1])
-  local newDb1, reset1 = dragBar("##beat1", "BEAT 1", db1, barWidth, 40)
-  if reset1 then writeDb("projmetrov1", DEFAULT_DB[1])
-  elseif newDb1 and math.abs(newDb1 - db1) > 0.01 then writeDb("projmetrov1", newDb1) end
-  ui.tip(ctx, "How loud the downbeat is. Drag anywhere along the bar; double-click to reset.")
-
   r.ImGui_SameLine(ctx)
-  local db2 = readDb("projmetrov2", DEFAULT_DB[2])
-  local newDb2, reset2 = dragBar("##beat2", "OTHER BEATS", db2, barWidth, 40)
-  if reset2 then writeDb("projmetrov2", DEFAULT_DB[2])
-  elseif newDb2 and math.abs(newDb2 - db2) > 0.01 then writeDb("projmetrov2", newDb2) end
-  ui.tip(ctx, "How loud beats 2, 3 and 4 are. Drag anywhere along the bar; double-click to reset.")
-
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "MORE", { kind = "ghost", w = cogWidth, h = 40,
-    tip = "The rest of the click settings: sounds, pattern, time signature." }) then
-    fire(SETTINGS)
-  end
-
-  -- ---- meter --------------------------------------------------------------
-  r.ImGui_Dummy(ctx, 1, 6)
-  ui.dim(ctx, "METER")
-  r.ImGui_SameLine(ctx)
-  r.ImGui_Dummy(ctx, 8, 1)
-
-  for _, preset in ipairs(PRESETS) do
-    r.ImGui_SameLine(ctx)
-    if ui.button(ctx, preset.label, { w = 54, h = 32,
-      tip = "Set the bar the cursor is in to " .. preset.label .. ", and accent it " ..
-            table.concat(preset.groups, "+") .. "." }) then
-      lastPattern = setMeter(preset.groups, preset.den, preset.label) or ""
-    end
-  end
-
-  r.ImGui_SameLine(ctx)
-  r.ImGui_Dummy(ctx, 16, 1)
-  r.ImGui_SameLine(ctx)
-  ui.dim(ctx, "ODD")
-  r.ImGui_SameLine(ctx)
-  r.ImGui_SetNextItemWidth(ctx, 120)
-  local changed, typed = r.ImGui_InputText(ctx, "##odd", oddText)
-  if changed then oddText = typed end
-  ui.tip(ctx, "Type the groups you feel, like 7+6 or 3+3+2. Add /4 or /8 to say what the beat is; 8 if you leave it out.")
-
-  local groups, den = parseGroups(oddText)
-  local total = 0
-  if groups then for _, count in ipairs(groups) do total = total + count end end
-
-  r.ImGui_SameLine(ctx)
-  if ui.button(ctx, groups and string.format("SET %d/%d", total, den) or "SET", {
-    kind = "primary", colour = ACCENT, w = 96, h = 32, disabled = groups == nil,
-    tip = groups and ("Sets the bar to " .. total .. "/" .. den .. ", accented " ..
-          table.concat(groups, "+") .. ".") or "Type something like 7+6 first."
-  }) then
-    lastPattern = setMeter(groups, den, oddText) or ""
-  end
+  if ui.button(ctx, "MORE", { kind = "ghost", w = 58, h = h1,
+    tip = "The rest of the click settings: sounds, pattern, time signature." }) then fire(SETTINGS) end
 
   if korgSeen > 0 and (r.time_precise() - korgSeen) < 1.5 then
     r.ImGui_SameLine(ctx)
     r.ImGui_TextColored(ctx, ACCENT, "KORG")
   end
 
+  -- ---- the two faders -----------------------------------------------------
+  -- Long, and on the same row as the switches when there is room for it.
+  local wide = avail >= 820
+  local faderH = 44
+  local faderW = wide and math.max(200, (avail - 24) / 2) or math.max(240, avail)
+
+  r.ImGui_Dummy(ctx, 1, 4)
+  local db1 = readDb("projmetrov1", DEFAULT_DB[1])
+  local newDb1, reset1 = dragBar("##beat1", "BEAT 1", db1, faderW, faderH)
+  if reset1 then writeDb("projmetrov1", DEFAULT_DB[1])
+  elseif newDb1 and math.abs(newDb1 - db1) > 0.01 then writeDb("projmetrov1", newDb1) end
+  ui.tip(ctx, "The downbeat. Drag anywhere, roll the wheel over it for half-dB steps, double-click to reset.")
+
+  if wide then r.ImGui_SameLine(ctx) else r.ImGui_Dummy(ctx, 1, 4) end
+  local db2 = readDb("projmetrov2", DEFAULT_DB[2])
+  local newDb2, reset2 = dragBar("##beat2", "OTHER BEATS", db2, faderW, faderH)
+  if reset2 then writeDb("projmetrov2", DEFAULT_DB[2])
+  elseif newDb2 and math.abs(newDb2 - db2) > 0.01 then writeDb("projmetrov2", newDb2) end
+  ui.tip(ctx, "Beats 2, 3, 4. Drag anywhere, roll the wheel over it, double-click to reset.")
+
+  -- ---- meter --------------------------------------------------------------
+  r.ImGui_Dummy(ctx, 1, 6)
+  for index, preset in ipairs(PRESETS) do
+    if index > 1 then r.ImGui_SameLine(ctx) end
+    if ui.button(ctx, preset.label, { w = 48, h = 28,
+      tip = "Set the bar the cursor is in to " .. preset.label .. " (felt " ..
+            table.concat(preset.groups, "+") .. ")." }) then
+      lastPattern = setMeter(preset.groups, preset.den, preset.label) or ""
+    end
+  end
+
+  r.ImGui_SameLine(ctx)
+  r.ImGui_SetNextItemWidth(ctx, 78)
+  local changed, typed = r.ImGui_InputText(ctx, "##odd", oddText)
+  if changed then oddText = typed end
+  ui.tip(ctx, "Odd meter: type the groups you feel, like 7+6 or 3+3+2. Add /4 or /8 for the beat; 8 if left out.")
+
+  local groups, den = parseGroups(oddText)
+  local total = 0
+  if groups then for _, count in ipairs(groups) do total = total + count end end
+
+  r.ImGui_SameLine(ctx)
+  if ui.button(ctx, groups and string.format("%d/%d", total, den) or "SET", {
+    kind = "primary", colour = ACCENT, w = 62, h = 28, disabled = groups == nil,
+    tip = groups and ("Set the bar to " .. total .. "/" .. den .. ", felt " ..
+          table.concat(groups, "+") .. ".") or "Type something like 7+6 first."
+  }) then
+    lastPattern = setMeter(groups, den, oddText) or ""
+  end
+
   if lastPattern ~= "" then
     r.ImGui_SameLine(ctx)
-    r.ImGui_Dummy(ctx, 10, 1)
-    r.ImGui_SameLine(ctx)
-    ui.dim(ctx, "click: " .. lastPattern:gsub("A", "1 "):gsub("B", ". "))
+    ui.dim(ctx, lastPattern:gsub("A", "1 "):gsub("B", ". "))
+    ui.tip(ctx, "The accent pattern for that grouping. REAPER will not let a script set it, so type it once under MORE > click pattern.")
   end
 end
 
@@ -444,53 +477,37 @@ local function frame()
 end
 
 --------------------------------------------------------------------------------
--- A one-line strip is no use as the eighth tab of a docker, behind the mixer:
--- you would never see the click level you came to change. It lives across the
--- top of the screen instead, under the menu bar, where the toolbars are.
-if r.GetExtState("NT_UI", "clickstrip_placed") ~= "3" then
-  r.SetExtState("NT_UI", "clickstrip_placed", "3", true)
-  r.SetExtState("NT_UI", "dock:Click Strip", "0", true)
-  r.SetExtState("NT_UI", "clickstrip_reposition", "1", false)
+-- Docked into REAPER's top-right docker, not floating. Floating put it over
+-- the timeline; full screen width was too big; a bottom tab buried it behind
+-- the mixer. In the top docker it sits with the toolbars and pushes nothing
+-- out of the way.
+local TOP_RIGHT_DOCKER = -6   -- REAPER docker 5, the top-right zone
+
+if r.GetExtState("NT_UI", "clickstrip_placed") ~= "6" then
+  r.SetExtState("NT_UI", "clickstrip_placed", "6", true)
+  r.SetExtState("NT_UI", "dock:Click Strip", "1", true)
+  r.SetExtState("NT_UI", "clickstrip_redock", "1", false)
 end
 
-local STRIP_HEIGHT = 146
+local dockFrames = (r.GetExtState("NT_UI", "clickstrip_redock") == "1") and 3 or 0
+if dockFrames > 0 then r.DeleteExtState("NT_UI", "clickstrip_redock", false) end
 
--- Full width of the display, pinned to the top. Falls back to his REAPER
--- window's width if the viewport API is missing.
-local function topOfScreen()
-  local x, y, w = 0, 38, 2557
-  if r.ImGui_GetMainViewport and r.ImGui_Viewport_GetWorkPos then
-    local vp = r.ImGui_GetMainViewport(ctx)
-    local vx, vy = r.ImGui_Viewport_GetWorkPos(vp)
-    local vw = r.ImGui_Viewport_GetWorkSize(vp)
-    if vx and vw and vw > 400 then x, y, w = vx, vy, vw end
-  end
-  return x, y, w
-end
-
-local placeFrames = (r.GetExtState("NT_UI", "clickstrip_reposition") == "1") and 4 or 0
-if placeFrames > 0 then r.DeleteExtState("NT_UI", "clickstrip_reposition", false) end
-
--- Running the action brings the strip to the front rather than leaving it
--- behind whatever was there.
 local focusFrames = 3
 local function loop()
   if focusFrames > 0 then
     focusFrames = focusFrames - 1
     if r.ImGui_SetNextWindowFocus then r.ImGui_SetNextWindowFocus(ctx) end
   end
-  if placeFrames > 0 then
-    placeFrames = placeFrames - 1
-    local x, y, w = topOfScreen()
-    local always = r.ImGui_Cond_Always and r.ImGui_Cond_Always() or 1
-    if r.ImGui_SetNextWindowPos then r.ImGui_SetNextWindowPos(ctx, x, y, always) end
-    if r.ImGui_SetNextWindowSize then r.ImGui_SetNextWindowSize(ctx, w, STRIP_HEIGHT, always) end
+  if dockFrames > 0 then
+    dockFrames = dockFrames - 1
+    if r.ImGui_SetNextWindowDockID then
+      r.ImGui_SetNextWindowDockID(ctx, TOP_RIGHT_DOCKER, r.ImGui_Cond_Always and r.ImGui_Cond_Always() or 1)
+    end
   end
   local open = ui.window(ctx, {
     title = APP,
     accent = ACCENT,
-    w = 1400, h = STRIP_HEIGHT, minW = 420, minH = 96,
-    dock = false,
+    w = 940, h = 190, minW = 380, minH = 130,
   }, frame)
   if open then r.defer(loop) end
 end
