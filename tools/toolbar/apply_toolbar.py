@@ -212,7 +212,7 @@ MAIN_TWINS = {
 # ---------------------------------------------------------------------------
 ZONE_DOCKER = {"3": "LEFT", "6": "CENTRE", "5": "CLICK"}
 ZONE_ORDER  = {"3": "0.18750000", "6": "0.37500000", "5": "0.50000000"}  # left -> right
-BUTTON_W, SEPARATOR_W, WINDOW_W = 30, 10, 2557   # logical px; his REAPER window
+BUTTON_W, SEPARATOR_W, WINDOW_W = 30, 17, 2557   # logical px, MEASURED off his window
 CLICK_STRIP_SHARE = 1.0     # docker 5 = one clear third of the window
 FLUSH_LEFT = "3"            # the strip that must touch the left edge
 
