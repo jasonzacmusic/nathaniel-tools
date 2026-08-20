@@ -48,7 +48,6 @@ local ACCENT = ui.accents.amber
 local ctx = r.ImGui_CreateContext(APP)
 ui.fonts(ctx)
 
-local mailbox = click.newMailbox()
 local grab = {}
 local beats = nil          -- accent pattern, one entry per beat
 local beatsForMeter = nil  -- the meter those beats were built for
@@ -151,9 +150,6 @@ end
 
 --------------------------------------------------------------------------------
 local function drawFrame()
-  local key, value = click.readMailbox(mailbox)
-  if key then click.applyMailbox(key, value) end
-
   local avail = r.ImGui_GetContentRegionAvail(ctx) or 700
   local faderW = math.max(220, avail)
 
@@ -169,11 +165,6 @@ local function drawFrame()
   if reset2 then click.writeDb("projmetrov2", click.DEFAULT_DB[2])
   elseif newDb2 and math.abs(newDb2 - db2) > 0.01 then click.writeDb("projmetrov2", newDb2) end
   ui.tip(ctx, "Every other beat. Same gestures.")
-
-  if mailbox.seenAt > 0 and (r.time_precise() - mailbox.seenAt) < 1.5 then
-    r.ImGui_SameLine(ctx)
-    r.ImGui_TextColored(ctx, ACCENT, "KORG")
-  end
 
   -- ---- the accent row -----------------------------------------------------
   r.ImGui_Dummy(ctx, 1, 6)
