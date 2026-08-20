@@ -13,9 +13,9 @@
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-20T10:52:22Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-20T11:22:46Z">
         <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220c70e6d78badd7e282a78bb0eb6a83b28fad7581cd442f137037478077224888f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/8b7ed1dcbd8d5aea2c3b3f817fea748ed16459e1/apps/Click%20Strip.lua</source>
+        <source main="main" hash="12202cc391aff05f9381fb0bc862f737cd19bb313449a161ca54ab913e4a29be701c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/364465c7b6bb05afea8ba44f77b97cb590ea414d/apps/Click%20Strip.lua</source>
       </version>
     </reapack>
     <reapack name="Group Deck.lua" type="script" desc="Group Deck">
