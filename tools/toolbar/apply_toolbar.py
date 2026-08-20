@@ -214,21 +214,41 @@ ZONE_DOCKER = {"3": "LEFT", "6": "CENTRE", "5": "CLICK"}
 ZONE_ORDER  = {"3": "0.18750000", "6": "0.37500000", "5": "0.50000000"}  # left -> right
 BUTTON_W, SEPARATOR_W, WINDOW_W = 30, 10, 2557   # logical px; his REAPER window
 CLICK_STRIP_SHARE = 1.0     # docker 5 = one clear third of the window
+FLUSH_LEFT = "3"            # the strip that must touch the left edge
 
 def zone_width_shares():
-    """-> (share per docker summing to 3.0, button px per docker, air px)."""
+    """-> (share per docker summing to 3.0, button px per docker, gap px).
+
+    MEASURED, not assumed: REAPER CENTRES a toolbar's buttons inside its
+    docker. On his 2557 px window both strips sat dead centre of their docker
+    to within 5 px. So padding a docker does not push its buttons right - it
+    pushes them towards the middle of that docker.
+
+    That is why the left strip is given EXACTLY its own width: with nothing
+    spare to centre inside, its buttons start hard against the left edge. All
+    the leftover room goes to the centre strip, and because that strip centres
+    too, the grid group lands in the middle of the gap with the same amount of
+    air on both sides of it.
+    """
     rows_for = {d: rows for d, rows in (("3", LEFT_ITEMS), ("6", CENTRE_ITEMS), ("5", RIGHT_ITEMS)) if rows}
     content = {d: sum(SEPARATOR_W if t == "-1" else BUTTON_W for t, _, _ in rows)
                for d, rows in rows_for.items()}
     reserved = {d: CLICK_STRIP_SHARE for d in ("3", "6", "5") if d not in content}
     room = WINDOW_W * (1.0 - sum(reserved.values()) / 3.0)
-    used = sum(content.values())
-    air = max((room - used) / len(content), 40.0)   # same breathing room after each group
-    shares = {d: 3.0 * (c + air) / WINDOW_W for d, c in content.items()}
+
+    widths = {FLUSH_LEFT: float(content[FLUSH_LEFT])}
+    rest = [d for d in content if d != FLUSH_LEFT]
+    spare = room - widths[FLUSH_LEFT]
+    weight = sum(content[d] for d in rest) or 1
+    for d in rest:
+        widths[d] = spare * content[d] / weight
+
+    shares = {d: 3.0 * w / WINDOW_W for d, w in widths.items()}
     shares.update(reserved)
     for d in reserved:
         content[d] = 0
-    return shares, content, air
+    gap = min(((widths[d] - content[d]) / 2.0 for d in rest), default=0.0)
+    return shares, content, gap
 
 ALL_OURS = ({t for t, _, _ in CATALOGUE}
             | {t for t, _, _ in LEFT_ITEMS}
@@ -434,7 +454,7 @@ def patch_split():
     else:
         new = new.rstrip("\n") + "\n[toolbar:4]\ndock=1\nwnd_height=42\nwnd_left=0\nwnd_top=1346\nwnd_vis=1\nwnd_width=420\n"
     # ---- spread the two toolbars, keep the right third clear --------------
-    shares, content, air = zone_width_shares()
+    shares, content, gap = zone_width_shares()
     for d in ("3", "6", "5"):
         for key, val in (("dockerwprio", f"{shares[d]:.8f}"), ("dockerpprio", ZONE_ORDER[d])):
             if re.search(rf"^{key}{d}=", new, flags=re.M):
@@ -444,12 +464,15 @@ def patch_split():
                 print(f"WARNING: {key}{d} not found in reaper.ini - zone width not set")
         px = round(shares[d] / 3.0 * WINDOW_W)
         pct = f"{shares[d]/3.0*100:.0f}% of the window"
-        if content[d]:
-            print(f"  {ZONE_DOCKER[d]:6s} docker {d}: {content[d]:4d} px of buttons "
-                  f"+ {round(air)} px of air = {px} px ({pct})")
-        else:
+        if not content[d]:
             print(f"  {ZONE_DOCKER[d]:6s} docker {d}: EMPTY, {px} px held clear "
                   f"for the Click Strip ({pct})")
+        elif d == FLUSH_LEFT:
+            print(f"  {ZONE_DOCKER[d]:6s} docker {d}: {content[d]:4d} px of buttons, "
+                  f"docker {px} px - flush to the left edge ({pct})")
+        else:
+            print(f"  {ZONE_DOCKER[d]:6s} docker {d}: {content[d]:4d} px of buttons "
+                  f"centred in {px} px, {round(gap)} px of air each side ({pct})")
 
     if new != text:
         shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
