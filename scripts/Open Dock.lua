@@ -1,15 +1,17 @@
 -- @description Open Dock (all the Nathaniel Tools apps, docked)
--- @version 1.1.0
+-- @version 1.2.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
 -- @about
 --   Opens Palette & Look, Folders & Flow, Track Settings Transfer, Stem Print &
---   Handoff and MIDI Batch Export in REAPER's docker, as tabs, in one go. Run it
+--   Handoff, MIDI Batch Export, Group Deck and the Click Strip in REAPER's
+--   docker, as tabs, in one go. Run it
 --   once from the Actions list, or put it in your startup so the tools are there
 --   "at the word go". Apps that are already open are left alone.
 --   StageRig is deliberately not included - it is a stage tool, not a studio one.
 -- @changelog
+--   1.2.0 - also opens the Click Strip.
 --   1.1.0 - also opens Group Deck.
 --   1.0.0 - first version.
 
@@ -22,6 +24,7 @@ local APPS = {
   "apps/Stem Print and Handoff.lua",
   "scripts/MIDI Batch Export.lua",
   "apps/Group Deck.lua",
+  "apps/Click Strip.lua",
 }
 local opened, missing = 0, {}
 for _, rel in ipairs(APPS) do
