@@ -155,14 +155,10 @@ end
 --------------------------------------------------------------------------------
 -- accents
 --------------------------------------------------------------------------------
--- REAPER stores the click pattern as two bits per beat, first beat in the
--- lowest bits, 1 = accented and 2 = ordinary. Worked out from Jason's own
--- settings, where "ABBB" is stored as 169, and checked against that number.
---
--- It is NOT writable from a script: it lives in the project (PATTERNSTR in the
--- .RPP) and SWS exposes no config var for it - proven by probing REAPER live,
--- where projmetrov1 reads fine and projmetropattern does not exist. So the grid
--- here works out the pattern and hands it over to be pasted in once.
+-- REAPER's click pattern is per time-signature marker, and it IS scriptable:
+-- TimeMap_GetMetronomePattern reads it, and passing "SET:<pattern>" writes it.
+-- The letters are beat types as shown in REAPER's own pattern editor - A is the
+-- accented beat, B an ordinary one (C and D are the two extra click sounds).
 function M.patternFromGroups(groups)
   local beats = {}
   for _, count in ipairs(groups) do
@@ -177,16 +173,34 @@ function M.patternString(beats)
   return table.concat(out)
 end
 
-function M.patternNumber(beats)
-  local low, high = 0, 0
-  for index, accented in ipairs(beats) do
-    local value = accented and 1 or 2
-    local shift = 2 * (index - 1)
-    if shift < 32 then low = low | (value << shift) else high = high | (value << (shift - 32)) end
+-- The pattern REAPER is actually using at the cursor, as a list of "is this
+-- beat accented" flags. nil when REAPER will not say.
+function M.readPattern()
+  local _, measureStart = M.cursorMeasure()
+  local ok, retval, text = pcall(r.TimeMap_GetMetronomePattern, 0, measureStart, "EXTENDED")
+  if not ok or type(text) ~= "string" or text == "" then
+    ok, retval, text = pcall(r.TimeMap_GetMetronomePattern, 0, measureStart, "")
   end
-  if low >= 0x80000000 then low = low - 0x100000000 end
-  if high >= 0x80000000 then high = high - 0x100000000 end
-  return low, high
+  if not ok or type(text) ~= "string" or text == "" then return nil end
+  local beats = {}
+  for i = 1, #text do
+    local ch = text:sub(i, i)
+    -- "EXTENDED" gives A/B/C/D; the compatibility form gives 1 for a primary
+    -- beat and 2 for the rest.
+    beats[#beats + 1] = (ch == "A" or ch == "1")
+  end
+  return beats, text
+end
+
+-- Write it. Returns true when REAPER took it.
+function M.writePattern(beats)
+  local text = M.patternString(beats)
+  local _, measureStart = M.cursorMeasure()
+  r.Undo_BeginBlock()
+  local ok, retval = pcall(r.TimeMap_GetMetronomePattern, 0, measureStart, "SET:" .. text)
+  r.Undo_EndBlock("Set click accents " .. text, -1)
+  r.UpdateTimeline()
+  return ok and retval ~= nil and retval ~= 0, text
 end
 
 -- Groups implied by which beats are accented: ABBABBAB -> 3+3+2.
@@ -233,6 +247,29 @@ function M.applyMailbox(key, value)
   elseif key == "beat1" or key == "beat2" then
     local cc = tonumber(value)
     if cc then M.writeDb(key == "beat1" and "projmetrov1" or "projmetrov2", M.positionToDb(cc / 127)) end
+  elseif key == "accents" then
+    -- "ABBABBAB" or a grouping like 3+3+2
+    local beats
+    if value:match("^[ABCD12]+$") then
+      beats = {}
+      for i = 1, #value do
+        local ch = value:sub(i, i)
+        beats[i] = (ch == "A" or ch == "1")
+      end
+    else
+      local groups = M.parseGroups(value)
+      if groups then beats = M.patternFromGroups(groups) end
+    end
+    if beats then
+      local ok, text = M.writePattern(beats)
+      local fh = io.open(r.GetResourcePath() .. "/nt_click_strip_error.log", "a")
+      if fh then
+        local back = M.readPattern()
+        fh:write(os.date("%H:%M:%S ") .. string.format("accents SET:%s -> taken=%s, REAPER now reports %s\n",
+          text, tostring(ok), back and M.patternString(back) or "nothing"))
+        fh:close()
+      end
+    end
   elseif key == "metronome" then M.fire(M.METRONOME)
   elseif key == "preroll" then M.fire(M.PREROLL)
   elseif key == "settings" then M.fire(M.SETTINGS)

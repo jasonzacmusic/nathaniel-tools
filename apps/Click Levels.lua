@@ -129,11 +129,24 @@ end
 --------------------------------------------------------------------------------
 -- accents
 --------------------------------------------------------------------------------
-local function ensureBeats(num)
-  if beats and beatsForMeter == num then return end
+local lastWriteFailed = false
+
+-- Take the pattern REAPER is actually using. Falls back to an accent on the
+-- one, which is REAPER's own default.
+local function refreshBeats(num)
+  local live = click.readPattern()
+  if live and #live == num then
+    beats = live
+  elseif not beats or beatsForMeter ~= num then
+    beats = {}
+    for i = 1, num do beats[i] = (i == 1) end
+  end
   beatsForMeter = num
-  beats = {}
-  for i = 1, num do beats[i] = (i == 1) end   -- REAPER's own default: the one
+end
+
+local function pushBeats()
+  local ok = click.writePattern(beats)
+  lastWriteFailed = not ok
 end
 
 --------------------------------------------------------------------------------
@@ -165,7 +178,7 @@ local function drawFrame()
   -- ---- the accent row -----------------------------------------------------
   r.ImGui_Dummy(ctx, 1, 6)
   local num = click.meterAtCursor()
-  ensureBeats(num)
+  refreshBeats(num)
 
   ui.dim(ctx, string.format("ACCENTS  %d beats", num))
   r.ImGui_SameLine(ctx)
@@ -184,6 +197,7 @@ local function drawFrame()
       beats = {}
       for i = 1, num do beats[i] = laid[i] or false end
       beatsForMeter = num
+      pushBeats()
     end
   end
 
@@ -196,22 +210,33 @@ local function drawFrame()
       kind = on and "primary" or "secondary", colour = ACCENT, w = 26, h = 22, small = true,
       tip = on and ("Beat " .. i .. " is accented. Click to make it ordinary.")
                 or ("Beat " .. i .. " is ordinary. Click to accent it.")
-    }) then beats[i] = not on end
+    }) then beats[i] = not on; pushBeats() end
   end
 
   local text = click.patternString(beats)
   local groups = click.groupsFromPattern(beats)
 
   r.ImGui_Dummy(ctx, 1, 3)
-  ui.dim(ctx, text .. "   felt as " .. table.concat(groups, "+"))
+  if lastWriteFailed then
+    r.ImGui_TextColored(ctx, T.danger, "REAPER would not take that pattern")
+  else
+    ui.dim(ctx, text .. "   felt as " .. table.concat(groups, "+"))
+  end
   r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "COPY", { w = 54, h = 20, small = true,
-    tip = "Copy the pattern, ready to paste into REAPER's click settings." }) then
-    if r.CF_SetClipboard then r.CF_SetClipboard(text) end
+  if ui.button(ctx, "ALL OFF", { w = 66, h = 20, small = true,
+    tip = "No accents at all - every beat the same." }) then
+    for i = 1, #beats do beats[i] = false end
+    pushBeats()
+  end
+  r.ImGui_SameLine(ctx)
+  if ui.button(ctx, "ON THE 1", { w = 76, h = 20, small = true,
+    tip = "Back to REAPER's default: the downbeat only." }) then
+    for i = 1, #beats do beats[i] = (i == 1) end
+    pushBeats()
   end
   r.ImGui_SameLine(ctx)
   if ui.button(ctx, "SETTINGS", { w = 74, h = 20, small = true,
-    tip = "Open REAPER's click settings - paste the pattern into its pattern box. REAPER does not let a script write it." }) then
+    tip = "REAPER's own click settings: sounds and volumes." }) then
     click.fire(click.SETTINGS)
   end
 end
