@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
 """
-Patch REAPER's reaper-menu.ini so Jason's three toolbar zones are laid out the
-same way every time:
+Patch REAPER's reaper-menu.ini so Jason's toolbars are laid out the same way
+every time. TWO toolbars at the top, and the top-right pane left empty:
 
-  LEFT   (docker 3, "Session")        - his own REAPER toggles, lifted off the
-                                        main toolbar. Record/transport first.
-  CENTRE (docker 6, "Grid Settings")  - plain divisions, then the triplet
-                                        toggle + rel + swing, then the bar
-                                        tools (marker / tempo / MIDI render).
-  RIGHT  (docker 5, "Nathaniel Tools")- the Lua tools that have no key.
+  LEFT   (docker 3, "Session + Tools") - his own REAPER toggles, then the
+                                         Nathaniel Tools that have no key.
+  CENTRE (docker 6, "Grid Settings")   - plain divisions, then the triplet
+                                         toggle + rel + swing, then the bar
+                                         tools (marker / tempo / MIDI render).
+  RIGHT  (docker 5)                    - DELIBERATELY EMPTY. Held clear so the
+                                         Click Strip docks up here with the
+                                         toolbars instead of floating over the
+                                         arrange view.
 
-The three zones are spread across the whole window (see zone_width_shares):
-each gets the width of its own buttons plus an equal share of the leftover, so
-groups are separated by real air instead of one strip hogging half the screen.
-Inside a strip, groups are parted by a bare "-1" separator - never "-1 <label>",
-which REAPER draws as a dead "SEPAR" button.
+The two toolbars are spread across the window (see zone_width_shares): each
+gets the width of its own buttons plus the same amount of air, and docker 5
+keeps a clear third on the right. Inside a strip, groups are parted by a bare
+"-1" separator - never "-1 <label>", which REAPER draws as a dead SEPAR button.
 
-ONE BUTTON, ONE PLACE. Every command below lives in exactly one zone; the guard
+ONE BUTTON, ONE PLACE. Every command below lives in exactly one strip; the guard
 in _check_no_duplicates() stops the script loudly if that is ever broken.
 Anything that already has a key Jason actually uses (Z, X, F, Opt+G, F14,
 Cmd+Opt+R) is a KEY ONLY - no button.
@@ -106,11 +108,20 @@ KEYS = [
 ]
 
 # ---------------------------------------------------------------------------
-# LEFT zone (docker 3, "Session") - Jason's own REAPER toggles, in the order he
-# reaches for them: record/click first, then snap+grid, then the set-and-forget
-# ones. REAPER's own theme icons are kept for these.
+# LEFT zone (docker 3, "Session + Tools") - two things on one strip:
+#
+#   SESSION_ITEMS - Jason's own REAPER toggles, in the order he reaches for
+#                   them: record/click first, then snap+grid, then the
+#                   set-and-forget ones. REAPER's own theme icons are kept.
+#   TOOL_ITEMS    - the Nathaniel Tools that have no key. These used to have
+#                   their own strip in docker 5; docker 5 is now kept clear for
+#                   the Click Strip, so they moved here. Nothing was lost - the
+#                   left strip had 809 px of room for 8 small buttons.
+#
+# The two halves are parted by a bare separator, and the tools keep their own
+# internal grouping: everyday toggles | the repair tool | the two windows.
 # ---------------------------------------------------------------------------
-LEFT_ITEMS = [
+SESSION_ITEMS = [
   ("40364", "Enable metronome", None),
   ("41819", "Pre-roll: Toggle pre-roll on record", "toolbar_preroll_clock_record.png"),
   ("1157",  "Enable snapping", None),
@@ -120,6 +131,18 @@ LEFT_ITEMS = [
   ("40041", "Enable auto-crossfade", None),
   ("1135",  "Enable locking", None),
 ]
+TOOL_ITEMS = [
+  ("_RS70b23e69efd7b91020ba89e8d4544abdc7cd0773", "Script: Solo Focus.lua",        "nt_solo_focus.png"),
+  ("_RS47e470b1f815b379e308f3a5880334082c203f27", "Script: Record Arm Toggle.lua", "nt_record_arm.png"),
+  ("_RSf33a8443194a2b78d99b0cc573318b004b0fe0f6", "Script: FX Float Toggle.lua",   "nt_fx_float.png"),
+  ("_RS7403f7876dafe558afa4a4d96801885fe894f7c4", "Script: FX Open Close All.lua", "nt_fx_all.png"),
+  SEP,
+  ("_RS22cf425eb9b6c6f19f26a8cc44db19480018a687", "Script: Unoverlap Items.lua",   "nt_unoverlap.png"),
+  SEP,
+  ("_RSa64fe569c8e612731bf7e3c0c957b076769a9762", "Script: Group Deck.lua",        "nt_app_groupdeck.png"),
+  ("_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416", "Script: Open Dock.lua",         "nt_app_dock.png"),
+]
+LEFT_ITEMS = SESSION_ITEMS + [SEP] + TOOL_ITEMS
 
 # ---------------------------------------------------------------------------
 # CENTRE zone (docker 6, "Grid Settings") - three groups with a real gap
@@ -150,21 +173,15 @@ CENTRE_ITEMS = [
 ]
 
 # ---------------------------------------------------------------------------
-# RIGHT zone (docker 5, "Nathaniel Tools") - the pane is only ~450 px wide at
-# 2560, so this stays short. Everyday toggles first, then the one repair tool,
-# then the two windows. Anything with a key Jason uses is NOT here.
+# RIGHT zone (docker 5) - DELIBERATELY EMPTY.
+#
+# Docker 5 is the top-right pane. It is held clear so the Click Strip can be
+# docked there, up with the toolbars, instead of floating over the arrange view
+# where it sat on top of the timeline. The old "Nathaniel Tools" strip
+# (Floating toolbar 3) that used to live here is emptied and hidden, and its
+# buttons moved onto the left strip as TOOL_ITEMS - see above.
 # ---------------------------------------------------------------------------
-RIGHT_ITEMS = [
-  ("_RS70b23e69efd7b91020ba89e8d4544abdc7cd0773", "Script: Solo Focus.lua",        "nt_solo_focus.png"),
-  ("_RS47e470b1f815b379e308f3a5880334082c203f27", "Script: Record Arm Toggle.lua", "nt_record_arm.png"),
-  ("_RSf33a8443194a2b78d99b0cc573318b004b0fe0f6", "Script: FX Float Toggle.lua",   "nt_fx_float.png"),
-  ("_RS7403f7876dafe558afa4a4d96801885fe894f7c4", "Script: FX Open Close All.lua", "nt_fx_all.png"),
-  SEP,
-  ("_RS22cf425eb9b6c6f19f26a8cc44db19480018a687", "Script: Unoverlap Items.lua",   "nt_unoverlap.png"),
-  SEP,
-  ("_RSa64fe569c8e612731bf7e3c0c957b076769a9762", "Script: Group Deck.lua",        "nt_app_groupdeck.png"),
-  ("_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416", "Script: Open Dock.lua",         "nt_app_dock.png"),
-]
+RIGHT_ITEMS = []
 
 # ---------------------------------------------------------------------------
 # MAIN toolbar - Jason's own buttons stay exactly as he arranged them. The only
@@ -184,26 +201,34 @@ MAIN_TWINS = {
 # REAPER keeps the side-by-side split of the top-edge dockers in reaper.ini as
 # dockerwprio<N> (width share) and dockerpprio<N> (left-to-right order). The
 # three shares always add up to 3.0.
-#     docker 3 = LEFT (Session)  docker 6 = CENTRE (Grid)  docker 5 = RIGHT (NT)
+#     docker 3 = LEFT (Session + Tools)   docker 6 = CENTRE (Grid)
+#     docker 5 = RIGHT - held clear for the Click Strip
 #
-# It used to be 52 / 31 / 17, which is backwards: the strip with the FEWEST
-# buttons had half the screen while the two busiest were squashed at the far
-# right. Now each zone gets the width of its own buttons PLUS an equal share of
-# the leftover, so the three groups sit evenly spread with the same amount of
-# air after each one - and the left zone starts hard against the left edge.
+# There are only TWO toolbars now. Docker 5's third of the window is reserved
+# so the Click Strip drops straight into the top-right and pushes nothing out
+# of the way; the two toolbars share what is left, each getting the width of
+# its own buttons plus the same amount of air, with the left strip starting
+# hard against the left edge.
 # ---------------------------------------------------------------------------
-ZONE_DOCKER = {"3": "LEFT", "6": "CENTRE", "5": "RIGHT"}
+ZONE_DOCKER = {"3": "LEFT", "6": "CENTRE", "5": "CLICK"}
 ZONE_ORDER  = {"3": "0.18750000", "6": "0.37500000", "5": "0.50000000"}  # left -> right
 BUTTON_W, SEPARATOR_W, WINDOW_W = 30, 10, 2557   # logical px; his REAPER window
+CLICK_STRIP_SHARE = 1.0     # docker 5 = one clear third of the window
 
 def zone_width_shares():
-    rows_for = {"3": LEFT_ITEMS, "6": CENTRE_ITEMS, "5": RIGHT_ITEMS}
+    """-> (share per docker summing to 3.0, button px per docker, air px)."""
+    rows_for = {d: rows for d, rows in (("3", LEFT_ITEMS), ("6", CENTRE_ITEMS), ("5", RIGHT_ITEMS)) if rows}
     content = {d: sum(SEPARATOR_W if t == "-1" else BUTTON_W for t, _, _ in rows)
                for d, rows in rows_for.items()}
+    reserved = {d: CLICK_STRIP_SHARE for d in ("3", "6", "5") if d not in content}
+    room = WINDOW_W * (1.0 - sum(reserved.values()) / 3.0)
     used = sum(content.values())
-    air = max((WINDOW_W - used) / 3.0, 40.0)     # same breathing room after each group
-    total = used + air * 3
-    return {d: 3.0 * (c + air) / total for d, c in content.items()}, content, air
+    air = max((room - used) / len(content), 40.0)   # same breathing room after each group
+    shares = {d: 3.0 * (c + air) / WINDOW_W for d, c in content.items()}
+    shares.update(reserved)
+    for d in reserved:
+        content[d] = 0
+    return shares, content, air
 
 ALL_OURS = ({t for t, _, _ in CATALOGUE}
             | {t for t, _, _ in LEFT_ITEMS}
@@ -316,11 +341,13 @@ def main():
             if new_sec != lines: changed = True
             secs[idx] = (name, new_sec)
 
-    # ---- RIGHT zone (Floating toolbar 3) and LEFT zone (Floating toolbar 4)
+    # ---- Floating toolbar 3: emptied. Its buttons are on the left strip now
+    #      and docker 5 is kept clear for the Click Strip.
     nt_items, nt_icons = numbered(RIGHT_ITEMS)
     nt_section = rebuild_section(["title=Nathaniel Tools"], nt_items, nt_icons)
+    # ---- LEFT zone (Floating toolbar 4): session toggles + the tools
     left_items, left_icons = numbered(LEFT_ITEMS)
-    left_section = rebuild_section(["title=Session"], left_items, left_icons)
+    left_section = rebuild_section(["title=Session + Tools"], left_items, left_icons)
 
     for want_name, want_sec in (("Floating toolbar 3", nt_section), ("Floating toolbar 4", left_section)):
         replaced = False
@@ -366,39 +393,33 @@ def patch_keys():
         print("keys already set")
 
 def patch_split():
-    """reaper.ini: main toolbar keeps half the strip (his two tidy rows); the
-    Nathaniel Tools toolbar (toolbar:3) is docked into the top toolbar docker
-    (docker 3, where the Grid toolbar lives) at the right-hand split."""
+    """reaper.ini: two toolbars at the top - the left strip in docker 3 and the
+    grid strip in docker 6 - and docker 5 (top right) left FREE so the Click
+    Strip can dock there instead of floating over the arrange view."""
     ini = os.path.join(os.path.dirname(INI), "reaper.ini")
     if not os.path.exists(ini): return
     text = open(ini, encoding="utf-8", errors="surrogateescape").read()
     new = re.sub(r"^toolbar=0\.\d+ (\d+)$", r"toolbar=0.50000000 \1", text, flags=re.M)
-    if re.search(r"^toolbar:3=", new, flags=re.M):
-        new = re.sub(r"^toolbar:3=.*$", "toolbar:3=0.50000000 5", new, flags=re.M)
-    else:
-        new = re.sub(r"^(toolbar:1=.*)$", r"\1\ntoolbar:3=0.50000000 5", new, count=1, flags=re.M)
-    # [toolbar:3] section: docked + visible
+    # toolbar:3 gives up docker 5 entirely, and is hidden so it cannot come
+    # back as a window floating over the timeline.
+    new = re.sub(r"^toolbar:3=.*\n", "", new, flags=re.M)
     if re.search(r"^\[toolbar:3\]", new, flags=re.M):
         sec_start = new.index("[toolbar:3]")
         sec_end = new.find("\n[", sec_start + 1)
         if sec_end < 0: sec_end = len(new)
         body = new[sec_start:sec_end]
-        body2 = re.sub(r"^dock=\d+$", "dock=1", body, flags=re.M)
-        body2 = re.sub(r"^wnd_vis=\d+$", "wnd_vis=1", body2, flags=re.M)
-        if "dock=" not in body2: body2 += "\ndock=1"
-        if "wnd_vis=" not in body2: body2 += "\nwnd_vis=1"
-        new = new[:sec_start] + body2 + new[sec_end:]
-    else:
-        new = new.rstrip("\n") + "\n[toolbar:3]\ndock=1\nwnd_height=81\nwnd_left=0\nwnd_top=64\nwnd_vis=1\nwnd_width=385\n"
+        body = re.sub(r"^wnd_vis=\d+$", "wnd_vis=0", body, flags=re.M)
+        if "wnd_vis=" not in body: body += "\nwnd_vis=0"
+        new = new[:sec_start] + body + new[sec_end:]
     new = re.sub(r"^dockersel15=toolbar:3\n", "", new, flags=re.M)
+    new = re.sub(r"^dockersel5=.*\n", "", new, flags=re.M)
     new = re.sub(r"^toolbar:1=.*$", "toolbar:1=0.50000000 6", new, flags=re.M)   # grid strip: middle pane
-    # docker 5 = its own pane at the TOP (mode 2, like the grid's docker 3), so the
-    # three strips sit side by side instead of as tabs
+    # docker 5 stays a TOP pane (mode 2) even with nothing in it - that is what
+    # makes it the top-right slot the Click Strip docks into.
     if re.search(r"^dockermode5=", new, flags=re.M):
         new = re.sub(r"^dockermode5=.*$", "dockermode5=2", new, flags=re.M)
     else:
         new = re.sub(r"^(dockermode4=.*)$", r"\1\ndockermode5=2", new, count=1, flags=re.M)
-    new = re.sub(r"^dockersel5=.*\n", "", new, flags=re.M)
     if re.search(r"^toolbar:4=", new, flags=re.M):
         new = re.sub(r"^toolbar:4=.*$", "toolbar:4=0.50000000 3", new, flags=re.M)
     else:
@@ -412,7 +433,7 @@ def patch_split():
         new = new[:a] + body + new[b:]
     else:
         new = new.rstrip("\n") + "\n[toolbar:4]\ndock=1\nwnd_height=42\nwnd_left=0\nwnd_top=1346\nwnd_vis=1\nwnd_width=420\n"
-    # ---- spread the three zones across the whole window -------------------
+    # ---- spread the two toolbars, keep the right third clear --------------
     shares, content, air = zone_width_shares()
     for d in ("3", "6", "5"):
         for key, val in (("dockerwprio", f"{shares[d]:.8f}"), ("dockerpprio", ZONE_ORDER[d])):
@@ -422,13 +443,18 @@ def patch_split():
                 # loud, not silent: never let a missing key pass as "applied"
                 print(f"WARNING: {key}{d} not found in reaper.ini - zone width not set")
         px = round(shares[d] / 3.0 * WINDOW_W)
-        print(f"  {ZONE_DOCKER[d]:6s} docker {d}: {content[d]:4d} px of buttons "
-              f"+ {round(air)} px of air = {px} px ({shares[d]/3.0*100:.0f}% of the window)")
+        pct = f"{shares[d]/3.0*100:.0f}% of the window"
+        if content[d]:
+            print(f"  {ZONE_DOCKER[d]:6s} docker {d}: {content[d]:4d} px of buttons "
+                  f"+ {round(air)} px of air = {px} px ({pct})")
+        else:
+            print(f"  {ZONE_DOCKER[d]:6s} docker {d}: EMPTY, {px} px held clear "
+                  f"for the Click Strip ({pct})")
 
     if new != text:
         shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
         open(ini, "w", encoding="utf-8", errors="surrogateescape").write(new)
-        print("reaper.ini: three zones rebalanced across the full window width")
+        print("reaper.ini: two toolbars spread across the window, docker 5 left free")
     else:
         print("reaper.ini unchanged")
 
