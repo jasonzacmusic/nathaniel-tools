@@ -128,16 +128,13 @@ local function patternChars(groups)
   return chars
 end
 
-local function applyAccents(groups)
-  local chars = patternChars(groups)
-  if #chars == 0 then return "" end
-  local low, high = encodePattern(chars)
-  r.SNM_SetIntConfigVar("projmetropattern", low)
-  r.SNM_SetIntConfigVar("projmetropattern_h", high)
-  if r.SNM_SetStringConfigVar then
-    r.SNM_SetStringConfigVar("projmetropatternstr", table.concat(chars))
-  end
-  return table.concat(chars)
+-- REAPER does not expose the click's accent pattern to scripts - it is not in
+-- the config vars SWS can reach (checked live: projmetropattern reads back as
+-- "not available" while projmetrov1 reads fine). So the meter buttons set the
+-- time signature, which REAPER does allow, and hand back the pattern to type
+-- once into the click settings behind MORE.
+local function accentPattern(groups)
+  return table.concat(patternChars(groups))
 end
 
 -- Put the time signature on the bar the cursor is sitting in, which is what a
@@ -170,7 +167,7 @@ local function setMeter(groups, den, label)
   if total < 1 then return end
   r.Undo_BeginBlock()
   applyMeter(total, den)
-  local pattern = applyAccents(groups)
+  local pattern = accentPattern(groups)
   r.Undo_EndBlock("Set meter " .. total .. "/" .. den, -1)
   return pattern
 end
@@ -201,6 +198,7 @@ local PRESETS = {
 
 local oddText = "7+6"
 local lastPattern = ""
+
 --------------------------------------------------------------------------------
 -- the drag bar
 --------------------------------------------------------------------------------
@@ -249,6 +247,46 @@ local function dragBar(id, label, db, width, height)
   return newDb, (newDb == nil)
 end
 
+
+--------------------------------------------------------------------------------
+-- the Korg
+--------------------------------------------------------------------------------
+-- 12 Step Bridge leaves the nanoKONTROL's click moves in one small file. Its
+-- profile is untouched: Fader 1 is still the downbeat, Knob 1 the other beats,
+-- Mute 1 the click, Solo 1 the pre-roll. This is only the last few inches -
+-- REAPER has no action those controls could be learned to, because the beat
+-- levels are config values only a script inside REAPER can set.
+local MAILBOX = r.GetResourcePath() .. "/nt_click_mailbox.txt"
+local lastMailSequence = nil
+local korgSeen = 0
+
+local function readMailbox()
+  local fh = io.open(MAILBOX, "r")
+  if not fh then return end
+  local line = fh:read("*l")
+  fh:close()
+  if not line then return end
+  local sequence, key, value = line:match("^(%d+)%s+(%S+)%s+(%S+)$")
+  if not sequence then return end
+  if sequence == lastMailSequence then return end
+  lastMailSequence = sequence
+
+  korgSeen = r.time_precise()
+  if key == "beat1gain" or key == "beat2gain" then
+    -- exact gain, used to put a level back precisely
+    local gain = tonumber(value)
+    if gain then r.SNM_SetDoubleConfigVar(key == "beat1gain" and "projmetrov1" or "projmetrov2", gain) end
+  elseif key == "beat1" or key == "beat2" then
+    local cc = tonumber(value)
+    if cc then
+      writeDb(key == "beat1" and "projmetrov1" or "projmetrov2", positionToDb(cc / 127))
+    end
+  elseif key == "metronome" then fire(METRONOME)
+  elseif key == "preroll" then fire(PREROLL)
+  elseif key == "settings" then fire(SETTINGS)
+  end
+end
+
 --------------------------------------------------------------------------------
 -- frame
 --------------------------------------------------------------------------------
@@ -265,6 +303,7 @@ end
 
 local reportedSize = false
 local function drawFrame()
+  readMailbox()
   local metro   = isOn(METRONOME)
   local preroll = isOn(PREROLL)
   local countIn = isOn(COUNT_IN)
@@ -323,7 +362,7 @@ local function drawFrame()
   -- Whatever room is left goes to the bars: on a wide screen they are long
   -- enough to set a level precisely without a dialog.
   local remaining = r.ImGui_GetContentRegionAvail(ctx)
-  local cogWidth = 46
+  local cogWidth = 62
   local barWidth = math.max(180, (remaining - cogWidth - 30) / 2)
 
   local db1 = readDb("projmetrov1", DEFAULT_DB[1])
@@ -340,7 +379,7 @@ local function drawFrame()
   ui.tip(ctx, "How loud beats 2, 3 and 4 are. Drag anywhere along the bar; double-click to reset.")
 
   r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "cog", { kind = "ghost", w = cogWidth, h = 40,
+  if ui.button(ctx, "MORE", { kind = "ghost", w = cogWidth, h = 40,
     tip = "The rest of the click settings: sounds, pattern, time signature." }) then
     fire(SETTINGS)
   end
@@ -383,6 +422,11 @@ local function drawFrame()
     lastPattern = setMeter(groups, den, oddText) or ""
   end
 
+  if korgSeen > 0 and (r.time_precise() - korgSeen) < 1.5 then
+    r.ImGui_SameLine(ctx)
+    r.ImGui_TextColored(ctx, ACCENT, "KORG")
+  end
+
   if lastPattern ~= "" then
     r.ImGui_SameLine(ctx)
     r.ImGui_Dummy(ctx, 10, 1)
@@ -400,11 +444,53 @@ local function frame()
 end
 
 --------------------------------------------------------------------------------
+-- A one-line strip is no use as the eighth tab of a docker, behind the mixer:
+-- you would never see the click level you came to change. It lives across the
+-- top of the screen instead, under the menu bar, where the toolbars are.
+if r.GetExtState("NT_UI", "clickstrip_placed") ~= "3" then
+  r.SetExtState("NT_UI", "clickstrip_placed", "3", true)
+  r.SetExtState("NT_UI", "dock:Click Strip", "0", true)
+  r.SetExtState("NT_UI", "clickstrip_reposition", "1", false)
+end
+
+local STRIP_HEIGHT = 146
+
+-- Full width of the display, pinned to the top. Falls back to his REAPER
+-- window's width if the viewport API is missing.
+local function topOfScreen()
+  local x, y, w = 0, 38, 2557
+  if r.ImGui_GetMainViewport and r.ImGui_Viewport_GetWorkPos then
+    local vp = r.ImGui_GetMainViewport(ctx)
+    local vx, vy = r.ImGui_Viewport_GetWorkPos(vp)
+    local vw = r.ImGui_Viewport_GetWorkSize(vp)
+    if vx and vw and vw > 400 then x, y, w = vx, vy, vw end
+  end
+  return x, y, w
+end
+
+local placeFrames = (r.GetExtState("NT_UI", "clickstrip_reposition") == "1") and 4 or 0
+if placeFrames > 0 then r.DeleteExtState("NT_UI", "clickstrip_reposition", false) end
+
+-- Running the action brings the strip to the front rather than leaving it
+-- behind whatever was there.
+local focusFrames = 3
 local function loop()
+  if focusFrames > 0 then
+    focusFrames = focusFrames - 1
+    if r.ImGui_SetNextWindowFocus then r.ImGui_SetNextWindowFocus(ctx) end
+  end
+  if placeFrames > 0 then
+    placeFrames = placeFrames - 1
+    local x, y, w = topOfScreen()
+    local always = r.ImGui_Cond_Always and r.ImGui_Cond_Always() or 1
+    if r.ImGui_SetNextWindowPos then r.ImGui_SetNextWindowPos(ctx, x, y, always) end
+    if r.ImGui_SetNextWindowSize then r.ImGui_SetNextWindowSize(ctx, w, STRIP_HEIGHT, always) end
+  end
   local open = ui.window(ctx, {
     title = APP,
     accent = ACCENT,
-    w = 1280, h = 150, minW = 420, minH = 120,
+    w = 1400, h = STRIP_HEIGHT, minW = 420, minH = 96,
+    dock = false,
   }, frame)
   if open then r.defer(loop) end
 end

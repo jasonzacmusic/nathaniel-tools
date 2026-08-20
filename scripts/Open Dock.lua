@@ -34,7 +34,11 @@ for _, rel in ipairs(APPS) do
     fh:close()
     -- ask each window to dock on this launch (their Dock toggle remembers afterwards)
     local title = rel:match("([^/]+)%.lua$"):gsub(" and ", " & ")
-    r.SetExtState("NT_UI", "dock:" .. title, "1", true)
+    -- The Click Strip is a one-line bar, not a page: docking it would bury the
+    -- click level behind seven other tabs. It places itself.
+    if title ~= "Click Strip" then
+      r.SetExtState("NT_UI", "dock:" .. title, "1", true)
+    end
     local cmd = r.AddRemoveReaScript(true, 0, path, true)
     if cmd and cmd ~= 0 then
       -- re-running an app that is already open would pop REAPER's "task control"
