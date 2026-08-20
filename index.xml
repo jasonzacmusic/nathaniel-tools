@@ -13,9 +13,9 @@
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-20T10:28:11Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-20T10:52:22Z">
         <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220126b9c9cf35cf908c10ba534e68c854d29930dbdd4a3f8a845810760a3439c02">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/b1aeb4ec18b7cc02c8a1e865fe84b59e83a42a96/apps/Click%20Strip.lua</source>
+        <source main="main" hash="1220c70e6d78badd7e282a78bb0eb6a83b28fad7581cd442f137037478077224888f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/8b7ed1dcbd8d5aea2c3b3f817fea748ed16459e1/apps/Click%20Strip.lua</source>
       </version>
     </reapack>
     <reapack name="Group Deck.lua" type="script" desc="Group Deck">
@@ -395,11 +395,11 @@ studio apps open into the same docker at launch and one of them ended up in fron
 }
 ]]></description>
       </metadata>
-      <version name="1.2.0" author="Jason Zac" time="2026-08-20T10:28:11Z">
+      <version name="1.2.0" author="Jason Zac" time="2026-08-20T10:52:22Z">
         <changelog><![CDATA[1.2.0 - also opens the Click Strip.
 1.1.0 - also opens Group Deck.
 1.0.0 - first version.]]></changelog>
-        <source main="main" hash="12203c81ea07a56b8150b057418448bfe2a6e75dc1f93252b8aab4942ccc3506cbc8">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/b1aeb4ec18b7cc02c8a1e865fe84b59e83a42a96/scripts/Open%20Dock.lua</source>
+        <source main="main" hash="12209e71f463a245c560ac1f8d316d1452d34d5b0c96279a13f2ee9436acbdc55b41">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/8b7ed1dcbd8d5aea2c3b3f817fea748ed16459e1/scripts/Open%20Dock.lua</source>
       </version>
     </reapack>
     <reapack name="Record Arm Toggle.lua" type="script" desc="Record Arm Toggle">
