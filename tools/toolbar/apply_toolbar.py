@@ -5,9 +5,16 @@ same way every time:
 
   LEFT   (docker 3, "Session")        - his own REAPER toggles, lifted off the
                                         main toolbar. Record/transport first.
-  CENTRE (docker 6, "Grid Settings")  - grid divisions, then feel, then the
-                                        bar tools (marker / tempo / MIDI render).
+  CENTRE (docker 6, "Grid Settings")  - plain divisions, then the triplet
+                                        toggle + rel + swing, then the bar
+                                        tools (marker / tempo / MIDI render).
   RIGHT  (docker 5, "Nathaniel Tools")- the Lua tools that have no key.
+
+The three zones are spread across the whole window (see zone_width_shares):
+each gets the width of its own buttons plus an equal share of the leftover, so
+groups are separated by real air instead of one strip hogging half the screen.
+Inside a strip, groups are parted by a bare "-1" separator - never "-1 <label>",
+which REAPER draws as a dead "SEPAR" button.
 
 ONE BUTTON, ONE PLACE. Every command below lives in exactly one zone; the guard
 in _check_no_duplicates() stops the script loudly if that is ever broken.
@@ -55,6 +62,20 @@ CATALOGUE = [
   ("_RS0260bf4e29964fd3e1f486c70f4d69c900d1c8cc", "Script: Trim Right No Overlap.lua",   "nt_trim_right.png"),
   ("_RS22cf425eb9b6c6f19f26a8cc44db19480018a687", "Script: Unoverlap Items.lua",         "nt_unoverlap.png"),
   ("40771",                                       "Track: Toggle all track grouping enabled", "nt_clutch.png"),
+  ("_RS9871b9cf53b4c07d6def31e7a7b16ebb2a5dc670", "Script: Triplet Grid Toggle.lua",     "nt_grid_triplet.png"),
+]
+
+TRIPLET_TOGGLE = "_RS9871b9cf53b4c07d6def31e7a7b16ebb2a5dc670"
+
+# ---------------------------------------------------------------------------
+# Scripts that must be REGISTERED before REAPER will admit they exist. Without
+# an SCR line in reaper-kb.ini the toolbar button is a dead square.
+#   (token WITHOUT the leading underscore, menu name, path under Scripts/)
+# ---------------------------------------------------------------------------
+SCRIPTS = [
+  ("RS9871b9cf53b4c07d6def31e7a7b16ebb2a5dc670",
+   "Custom: Triplet Grid Toggle.lua",
+   "Nathaniel Tools/scripts/Triplet Grid Toggle.lua"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -101,30 +122,31 @@ LEFT_ITEMS = [
 ]
 
 # ---------------------------------------------------------------------------
-# CENTRE zone (docker 6, "Grid Settings") - divisions in musical order, then
-# feel, then the bar tools, then colour.
-# 41052 "Enable relative grid snap" was dropped: 41054 right next to it is the
-# same setting (same icon, same job) - one switch, one button.
+# CENTRE zone (docker 6, "Grid Settings") - three groups with a real gap
+# between them: plain divisions | triplet + rel + swing | bar tools.
+#
+# The three fixed triplet buttons (1/4T, 1/8T, 1/24) are GONE. One T button now
+# flips whatever division he is on into triplets and back - 1/8 becomes 1/12,
+# press again and it is 1/8 again - the way Logic does it. Works bar to 1/32.
+# 41052 "Enable relative grid snap" also went: 41054 is the same switch.
+# The metronome cog (40363) and random colours (40705) left the grid strip -
+# neither is a grid control.
 # ---------------------------------------------------------------------------
 CENTRE_ITEMS = [
-  ("40781", "Bar",          "nt_grid_bar.png"),
-  ("40780", "1/2",          "nt_grid_1_2.png"),
-  ("40779", "1/4",          "nt_grid_1_4.png"),
-  ("41214", "1/4 Triplet",  "nt_grid_1_4t.png"),
-  ("40778", "1/8",          "nt_grid_1_8.png"),
-  ("40777", "1/8 Triplet",  "nt_grid_1_8t.png"),
-  ("40776", "1/16",         "nt_grid_1_16.png"),
-  ("41213", "1/16 Triplet", "nt_grid_1_24.png"),
+  ("40781", "Bar",  "nt_grid_bar.png"),
+  ("40780", "1/2",  "nt_grid_1_2.png"),
+  ("40779", "1/4",  "nt_grid_1_4.png"),
+  ("40778", "1/8",  "nt_grid_1_8.png"),
+  ("40776", "1/16", "nt_grid_1_16.png"),
+  ("40775", "1/32", "nt_grid_1_32.png"),
   SEP,
+  (TRIPLET_TOGGLE, "Script: Triplet Grid Toggle.lua", "nt_grid_triplet.png"),
   ("41054", "Item edit: Toggle relative grid snap", "nt_grid_rel.png"),
   ("_SWS_AWTOGGLESWING", "SWS/AW: Toggle swing grid", "nt_grid_swing.png"),
-  ("40363", "Options: Show metronome/pre-roll settings", "nt_grid_click.png"),
   SEP,
   ("_RS3e3d37cee699d29e819156f567875be6284ea8c1", "Script: Marker at Bar.lua", "nt_marker_bar.png"),
   ("_RSf7b09088b1c6b6bf1a3e02c894c2616afb496a9b", "Script: Tempo at Bar.lua",  "nt_tempo_bar.png"),
   ("_RS7894b8b20be619fc9e182a197987c42c1b994dbc", "Script: MIDI Render.lua",   "nt_midi_render.png"),
-  SEP,
-  ("40705", "Item: Set to random colors", "nt_grid_random_col.png"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -155,6 +177,33 @@ MAIN_TWINS = {
   # 41156 "Selecting one grouped item selects group" is already on this strip.
   "_SWS_TOGSELGROUP": "same switch as 41156, which is two buttons along",
 }
+
+# ---------------------------------------------------------------------------
+# HOW WIDE EACH ZONE IS - "use the width of my display".
+#
+# REAPER keeps the side-by-side split of the top-edge dockers in reaper.ini as
+# dockerwprio<N> (width share) and dockerpprio<N> (left-to-right order). The
+# three shares always add up to 3.0.
+#     docker 3 = LEFT (Session)  docker 6 = CENTRE (Grid)  docker 5 = RIGHT (NT)
+#
+# It used to be 52 / 31 / 17, which is backwards: the strip with the FEWEST
+# buttons had half the screen while the two busiest were squashed at the far
+# right. Now each zone gets the width of its own buttons PLUS an equal share of
+# the leftover, so the three groups sit evenly spread with the same amount of
+# air after each one - and the left zone starts hard against the left edge.
+# ---------------------------------------------------------------------------
+ZONE_DOCKER = {"3": "LEFT", "6": "CENTRE", "5": "RIGHT"}
+ZONE_ORDER  = {"3": "0.18750000", "6": "0.37500000", "5": "0.50000000"}  # left -> right
+BUTTON_W, SEPARATOR_W, WINDOW_W = 30, 10, 2557   # logical px; his REAPER window
+
+def zone_width_shares():
+    rows_for = {"3": LEFT_ITEMS, "6": CENTRE_ITEMS, "5": RIGHT_ITEMS}
+    content = {d: sum(SEPARATOR_W if t == "-1" else BUTTON_W for t, _, _ in rows)
+               for d, rows in rows_for.items()}
+    used = sum(content.values())
+    air = max((WINDOW_W - used) / 3.0, 40.0)     # same breathing room after each group
+    total = used + air * 3
+    return {d: 3.0 * (c + air) / total for d, c in content.items()}, content, air
 
 ALL_OURS = ({t for t, _, _ in CATALOGUE}
             | {t for t, _, _ in LEFT_ITEMS}
@@ -363,14 +412,52 @@ def patch_split():
         new = new[:a] + body + new[b:]
     else:
         new = new.rstrip("\n") + "\n[toolbar:4]\ndock=1\nwnd_height=42\nwnd_left=0\nwnd_top=1346\nwnd_vis=1\nwnd_width=420\n"
+    # ---- spread the three zones across the whole window -------------------
+    shares, content, air = zone_width_shares()
+    for d in ("3", "6", "5"):
+        for key, val in (("dockerwprio", f"{shares[d]:.8f}"), ("dockerpprio", ZONE_ORDER[d])):
+            if re.search(rf"^{key}{d}=", new, flags=re.M):
+                new = re.sub(rf"^{key}{d}=.*$", f"{key}{d}={val}", new, flags=re.M)
+            else:
+                # loud, not silent: never let a missing key pass as "applied"
+                print(f"WARNING: {key}{d} not found in reaper.ini - zone width not set")
+        px = round(shares[d] / 3.0 * WINDOW_W)
+        print(f"  {ZONE_DOCKER[d]:6s} docker {d}: {content[d]:4d} px of buttons "
+              f"+ {round(air)} px of air = {px} px ({shares[d]/3.0*100:.0f}% of the window)")
+
     if new != text:
         shutil.copy(ini, ini + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
         open(ini, "w", encoding="utf-8", errors="surrogateescape").write(new)
-        print("reaper.ini: main toolbar split 0.5, Nathaniel Tools toolbar in its own top docker (5)")
+        print("reaper.ini: three zones rebalanced across the full window width")
     else:
         print("reaper.ini unchanged")
 
+
+def patch_scripts():
+    """REAPER only knows a script exists if reaper-kb.ini carries an SCR line
+    for it. Without that the toolbar button is a dead square."""
+    kb = os.path.join(os.path.dirname(INI), "reaper-kb.ini")
+    if not os.path.exists(kb): return
+    text = open(kb, encoding="utf-8", errors="surrogateescape").read()
+    out = text.split("\n"); changed = False
+    for tok, desc, path in SCRIPTS:
+        if tok in text:
+            continue
+        if not os.path.exists(os.path.join(os.path.dirname(INI), "Scripts", path)):
+            print(f"WARNING: {path} is not installed - not registering {desc}")
+            continue
+        idx = max((i for i, l in enumerate(out) if l.startswith("SCR ")), default=len(out) - 1)
+        out.insert(idx + 1, f'SCR 4 0 {tok} "{desc}" "{path}"')
+        changed = True
+        print("registered", desc)
+    if changed:
+        shutil.copy(kb, kb + ".bak-nt-" + time.strftime("%Y%m%d-%H%M%S"))
+        open(kb, "w", encoding="utf-8", errors="surrogateescape").write("\n".join(out))
+    else:
+        print("scripts already registered")
+
 if __name__ == "__main__":
+    patch_scripts()   # register new scripts BEFORE putting them on a toolbar
     main()
     patch_keys()
     patch_split()

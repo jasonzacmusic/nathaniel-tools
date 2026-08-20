@@ -62,8 +62,12 @@ G["app_dock"]        = ("teal",  lambda i: f'<rect x="4" y="4.5" width="16" heig
 G["app_stagerig"]    = ("violet",lambda i: f'<path d="M5 18L12 5L19 18Z" {S(i,1.6)}/><circle cx="12" cy="14" r="1.6" fill="{i}"/>')
 # --- grid tiles (text)
 for key, label, size in [("grid_bar","BAR",7.2), ("grid_1_2","1/2",8.2), ("grid_1_4","1/4",8.2), ("grid_1_4t","1/4T",7), ("grid_1_8","1/8",8.2),
-                         ("grid_1_8t","1/8T",7), ("grid_1_16","1/16",7.4), ("grid_1_24","1/24",7.4), ("grid_rel","REL",7.2), ("grid_swing","SWG",7.2)]:
+                         ("grid_1_8t","1/8T",7), ("grid_1_16","1/16",7.4), ("grid_1_24","1/24",7.4), ("grid_1_32","1/32",7.4),
+                         ("grid_rel","REL",7.2), ("grid_swing","SWG",7.2)]:
     G[key] = ("grid", (lambda L, sz: (lambda i: text(i, L, sz, 15.4)))(label, size))
+# The triplet toggle: one big T with a small 3 riding on it. Same grid accent as
+# REL/SWG, so state 2 (grid is on triplets) lights up in the same amber.
+G["grid_triplet"]    = ("grid",  lambda i: text(i, "T", 12.5, 16.4, 10.5) + text(i, "3", 6.4, 10.2, 17.2))
 G["grid_click"]      = ("grid",  lambda i: f'<path d="M9 19.5L11 5.5H13L15 19.5Z" {S(i,1.4)}/><line x1="7" y1="19.5" x2="17" y2="19.5" {S(i,1.6)}/><circle cx="12" cy="11" r="1.4" fill="{i}"/>')
 G["grid_random_col"] = ("grid",  lambda i: f'<circle cx="8" cy="9" r="2.4" fill="{i}"/><circle cx="15.5" cy="8" r="2.4" fill="{i}" opacity=".75"/><circle cx="10" cy="15.5" r="2.4" fill="{i}" opacity=".55"/><circle cx="16.5" cy="15" r="2.4" fill="{i}" opacity=".9"/>')
 
