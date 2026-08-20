@@ -1,5 +1,5 @@
 -- @description Open Dock (all the Nathaniel Tools apps, docked)
--- @version 1.2.0
+-- @version 1.3.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -11,6 +11,7 @@
 --   "at the word go". Apps that are already open are left alone.
 --   StageRig is deliberately not included - it is a stage tool, not a studio one.
 -- @changelog
+--   1.3.0 - opens the Click Bar (toolbar row) and Click Levels (docker) instead of the old Click Strip.
 --   1.2.0 - also opens the Click Strip.
 --   1.1.0 - also opens Group Deck.
 --   1.0.0 - first version.
@@ -24,7 +25,8 @@ local APPS = {
   "apps/Stem Print and Handoff.lua",
   "scripts/MIDI Batch Export.lua",
   "apps/Group Deck.lua",
-  "apps/Click Strip.lua",
+  "apps/Click Bar.lua",
+  "apps/Click Levels.lua",
 }
 local opened, missing = 0, {}
 for _, rel in ipairs(APPS) do
@@ -36,7 +38,9 @@ for _, rel in ipairs(APPS) do
     local title = rel:match("([^/]+)%.lua$"):gsub(" and ", " & ")
     -- The Click Strip is a one-line bar, not a page: docking it would bury the
     -- click level behind seven other tabs. It places itself.
-    if title ~= "Click Strip" then
+    -- The Click Bar places itself up in the toolbar row; everything else is a
+    -- page and belongs in the docker.
+    if title ~= "Click Bar" then
       r.SetExtState("NT_UI", "dock:" .. title, "1", true)
     end
     local cmd = r.AddRemoveReaScript(true, 0, path, true)
