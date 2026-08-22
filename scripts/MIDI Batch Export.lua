@@ -1,5 +1,5 @@
 -- @description MIDI Batch Export
--- @version 2.0.0
+-- @version 2.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -10,6 +10,14 @@
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
+--   2.1.0 - names are right the first time. Files are named "01 - <region>" out
+--           of the box, the region a file belongs to is found by OVERLAP so an
+--           item starting a hair before its own region keeps its name (four of
+--           five lessons came out as "01 -.mid" before this), no naming word can
+--           leave a dangling dash behind, "Choose..." opens a folder picker on a
+--           stock REAPER instead of sitting greyed out, there is a "Project"
+--           button for the folder beside the project, and the folder, the name
+--           pattern and the source are remembered after REAPER quits.
 --   2.0.0 - new shared look (nt_ui): header, one status line + log, confirm
 --           before replacing files, empty state, Choose... folder button,
 --           system font. The files themselves are now correct MIDI: tick
@@ -143,15 +151,38 @@ local function defaultDir(proj)
   return (r.GetProjectPath("") or "") .. "/MIDI Export"
 end
 
--- Name of the region a position sits inside, or "".
-local function regionNameAt(proj, pos)
-  if not r.GetLastMarkerAndCurRegion then return "" end
-  local _, rgn = r.GetLastMarkerAndCurRegion(proj, pos)
-  if not rgn or rgn < 0 then return "" end
-  local ok, isrgn, _, _, nm, num = r.EnumProjectMarkers3(proj, rgn)
-  if ok == 0 or not isrgn then return "" end
-  if nm and nm ~= "" then return nm end
-  return "Region " .. tostring(num or (rgn + 1))
+-- The name of the region an item BELONGS TO.
+--
+-- NOT GetLastMarkerAndCurRegion. That answers "is this exact instant inside a
+-- region", so an item that starts a hair BEFORE its own region boundary - which
+-- is what recording into a region actually produces - reports no region at all
+-- and the file comes out named "01 -". Measured on the 22-Aug-2026 shoot: four
+-- of five lessons lost their name that way and had to be renamed by hand.
+-- We scan the regions and take the one the item OVERLAPS MOST, which is the
+-- region a person would point at.
+local function regionNameForSpan(proj, pos, len)
+  local a = pos
+  local b = pos + math.max(len or 0, 0)
+  local best, bestOv = "", 0
+  local idx = 0
+  while true do
+    local ok, isrgn, rs, re_, nm, num = r.EnumProjectMarkers3(proj, idx)
+    if ok == 0 then break end
+    if isrgn then
+      local ov
+      if b > a then
+        ov = math.min(b, re_) - math.max(a, rs)              -- overlapped seconds
+      else
+        ov = (a >= rs - 1e-9 and a < re_) and 1 or 0         -- zero-length item
+      end
+      if ov > bestOv then
+        bestOv = ov
+        best = (nm and nm ~= "") and nm or ("Region " .. tostring(num or (idx + 1)))
+      end
+    end
+    idx = idx + 1
+  end
+  return best
 end
 
 -- Tempo and time signature in force at a project position.
@@ -343,6 +374,13 @@ local function expand(pattern, vars, num, pad)
   local region  = sanitise(vars.region)
   local project = sanitise(vars.project)
   local bpm     = tostring(math.floor((vars.bpm or 120) + 0.5))
+  -- A word that has nothing behind it must not silently vanish and leave the
+  -- file called "01 -". Every naming word falls back to the next best thing we
+  -- do know about the item, so a file is ALWAYS named after something.
+  if region == "" then region = (name ~= "" and name) or track end
+  if name   == "" then name   = (region ~= "" and region) or track end
+  if track  == "" then track  = (name ~= "" and name) or region end
+
   local out = pattern
   out = out:gsub("%$num",     function() return numStr end)
   out = out:gsub("%$name",    function() return name end)
@@ -351,6 +389,12 @@ local function expand(pattern, vars, num, pad)
   out = out:gsub("%$project", function() return project end)
   out = out:gsub("%$bpm",     function() return bpm end)
   out = sanitise(out)
+  -- Tidy what an empty word left behind: "01 -  - Piano" -> "01 - Piano",
+  -- "01 -" -> "01". Only at the ends and between words, so a real hyphen
+  -- inside a name ("Re-harmonisation") is untouched.
+  out = out:gsub("%s*%-%s*%-%s*", " - ")
+  out = out:gsub("^[%s%-_]+", "")
+  out = out:gsub("[%s%-_]+$", "")
   if out == "" then out = "untitled" end
   return out
 end
@@ -384,6 +428,7 @@ local function describeItem(proj, it)
   if not g then return nil end
   local tr  = r.GetMediaItem_Track(it)
   local pos = r.GetMediaItemInfo_Value(it, "D_POSITION")
+  local len = r.GetMediaItemInfo_Value(it, "D_LENGTH")
   local _, takeName = r.GetSetMediaItemTakeInfo_String(take, "P_NAME", "", false)
   local trackName = tName(tr)
   local trackIdx  = tr and (r.GetMediaTrackInfo_Value(tr, "IP_TRACKNUMBER") or 0) or 0
@@ -394,8 +439,9 @@ local function describeItem(proj, it)
     track    = trackName,
     trackIdx = trackIdx,
     pos      = pos,
+    len      = len,
     bpm      = tempo,
-    region   = regionNameAt(proj, pos),
+    region   = regionNameForSpan(proj, pos, len),
   }
 end
 
@@ -447,7 +493,13 @@ local function gather(proj, source)
       if isrgn then
         local members = {}
         for _, d in ipairs(all) do
-          if d.pos >= s - 1e-9 and d.pos < e - 1e-9 then members[#members + 1] = d end
+          -- overlap, not containment: an item that starts a few milliseconds
+          -- before its region is still that region's item.
+          local dEnd = d.pos + (d.len or 0)
+          if math.min(dEnd, e) - math.max(d.pos, s) > 1e-9
+             or (d.pos >= s - 1e-9 and d.pos < e - 1e-9) then
+            members[#members + 1] = d
+          end
         end
         if #members > 0 then
           local first = members[1]
@@ -489,11 +541,25 @@ local ctx = r.ImGui_CreateContext(APP)
 ui.fonts(ctx)
 
 local rows      = {}
-local source    = "sel"
-local pattern   = "$num - $name"
+-- Settings that survive quitting REAPER. Retyping the folder every session was
+-- costing real time on shoot days.
+local EXT = "NT_MIDIBatchExport"
+local function remembered(key, fallback)
+  local v = r.GetExtState(EXT, key)
+  if v == nil or v == "" then return fallback end
+  return v
+end
+local function remember(key, v) r.SetExtState(EXT, key, tostring(v), true) end
+
+local source    = remembered("source", "sel")
+-- The region name is what these files are FOR: one lesson, one region, one .mid
+-- the editor can find by name. $name only knows the take, which on a plain
+-- recorded track is empty.
+local pattern   = remembered("pattern", "$num - $region")
 local startNum  = 1
 local padding   = 2
-local outDir    = ""
+-- Never start blank: a folder is already filled in, and it is the one used last.
+local outDir    = remembered("outDir", defaultDir(activeProj()))
 local notesOnly = false
 local overwrite = false
 local paint     = {}
@@ -573,6 +639,25 @@ local function cachedExists(p)
   if v == nil then v = fileExists(p); existsCache[p] = v end
   return v
 end
+-- Pick a folder on a STOCK REAPER.
+-- The old button called JS_Dialog_BrowseForFolder and disabled itself when the
+-- js_ReaScriptAPI extension was absent - which it is on this machine, so the
+-- button was dead and the folder could only be typed. GetUserFileNameForRead is
+-- built in: the user picks (or types) anything inside the folder they want and
+-- we keep the folder. Falls back to the real folder browser when js IS present.
+local function chooseFolder(startDir)
+  if r.JS_Dialog_BrowseForFolder then
+    local rv, path = r.JS_Dialog_BrowseForFolder("MIDI export folder", startDir or "")
+    if rv == 1 and path and path ~= "" then return path end
+    return nil
+  end
+  local seed = (startDir or "")
+  if seed ~= "" then seed = seed:gsub("[/\\]*$", "") .. "/any file here" end
+  local ok, file = r.GetUserFileNameForRead(seed, "Open ANY file in the folder you want - the folder is what gets used", "")
+  if not ok or not file or file == "" then return nil end
+  return (file:match("^(.*)[/\\][^/\\]+$")) or nil
+end
+
 local function reveal(path)
   if r.CF_ShellExecute then r.CF_ShellExecute(path)
   elseif r.GetOS():match("OSX") or r.GetOS():match("macOS") then os.execute('open "' .. path .. '"')
@@ -729,7 +814,7 @@ local function frame()
   -- what
   ui.section(ctx, "What to export")
   local ns = ui.segmented(ctx, "source", SOURCES, source)
-  if ns ~= source then source = ns; rebuild(); say(foundMsg(), "info") end
+  if ns ~= source then source = ns; remember("source", source); rebuild(); say(foundMsg(), "info") end
   r.ImGui_SameLine(ctx, 0, 14)
   if ui.button(ctx, "Refresh", { small = true,
       tip = "Read the project again: selection, tracks, regions and items. The list also refreshes by itself when the project changes." }) then
@@ -740,15 +825,17 @@ local function frame()
   ui.section(ctx, "How to name them")
   r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "Name")
   r.ImGui_SameLine(ctx); r.ImGui_SetNextItemWidth(ctx, 280)
-  local pc, pv = r.ImGui_InputText(ctx, "##pat", pattern); if pc then pattern = pv end
+  local pc, pv = r.ImGui_InputText(ctx, "##pat", pattern)
+  if pc then pattern = pv; remember("pattern", pattern) end
   ui.tip(ctx, "How each file is named. Words you can use:\n" ..
               "$num - running number\n" ..
               "$name - the item's name, or its track's name if it has none\n" ..
               "$track - track name\n" ..
-              "$region - the region the item starts in\n" ..
+              "$region - the region the item sits in (what a lesson is called)\n" ..
               "$project - project name\n" ..
               "$bpm - tempo at the item's start\n" ..
-              "Example:  Riff $num - $name")
+              "Empty words fall back to the next thing we know, so a file is never called \"01 -\".\n" ..
+              "Example:  $num - $region   ->   01 - Shell Voicings")
   r.ImGui_SameLine(ctx, 0, 14); r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "start at")
   r.ImGui_SameLine(ctx); r.ImGui_SetNextItemWidth(ctx, 64)
   local sc, sv = r.ImGui_InputInt(ctx, "##start", startNum, 0); if sc then startNum = math.max(0, sv) end
@@ -771,13 +858,19 @@ local function frame()
   -- where
   ui.section(ctx, "Where")
   r.ImGui_SetNextItemWidth(ctx, -170)
-  local oc, ov = r.ImGui_InputText(ctx, "##dir", outDir); if oc then outDir = ov; existsCache = {} end
-  ui.tip(ctx, "Folder for the .mid files. It is created if it does not exist.")
+  local oc, ov = r.ImGui_InputText(ctx, "##dir", outDir)
+  if oc then outDir = ov; existsCache = {}; remember("outDir", outDir) end
+  ui.tip(ctx, "Folder for the .mid files. It is created if it does not exist, and it is remembered for next time.")
   r.ImGui_SameLine(ctx)
-  if ui.button(ctx, "Choose...", { tip = r.JS_Dialog_BrowseForFolder and "Pick the folder." or "Needs the js_ReaScriptAPI extension (ReaPack) for a folder picker. Type or paste the folder instead.",
-      disabled = not r.JS_Dialog_BrowseForFolder }) then
-    local rv, path = r.JS_Dialog_BrowseForFolder("MIDI export folder", outDir)
-    if rv == 1 and path and path ~= "" then outDir = path; existsCache = {} end
+  if ui.button(ctx, "Choose...", { tip = "Pick the folder to write into." }) then
+    local path = chooseFolder(outDir)
+    if path and path ~= "" then outDir = path; existsCache = {}; remember("outDir", outDir)
+      say("Folder set to " .. path, "ok") end
+  end
+  r.ImGui_SameLine(ctx)
+  if ui.button(ctx, "Project", { small = true, tip = "Use the MIDI Export folder beside this project." }) then
+    outDir = defaultDir(activeProj()); existsCache = {}; remember("outDir", outDir)
+    say("Folder set to " .. outDir, "ok")
   end
   r.ImGui_SameLine(ctx)
   if ui.button(ctx, "Reveal", { tip = "Open the folder in Finder / Explorer." }) then
