@@ -342,7 +342,7 @@ make. Every action reports what it did in the status line.
 }
 ]]></description>
       </metadata>
-      <version name="2.1.1" author="Jason Zac" time="2026-08-22T07:28:58Z">
+      <version name="2.1.1" author="Jason Zac" time="2026-08-22T07:37:07Z">
         <changelog><![CDATA[2.1.1 - the track name written INSIDE each file is now the file's own name,
 so a lesson opened in another program says "01 - Shell Voicings"
 instead of the name of the track it was recorded on. Start number,
@@ -369,7 +369,7 @@ Rows remember items by identity, so deleting an item while the
 window is open can no longer crash REAPER. Regions holding several
 MIDI items say so in the list BEFORE you export. New $region name.
 1.0.0 - first public release.]]></changelog>
-        <source main="main" hash="12204557a40fea0f4b7ad3018467a6b3d6bf37601c67be7b43ead1c405c32e5ddb19">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/310d8de4d31468fe833eda12423c701ca51521bf/scripts/MIDI%20Batch%20Export.lua</source>
+        <source main="main" hash="1220350ca385275d3aac4d29a05a0c8740587cb9cc27001b5d624279f809677ebc9e">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/d5e79ebb716511bab20e3f06ea44850bc1e1e268/scripts/MIDI%20Batch%20Export.lua</source>
       </version>
     </reapack>
     <reapack name="MIDI Render.lua" type="script" desc="MIDI Render">
