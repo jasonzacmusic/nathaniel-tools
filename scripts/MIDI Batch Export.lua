@@ -1,5 +1,5 @@
 -- @description MIDI Batch Export
--- @version 2.1.0
+-- @version 2.1.1
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -10,6 +10,12 @@
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
+--   2.1.1 - the track name written INSIDE each file is now the file's own name,
+--           so a lesson opened in another program says "01 - Shell Voicings"
+--           instead of the name of the track it was recorded on. Start number,
+--           digits, "Notes only" and "Allow overwrite" are remembered too.
+--           Covered by tests/midi_batch_export_test.lua, which runs the whole
+--           export against a fake REAPER built from the shoot that broke it.
 --   2.1.0 - names are right the first time. Files are named "01 - <region>" out
 --           of the box, the region a file belongs to is found by OVERLAP so an
 --           item starting a hair before its own region keeps its name (four of
@@ -556,12 +562,12 @@ local source    = remembered("source", "sel")
 -- the editor can find by name. $name only knows the take, which on a plain
 -- recorded track is empty.
 local pattern   = remembered("pattern", "$num - $region")
-local startNum  = 1
-local padding   = 2
+local startNum  = tonumber(remembered("startNum", "1")) or 1
+local padding   = tonumber(remembered("padding", "2")) or 2
 -- Never start blank: a folder is already filled in, and it is the one used last.
 local outDir    = remembered("outDir", defaultDir(activeProj()))
-local notesOnly = false
-local overwrite = false
+local notesOnly = remembered("notesOnly", "0") == "1"
+local overwrite = remembered("overwrite", "0") == "1"
 local paint     = {}
 local confirmOpts = {}
 local lastSig, lastSigT = nil, 0
@@ -746,7 +752,11 @@ local function doExport()
         failed = failed + 1
       else
         local take = r.GetActiveTake(item)
-        local data, err = takeToSMF(proj, item, take, { name = row.name, notesOnly = notesOnly })
+        -- The track name written INSIDE the file is the file's own name. Opened
+        -- anywhere else the track then says "01 - Shell Voicings", not the name
+        -- of whatever track it happened to be recorded on.
+        local innerName = entry.file:gsub("%.mid$", "")
+        local data, err = takeToSMF(proj, item, take, { name = innerName, notesOnly = notesOnly })
         if not data then
           say(("%s - %s."):format(entry.file, tostring(err)), "danger")
           failed = failed + 1
@@ -838,22 +848,24 @@ local function frame()
               "Example:  $num - $region   ->   01 - Shell Voicings")
   r.ImGui_SameLine(ctx, 0, 14); r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "start at")
   r.ImGui_SameLine(ctx); r.ImGui_SetNextItemWidth(ctx, 64)
-  local sc, sv = r.ImGui_InputInt(ctx, "##start", startNum, 0); if sc then startNum = math.max(0, sv) end
+  local sc, sv = r.ImGui_InputInt(ctx, "##start", startNum, 0)
+  if sc then startNum = math.max(0, sv); remember("startNum", startNum) end
   ui.tip(ctx, "The first $num. The rows count up from here in list order.")
   r.ImGui_SameLine(ctx, 0, 14); r.ImGui_AlignTextToFramePadding(ctx); ui.hint(ctx, "digits")
   r.ImGui_SameLine(ctx); r.ImGui_SetNextItemWidth(ctx, 64)
-  local dc, dv = r.ImGui_InputInt(ctx, "##pad", padding, 0); if dc then padding = math.min(6, math.max(1, dv)) end
+  local dc, dv = r.ImGui_InputInt(ctx, "##pad", padding, 0)
+  if dc then padding = math.min(6, math.max(1, dv)); remember("padding", padding) end
   ui.tip(ctx, "How many digits $num is padded to. 2 gives 01, 02, 03 ... so the files sort in order.")
   local ch, v
   ch, v = ui.toggle(ctx, "Notes only", notesOnly,
     "Keep only the notes: no mod wheel / sustain / other CC, no pitch bend, no aftertouch, no program changes, no text, no REAPER notation, no sysex - and muted notes are left out.\n" ..
     "Off = a faithful copy of everything in the item. Muted notes are kept too, and will play in the file.")
-  if ch then notesOnly = v end
+  if ch then notesOnly = v; remember("notesOnly", v and 1 or 0) end
   r.ImGui_SameLine(ctx, 0, 18)
   ch, v = ui.toggle(ctx, "Allow overwrite", overwrite,
     "Off: a file that already exists is left alone and that row is skipped.\n" ..
     "On: existing files are replaced - you get one warning first.")
-  if ch then overwrite = v end
+  if ch then overwrite = v; remember("overwrite", v and 1 or 0) end
 
   -- where
   ui.section(ctx, "Where")
