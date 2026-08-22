@@ -342,8 +342,14 @@ make. Every action reports what it did in the status line.
 }
 ]]></description>
       </metadata>
-      <version name="2.1.0" author="Jason Zac" time="2026-08-19T07:26:20Z">
-        <changelog><![CDATA[2.1.0 - names are right the first time. Files are named "01 - <region>" out
+      <version name="2.1.1" author="Jason Zac" time="2026-08-22T07:28:58Z">
+        <changelog><![CDATA[2.1.1 - the track name written INSIDE each file is now the file's own name,
+so a lesson opened in another program says "01 - Shell Voicings"
+instead of the name of the track it was recorded on. Start number,
+digits, "Notes only" and "Allow overwrite" are remembered too.
+Covered by tests/midi_batch_export_test.lua, which runs the whole
+export against a fake REAPER built from the shoot that broke it.
+2.1.0 - names are right the first time. Files are named "01 - <region>" out
 of the box, the region a file belongs to is found by OVERLAP so an
 item starting a hair before its own region keeps its name (four of
 five lessons came out as "01 -.mid" before this), no naming word can
@@ -363,7 +369,7 @@ Rows remember items by identity, so deleting an item while the
 window is open can no longer crash REAPER. Regions holding several
 MIDI items say so in the list BEFORE you export. New $region name.
 1.0.0 - first public release.]]></changelog>
-        <source main="main" hash="12206d54051717c702e2b27f6e407a99832ca5468820c1ace0cfe843dfb3245306a7">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/MIDI%20Batch%20Export.lua</source>
+        <source main="main" hash="12204557a40fea0f4b7ad3018467a6b3d6bf37601c67be7b43ead1c405c32e5ddb19">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/310d8de4d31468fe833eda12423c701ca51521bf/scripts/MIDI%20Batch%20Export.lua</source>
       </version>
     </reapack>
     <reapack name="MIDI Render.lua" type="script" desc="MIDI Render">
@@ -414,10 +420,10 @@ MIDI items say so in the list BEFORE you export. New $region name.
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-08-20T13:27:29Z">
+      <version name="1.0.0" author="Jason Zac" time="2026-08-22T07:28:58Z">
         <changelog><![CDATA[1.0.0 - first release. Was in the repository without a package header, which
 stopped the whole ReaPack index from building.]]></changelog>
-        <source main="main" hash="122033790573a627b2db3f74b7e11284b5e777e5b1f9914ad58d9429451057b09133">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/5d620723445dbe564e138fbeaea47792be90112d/scripts/NSM_Set_Armed_Tracks_Pan.lua</source>
+        <source main="main" hash="1220e656f6c3c7d402a74fc4ca6236c02e50e4fd6024edafe8df424a4ad8234e46c8">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/310d8de4d31468fe833eda12423c701ca51521bf/scripts/NSM_Set_Armed_Tracks_Pan.lua</source>
       </version>
     </reapack>
     <reapack name="New Project Defaults.lua" type="script" desc="New Project Defaults (snap on, relative snap on, repeat off, mixer in front)">
@@ -553,7 +559,7 @@ no longer forces "delay render start" (that pops a 30 s dialog on one-click rend
 }
 ]]></description>
       </metadata>
-      <version name="1.3.0" author="Jason Zac" time="2026-08-19T08:28:43Z">
+      <version name="1.3.0" author="Jason Zac" time="2026-08-22T07:28:58Z">
         <changelog><![CDATA[1.3.0 - ships nt_click, the click/metronome library Click Bar and Click Levels
 need. It was in the repository but not in this package, so a fresh
 install got the apps without the library they run on.
@@ -561,12 +567,12 @@ install got the apps without the library they run on.
 1.1.0 - adds nt_ui, the shared design system every window now uses.
 1.0.0 - split out of the individual app packages so every app can share one
 copy instead of each carrying its own.]]></changelog>
-        <source main="main" hash="122065877b35ef567da92135ae2eacfb96d54e39505d47b362ae0d5d5b266b968ff5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6500b8099aee400bbce3f2029b57e630f24aefaf/scripts/Shared%20Libraries.lua</source>
+        <source main="main" hash="1220fbc8378684e1d754ff0c7726264d9ded80759a7c27eed07baab4f01c7f426428">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/310d8de4d31468fe833eda12423c701ca51521bf/scripts/Shared%20Libraries.lua</source>
         <source file="lib/nt_safe.lua" hash="1220c91fe5c549e2bdd52b25d77351ad08cf01c5a2b4b8502ef1ebf2d08c57108bff">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_safe.lua</source>
         <source file="lib/nt_hierarchy.lua" hash="12209b0a6118c07e24cda3cedfa30ad11f4933b46bffa7c68f70ffd0069637649d8d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/lib/nt_hierarchy.lua</source>
         <source file="lib/nt_imgui.lua" hash="1220bb3a64ee7f4e31eca7d3e5297bea56272858801d281f44fdaad2ded58d2ee341">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/666cb3034b43d8194d3d10b9af3e51d840d1a225/scripts/lib/nt_imgui.lua</source>
         <source file="lib/nt_ui.lua" hash="1220d9737055822f19d398f45e5be9f308c3fc36d8e6522651164aae9ff0c9a497ef">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/4b4f86d860889aafa16a740aa07ddb6d95e07443/scripts/lib/nt_ui.lua</source>
-        <source file="lib/nt_click.lua" hash="12202078a92827cbc3e828742e22c7ff6e7961b1533700a842746fd19545215bc54c">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/5fc41a408ea79a7a5daf9efae0eb96e9a8b95efe/scripts/lib/nt_click.lua</source>
+        <source file="lib/nt_click.lua" hash="1220f23d9da58a0b1558172107116c2566e4c39498ef98ef8dae361872238d0f5f33">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/310d8de4d31468fe833eda12423c701ca51521bf/scripts/lib/nt_click.lua</source>
       </version>
     </reapack>
     <reapack name="Solo Focus.lua" type="script" desc="Solo Focus">
