@@ -1,3 +1,7 @@
+-- @noindex
+-- Shared library for the Nathaniel Tools. Not a standalone action.
+-- Distributed by the "Shared Libraries" package via its @provides tag.
+
 --[[
   nt_click — the shared brain behind the two click surfaces.
 

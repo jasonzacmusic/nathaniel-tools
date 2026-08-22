@@ -1,3 +1,15 @@
+-- @description Set Armed Tracks Pan
+-- @version 1.0.0
+-- @author Jason Zac
+-- @link https://github.com/jasonzacmusic/nathaniel-tools
+-- @donation https://github.com/jasonzacmusic/nathaniel-tools
+-- @about Bind to absolute MIDI CC from a control surface: one knob pans every
+--   record-armed track at once, centre-detented, without changing what is
+--   selected. Written for the "12 Step Bridge" knob layout.
+-- @changelog
+--   1.0.0 - first release. Was in the repository without a package header, which
+--           stopped the whole ReaPack index from building.
+
 -- Usage: bind this ReaScript to absolute MIDI CC20 from "12 Step Bridge".
 -- Knob 7 pans every record-armed track without changing track selection.
 -- Companion to NSM_Set_Armed_Tracks_Volume.lua, same shape, same contract.
