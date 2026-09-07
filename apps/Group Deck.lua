@@ -1,5 +1,5 @@
 -- @description Group Deck
--- @version 1.1.0
+-- @version 1.1.1
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -12,6 +12,7 @@
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
+--   1.1.1 - read each track group mask once per scan; avoid blocking MIDI/UI on large projects.
 --   1.1.0 - unique auto names (ELECTRIC, ELECTRIC 2); grouped-edit scope switch (inside / start-or-end / start-and-end) with a fades hint.
 --   1.0.0 - first version.
 
@@ -71,25 +72,43 @@ local function setGroupName(g, nm) r.GetSetProjectInfo_String(0, "TRACK_GROUP_NA
 
 -- scan: groups -> { n=, name=, members={guid...}, flags={key=bool} }
 local function scan()
+  -- One API call returns membership for ALL 32 groups in a bank. Reading it
+  -- again for every group multiplied the work by 32 (456,960 calls on 510 tracks).
+  -- Keep the snapshot local to this scan: track pointers never survive a refresh.
+  local snapshot = {}
+  for i = 0, r.CountTracks(0) - 1 do
+    local t = r.GetTrack(0, i)
+    local entry = { guid = r.GetTrackGUID(t), banks = {} }
+    for bank = 1, MAXG // 32 do
+      local masks = {}
+      for _, b in ipairs(BEH) do
+        local mask = 0
+        for _, nm in ipairs(b.names) do
+          local ok1, l = pcall(member, t, nm, "_LEAD", bank == 2)
+          local ok2, f = pcall(member, t, nm, "_FOLLOW", bank == 2)
+          if ok1 and type(l) == "number" then mask = mask | l end
+          if ok2 and type(f) == "number" then mask = mask | f end
+        end
+        masks[b.key] = mask
+      end
+      entry.banks[bank] = masks
+    end
+    snapshot[#snapshot + 1] = entry
+  end
   local groups = {}
-  local n = r.CountTracks(0)
   for g = 1, MAXG do
     local bit, hi = bitOf(g)
-    local members, flags, any = {}, {}, false
+    local members, flags = {}, {}
     for _, b in ipairs(BEH) do flags[b.key] = false end
-    for i = 0, n - 1 do
-      local t = r.GetTrack(0, i)
+    for _, entry in ipairs(snapshot) do
       local inG = false
+      local masks = entry.banks[hi and 2 or 1]
       for _, b in ipairs(BEH) do
-        for _, nm in ipairs(b.names) do
-          local ok1, l = pcall(member, t, nm, "_LEAD", hi)
-          local ok2, f = pcall(member, t, nm, "_FOLLOW", hi)
-          if (ok1 and l & bit ~= 0) or (ok2 and f & bit ~= 0) then inG = true; flags[b.key] = true end
-        end
+        if masks[b.key] & bit ~= 0 then inG = true; flags[b.key] = true end
       end
-      if inG then members[#members + 1] = r.GetTrackGUID(t); any = true end
+      if inG then members[#members + 1] = entry.guid end
     end
-    if any then groups[#groups + 1] = { n = g, name = groupName(g), members = members, flags = flags } end
+    if #members > 0 then groups[#groups + 1] = { n = g, name = groupName(g), members = members, flags = flags } end
   end
   return groups
 end
