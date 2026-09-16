@@ -66,13 +66,51 @@ end
 --------------------------------------------------------------------------------
 -- pre-roll
 --------------------------------------------------------------------------------
--- Kept as a real number, so half and quarter bars are allowed: 0.5 and 0.25 are
--- how you count a pickup in.
-function M.prerollBars()
-  return r.SNM_GetDoubleConfigVar("prerollmeas", 2)
+-- REAPER's prerollmeas is global runtime configuration, not project data.
+-- Save the deliberate setting with the project, plus a persistent default for
+-- new sessions. Only write on changes; never save/close the user's project.
+local PREROLL_SECTION, PREROLL_KEY = "NT_Click", "preroll_bars"
+local prerollProject, prerollLast
+local function validBars(value)
+  value = tonumber(value)
+  if value and value == value and value >= 0.125 and value <= 64 then return value end
 end
+local function rememberBars(project, value)
+  local _, stored = r.GetProjExtState(project, PREROLL_SECTION, PREROLL_KEY)
+  if tonumber(stored) ~= value then
+    r.SetProjExtState(project, PREROLL_SECTION, PREROLL_KEY, tostring(value))
+    r.MarkProjectDirty(project)
+  end
+  if tonumber(r.GetExtState(PREROLL_SECTION, PREROLL_KEY)) ~= value then
+    r.SetExtState(PREROLL_SECTION, PREROLL_KEY, tostring(value), true)
+  end
+end
+function M.syncPreroll()
+  local project = r.EnumProjects(-1, "")
+  local current = r.SNM_GetDoubleConfigVar("prerollmeas", 2)
+  if project ~= prerollProject then
+    local _, stored = r.GetProjExtState(project, PREROLL_SECTION, PREROLL_KEY)
+    local value = validBars(stored) or validBars(r.GetExtState(PREROLL_SECTION, PREROLL_KEY)) or current
+    if current ~= value then r.SNM_SetDoubleConfigVar("prerollmeas", value) end
+    prerollProject, prerollLast = project, value
+    return value, project
+  end
+  -- Honour edits made through REAPER's own metronome dialog as well.
+  if current ~= prerollLast then
+    if validBars(current) then rememberBars(project, current) end
+    prerollLast = current
+  end
+  return current, project
+end
+function M.prerollBars() return M.syncPreroll() end
 function M.setPrerollBars(value)
-  r.SNM_SetDoubleConfigVar("prerollmeas", math.max(0.125, math.min(64, value)))
+  value = validBars(value)
+  if not value then return false end -- allow incomplete typing without saving 0
+  local current, project = M.syncPreroll()
+  if current ~= value then r.SNM_SetDoubleConfigVar("prerollmeas", value) end
+  rememberBars(project, value)
+  prerollLast = value
+  return true
 end
 function M.formatBars(value)
   if math.abs(value - math.floor(value + 0.5)) < 0.001 then

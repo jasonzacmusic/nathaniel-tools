@@ -1,5 +1,5 @@
 -- @description Shared Libraries
--- @version 1.3.0
+-- @version 1.3.1
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools

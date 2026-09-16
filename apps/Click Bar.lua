@@ -1,5 +1,5 @@
 -- @description Click Bar
--- @version 1.0.0
+-- @version 1.0.1
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -18,7 +18,7 @@
 --   Requires the "Shared Libraries" package from this same repository
 --   (right-click the repository in ReaPack > Install All).
 -- @changelog
---   1.0.0 - first version.
+--   1.0.1 - remember fractional pre-roll per project and across restarts.
 
 local r = reaper
 do
@@ -53,7 +53,7 @@ local METERS = {
   { 4, 4 }, { 3, 4 }, { 2, 4 }, { 6, 8 }, { 5, 8 }, { 7, 8 }, { 8, 8 }, { 9, 8 }, { 12, 8 },
 }
 
-local prerollText = nil
+local prerollText, prerollProject, prerollEditing = nil, nil, false
 
 --------------------------------------------------------------------------------
 local function drawFrame()
@@ -86,15 +86,19 @@ local function drawFrame()
   }) then click.fire(click.PREROLL) end
 
   r.ImGui_SameLine(ctx)
-  if prerollText == nil then prerollText = click.formatBars(click.prerollBars()) end
+  local bars, project = click.syncPreroll()
+  if project ~= prerollProject or not prerollEditing then
+    prerollText, prerollProject = click.formatBars(bars), project
+  end
   r.ImGui_SetNextItemWidth(ctx, 52)
   local changed, typed = r.ImGui_InputText(ctx, "##preroll", prerollText)
+  prerollEditing = r.ImGui_IsItemActive(ctx)
   if changed then
     prerollText = typed
     local value = tonumber(typed)
     if value then click.setPrerollBars(value) end
   end
-  ui.tip(ctx, "How many bars of pre-roll. Fractions are allowed: 0.5 for half a bar, 0.25 for a beat of four.")
+  ui.tip(ctx, "Pre-roll bars: 0.5 = half a bar. Remembered with this project when you save; also used as the default for new sessions.")
   r.ImGui_SameLine(ctx)
   ui.dim(ctx, "bars")
 

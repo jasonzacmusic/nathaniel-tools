@@ -148,3 +148,12 @@ Keys are *suggestions* — bind whatever you like in the Actions list.
   installed and what version.
 
 Support: WhatsApp **+91 7760456847** · issues on GitHub · `music@nathanielschool.com`.
+
+### Remembered pre-roll (Click Bar 1.0.1)
+
+Click Bar remembers fractional pre-roll such as 0.5 and 0.25 bars. Each project
+keeps its own value when saved normally. The last value you deliberately set is
+also saved immediately as the default for projects without a stored setting.
+Switching project tabs updates the field and restores that project's value.
+Changes made in REAPER's native metronome settings are respected. Keep Click Bar
+running for project-specific restoration; this does not save or close a project.
