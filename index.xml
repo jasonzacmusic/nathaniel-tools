@@ -373,6 +373,23 @@ MIDI items say so in the list BEFORE you export. New $region name.
         <source main="main" hash="1220350ca385275d3aac4d29a05a0c8740587cb9cc27001b5d624279f809677ebc9e">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/d5e79ebb716511bab20e3f06ea44850bc1e1e268/scripts/MIDI%20Batch%20Export.lua</source>
       </version>
     </reapack>
+    <reapack name="MIDI Inline Toggle.lua" type="script" desc="MIDI Inline Toggle (see and fix the notes inside the item, no separate MIDI editor)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Press once: the selected MIDI items (or the one under the mouse when nothing is selected) open their notes right inside the item in the arrange view, and the track grows tall enough to read and drag single notes. Press again: the notes fold away and the track goes back to the height it had. Made for quick fixes - a wrong note, a late note - without opening the big MIDI editor window.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-20T15:26:20Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220884ad552ac9ad026a6a2f713c50cbfca09c31a5051e2a99a330a5b13d0dacd19">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/d955ac1bbf9759cc8df91d85d070a4025bf38b69/scripts/MIDI%20Inline%20Toggle.lua</source>
+      </version>
+    </reapack>
     <reapack name="MIDI Render.lua" type="script" desc="MIDI Render">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
