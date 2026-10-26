@@ -1,5 +1,5 @@
 -- @description Render Safe (flush the plugins, then open the Render dialog)
--- @version 1.2.0
+-- @version 1.3.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -13,11 +13,14 @@
 --   exactly that, automatically:
 --     1. stops, jumps past the end of the project, plays 4 s of silence through
 --        every plugin so every tail decays, stops, puts the cursor back
---     2. opens File > Render. Press Render as usual.
+--     2. loads the "Jason Zac Default" render preset (format, sample rate,
+--        regions, file name) into the project, then opens File > Render.
+--        Press Render as usual.
 --   A countdown appears at the mouse the moment the key is pressed, so the
 --   4 s of silence never looks like "nothing happened".
 --   Bound to your render keys (F14, Cmd+Opt+R).
 -- @changelog
+--   1.3.0 - loads the "Jason Zac Default" render preset every time, so Render always starts from it.
 --   1.2.0 - shows a countdown at the mouse straight away (the silent 4 s looked like the key did nothing);
 --           refuses to run while recording; pressing it twice cancels cleanly and puts the cursor back;
 --           writes one line per press to render-safe.log in the REAPER folder.
@@ -27,6 +30,7 @@
 
 local r = reaper
 local SILENCE = 4.0   -- seconds of silence played through the plugins
+local PRESET = "Jason Zac Default"   -- render preset loaded before the Render window opens
 
 -- pressing the key again while it counts down cancels it instead of asking "terminate script?"
 if r.set_action_options then r.set_action_options(1) end
@@ -34,6 +38,43 @@ if r.set_action_options then r.set_action_options(1) end
 local function log(msg)
   local f = io.open(r.GetResourcePath() .. "/render-safe.log", "a")
   if f then f:write(os.date("%Y-%m-%d %H:%M:%S  ") .. msg .. "\n"); f:close() end
+end
+
+-- Read one preset from reaper-render.ini and put it into the project's render settings.
+-- Returns true when the preset was found.
+local function loadPreset(name)
+  local f = io.open(r.GetResourcePath() .. "/reaper-render.ini", "r")
+  if not f then return false end
+  local text = f:read("a"); f:close()
+  local function q(s) return s:find(" ") and ('"' .. s .. '"') or s end
+  local key = q(name):gsub("%p", "%%%0")
+  local srate, chans, fmt = text:match("<RENDERPRESET " .. key .. " (%d+) (%d+)[^\n]*\n%s*(%S+)")
+  local out = text:match("RENDERPRESET_OUTPUT " .. key .. " ([^\n]+)")
+  if not (srate and out) then return false end
+  local fields = {}
+  local pos = 1
+  while pos <= #out do                                     -- split, keeping "quoted strings" whole
+    local a, b, quoted = out:find('^"([^"]*)"%s*', pos)
+    if a then fields[#fields + 1] = quoted; pos = b + 1
+    else
+      local c, d, word = out:find("^(%S+)%s*", pos)
+      if not c then break end
+      fields[#fields + 1] = word; pos = d + 1
+    end
+  end
+  -- RENDERPRESET_OUTPUT name: bounds start end settings ? pattern ? directory ...
+  r.GetSetProjectInfo(0, "RENDER_SRATE", tonumber(srate), true)
+  r.GetSetProjectInfo(0, "RENDER_CHANNELS", tonumber(chans), true)
+  r.GetSetProjectInfo_String(0, "RENDER_FORMAT", fmt, true)
+  r.GetSetProjectInfo(0, "RENDER_BOUNDSFLAG", tonumber(fields[1]) or 1, true)
+  if tonumber(fields[1]) == 0 then
+    r.GetSetProjectInfo(0, "RENDER_STARTPOS", tonumber(fields[2]) or 0, true)
+    r.GetSetProjectInfo(0, "RENDER_ENDPOS", tonumber(fields[3]) or 0, true)
+  end
+  r.GetSetProjectInfo(0, "RENDER_SETTINGS", tonumber(fields[4]) or 0, true)
+  if fields[6] then r.GetSetProjectInfo_String(0, "RENDER_PATTERN", fields[6], true) end
+  if fields[8] and fields[8] ~= "" then r.GetSetProjectInfo_String(0, "RENDER_FILE", fields[8], true) end
+  return true
 end
 
 local function tip(text)
@@ -80,6 +121,7 @@ local function tick()
   r.Main_OnCommand(1016, 0)                                        -- Stop (Flush FX on stop is on as well)
   r.SetEditCurPos2(0, cursor, true, false)
   r.TrackCtl_SetToolTip("", 0, 0, true)
+  log(loadPreset(PRESET) and ("preset loaded: " .. PRESET) or ("preset NOT found: " .. PRESET))
   log("render window opened")
   r.Main_OnCommand(40015, 0)                                       -- File: Render project to disk...
 end

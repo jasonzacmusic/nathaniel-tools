@@ -1,5 +1,5 @@
 -- @description MIDI Inline Toggle (see and fix the notes inside the item, no separate MIDI editor)
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -10,7 +10,10 @@
 --   notes fold away and the track goes back to the height it had.
 --   Made for quick fixes - a wrong note, a late note - without opening the big
 --   MIDI editor window.
+--   Also set as the double-click on items: double-clicking a MIDI item opens its
+--   notes in place; double-clicking an audio item does what it always did.
 -- @changelog
+--   1.1.0 - works from a double-click: acts on the item under the mouse first; audio items keep their old double-click.
 --   1.0.0 - first version.
 
 local r = reaper
@@ -28,15 +31,21 @@ local function midiTakes()
   return list
 end
 
-local takes = midiTakes()
-if #takes == 0 and r.BR_ItemAtMouseCursor then             -- nothing selected: use the item under the mouse
-  local item = r.BR_ItemAtMouseCursor()
-  if item then
+local DEFAULT_DBLCLK = 40153        -- what a double-click on an item did before (open in editor)
+
+local under = r.BR_ItemAtMouseCursor and r.BR_ItemAtMouseCursor()
+if under then                                               -- the item under the mouse wins
+  local take = r.GetActiveTake(under)
+  if not (take and r.TakeIsMIDI(take)) then                 -- audio etc.: keep the old behaviour
+    r.Main_OnCommand(DEFAULT_DBLCLK, 0)
+    return
+  end
+  if not r.IsMediaItemSelected(under) then
     r.SelectAllMediaItems(0, false)
-    r.SetMediaItemSelected(item, true)
-    takes = midiTakes()
+    r.SetMediaItemSelected(under, true)
   end
 end
+local takes = midiTakes()
 if #takes == 0 then
   local x, y = r.GetMousePosition()
   r.TrackCtl_SetToolTip("Select a MIDI item (or point at one) first", x + 18, y + 18, true)
