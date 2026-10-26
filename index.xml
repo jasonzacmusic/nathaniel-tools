@@ -381,13 +381,14 @@ MIDI items say so in the list BEFORE you export. New $region name.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Press once: the selected MIDI items (or the one under the mouse when nothing is selected) open their notes right inside the item in the arrange view, and the track grows tall enough to read and drag single notes. Press again: the notes fold away and the track goes back to the height it had. Made for quick fixes - a wrong note, a late note - without opening the big MIDI editor window.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Press once: the selected MIDI items (or the one under the mouse when nothing is selected) open their notes right inside the item in the arrange view, and the track grows tall enough to read and drag single notes. Press again: the notes fold away and the track goes back to the height it had. Made for quick fixes - a wrong note, a late note - without opening the big MIDI editor window. Also set as the double-click on items: double-clicking a MIDI item opens its notes in place; double-clicking an audio item does what it always did.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-10-20T15:26:20Z">
-        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="1220884ad552ac9ad026a6a2f713c50cbfca09c31a5051e2a99a330a5b13d0dacd19">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/d955ac1bbf9759cc8df91d85d070a4025bf38b69/scripts/MIDI%20Inline%20Toggle.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-10-26T13:28:03Z">
+        <changelog><![CDATA[1.1.0 - works from a double-click: acts on the item under the mouse first; audio items keep their old double-click.
+1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12201d2960e8b4c2efe964056ebc4d4370b0b581848284676ec16fcffeb5688918e5">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/ec5e254c2a58a1feed7018b423a592f180f1e26c/scripts/MIDI%20Inline%20Toggle.lua</source>
       </version>
     </reapack>
     <reapack name="MIDI Render.lua" type="script" desc="MIDI Render">
@@ -553,19 +554,20 @@ studio apps open into the same docker at launch and one of them ended up in fron
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Renders used to start with a burst of stray audio: reverb/delay tails and plugin buffers left over from wherever playback last was. Measured on the studio Mac: after playing a section and rendering the top of the song, the first half-second of the file carried a -32 dBFS tail that was not in the song - even with REAPER's "delay render start" on. Jason's hand workaround was "play 5 s of silence at the end of the project, then render". This script does exactly that, automatically:\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab stops, jumps past the end of the project, plays 4 s of silence through\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 every plugin so every tail decays, stops, puts the cursor back\par}
-{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab opens File > Render. Press Render as usual.\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 A countdown appears at the mouse the moment the key is pressed, so the 4 s of silence never looks like "nothing happened". Bound to your render keys (F14, Cmd+Opt+R).\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab loads the "Jason Zac Default" render preset (format, sample rate,\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 regions, file name) into the project, then opens File > Render. Press Render as usual. A countdown appears at the mouse the moment the key is pressed, so the 4 s of silence never looks like "nothing happened". Bound to your render keys (F14, Cmd+Opt+R).\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.2.0" author="Jason Zac" time="2026-10-08T10:14:37Z">
-        <changelog><![CDATA[1.2.0 - shows a countdown at the mouse straight away (the silent 4 s looked like the key did nothing);
+      <version name="1.3.0" author="Jason Zac" time="2026-10-26T13:28:03Z">
+        <changelog><![CDATA[1.3.0 - loads the "Jason Zac Default" render preset every time, so Render always starts from it.
+1.2.0 - shows a countdown at the mouse straight away (the silent 4 s looked like the key did nothing);
 refuses to run while recording; pressing it twice cancels cleanly and puts the cursor back;
 writes one line per press to render-safe.log in the REAPER folder.
 1.1.0 - flushes by playing silence past the end (the thing that really clears the tails);
 no longer forces "delay render start" (that pops a 30 s dialog on one-click renders).
 1.0.0 - first version.]]></changelog>
-        <source main="main" hash="12207d8d49f32982f631d65fbcf2d7061b84fe685d00aa26995cd7c7bf01d98a9fa3">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/c7f97cae43d906ec2d6cfae14e0dc8586126d3af/scripts/Render%20Safe.lua</source>
+        <source main="main" hash="122045dd6e0dcd2ea99501ced71ada0b8df24f68a10a2723ed4bcf720652016b3028">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/ec5e254c2a58a1feed7018b423a592f180f1e26c/scripts/Render%20Safe.lua</source>
       </version>
     </reapack>
     <reapack name="Shared Libraries.lua" type="script" desc="Shared Libraries">
