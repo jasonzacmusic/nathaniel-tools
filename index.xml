@@ -284,6 +284,38 @@ refusing to launch.
         <source main="main" hash="1220b955b35b3f036e0f4b76c2bb1a67615db6a63d89a52095ade6682c056a3c3c07">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Flush%20Paste.lua</source>
       </version>
     </reapack>
+    <reapack name="Folder End Here.lua" type="script" desc="Folder End Here (the selected track becomes the last track of its folder)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Fixes the "next submix got swallowed" problem in one key press. Select the track that SHOULD be the last one in its folder and run this: the folder closes right after it, the next track or submix pops out one level, and everything further down keeps its exact shape (the track that used to close the folder closes one level less). Press again to pop the next track out one more level. Cmd+Z undoes it. A folder track itself is ignored; select its last child instead.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-27T06:44:16Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220da85f88f12461926df7aeac2f34c9fcd54fd4d06d69102a8dc4856325d5212c8">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/54d03ed45d12e4a46391ce2ecc18e600fde13399/scripts/Folder%20End%20Here.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Folder Join Next.lua" type="script" desc="Folder Join Next (pull the next track or submix into the selected track's folder)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 The opposite of Folder End Here. Select the last track of a folder and run this: the very next track (or the whole next submix, with all its tracks) moves inside that folder, and the folder now ends after it. Nothing else changes shape. Cmd+Z undoes it.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-27T06:44:16Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220a9c99c81348d09f6b3c58b2bfcc35a461ef66a24c951efc0ab2bb49c979a8481">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/54d03ed45d12e4a46391ce2ecc18e600fde13399/scripts/Folder%20Join%20Next.lua</source>
+      </version>
+    </reapack>
     <reapack name="Folders and Flow.lua" type="script" desc="Folders &amp; Flow">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
