@@ -558,6 +558,23 @@ studio apps open into the same docker at launch and one of them ended up in fron
         <source main="main" hash="122058c11814c5686200935802316af4c8b3a469e8e4b42fe146350644b78286ed02">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Record%20Arm%20Toggle.lua</source>
       </version>
     </reapack>
+    <reapack name="Record Monitor Boost.lua" type="script" desc="Record Monitor Boost (background: the track you are recording plays louder in your ears while you record; the file is untouched)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background. A horn or voice in the room drowns its own headphone feed, so while you record it sounds soft. While REAPER is recording, every armed track that records its input is turned up (6 dB by default) so you hear yourself properly. The moment recording stops, the fader goes back exactly where it was. The recorded file is not affected: those tracks record the input, before the fader. Move the fader during a take and that move is kept (minus the boost) when recording stops. Change the amount: Extended state "NathanielTools" / "RecordMonitorBoostDB" (0 switches the boost off). Run the action again to switch it off; its menu/toolbar state shows on while it runs.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-28T11:27:28Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="122051b26bf50f8f00a17bdeaf037b50fdaa3b7cd3214aee9cec4af85b3a16d3f02e">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/db9c6b2a71c250cf386385133afe68fdf2b6d148/scripts/Record%20Monitor%20Boost.lua</source>
+      </version>
+    </reapack>
     <reapack name="Region Next.lua" type="script" desc="Region Next">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
