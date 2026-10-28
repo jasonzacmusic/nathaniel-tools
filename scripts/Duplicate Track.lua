@@ -1,10 +1,11 @@
 -- @description Duplicate Track
--- @version 1.2.0
+-- @version 1.3.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
--- @about Duplicate the selected track EMPTY and armed, ready to record the next layer; the original is disarmed, every other track keeps its arm state. Needs SWS.
+-- @about Duplicate the selected track EMPTY and armed, ready to record the next layer; the original is disarmed, every other track keeps its arm state. The copy takes the next number: Verse 1 -> Verse 2, V1 -> V2, O1 -> O2 (skipping numbers already used; "Verse" -> "Verse 2"). Needs SWS.
 -- @changelog
+--   1.3.0 - the copy is numbered; a copy renamed to something new gets its own colour (with Rename Colour running);: Verse 1 -> Verse 2, V1 -> V2, Take 09 -> Take 10; never repeats a name already in the project.
 --   1.2.0 - the track you duplicated is DISARMED; only the new layer is armed. Other tracks untouched.
 --   1.1.0 - stops with a message if SWS is missing.
 --   1.0.0 - first public release.
@@ -22,6 +23,23 @@ if not reaper.NamedCommandLookup("_S&M_WNCLS5") or reaper.NamedCommandLookup("_S
   reaper.ShowMessageBox("Duplicate Track needs the SWS extension (sws-extension.org). Install it and restart REAPER.", "Duplicate Track", 0) return
 end
 local r = reaper
+
+-- "Verse 1" -> "Verse 2", "V1" -> "V2", "Take 09" -> "Take 10"; no number -> "Verse 2".
+-- Picks one past the highest number already used with that same name, so it never repeats.
+local function nextName(name, proj)
+  local base, num = name:match("^(.-)(%d+)$")
+  if not base or base == "" then base, num = name .. " ", "1" end
+  local width = #num
+  local top = tonumber(num)
+  for i = 0, r.CountTracks(proj) - 1 do
+    local _, nm = r.GetSetMediaTrackInfo_String(r.GetTrack(proj, i), "P_NAME", "", false)
+    if nm:sub(1, #base) == base then
+      local n = nm:sub(#base + 1):match("^(%d+)$")
+      if n and tonumber(n) > top then top = tonumber(n) end
+    end
+  end
+  return base .. string.format("%0" .. width .. "d", top + 1)
+end
 
 local sel = {}
 local srcGuid = {}   -- the tracks being duplicated: they hand their arm to the new layer
@@ -92,6 +110,12 @@ for _, tr in ipairs(dup) do
     r.SetMediaTrackInfo_Value(tr, "I_RECARM", 1)
     r.SetMediaTrackInfo_Value(tr, "I_SOLO", 0)
     r.SetMediaTrackInfo_Value(tr, "B_MUTE", 0)
+    local _, nm = r.GetSetMediaTrackInfo_String(tr, "P_NAME", "", false)
+    if nm ~= "" then
+      r.GetSetMediaTrackInfo_String(tr, "P_NAME", nextName(nm, 0), true)
+      -- Rename Colour watches this: rename the copy out of its family and it gets its own colour
+      r.GetSetMediaTrackInfo_String(tr, "P_EXT:nt_dup_base", (nm:gsub("%s*%d+$", "")):lower(), true)
+    end
   end
 end
 
@@ -101,6 +125,6 @@ r.Main_OnCommand(r.NamedCommandLookup("_S&M_WNCLS3"), 0)
 r.Main_OnCommand(r.NamedCommandLookup("_S&M_WNCLS4"), 0)
 
 r.PreventUIRefresh(-1)
-r.Undo_EndBlock2(0, "Duplicate track (empty, armed)", -1)
+r.Undo_EndBlock2(0, "Duplicate track (empty, armed, next number)", -1)
 r.TrackList_AdjustWindows(false)
 r.UpdateArrange()
