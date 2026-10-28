@@ -230,6 +230,23 @@ refusing to launch.
         <source main="main" hash="12201435682da5c0461de165a43730699338b7411a6379ccd08b11e1e9d2510ea2c4">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Edit%20Group%20from%20Selection.lua</source>
       </version>
     </reapack>
+    <reapack name="Exclusive Record Arm.lua" type="script" desc="Exclusive Record Arm (background: arming a track disarms every other track)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background. Click the record-arm button on any track and every other track in the project is disarmed, so only the track you just touched records. Arming several tracks in one click (a selection) keeps all of them. Run the action again to switch it off; its toolbar/menu state shows on while it runs. Never touches inputs, monitoring or levels.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-28T03:43:25Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12208558b8eba8660e702a85f50f810898b68537c71e7e94dc31cd34525ab49642fc">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/cb24c31f374530bd1dac2aa11904fcd4efe838f3/scripts/Exclusive%20Record%20Arm.lua</source>
+      </version>
+    </reapack>
     <reapack name="FX Float Toggle.lua" type="script" desc="FX Float Toggle">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
