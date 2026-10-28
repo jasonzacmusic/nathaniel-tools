@@ -231,7 +231,7 @@ refusing to launch.
         <source main="main" hash="12201435682da5c0461de165a43730699338b7411a6379ccd08b11e1e9d2510ea2c4">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Edit%20Group%20from%20Selection.lua</source>
       </version>
     </reapack>
-    <reapack name="Exclusive Arm and Solo.lua" type="script" desc="Exclusive Arm and Solo (background: arming or soloing a track clears the others; hold Option to add)">
+    <reapack name="Exclusive Record Arm.lua" type="script" desc="Exclusive Record Arm (background: arming a track disarms the others; hold Option to add)">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
         <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
@@ -239,14 +239,14 @@ refusing to launch.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background. Click a track's record-arm button: every other track is disarmed. Click a track's solo button: every other track is unsoloed. Hold Option while clicking: the track is added and nothing else changes. Arming or soloing several tracks in one click (a selection) keeps all of them. Run the action again to switch it off; its menu/toolbar state shows on while it runs. Never touches inputs, monitoring, levels or the project file. Option is read by the small helper Scripts/Nathaniel Tools/bin/nt_mods (source: tools/nt_mods.swift); without it the script still works, just always exclusive.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background. Click a track's record-arm button: every other track is disarmed. Hold Option while clicking: the track is added and nothing else changes. Arming several tracks in one click (a selection) keeps all of them. Solo is left alone. Run the action again to switch it off; its menu/toolbar state shows on while it runs. Never touches inputs, monitoring, levels or the project file. Option is read by the small helper Scripts/Nathaniel Tools/bin/nt_mods (source: tools/nt_mods.swift); without it the script still works, just always exclusive.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.1.0" author="Jason Zac" time="2026-10-28T03:58:40Z">
-        <changelog><![CDATA[1.1.0 - solo works the same way as record arm; Option-click adds instead of replacing.
-Replaces "Exclusive Record Arm" 1.0.0.]]></changelog>
-        <source main="main" hash="1220199788fdb17b0b73b86a6d351d15175c74d097de82c37d1295f02c38d7608b48">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/c20f06c3bbecc859867ac071077a6c0ce351bd26/scripts/Exclusive%20Arm%20and%20Solo.lua</source>
+      <version name="1.2.0" author="Jason Zac" time="2026-10-28T04:44:25Z">
+        <changelog><![CDATA[1.2.0 - Option-click adds instead of replacing. Solo back to normal (the 1.1 "Exclusive Arm and Solo" is retired).
+1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12204629a9e7f2f477eb0d04ccc2ccb5b341c3f115ec126e80bd23d6200586f203ac">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/bfa8d79bd5eb1170508148e286878aa3676f0395/scripts/Exclusive%20Record%20Arm.lua</source>
       </version>
     </reapack>
     <reapack name="FX Float Toggle.lua" type="script" desc="FX Float Toggle">
