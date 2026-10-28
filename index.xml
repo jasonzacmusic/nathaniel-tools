@@ -202,15 +202,16 @@ refusing to launch.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Duplicate the selected track EMPTY and armed, ready to record the next layer; the original is disarmed, every other track keeps its arm state. Needs SWS.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Duplicate the selected track EMPTY and armed, ready to record the next layer; the original is disarmed, every other track keeps its arm state. The copy takes the next number: Verse 1 -> Verse 2, V1 -> V2, O1 -> O2 (skipping numbers already used; "Verse" -> "Verse 2"). Needs SWS.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.2.0" author="Jason Zac" time="2026-08-19T15:47:21Z">
-        <changelog><![CDATA[1.2.0 - the track you duplicated is DISARMED; only the new layer is armed. Other tracks untouched.
+      <version name="1.3.0" author="Jason Zac" time="2026-10-28T03:58:40Z">
+        <changelog><![CDATA[1.3.0 - the copy is numbered; a copy renamed to something new gets its own colour (with Rename Colour running);: Verse 1 -> Verse 2, V1 -> V2, Take 09 -> Take 10; never repeats a name already in the project.
+1.2.0 - the track you duplicated is DISARMED; only the new layer is armed. Other tracks untouched.
 1.1.0 - stops with a message if SWS is missing.
 1.0.0 - first public release.]]></changelog>
-        <source main="main" hash="122020b100db53f487e9c997f2ef889f793b33982376f5b3d273b0758244e3a1b2fa">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/f36e82b16395e4918550856a932cfb30958626ec/scripts/Duplicate%20Track.lua</source>
+        <source main="main" hash="12206c96d75153f805c5036227c19158e97b03f8dd2a36065bb56142324f20b5415b">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/c20f06c3bbecc859867ac071077a6c0ce351bd26/scripts/Duplicate%20Track.lua</source>
       </version>
     </reapack>
     <reapack name="Edit Group from Selection.lua" type="script" desc="Edit Group from Selection (media edits move together, nothing else)">
@@ -230,7 +231,7 @@ refusing to launch.
         <source main="main" hash="12201435682da5c0461de165a43730699338b7411a6379ccd08b11e1e9d2510ea2c4">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/aacd21408fe1b363faa20606d482585d05aa11a3/scripts/Edit%20Group%20from%20Selection.lua</source>
       </version>
     </reapack>
-    <reapack name="Exclusive Record Arm.lua" type="script" desc="Exclusive Record Arm (background: arming a track disarms every other track)">
+    <reapack name="Exclusive Arm and Solo.lua" type="script" desc="Exclusive Arm and Solo (background: arming or soloing a track clears the others; hold Option to add)">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
         <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
@@ -238,13 +239,14 @@ refusing to launch.
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background. Click the record-arm button on any track and every other track in the project is disarmed, so only the track you just touched records. Arming several tracks in one click (a selection) keeps all of them. Run the action again to switch it off; its toolbar/menu state shows on while it runs. Never touches inputs, monitoring or levels.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background. Click a track's record-arm button: every other track is disarmed. Click a track's solo button: every other track is unsoloed. Hold Option while clicking: the track is added and nothing else changes. Arming or soloing several tracks in one click (a selection) keeps all of them. Run the action again to switch it off; its menu/toolbar state shows on while it runs. Never touches inputs, monitoring, levels or the project file. Option is read by the small helper Scripts/Nathaniel Tools/bin/nt_mods (source: tools/nt_mods.swift); without it the script still works, just always exclusive.\par}
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-10-28T03:43:25Z">
-        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="12208558b8eba8660e702a85f50f810898b68537c71e7e94dc31cd34525ab49642fc">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/cb24c31f374530bd1dac2aa11904fcd4efe838f3/scripts/Exclusive%20Record%20Arm.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-10-28T03:58:40Z">
+        <changelog><![CDATA[1.1.0 - solo works the same way as record arm; Option-click adds instead of replacing.
+Replaces "Exclusive Record Arm" 1.0.0.]]></changelog>
+        <source main="main" hash="1220199788fdb17b0b73b86a6d351d15175c74d097de82c37d1295f02c38d7608b48">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/c20f06c3bbecc859867ac071077a6c0ce351bd26/scripts/Exclusive%20Arm%20and%20Solo.lua</source>
       </version>
     </reapack>
     <reapack name="FX Float Toggle.lua" type="script" desc="FX Float Toggle">
@@ -590,6 +592,23 @@ studio apps open into the same docker at launch and one of them ended up in fron
         <changelog><![CDATA[1.1.0 - no longer restarts playback with "Play (skip time selection)", which skipped the very region it had just selected.
 1.0.0 - first public release.]]></changelog>
         <source main="main" hash="122001faf0ce258fbc50e077b399c2bfcbccd91901c43020d590167d8a7e98cc2516">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Region%20Prev.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Rename Colour.lua" type="script" desc="Rename Colour (background: a Shift-D copy renamed to something new gets its own colour)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background, next to Duplicate Track. Duplicate Track marks every copy it makes with the name it came from ("Verse"). Rename that copy to something new ("Off Beat 1") and it gets a fresh colour, picked to stand apart from every colour already in the project. Renaming within the family (Verse 2 -> Verse 4) keeps the colour. Each copy is recoloured once; after that the colour is yours. Run the action again to switch it off.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-28T03:58:40Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220b3f1846c621e2365e8194289df7d5f53db25e74007dd98592e08e36881bdd8fd">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/c20f06c3bbecc859867ac071077a6c0ce351bd26/scripts/Rename%20Colour.lua</source>
       </version>
     </reapack>
     <reapack name="Render Safe.lua" type="script" desc="Render Safe (flush the plugins, then open the Render dialog)">
