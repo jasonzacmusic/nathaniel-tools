@@ -363,6 +363,36 @@ make. Every action reports what it did in the status line.
         <source main="main" hash="1220033569cda54f976cb883044bec8e5670a3e12f744a7c4c3802e017ae586b0b8f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Folders%20and%20Flow.lua</source>
       </version>
     </reapack>
+    <reapack name="Horn Delivery.lua" type="script" desc="Horn Delivery (check, render stems + EFX, file into JZ Horns, quality check, copy to Dropbox)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Select the stems and busses you want to deliver, then run this once. It:\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab Checks that the selected tracks are exactly the ones with music on them (nothing audible left out,\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 nothing empty or muted selected) and that every track name is unique.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab Makes "JZ Horns" in the project folder with Trumpet Stems, Trombone Stems, Submixes and\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 ALL Trumpets & Trombones.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 3.\tab Renders your selection as stems plus the full horn mix, with the EFX folder muted.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 4.\tab Renders only the EFX folder, unmuted.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 5.\tab Puts your selection, mutes and render settings back exactly as they were.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 6.\tab Files every WAV: trumpet tracks -> Trumpet Stems, trombone tracks -> Trombone Stems,\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 busses/folders -> Submixes, the full mix and the EFX -> ALL Trumpets & Trombones.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 7.\tab Quality check: a file for every track, nothing silent, nothing clipping, right length.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Report saved in JZ Horns.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 8.\tab Offers to copy the whole project folder into the Dropbox folder you paste, and opens it.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Never deletes anything: an older WAV with the same name moves to JZ Horns/Previous Renders, and a Dropbox file that would be replaced is kept in "_Replaced by JZ copy". Uses your own render format; does not touch the render queue.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-29T14:06:15Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="122036013f00da4078fe7519e7db15143b13d87c9fcfc6e636d932fd63128051d21d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6f5026718ffd8cce8cb70e39984919d5baad8a44/scripts/Horn%20Delivery.lua</source>
+      </version>
+    </reapack>
     <reapack name="Instant Folder.lua" type="script" desc="Instant Folder (new parent above the selected tracks, named and coloured)">
       <metadata>
         <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
