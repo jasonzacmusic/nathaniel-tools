@@ -380,7 +380,7 @@ make. Every action reports what it did in the status line.
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 4.\tab Renders only the EFX folder, unmuted.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 5.\tab Puts your selection, mutes and render settings back exactly as they were.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 6.\tab Files every WAV: trumpet tracks -> Trumpet Stems, trombone tracks -> Trombone Stems,\par}
-{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 busses/folders -> Submixes, the full mix and the EFX -> ALL Trumpets & Trombones.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 section busses -> Submixes; the TRUMPETS / TROMBONE busses, the full mix and the EFX -> ALL Trumpets & Trombones.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 7.\tab Quality check: a file for every track, nothing silent, nothing clipping, right length.\par}
 {\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Report saved in JZ Horns.\par}
 {\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 8.\tab Offers to copy the whole project folder into the Dropbox folder you paste, and opens it.\par}
@@ -388,9 +388,10 @@ make. Every action reports what it did in the status line.
 }
 ]]></description>
       </metadata>
-      <version name="1.0.0" author="Jason Zac" time="2026-10-29T14:06:15Z">
-        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
-        <source main="main" hash="122036013f00da4078fe7519e7db15143b13d87c9fcfc6e636d932fd63128051d21d">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/6f5026718ffd8cce8cb70e39984919d5baad8a44/scripts/Horn%20Delivery.lua</source>
+      <version name="1.1.0" author="Jason Zac" time="2026-10-29T14:52:42Z">
+        <changelog><![CDATA[1.1.0 - top-level busses (TRUMPETS, TROMBONE) go in ALL Trumpets & Trombones (Jason's layout).
+1.0.0 - first version.]]></changelog>
+        <source main="main" hash="12209899a83e3445918f08e30b493ade0233a8d223f3971722f6b84ce23f3743d0e2">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/cefd0eef815491eea5dd28224d03d4f4518e02b2/scripts/Horn%20Delivery.lua</source>
       </version>
     </reapack>
     <reapack name="Instant Folder.lua" type="script" desc="Instant Folder (new parent above the selected tracks, named and coloured)">
@@ -506,6 +507,28 @@ MIDI items say so in the list BEFORE you export. New $region name.
         <changelog><![CDATA[1.1.0 - honest changelog.
 1.0.0 - first public release.]]></changelog>
         <source main="main" hash="1220ca710dbc2dbd1c8f38d0397d59205a65b2edc26aa4b30e26f80a86c359da986f">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/328e74a6d49edcb9541c1cc5c4172532810d4536/scripts/Marker%20at%20Bar.lua</source>
+      </version>
+    </reapack>
+    <reapack name="Matrix EFX Pass.lua" type="script" desc="Matrix EFX Pass (background: after a stems render from the Region Render Matrix, ticks only the EFX; after the EFX render, puts your ticks back and files the WAVs into JZ Horns)">
+      <metadata>
+        <link>https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <link rel="donation">https://github.com/jasonzacmusic/nathaniel-tools</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Runs quietly in the background. Use the Region Render Matrix as usual:\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 1.\tab Tick your stems and busses (not the EFX), mute the EFX, render.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 2.\tab The moment that render finishes, the matrix shows only the EFX ticked and the EFX is unmuted.\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 Press Render again.\par}
+{\pard \ql \f0 \fs24 \sa60 \li360 \fi-360 3.\tab When the EFX render finishes, your stem ticks and the EFX mutes come back exactly as they were,\par}
+{\pard \ql \f0 \fs24 \sa180 \li0 \fi0 and every WAV is filed in the project's JZ Horns folder: trumpet tracks -> Trumpet Stems, trombone tracks -> Trombone Stems, section busses -> Submixes, the TRUMPETS / TROMBONE busses and the EFX -> ALL Trumpets & Trombones. Never deletes anything: an older WAV with the same name moves to JZ Horns/Previous Renders. Only acts on a project with a track called EFX. Run the action again to switch it off.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Jason Zac" time="2026-10-29T14:52:42Z">
+        <changelog><![CDATA[1.0.0 - first version.]]></changelog>
+        <source main="main" hash="1220e002cdfe127dc205f16c1b579ba319d84759ae7c55b8827f96ae93fbb50077d7">https://raw.githubusercontent.com/jasonzacmusic/nathaniel-tools/cefd0eef815491eea5dd28224d03d4f4518e02b2/scripts/Matrix%20EFX%20Pass.lua</source>
       </version>
     </reapack>
     <reapack name="NSM_Set_Armed_Tracks_Pan.lua" type="script" desc="Set Armed Tracks Pan">
