@@ -1,5 +1,5 @@
 -- @description Horn Delivery (check, render stems + EFX, file into JZ Horns, quality check, copy to Dropbox)
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -13,7 +13,7 @@
 --   4. Renders only the EFX folder, unmuted.
 --   5. Puts your selection, mutes and render settings back exactly as they were.
 --   6. Files every WAV: trumpet tracks -> Trumpet Stems, trombone tracks -> Trombone Stems,
---      busses/folders -> Submixes, the full mix and the EFX -> ALL Trumpets & Trombones.
+--      section busses -> Submixes; the TRUMPETS / TROMBONE busses, the full mix and the EFX -> ALL Trumpets & Trombones.
 --   7. Quality check: a file for every track, nothing silent, nothing clipping, right length.
 --      Report saved in JZ Horns.
 --   8. Offers to copy the whole project folder into the Dropbox folder you paste, and opens it.
@@ -21,6 +21,7 @@
 --   and a Dropbox file that would be replaced is kept in "_Replaced by JZ copy".
 --   Uses your own render format; does not touch the render queue.
 -- @changelog
+--   1.1.0 - top-level busses (TRUMPETS, TROMBONE) go in ALL Trumpets & Trombones (Jason's layout).
 --   1.0.0 - first version.
 
 local r = reaper
@@ -92,6 +93,7 @@ if #sel == 0 then MB("Select the stems and busses you want to render first (not 
 local isSel = {}; for _, t in ipairs(sel) do isSel[t] = true end
 
 local function category(tr)
+  if isFolder(tr) and not parent(tr) then return "all" end   -- TRUMPETS / TROMBONE busses sit with the full mix
   if isFolder(tr) then return "sub" end
   local t = tr
   while t do
