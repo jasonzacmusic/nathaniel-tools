@@ -1,5 +1,5 @@
 -- @description Matrix EFX Pass (background: after a stems render from the Region Render Matrix, ticks only the EFX; after the EFX render, puts your ticks back and files the WAVs into JZ Horns)
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -11,10 +11,12 @@
 --   3. When the EFX render finishes, your stem ticks and the EFX mutes come back exactly as they were,
 --      and every WAV is filed in the project's JZ Horns folder:
 --      trumpet tracks -> Trumpet Stems, trombone tracks -> Trombone Stems, section busses -> Submixes,
---      the TRUMPETS / TROMBONE busses and the EFX -> ALL Trumpets & Trombones.
+--      the TRUMPETS / TROMBONE busses -> ALL Trumpets & Trombones, and EFX.wav sits loose in JZ Horns.
+--   Horn projects render with files named after their tracks ($track); a $region setting is switched over.
 --   Never deletes anything: an older WAV with the same name moves to JZ Horns/Previous Renders.
 --   Only acts on a project with a track called EFX. Run the action again to switch it off.
 -- @changelog
+--   1.1.0 - EFX.wav goes loose in JZ Horns; horn projects name files by track.
 --   1.0.0 - first version.
 
 local r = reaper
@@ -23,6 +25,7 @@ if r.set_action_options then r.set_action_options(1) end
 
 local EXT = "NathanielTools"
 local CATS = { tpt = "Trumpet Stems", tbn = "Trombone Stems", sub = "Submixes", all = "ALL Trumpets & Trombones" }
+local function catDir(horns, cat) return cat == "root" and horns or (horns .. "/" .. CATS[cat]) end   -- "root": loose in JZ Horns
 
 local function name(tr) local _, n = r.GetSetMediaTrackInfo_String(tr, "P_NAME", "", false) return n end
 local function trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
@@ -99,11 +102,11 @@ local function file(proj, list, efx)
       if t and not byName[key] and trim(name(t)) ~= "" then         -- a $region-named file takes its track's name
         base = trim(name(t)):gsub("[/:\\]", "-") .. (base:match("%.[^.]+$") or ".wav")
       end
-      local cat = (t == efx) and "all" or (t and category(t)) or "sub"
-      local dst = horns .. "/" .. CATS[cat] .. "/" .. base
+      local cat = (t == efx) and "root" or (t and category(t)) or "sub"
+      local dst = catDir(horns, cat) .. "/" .. base
       if dst ~= f then
         if r.file_exists(dst) then
-          local old = horns .. "/Previous Renders/" .. stamp .. "/" .. CATS[cat]
+          local old = horns .. "/Previous Renders/" .. stamp .. (cat == "root" and "" or ("/" .. CATS[cat]))
           r.RecursiveCreateDirectory(old, 0); os.rename(dst, old .. "/" .. base)
         end
         if os.rename(f, dst) then n = n + 1 end
@@ -190,6 +193,8 @@ local function loop()
     local useMatrix = (math.floor(r.GetSetProjectInfo(proj, "RENDER_SETTINGS", 0, false)) & 8) == 8
     if efx and useMatrix and r.GetPlayStateEx(proj) & 4 == 0 then
       local _, phase = r.GetProjExtState(proj, EXT, "EfxPass")
+      local _, pat = r.GetSetProjectInfo_String(proj, "RENDER_PATTERN", "", false)
+      if phase == "" and pat == "$region" then r.GetSetProjectInfo_String(proj, "RENDER_PATTERN", "$track", true) end   -- horn files are named after their tracks
       local w = watch[proj]
       local list = targets(proj)
       local want = (phase == "efx") and "efx" or "stems"

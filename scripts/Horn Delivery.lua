@@ -1,5 +1,5 @@
 -- @description Horn Delivery (check, render stems + EFX, file into JZ Horns, quality check, copy to Dropbox)
--- @version 1.1.0
+-- @version 1.2.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -13,7 +13,7 @@
 --   4. Renders only the EFX folder, unmuted.
 --   5. Puts your selection, mutes and render settings back exactly as they were.
 --   6. Files every WAV: trumpet tracks -> Trumpet Stems, trombone tracks -> Trombone Stems,
---      section busses -> Submixes; the TRUMPETS / TROMBONE busses, the full mix and the EFX -> ALL Trumpets & Trombones.
+--      section busses -> Submixes; the TRUMPETS / TROMBONE busses and the full mix -> ALL Trumpets & Trombones; EFX.wav loose in JZ Horns.
 --   7. Quality check: a file for every track, nothing silent, nothing clipping, right length.
 --      Report saved in JZ Horns.
 --   8. Offers to copy the whole project folder into the Dropbox folder you paste, and opens it.
@@ -21,6 +21,7 @@
 --   and a Dropbox file that would be replaced is kept in "_Replaced by JZ copy".
 --   Uses your own render format; does not touch the render queue.
 -- @changelog
+--   1.2.0 - EFX.wav goes loose in JZ Horns.
 --   1.1.0 - top-level busses (TRUMPETS, TROMBONE) go in ALL Trumpets & Trombones (Jason's layout).
 --   1.0.0 - first version.
 
@@ -233,10 +234,10 @@ local function stem(p) return (base(p):gsub("%.[^.]+$", "")) end
 local function exists(p) return r.file_exists(p) end
 
 local function place(src, cat, newName)
-  local dstDir = horns .. "/" .. CATS[cat]
+  local dstDir = cat == "root" and horns or (horns .. "/" .. CATS[cat])   -- "root": loose in JZ Horns
   local dst = dstDir .. "/" .. (newName or base(src))
   if exists(dst) then                                   -- never overwrite: the older file moves aside
-    local old = horns .. "/Previous Renders/" .. stamp .. "/" .. CATS[cat]
+    local old = horns .. "/Previous Renders/" .. stamp .. (cat == "root" and "" or ("/" .. CATS[cat]))
     r.RecursiveCreateDirectory(old, 0)
     os.rename(dst, old .. "/" .. base(dst))
   end
@@ -257,7 +258,7 @@ for _, f in ipairs(stemTargets or {}) do
   end
 end
 for _, f in ipairs(efxTargets or {}) do
-  if exists(f) then filed.efx = place(f, "all", "EFX.wav") end
+  if exists(f) then filed.efx = place(f, "root", "EFX.wav") end
 end
 os.remove(stage .. "/stems"); os.remove(stage .. "/efx"); os.remove(stage)   -- only removes them if empty
 
@@ -286,7 +287,7 @@ for _, t in ipairs(sel) do
   if filed[t] then inspect(filed[t], what) else Q("No file for " .. label(t)); missing[#missing + 1] = t end
 end
 if filed.mix then inspect(filed.mix, CATS.all .. "/" .. MIX_NAME) else Q("The full mix file is missing") end
-if filed.efx then inspect(filed.efx, CATS.all .. "/EFX") else Q("The EFX file is missing") end
+if filed.efx then inspect(filed.efx, "EFX") else Q("The EFX file is missing") end
 for _, w in ipairs(warnings) do Q(w) end
 for _, p in ipairs(problems) do Q("Rendered anyway: " .. p) end
 
