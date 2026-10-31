@@ -1,5 +1,5 @@
 -- @description Matrix EFX Pass (background: after a stems render from the Region Render Matrix, ticks only the EFX; after the EFX render, puts your ticks back and files the WAVs into JZ Horns)
--- @version 1.1.0
+-- @version 1.2.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -16,6 +16,7 @@
 --   Never deletes anything: an older WAV with the same name moves to JZ Horns/Previous Renders.
 --   Only acts on a project with a track called EFX. Run the action again to switch it off.
 -- @changelog
+--   1.2.0 - ignores renders that are not horn stems (only the master ticked, or MP3/other non-WAV files), so reference MP3s stay where REAPER put them.
 --   1.1.0 - EFX.wav goes loose in JZ Horns; horn projects name files by track.
 --   1.0.0 - first version.
 
@@ -177,6 +178,16 @@ local function onlyEFX(proj, efx)
   return any
 end
 
+-- a horn stems render: WAV files, and at least one ticked track that is not the master
+local function stemRender(proj, list)
+  for _, f in ipairs(list) do if not f:lower():match("%.wav$") then return false end end
+  local m = r.GetMasterTrack(proj)
+  for _, idx in ipairs(regions(proj)) do
+    for _, t in ipairs(ticks(proj, idx)) do if t ~= m then return true end end
+  end
+  return false
+end
+
 local function say(msg)   -- Claude's own tests set MatrixEFXPassLog to a file and get the message there instead of a dialog
   local log = r.GetExtState(EXT, "MatrixEFXPassLog")
   if log == "" then r.MB(msg, "Matrix EFX Pass", 0) return end
@@ -199,6 +210,7 @@ local function loop()
       local list = targets(proj)
       local want = (phase == "efx") and "efx" or "stems"
       if want == "stems" and onlyEFX(proj, efx) then list = {} end          -- he ticked the EFX himself: stay out of the way
+      if want == "stems" and not stemRender(proj, list) then list = {} end  -- a reference mix (master only, MP3...): not ours
       if not w or w.phase ~= want or #w.list ~= #list then
         w = { phase = want, since = os.time(), list = list, sizes = {}, stable = 0 }
         watch[proj] = w
