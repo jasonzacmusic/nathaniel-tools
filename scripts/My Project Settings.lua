@@ -1,5 +1,5 @@
 -- @description My Project Settings (every project opens with Jason's own project settings)
--- @version 1.0.0
+-- @version 1.1.0
 -- @author Jason Zac
 -- @link https://github.com/jasonzacmusic/nathaniel-tools
 -- @donation https://github.com/jasonzacmusic/nathaniel-tools
@@ -16,6 +16,8 @@
 --   To change the set: open a project that is set up the way you like, save it, and run
 --   "Save My Project Settings".
 -- @changelog
+--   1.1.0 - Freestyle Riffs and Tutorials sessions are left alone (they carry their own setup: metronome,
+--           pre-roll and snapping off).
 --   1.0.0 - first version.
 
 local r = reaper
@@ -177,7 +179,8 @@ local function tick()
       wait[key] = (wait[key] or 0) + 1
       if wait[key] > 20 then -- let a project finish opening first
         seen[key] = true
-        local skip = path ~= "" and (path:find("/ProjectTemplates/", 1, true) or not path:match("%.[Rr][Pp][Pp]$"))
+        local skip = path ~= "" and (path:find("/ProjectTemplates/", 1, true) or not path:match("%.[Rr][Pp][Pp]$")
+          or path:match("/Freestyle Riffs[^/]*%.[Rr][Pp][Pp]$") or path:match("/Tutorials[^/]*%.[Rr][Pp][Pp]$"))
         if not skip then
           local ok, err = pcall(function()
             if path ~= "" and r.IsProjectDirty(proj) == 0 then fixFile(proj, path) else applyLive(proj) end
