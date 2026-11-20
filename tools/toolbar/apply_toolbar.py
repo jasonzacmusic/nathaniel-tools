@@ -141,6 +141,10 @@ TOOL_ITEMS = [
   SEP,
   ("_RSa64fe569c8e612731bf7e3c0c957b076769a9762", "Script: Group Deck.lua",        "nt_app_groupdeck.png"),
   ("_RS7e681b9ea3d61c586f60c3323c6f9b1e81f78416", "Script: Open Dock.lua",         "nt_app_dock.png"),
+  SEP,
+  # on/off switches that light when on: Rec Boost (off at launch), Excl Arm (on at launch, 20-Nov-2026)
+  ("_RS1658b92d7237bd196ae814954c22b3837fb65c5a", "Rec Boost", None),
+  ("_RSb26a0f8dc3b20b71c248cca933179563ba182986", "Excl Arm",  None),
 ]
 LEFT_ITEMS = SESSION_ITEMS + [SEP] + TOOL_ITEMS
 
